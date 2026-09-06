@@ -1,0 +1,51 @@
+<h2>Ofertas</h2>
+
+<!-- Los recuentos no son adorno: son lo que deja ver de un vistazo que un
+     estado tiene mas de las que deberia. -->
+<div class="filtros" role="group" aria-label="Filtrar ofertas por estado">
+  <button
+    type="button"
+    data-filtro="todas"
+    [attr.aria-pressed]="store.filtroActivo() === null"
+    (click)="filtrarPor(null)"
+  >
+    Todas <span class="recuento">{{ store.ofertas().length }}</span>
+  </button>
+
+  @for (estado of estados; track estado) {
+    <button
+      type="button"
+      [attr.data-filtro]="estado"
+      [attr.aria-pressed]="store.filtroActivo() === estado"
+      (click)="filtrarPor(estado)"
+    >
+      {{ estado }} <span class="recuento">{{ store.recuentoPorEstado()[estado] ?? 0 }}</span>
+    </button>
+  }
+</div>
+
+<table>
+  <caption class="visualmente-oculto">
+    Ofertas, {{ store.visibles().length }} de {{ store.ofertas().length }}
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Empresa</th>
+      <th scope="col">Puesto</th>
+      <th scope="col">Estado</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (oferta of store.visibles(); track oferta.id) {
+      <tr>
+        <td>{{ oferta.empresa }}</td>
+        <td>{{ oferta.puesto }}</td>
+        <td>{{ oferta.estado }}</td>
+      </tr>
+    } @empty {
+      <tr>
+        <td colspan="3">No hay ofertas en este estado.</td>
+      </tr>
+    }
+  </tbody>
+</table>
