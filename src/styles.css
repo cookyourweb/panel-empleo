@@ -1,0 +1,201 @@
+/* ============================================================
+   Design system: tokens de marca de CookYourWeb.
+   Copiados de cookyourwebai, donde se midieron y se probaron.
+   Los tests de src/design-system leen ESTE fichero: bajar el
+   contraste de un token rompe la suite.
+   ============================================================ */
+
+:root {
+  /* ============================================================
+     RAMPAS DE MARCA — 4 escalas completas (pasos 50-900)
+     Fuente: docs/diseno/tokens-color.json (medido 2026-09-05)
+     Generadas en OKLCh. Un solo sitio: no se repiten hexadecimales
+     de marca en ningún otro punto de este fichero.
+     ============================================================ */
+  --color-cian-50: #dafdff;
+  --color-cian-100: #a2f9ff;
+  --color-cian-200: #45eef8;
+  --color-cian-300: #0ad3dd;
+  --color-cian-400: #06b7c0;
+  --color-cian-500: #039ca4;
+  --color-cian-600: #018188;
+  --color-cian-700: #01656a;
+  --color-cian-800: #00494d;
+  --color-cian-900: #002d30;
+
+  --color-magenta-50: #fff0fa;
+  --color-magenta-100: #ffdcf3;
+  --color-magenta-200: #ffbceb;
+  --color-magenta-300: #ff8ce0;
+  --color-magenta-400: #ff48d8;
+  --color-magenta-500: #e224be;
+  --color-magenta-600: #c001a1;
+  --color-magenta-700: #97007e;
+  --color-magenta-800: #70015c;
+  --color-magenta-900: #47003a;
+
+  --color-violeta-50: #f7f3ff;
+  --color-violeta-100: #ece2ff;
+  --color-violeta-200: #dccaff;
+  --color-violeta-300: #c8a7ff;
+  --color-violeta-400: #b583ff;
+  --color-violeta-500: #a457ff;
+  --color-violeta-600: #8e30eb;
+  --color-violeta-700: #7301c7;
+  --color-violeta-800: #540194;
+  --color-violeta-900: #34005f;
+
+  --color-verde-50: #dfffe3;
+  --color-verde-100: #adffb9;
+  --color-verde-200: #51f97e;
+  --color-verde-300: #28de64;
+  --color-verde-400: #01c251;
+  --color-verde-500: #00a544;
+  --color-verde-600: #038937;
+  --color-verde-700: #006b29;
+  --color-verde-800: #004e1c;
+  --color-verde-900: #00300f;
+
+  /* Los 4 neones históricos ahora apuntan al paso 200 de su rampa
+     (es donde "brillan sobre oscuro", según el documento de tokens).
+     Ya no son hexadecimales sueltos repetidos a mano. */
+  --color-neonblue: var(--color-cian-200);
+  --color-neonpink: var(--color-magenta-200);
+  --color-neonviolet: var(--color-violeta-200);
+  --color-neongreen: var(--color-verde-200);
+
+  /* Componentes R G B de los mismos pasos, para usarlos dentro de
+     rgb(... / alpha) donde se necesita opacidad (glow, overlays). */
+  --color-neonblue-rgb: 69 238 248;
+  --color-neonpink-rgb: 255 188 235;
+  --color-neonviolet-rgb: 220 202 255;
+  --color-neongreen-rgb: 81 249 126;
+
+  /* ============================================================
+     TOKENS SEMÁNTICOS — TEMA OSCURO (el principal)
+     Medido: cian y verde dan 12,5:1 sobre negro. La marca está
+     pensada para fondo oscuro, así que :root lleva estos valores.
+     Contrastes reales (WCAG, calculados, no estimados) en el
+     informe de la tarea.
+     ============================================================ */
+  --background: 0 0% 3.9%; /* #0a0a0a — el mismo negro que ya usaban bg-hero y los overlays */
+  --background-rgb: 10 10 10;
+  --foreground: 0 0% 95%; /* 17.68:1 sobre --background */
+
+  --card: 0 0% 3.9%;
+  --card-foreground: 0 0% 95%;
+
+  --popover: 0 0% 3.9%;
+  --popover-foreground: 0 0% 95%;
+
+  --primary: 183.4 92.7% 62.2%; /* cian-200 #45eef8 */
+  --primary-foreground: 183.8 100% 9.4%; /* cian-900 #002d30 — 10.46:1 */
+
+  --secondary: 262.5 100% 82.7%; /* violeta-300 #c8a7ff */
+  --secondary-foreground: 272.8 100% 18.6%; /* violeta-900 #34005f — 7.95:1 */
+
+  --muted: 138.8 100% 9.4%; /* verde-900 #00300f */
+  --muted-foreground: 144.9 99% 38.2%; /* verde-400 #01c251 — 6.18:1 sobre muted, 8.33:1 sobre background */
+
+  --accent: 310.8 98.2% 22.2%; /* magenta-800 #70015c */
+  --accent-foreground: 317.9 100% 86.9%; /* magenta-200 #ffbceb — 7.38:1 */
+
+  /* --destructive no forma parte de ninguna rampa de marca (no hay
+     un "rojo de marca" medido). Se conserva el rojo shadcn original:
+     ya era independiente del fondo y por sí solo da 9.58:1. Fuera de
+     alcance de esta tarea introducir un color de error nuevo. */
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  /* cian-600 #018188 — 4,24:1 sobre el fondo. El paso 700 que decia la
+     documentacion daba 2,90:1 y no llegaba al 3:1 que pide WCAG 1.4.11
+     para elementos que no son texto. Lo cazo el test de contraste. */
+  --border: 183.1 98.5% 26.9%;
+  --input: 183.1 98.5% 26.9%;
+  --ring: 182.8 91.3% 45.3%; /* cian-300 #0ad3dd — 10.72:1 sobre background */
+
+  --radius: 0.5rem;
+
+  --sidebar-background: 0 0% 3.9%;
+  --sidebar-foreground: 0 0% 95%;
+  --sidebar-primary: 183.4 92.7% 62.2%;
+  --sidebar-primary-foreground: 183.8 100% 9.4%;
+  --sidebar-accent: 310.8 98.2% 22.2%;
+  --sidebar-accent-foreground: 317.9 100% 86.9%;
+  --sidebar-border: 182.9 98.1% 21%;
+  --sidebar-ring: 182.8 91.3% 45.3%;
+}
+
+.light {
+  --background: 0 0% 100%;
+  --background-rgb: 255 255 255;
+  --foreground: 0 0% 9%; /* 17.93:1 sobre --background */
+
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 9%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 9%;
+
+  --primary: 183.1 98.5% 26.9%; /* cian-600 #018188 */
+  --primary-foreground: 0 0% 100%; /* blanco — 4.67:1 */
+
+  --secondary: 274.5 99% 39.2%; /* violeta-700 #7301c7 */
+  --secondary-foreground: 0 0% 100%; /* 8.21:1 */
+
+  --muted: 127.5 100% 93.7%; /* verde-50 #dfffe3 */
+  --muted-foreground: 143 100% 21%; /* verde-700 #006b29 — 6.24:1 */
+
+  --accent: 320.6 100% 93.1%; /* magenta-100 #ffdcf3 */
+  --accent-foreground: 310.8 98.2% 22.2%; /* magenta-800 — 9.08:1 */
+
+  /* El rojo de fabrica de shadcn daba 3,59:1 con su propio foreground:
+     ilegible para texto normal. Se oscurece hasta pasar AA. */
+  --destructive: 0 73.7% 41.8%;
+  --destructive-foreground: 210 40% 98%;
+
+  /* cian-600 #018188 — 4,67:1 sobre blanco. La regla "bordes claro: 200"
+     de la documentacion daba 1,42:1: un borde practicamente invisible. */
+  --border: 183.1 98.5% 26.9%;
+  --input: 183.1 98.5% 26.9%;
+  --ring: 183.1 98.5% 26.9%; /* cian-600, según "foco claro: 600" */
+
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 0 0% 9%;
+  --sidebar-primary: 183.1 98.5% 26.9%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 320.6 100% 93.1%;
+  --sidebar-accent-foreground: 310.8 98.2% 22.2%;
+  --sidebar-border: 183.4 92.7% 62.2%;
+  --sidebar-ring: 183.1 98.5% 26.9%;
+}
+
+
+/* El tema oscuro es el principal: es donde la marca funciona. */
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* El enlace de salto solo aparece cuando el teclado llega a el. */
+.salto-al-contenido {
+  position: absolute;
+  left: -9999px;
+}
+
+.salto-al-contenido:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  outline: 2px solid hsl(var(--ring));
+}

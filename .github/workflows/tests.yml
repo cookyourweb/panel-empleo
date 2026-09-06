@@ -1,0 +1,26 @@
+name: tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # npm ci, no npm install: obedece al lock y no puede cambiarlo.
+      - name: instalar
+        run: npm ci
+
+      - name: tests
+        run: npm test
+
+      - name: build
+        run: npm run build
