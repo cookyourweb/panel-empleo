@@ -194,6 +194,28 @@ n8n  ->  Notion
 El panel habla solo con `cv-server`. Nunca con Notion, ni con Drive, ni con un modelo de
 lenguaje: el navegador no ve jamás una credencial de terceros.
 
+### Por dentro
+
+```
+src/app/ofertas/
+  oferta.ts                  el tipo de dominio y sus ocho estados
+  repositorio-de-ofertas.ts  de dónde salen las ofertas, como clase abstracta
+  ofertas.store.ts           el estado en signals y el recuento por estado
+tools/design-system/         fórmula de contraste y lector de tokens, en Node
+```
+
+`RepositorioDeOfertas` es la costura de la que cuelga todo. La aplicación depende de esa
+clase abstracta y nunca de una fuente concreta. Eso es lo que permite que la demo
+pública funcione con datos de ejemplo incluidos en el propio front, sin backend vivo
+detrás, y que los tests corran sin red.
+
+Es una clase abstracta y no una interfaz de TypeScript a propósito: las interfaces
+desaparecen al compilar, y la inyección de dependencias necesita algo que exista en
+tiempo de ejecución.
+
+El estado vive en signals y el store los expone en solo lectura. El recuento por estado
+es un `computed`: se deriva de las ofertas, así que no puede desincronizarse de ellas.
+
 ## Documentación
 
 Las decisiones y su porqué viven en el repositorio del sistema, no en una herramienta de

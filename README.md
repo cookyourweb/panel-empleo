@@ -195,6 +195,27 @@ n8n  ->  Notion
 The panel talks only to `cv-server`. Never to Notion, Drive, or a language model: the
 browser never sees a third party credential.
 
+### Inside the app
+
+```
+src/app/ofertas/
+  oferta.ts                  the domain type and its eight states
+  repositorio-de-ofertas.ts  where jobs come from, as an abstract class
+  ofertas.store.ts           state in signals, plus the count per state
+tools/design-system/         contrast formula and token reader, run in Node
+```
+
+`RepositorioDeOfertas` is the seam the whole thing hangs from. The app depends on that
+abstract class, never on a concrete source. That is what lets the public demo run on
+sample data bundled with the front end, with no live backend behind it, and what lets
+the tests run without a network.
+
+It is an abstract class rather than a TypeScript interface on purpose: interfaces vanish
+at compile time, and dependency injection needs something that exists at runtime.
+
+State lives in signals, with the store exposing them read-only. The count per state is a
+`computed`: it is derived from the jobs, so it cannot drift out of sync with them.
+
 ## Documentation
 
 Decisions and their reasoning live in the system's repository, not in a vendor tool.
