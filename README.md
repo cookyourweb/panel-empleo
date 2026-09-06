@@ -1,198 +1,204 @@
-# Panel de empleo
+# Job panel
 
-Busca las ofertas mejor pagadas en varios sitios y te avisa por correo: tú solo aceptas
-o rechazas. Si aceptas, prepara el currículum para esa oferta y, si te falta algo, no
-miente: te ayuda a aprenderlo.
+*[Leer en español](README.es.md)*
 
-## El problema
+It finds the best paying jobs across several sources and emails them to you. You just
+accept or decline. If you accept, it prepares your CV for that specific role, and if
+something is missing, it does not lie: it helps you learn it.
 
-Preparar bien una candidatura lleva casi una hora: leer la oferta entera, decidir si
-encaja, adaptar el currículum, escribir una carta que no suene a plantilla y enviarla
-donde corresponda.
+## The problem
 
-Quien busca trabajo no tiene esa hora, y menos multiplicada por los sitios donde hay
-que mirar: LinkedIn, Tecnoempleo, Adzuna, Remotive, el portal de cada empresa, cada uno
-con su manera distinta de buscar y de avisar.
+Preparing one application properly takes close to an hour: reading the posting, deciding
+whether it actually fits, tailoring the CV, writing a cover letter that does not read
+like a template, and sending it wherever it has to go.
 
-Así que se recorta. El mismo currículum va a todo, la carta solo cambia el nombre de
-la empresa, y las ofertas se eligen por el título porque leerlas todas no entra en las
-horas que hay. Sale peor y todo el mundo lo sabe. Se hace igual: la alternativa es no
-mandar nada.
+People looking for work do not have that hour, let alone multiplied by every place they
+have to check: LinkedIn, Tecnoempleo, Adzuna, Remotive, each company's own careers page,
+every one of them with its own way of searching and notifying.
 
-Y lo primero que se pierde es el registro. Un tablero que dice «pendiente» sobre
-candidaturas enviadas hace semanas deja de servir para lo único que importaba: saber a
-quién insistir, qué se contestó y qué está muerto.
+So corners get cut. The same CV goes everywhere, the cover letter only swaps the company
+name, and postings get picked by their title because reading them all does not fit in
+the hours available. Everyone knows the results are worse. It happens anyway, because
+the alternative is sending nothing.
 
-No es un problema de disciplina. Es un problema de tiempo: hace falta uno para cada
-sitio, y solo hay uno para todos.
+The first thing to go is the record keeping. A board that says «pending» about
+applications sent weeks ago stops being useful for the only thing that mattered: knowing
+who to follow up with, who replied, and what is dead.
 
-## Qué hace
+This is not a discipline problem. It is a time problem: you need one hour per source,
+and there is one hour for all of them.
 
-Busca las ofertas mejor pagadas, en varios sitios a la vez, y avisa por correo. Tú
-solo aceptas o rechazas.
+## What it does
 
-### Primero, quién eres
+It searches for the best paying roles across several sources at once and sends them by
+email. You just accept or decline.
 
-Un formulario, una sola vez. Se rellena con el currículum maestro, el completo y sin
-recortar, los puestos a los que se puede optar, y las condiciones: sueldo, si se busca
-remoto, híbrido o presencial, y en qué idiomas se puede trabajar.
+### First, who you are
 
-Ese currículum maestro es **la fuente de verdad de esa persona**. Todo lo que el
-sistema escriba después sale de ahí y de ningún otro sitio.
+One form, filled in once. It takes your master CV, the full one with nothing trimmed,
+the roles you can apply for, and your conditions: salary, whether you want remote,
+hybrid or on-site, and which languages you can work in.
 
-De ese detalle depende lo demás. Sin el perfil real, «las ofertas que encajan contigo»
-no significa nada, y la regla de no mentir sería una promesa de buena voluntad en vez
-de una consecuencia de cómo está construido el sistema. No hay de dónde sacar lo que
-no existe.
+That master CV is **your single source of truth**. Everything the system writes later
+comes from there and from nowhere else.
 
-### Después, el ciclo
+Everything else depends on that detail. Without a real profile, «the jobs that fit you»
+means nothing, and the no-lying rule would be a statement of good intentions rather than
+a consequence of how the system is built. There is nowhere to pull from what does not
+exist.
 
-1. **Busca por sueldo, en varios sitios a la vez.** El dinero es un criterio de
-   búsqueda, no un dato que se mira después de todo lo demás.
-2. **Avisa por correo.** No hace falta entrar a ningún sitio a comprobar si ha
-   llegado algo nuevo.
-3. **Aceptas o rechazas.** Esa es toda la decisión que se pide: dos opciones, un
-   gesto.
-4. **Si aceptas, genera el currículum para esa oferta concreta**, pensado para pasar
-   los filtros automáticos de cribado que descartan por palabras y formato antes de
-   que una persona lea nada. Se pierde gente válida por cómo está escrito el
-   documento, no por lo que sabe.
-5. **Y la pieza que cambia todo lo demás: no miente para encajar.** Si a la persona
-   le falta algo que la oferta pide, el sistema lo dice y la orienta para
-   aprenderlo, en vez de inflar el currículum como hace el resto del sector.
+### Then, the loop
 
-### La regla que no se rompe: sin mentir
+1. **It searches by salary, across several sources at once.** Pay is a search criterion,
+   not something you check after everything else.
+2. **It notifies by email.** No need to log into anything to see whether something new
+   arrived.
+3. **You accept or decline.** That is the whole decision being asked of you: two
+   options, one gesture.
+4. **If you accept, it generates the CV for that specific role**, built to get through
+   the automated screening filters that reject on keywords and formatting before a human
+   reads anything. Good candidates are lost over how the document is written, not over
+   what they know.
+5. **And the part that changes everything else: it does not lie to make you fit.** If
+   something the posting asks for is missing, the system says so and points you towards
+   learning it, instead of padding the CV the way the rest of the industry does.
 
-Cuando a alguien le falta algo que la oferta pide, la respuesta habitual del sector es
-inflar: poner la tecnología que no se tiene, convertir un «colaboré en» en un
-«lideré», estirar tres meses hasta que parezcan experiencia sólida. Suena mejor y es
-mentira.
+### The rule that does not bend: no lying
 
-Aquí la respuesta cambia: **cuando falta algo, los demás mienten; aquí se aprende.**
-El sistema señala qué falta y orienta para cerrarlo, en vez de disfrazarlo en el
-currículum.
+When someone is missing something a posting asks for, the industry's usual answer is to
+pad: adding the technology you do not have, turning a «contributed to» into a «led»,
+stretching three months until they look like solid experience. It reads better and it is
+a lie.
 
-Eso no es un matiz moral. La regla que gobierna la adaptación del currículum lo dice
-con un criterio que se puede comprobar:
+Here the answer is different: **when something is missing, others lie; here you learn
+it.** The system points out the gap and helps close it, instead of disguising it in the
+CV.
 
-> Un currículum adaptado no cambia quién eres. Cambia qué parte de tu experiencia pone
-> en primer plano. Y la línea entre reposicionar e inventar no es lo que escribes: es
-> si puedes defenderlo cuarenta minutos delante de alguien técnico.
+This is not a moral footnote. The rule that governs CV tailoring puts it in terms you
+can actually check:
 
-Un ejemplo de la diferencia. Para una oferta de un dominio en el que la persona no ha
-trabajado, el sistema no escribe «tengo experiencia en ese dominio», que sería mentira.
-Escribe que ha trabajado en dominios donde un error tiene consecuencias reales, que sí
-es cierto y sí se defiende. Reposicionar es legítimo. Inventar no.
+> A tailored CV does not change who you are. It changes which part of your experience
+> comes first. And the line between repositioning and inventing is not what you write:
+> it is whether you can defend it for forty minutes in front of someone technical.
 
-Adaptar es elegir. Mentir es añadir.
+An example of the difference. For a role in a domain the person has never worked in, the
+system does not write «I have experience in that domain», which would be a lie. It
+writes that they have worked in domains where a mistake has real consequences, which is
+true and can be defended. Repositioning is legitimate. Inventing is not.
 
-### De dónde salen las ofertas
+Tailoring is choosing. Lying is adding.
 
-Tecnoempleo, Adzuna y Remotive entran por workflows programados contra sus API.
-LinkedIn no ofrece una API para esto, así que entra por otro camino: una tarea diaria
-en la que un agente con acceso al navegador abre la oferta y rellena la ficha.
+### Where the jobs come from
 
-Esa asimetría es deliberada. Donde hay una API se usa; donde no la hay, un agente hace
-el trabajo que haría una persona, una vez al día y con el alcance acotado, en lugar de
-montar un raspado permanente que es frágil y pone en riesgo la cuenta.
+Tecnoempleo, Adzuna and Remotive come in through scheduled workflows against their APIs.
+LinkedIn offers no API for this, so it arrives another way: a daily task where an agent
+with browser access opens the posting and fills in the record.
 
-**La lista de fuentes crece.** Añadir un portal es añadir un origen, no rehacer el
-sistema.
+That asymmetry is deliberate. Where there is an API, use it. Where there is not, an
+agent does the work a person would do, once a day and with a bounded scope, rather than
+running a permanent scraper that is fragile and puts the account at risk.
 
-### El criterio de diseño
+**The list of sources grows.** Adding a job board means adding a source, not rebuilding
+the system.
 
-Uno, y se aplica a todo: **si registrar cuesta menos que no registrar, el tablero se
-mantiene solo.**
+### The design principle
 
-Detrás hay un sistema que ya funciona: la captación descrita arriba y un servicio en
-FastAPI que genera los documentos adaptados con los guardrails puestos. Este proyecto
-es su cara.
+One, and it applies to everything: **if recording something costs less than not
+recording it, the board maintains itself.**
 
-**Estado: en construcción.** Hay andamiaje, design system y pruebas. Todavía no hay
-pantallas.
+There is a working system behind this: the ingestion described above, and a FastAPI
+service that generates the tailored documents with its guardrails in place. This project
+is its face.
 
-## Decisiones
+**Status: under construction.** Scaffolding, design system and tests are in place. There
+are no screens yet.
 
-**Angular 22 sin `zone.js`, con signals y componentes standalone.** La detección de
-cambios va por signals, que es como se escribe Angular hoy.
+## Decisions
 
-**Vitest.** Es el runner por defecto desde Angular 22, y Karma está en las últimas.
+**Angular 22 without `zone.js`, with signals and standalone components.** Change
+detection runs on signals, which is how Angular is written today.
 
-**El design system no se inventa aquí.** Son los tokens de marca de CookYourWeb, medidos
-en OKLCh y ya probados en el sitio de la agencia. Viajan con sus veinticuatro pruebas de
-contraste.
+**Vitest.** It has been the default runner since Angular 22, and Karma is on its way
+out.
 
-**Se copian, no se comparten en una librería.** Todavía no. Con un consumidor vivo y
-otro por nacer, la frontera entre lo común y lo propio de cada producto se dibujaría
-adivinando, y una frontera mal puesta cuesta más que copiar. Se extraerán cuando haya
-dos casos reales delante. Una abstracción se descubre, no se inventa.
+**The design system is not invented here.** These are the CookYourWeb brand tokens,
+measured in OKLCh and already proven on the agency site. They travel with their
+twenty-four contrast tests.
 
-**Multiusuario desde el diseño.** El problema no es de una persona, así que el sistema
-no se construye para una. No hay un «cuando abramos el multiusuario»: añadir el
-aislamiento después obliga a migrar datos y a tocar todas las consultas, y basta olvidar
-una para filtrar datos ajenos.
+**They are copied, not shared through a library.** Not yet. With one live consumer and
+another about to exist, the boundary between what is shared and what belongs to each
+product would be drawn by guessing, and a badly placed boundary costs more than copying.
+They will be extracted once there are two real cases to look at. An abstraction is
+discovered, not invented.
 
-## Las pruebas de contraste
+**Multi-user by design.** The problem does not belong to one person, so the system is
+not built for one. There is no «once we open it up to multiple users»: adding isolation
+later means migrating data and touching every query, and forgetting a single one leaks
+someone else's data.
 
-Cada par de color del sistema se comprueba con la fórmula de luminancia relativa de
-WCAG. Si un par de texto baja de 4,5:1, o un borde o un anillo de foco bajan de 3:1, la
-suite falla.
+## The contrast tests
 
-Leen `src/styles.css` **del disco**, no una copia de los valores. Esa diferencia es
-todo: con los valores copiados en el test, la suite pasaría siempre, aunque el panel se
-viera ilegible.
+Every colour pair in the system is checked with the WCAG relative luminance formula. If
+a text pair drops below 4.5:1, or a border or focus ring drops below 3:1, the suite
+fails.
 
-No son una formalidad. Al aplicarlas sobre el sitio de la agencia, del que salen estos
-tokens, encontraron tres defectos que llevaban meses ahí y que mirando la pantalla no se
-ven: un rojo de error a 3,59:1 y bordes a 2,90:1 en tema oscuro y 1,42:1 en claro. El
-tercero venía de una regla equivocada en la propia documentación de diseño, escrita con
-datos medidos.
+They read `src/styles.css` **from disk**, not a copy of the values. That difference is
+everything: with the values copied into the test, the suite would always pass, even with
+the panel rendered unreadable.
 
-El ojo se adapta. El contraste se calcula.
+They are not a formality. Applied to the agency site these tokens come from, they found
+three defects that had been there for months and that looking at the screen does not
+reveal: an error red at 3.59:1, and borders at 2.90:1 in dark theme and 1.42:1 in light.
+The third came from a wrong rule in the design documentation itself, written with
+measured data.
 
-## Cómo se trabaja
+The eye adapts. Contrast is calculated.
 
-Una prueba que falla, la pieza mínima que la pone en verde, y commit. Los mensajes de
-commit explican por qué se hizo algo, no qué se tocó: eso ya lo dice el diff.
+## How the work is done
 
-Entrega por rebanadas verticales completas, no por capas. La primera vale por sí sola:
-ver las ofertas, abrir una, generar currículum y carta, descargar. La segunda cierra el
-seguimiento, que es el problema de arriba.
+A failing test, the smallest piece that turns it green, then a commit. Commit messages
+explain why something was done, not what changed: the diff already says that.
 
-## Ejecutar
+Delivery goes in complete vertical slices, not in layers. The first one stands on its
+own: see the jobs, open one, generate CV and cover letter, download. The second closes
+the tracking loop, which is the problem described above.
 
-Requiere Node 22, fijado en `.nvmrc`.
+Commit messages and design documents are written in Spanish. They are the author's
+reasoning, and they read better in the language they were thought in.
+
+## Running it
+
+Requires Node 22, pinned in `.nvmrc`.
 
 ```bash
 nvm use
 npm ci
-npm start          # servidor de desarrollo
-npm test           # pruebas de componentes y de contraste
+npm start          # development server
+npm test           # component and contrast tests
 npm run build
 ```
 
-Las pruebas van en dos runners a propósito. Las de componentes corren en un navegador;
-las de contraste leen la hoja de estilos del disco y corren en Node. Mezclarlas
-obligaría a compilar código de sistema de ficheros para el navegador, que no es donde
-vive.
+The tests run in two runners on purpose. Component tests run in a browser; contrast
+tests read the stylesheet from disk and run in Node. Mixing them would mean compiling
+filesystem code for the browser, which is not where it lives.
 
-## Arquitectura
+## Architecture
 
 ```
 n8n  ->  Notion
                 \
-                 '->  cv-server (FastAPI)  <-  este panel
+                 '->  cv-server (FastAPI)  <-  this panel
                           |
-                          '->  Postgres, Drive, modelos
+                          '->  Postgres, Drive, models
 ```
 
-El panel habla solo con `cv-server`. Nunca con Notion, ni con Drive, ni con un modelo de
-lenguaje: el navegador no ve jamás una credencial de terceros.
+The panel talks only to `cv-server`. Never to Notion, Drive, or a language model: the
+browser never sees a third party credential.
 
-## Documentación
+## Documentation
 
-Las decisiones y su porqué viven en el repositorio del sistema, no en una herramienta de
-proveedor:
+Decisions and their reasoning live in the system's repository, not in a vendor tool.
+They are written in Spanish:
 
-- [Diseño del panel](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-panel-empleo-angular-design.md)
-- [Tokens del design system](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-tokens-design-system.md)
+- [Panel design](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-panel-empleo-angular-design.md)
+- [Design system tokens](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-tokens-design-system.md)
