@@ -200,5 +200,12 @@ browser never sees a third party credential.
 Decisions and their reasoning live in the system's repository, not in a vendor tool.
 They are written in Spanish:
 
-- [Panel design](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-panel-empleo-angular-design.md)
-- [Design system tokens](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-tokens-design-system.md)
+- [Architecture decisions](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-decisiones-arquitectura.md).
+  What is settled, what is a default, and what still has to be argued. Each entry says
+  why, and what it would cost to change later.
+- [Panel design](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-panel-empleo-angular-design.md).
+  Scope, data model, delivery slices, and an explicit list of what is left out.
+- [Design system tokens](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-tokens-design-system.md).
+  The four brand ramps, their measured contrast, and the usage rule.
+- [Startup plan](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-06-plan-arranque-panel-angular.md).
+  How the pieces fit together and the rules that keep them apart.
