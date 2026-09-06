@@ -7,8 +7,21 @@ import { RepositorioDeOfertas } from './repositorio-de-ofertas';
 export class OfertasStore {
   private readonly repositorio = inject(RepositorioDeOfertas);
   private readonly estado = signal<Oferta[]>([]);
+  private readonly filtro = signal<EstadoDeOferta | null>(null);
 
   readonly ofertas = this.estado.asReadonly();
+  readonly filtroActivo = this.filtro.asReadonly();
+
+  /**
+   * Las ofertas que se estan viendo ahora mismo.
+   *
+   * Filtrar no descarta nada: las cuarenta caducadas dejan de estorbar sin
+   * borrarse, y siguen contando en el recuento.
+   */
+  readonly visibles = computed(() => {
+    const estado = this.filtro();
+    return estado === null ? this.estado() : this.estado().filter((oferta) => oferta.estado === estado);
+  });
 
   /**
    * Cuantas ofertas hay en cada estado.
@@ -24,6 +37,11 @@ export class OfertasStore {
     }
     return recuento;
   });
+
+  /** Pasar null quita el filtro y vuelve a enseñarlas todas. */
+  filtrarPor(estado: EstadoDeOferta | null): void {
+    this.filtro.set(estado);
+  }
 
   async cargar(): Promise<void> {
     this.estado.set(await this.repositorio.listar());
