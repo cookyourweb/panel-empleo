@@ -1,0 +1,53 @@
+@if (candidatura(); as una) {
+  <article>
+    <p class="volver"><a routerLink="/">Volver a las candidaturas</a></p>
+
+    <h2>{{ una.oferta.empresa }}</h2>
+    <p class="puesto">{{ una.oferta.puesto }}</p>
+
+    <p class="estado">{{ una.estado }}</p>
+
+    <!-- Lo que la captacion no siempre encuentra solo se pinta si esta. Una
+         fila vacia ocupa sitio y no dice nada. -->
+    <dl>
+      @if (una.oferta.ubicacion) {
+        <dt>Ubicación</dt>
+        <dd>{{ una.oferta.ubicacion }}</dd>
+      }
+      @if (una.oferta.modalidad) {
+        <dt>Modalidad</dt>
+        <dd>{{ una.oferta.modalidad }}</dd>
+      }
+      @if (una.oferta.salario) {
+        <dt>Salario</dt>
+        <dd>{{ una.oferta.salario }}</dd>
+      }
+      <dt>Idioma de la oferta</dt>
+      <dd>{{ una.oferta.idioma }}</dd>
+    </dl>
+
+    @if (una.oferta.descripcion) {
+      <h3>Descripción</h3>
+      <p class="descripcion">{{ una.oferta.descripcion }}</p>
+    }
+
+    @if (una.oferta.enlace) {
+      <p>
+        <a
+          data-oferta-original
+          [href]="una.oferta.enlace"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Ver la oferta original
+        </a>
+      </p>
+    }
+  </article>
+} @else {
+  <article>
+    <h2>Esa candidatura no está</h2>
+    <p>Puede que se haya borrado, o que el enlace no sea correcto.</p>
+    <p><a routerLink="/">Volver a las candidaturas</a></p>
+  </article>
+}

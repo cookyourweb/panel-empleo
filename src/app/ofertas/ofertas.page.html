@@ -38,7 +38,11 @@
   <tbody>
     @for (candidatura of store.visibles(); track candidatura.id) {
       <tr>
-        <td>{{ candidatura.oferta.empresa }}</td>
+        <td>
+          <!-- El enlace envuelve el nombre, no la fila entera: una fila
+               clicable no se puede alcanzar con el teclado. -->
+          <a [routerLink]="['/candidatura', candidatura.id]">{{ candidatura.oferta.empresa }}</a>
+        </td>
         <td>{{ candidatura.oferta.puesto }}</td>
         <td>{{ candidatura.estado }}</td>
       </tr>

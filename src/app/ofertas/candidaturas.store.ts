@@ -38,6 +38,11 @@ export class CandidaturasStore {
     return recuento;
   });
 
+  /** La candidatura con ese id, o undefined si no esta cargada. */
+  buscarPorId(id: string): Candidatura | undefined {
+    return this.todas().find((una) => una.id === id);
+  }
+
   /** Pasar null quita el filtro y vuelve a enseñarlas todas. */
   filtrarPor(estado: EstadoDeCandidatura | null): void {
     this.filtro.set(estado);

@@ -15,13 +15,13 @@ class RepositorioFalso implements RepositorioDeCandidaturas {
 const UNA: Candidatura = {
   id: 'c1',
   estado: 'Pendiente',
-  oferta: { id: 'o1', empresa: 'Acme', puesto: 'Frontend' },
+  oferta: { id: 'o1', empresa: 'Acme', puesto: 'Frontend', idioma: 'es' },
 };
 
 const TRES: Candidatura[] = [
   UNA,
-  { id: 'c2', estado: 'Pendiente', oferta: { id: 'o2', empresa: 'Beta', puesto: 'Full-stack' } },
-  { id: 'c3', estado: 'Caducada', oferta: { id: 'o3', empresa: 'Ceta', puesto: 'Frontend' } },
+  { id: 'c2', estado: 'Pendiente', oferta: { id: 'o2', empresa: 'Beta', puesto: 'Full-stack', idioma: 'es' } },
+  { id: 'c3', estado: 'Caducada', oferta: { id: 'o3', empresa: 'Ceta', puesto: 'Frontend', idioma: 'es' } },
 ];
 
 function store(candidaturas?: Candidatura[]): CandidaturasStore {
@@ -78,6 +78,20 @@ describe('CandidaturasStore', () => {
     s.filtrarPor(null);
 
     expect(s.visibles()).toHaveLength(3);
+  });
+
+  it('encuentra una candidatura por su id, para poder abrirla', async () => {
+    const s = store(TRES);
+    await s.cargar();
+
+    expect(s.buscarPorId('c3')?.oferta.empresa).toBe('Ceta');
+  });
+
+  it('devuelve undefined si el id no existe, en vez de reventar', async () => {
+    const s = store(TRES);
+    await s.cargar();
+
+    expect(s.buscarPorId('no-existe')).toBeUndefined();
   });
 
   it('el recuento no cambia al filtrar: las ocultas siguen contando', async () => {

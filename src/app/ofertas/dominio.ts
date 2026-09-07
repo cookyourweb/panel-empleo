@@ -18,6 +18,12 @@ export const ESTADOS = [
 
 export type EstadoDeCandidatura = (typeof ESTADOS)[number];
 
+export const MODALIDADES = ['Remoto', 'Hibrido', 'Presencial', 'Sin confirmar'] as const;
+
+export type Modalidad = (typeof MODALIDADES)[number];
+
+export type Idioma = 'es' | 'en';
+
 /**
  * La oferta: lo que describe el puesto y no depende de quien lo mire.
  *
@@ -29,6 +35,19 @@ export interface Oferta {
   id: string;
   empresa: string;
   puesto: string;
+  /** En que idioma esta escrita. Decide en que idioma se genera el curriculum. */
+  idioma: Idioma;
+
+  /**
+   * Lo que sigue es opcional a proposito: la captacion no siempre lo encuentra.
+   * Un campo obligatorio que a veces falta obliga a inventarse un valor, y un
+   * valor inventado no se distingue de uno real.
+   */
+  descripcion?: string;
+  enlace?: string;
+  ubicacion?: string;
+  modalidad?: Modalidad;
+  salario?: string;
 }
 
 /** La candidatura: una persona sobre una oferta. Aqui vive el seguimiento. */
