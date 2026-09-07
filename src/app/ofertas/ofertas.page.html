@@ -9,7 +9,7 @@
     [attr.aria-pressed]="store.filtroActivo() === null"
     (click)="filtrarPor(null)"
   >
-    Todas <span class="recuento">{{ store.ofertas().length }}</span>
+    Todas <span class="recuento">{{ store.candidaturas().length }}</span>
   </button>
 
   @for (estado of estados; track estado) {
@@ -26,7 +26,7 @@
 
 <table>
   <caption class="visualmente-oculto">
-    Ofertas, {{ store.visibles().length }} de {{ store.ofertas().length }}
+    Ofertas, {{ store.visibles().length }} de {{ store.candidaturas().length }}
   </caption>
   <thead>
     <tr>
@@ -36,15 +36,15 @@
     </tr>
   </thead>
   <tbody>
-    @for (oferta of store.visibles(); track oferta.id) {
+    @for (candidatura of store.visibles(); track candidatura.id) {
       <tr>
-        <td>{{ oferta.empresa }}</td>
-        <td>{{ oferta.puesto }}</td>
-        <td>{{ oferta.estado }}</td>
+        <td>{{ candidatura.oferta.empresa }}</td>
+        <td>{{ candidatura.oferta.puesto }}</td>
+        <td>{{ candidatura.estado }}</td>
       </tr>
     } @empty {
       <tr>
-        <td colspan="3">No hay ofertas en este estado.</td>
+        <td colspan="3">No hay candidaturas en este estado.</td>
       </tr>
     }
   </tbody>

@@ -198,13 +198,17 @@ lenguaje: el navegador no ve jamás una credencial de terceros.
 
 ```
 src/app/ofertas/
-  oferta.ts                  el tipo de dominio y sus ocho estados
-  repositorio-de-ofertas.ts  de dónde salen las ofertas, como clase abstracta
-  ofertas.store.ts           el estado en signals y el recuento por estado
-tools/design-system/         fórmula de contraste y lector de tokens, en Node
+  dominio.ts                      Oferta, Candidatura y los ocho estados
+  repositorio-de-candidaturas.ts  de dónde salen, como clase abstracta
+  candidaturas.store.ts           el estado en signals y el recuento por estado
+tools/design-system/              fórmula de contraste y lector de tokens, en Node
 ```
 
-`RepositorioDeOfertas` es la costura de la que cuelga todo. La aplicación depende de esa
+Una `Oferta` describe un puesto y no lleva estado. El estado es de la `Candidatura`: una
+oferta puede existir sin que nadie se presente, y dos personas pueden presentarse a la
+misma y estar en puntos distintos.
+
+`RepositorioDeCandidaturas` es la costura de la que cuelga todo. La aplicación depende de esa
 clase abstracta y nunca de una fuente concreta. Eso es lo que permite que la demo
 pública funcione con datos de ejemplo incluidos en el propio front, sin backend vivo
 detrás, y que los tests corran sin red.

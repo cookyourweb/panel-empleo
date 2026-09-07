@@ -1,25 +1,25 @@
 import { Component, inject, OnInit } from '@angular/core';
 
-import { EstadoDeOferta, ESTADOS } from './oferta';
-import { OfertasStore } from './ofertas.store';
+import { EstadoDeCandidatura, ESTADOS } from './dominio';
+import { CandidaturasStore } from './candidaturas.store';
 import { RepositorioDemo } from './repositorio-demo';
-import { RepositorioDeOfertas } from './repositorio-de-ofertas';
+import { RepositorioDeCandidaturas } from './repositorio-de-candidaturas';
 
 @Component({
   selector: 'app-ofertas',
   templateUrl: './ofertas.page.html',
   styleUrl: './ofertas.page.css',
-  providers: [OfertasStore, { provide: RepositorioDeOfertas, useClass: RepositorioDemo }],
+  providers: [CandidaturasStore, { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo }],
 })
 export class OfertasPage implements OnInit {
-  protected readonly store = inject(OfertasStore);
+  protected readonly store = inject(CandidaturasStore);
   protected readonly estados = ESTADOS;
 
   ngOnInit(): void {
     void this.store.cargar();
   }
 
-  protected filtrarPor(estado: EstadoDeOferta | null): void {
+  protected filtrarPor(estado: EstadoDeCandidatura | null): void {
     this.store.filtrarPor(estado);
   }
 }

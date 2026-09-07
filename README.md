@@ -199,13 +199,17 @@ browser never sees a third party credential.
 
 ```
 src/app/ofertas/
-  oferta.ts                  the domain type and its eight states
-  repositorio-de-ofertas.ts  where jobs come from, as an abstract class
-  ofertas.store.ts           state in signals, plus the count per state
-tools/design-system/         contrast formula and token reader, run in Node
+  dominio.ts                      Oferta, Candidatura and the eight states
+  repositorio-de-candidaturas.ts  where they come from, as an abstract class
+  candidaturas.store.ts           state in signals, plus the count per state
+tools/design-system/              contrast formula and token reader, run in Node
 ```
 
-`RepositorioDeOfertas` is the seam the whole thing hangs from. The app depends on that
+An `Oferta` describes a job and carries no state. State belongs to the `Candidatura`: a
+job can exist with nobody applying to it, and two people can apply to the same one and be
+at different points.
+
+`RepositorioDeCandidaturas` is the seam the whole thing hangs from. The app depends on that
 abstract class, never on a concrete source. That is what lets the public demo run on
 sample data bundled with the front end, with no live backend behind it, and what lets
 the tests run without a network.
