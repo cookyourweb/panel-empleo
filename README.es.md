@@ -6,6 +6,10 @@ Busca las ofertas mejor pagadas en varios sitios y te avisa por correo: tú solo
 o rechazas. Si aceptas, prepara el currículum para esa oferta y, si te falta algo, no
 miente: te ayuda a aprenderlo.
 
+Eso no es un plan. Lleva en producción desde julio de 2026. Este repositorio es el
+panel que se construye encima: el sitio común que a una búsqueda de trabajo todavía le
+falta.
+
 ## El problema
 
 Preparar bien una candidatura lleva casi una hora: leer la oferta entera, decidir si
@@ -28,10 +32,124 @@ quién insistir, qué se contestó y qué está muerto.
 No es un problema de disciplina. Es un problema de tiempo: hace falta uno para cada
 sitio, y solo hay uno para todos.
 
+## El sistema que ya funciona
+
+Antes de que existiera este panel, el proceso que busca las ofertas, las filtra y
+escribe los documentos ya funcionaba de punta a punta. Lo que sigue describe lo que
+corre hoy, no lo que está previsto.
+
+### En producción desde julio de 2026
+
+Un workflow de n8n de unos cincuenta nodos se ejecuta cada mañana a las nueve. Busca,
+filtra, avisa y, en cuanto se aprueba una oferta, dispara la generación de los
+documentos. **Nada de esto es una simulación**: corre contra datos reales cada mañana.
+
+### Ofertas reales, aprendido a la fuerza
+
+La versión anterior del sistema le pedía las ofertas a un modelo de lenguaje. Devolvía
+ofertas que sonaban plausibles y no existían. **Ahora las ofertas vienen de tres
+fuentes reales por API** (Tecnoempleo, Adzuna y Remotive), filtradas por el stack de
+cada persona, y se descartan las que ya están guardadas antes de que lleguen a la
+bandeja de entrada.
+
+### LinkedIn entra por otro camino, y es a propósito
+
+LinkedIn no ofrece una API para esto, así que entra por otro camino: una tarea diaria
+en la que un agente con acceso al navegador abre la oferta y rellena la ficha. Donde
+hay API se usa. Donde no la hay, un agente hace el trabajo que haría una persona, una
+vez al día y con el alcance acotado, en lugar de montar un raspado permanente que es
+frágil y pone en riesgo la cuenta.
+
+La lista de fuentes crece añadiendo una fuente, no rehaciendo el sistema.
+
+### El texto lo escribe un modelo, la verdad no
+
+Generar el currículum y la carta vive en un servicio aparte, `cv-server`, desplegado
+en Render. Tiene sus propios guardrails contra la
+exageración, y **sus casos de evaluación se construyeron con fallos reales de
+producción**, no imaginados. El currículum que escribe está pensado para pasar los
+filtros automáticos de cribado que descartan por palabras y formato antes de que una
+persona lea nada. Se pierde gente válida por cómo está escrito el documento, no por lo
+que sabe.
+
+Un modelo no falla con una excepción: devuelve algo verosímil y peor.
+
+### Modelos distintos para tareas distintas
+
+El currículum lo escribe `claude-haiku-4-5`. La carta, más corta y más cercana a una
+voz humana, la escribe `claude-sonnet-4-6`.
+
+### El flujo, hoy
+
+Busca a las nueve de la mañana, filtra por perfil, avisa por correo. Desde ese mismo
+correo la persona aprueba, descarta o remite la oferta a la empresa: dos opciones, o
+un reenvío, desde la bandeja de entrada. **Aprobar es lo que dispara la generación**,
+venga del correo o, cuando el panel lo permita, de la mano de la persona sobre el
+tablero.
+
+### Los secretos no dependen de que nadie se acuerde
+
+Los webhooks de n8n ejecutan acciones con efectos fuera del sistema, así que sus rutas
+no pueden estar en un repositorio público. Un verificador corre en el hook de
+pre-commit y en integración continua, y falla en cuanto encuentra una. **Se escribió
+después de descubrir que las rutas llevaban meses publicadas.**
+
+Una regla escrita no es un control. Un control es código que falla.
+
+### Un workflow que se puede diferenciar
+
+Un export de n8n es un único JSON con cada nodo de código metido dentro de un string
+escapado: un cambio de tres líneas es invisible en `git diff`. Hay
+herramientas propias que lo parten en piezas legibles, lo rehacen y lo verifican con
+ocho reglas que salieron de averías reales.
+
+Este proyecto es la cara que se está construyendo para ese sistema.
+
+## Lo que añade el panel
+
+Hoy una sola candidatura vive repartida en cuatro sitios sin ningún enlace entre
+ellos: la oferta y su estado en Notion, el currículum en Google Drive, la preparación
+de la entrevista en una carpeta dentro de un repositorio git, y el seguimiento de lo
+que viene después en la cabeza de quien busca trabajo.
+
+**No hay un sitio común.** El panel está pensado para ser ese sitio.
+
+**Hay un dato medido que lo respalda.** Los campos que el sistema rellena solo al
+captar la oferta están presentes en más del ochenta por ciento de las filas. Los
+campos que hay que escribir a mano tras cada contacto (la fase del proceso, el formato
+de la prueba técnica, la fecha de la entrevista, el nombre de la persona con la que se
+habla) están por debajo del quince por ciento. No están vacíos porque no importen.
+Están vacíos porque rellenarlos obliga a salir del flujo y editar una fila a mano.
+
+Si registrar algo cuesta menos que no registrarlo, el tablero se mantiene solo. Ese es
+el criterio que guía lo que construye el panel a continuación.
+
+## Qué está construido y qué no
+
+El panel está en construcción y todavía no tiene pantallas de producto. Decir lo
+contrario dejaría este documento peor que no tenerlo.
+
+Construido hasta ahora:
+
+- Andamiaje de una aplicación Angular 22 con signals y componentes standalone.
+- Un design system heredado del sitio de la agencia, con sus pruebas de contraste.
+- El dominio (`Oferta`, `Candidatura`, los ocho estados) separado de cualquier fuente
+  concreta de datos.
+- Una pantalla: una lista con filtros, sobre datos de ejemplo incluidos en el
+  proyecto.
+
+Todavía sin construir:
+
+- Cualquier conexión con `cv-server` o con datos en vivo. La lista corre solo sobre
+  datos de ejemplo.
+- Las acciones de tablero descritas arriba: aprobar o descartar una oferta desde el
+  propio panel en vez de desde el correo.
+- Cualquier pantalla más allá de la lista: ni detalle de candidatura, ni vista de
+  preparación de entrevista.
+
 ## Qué hace
 
-Busca las ofertas mejor pagadas, en varios sitios a la vez, y avisa por correo. Tú
-solo aceptas o rechazas.
+Dos cosas lo hacen fiable: saber quién eres, y la regla que no se rompe.
 
 ### Primero, quién eres
 
@@ -46,22 +164,6 @@ De ese detalle depende lo demás. Sin el perfil real, «las ofertas que encajan 
 no significa nada, y la regla de no mentir sería una promesa de buena voluntad en vez
 de una consecuencia de cómo está construido el sistema. No hay de dónde sacar lo que
 no existe.
-
-### Después, el ciclo
-
-1. **Busca por sueldo, en varios sitios a la vez.** El dinero es un criterio de
-   búsqueda, no un dato que se mira después de todo lo demás.
-2. **Avisa por correo.** No hace falta entrar a ningún sitio a comprobar si ha
-   llegado algo nuevo.
-3. **Aceptas o rechazas.** Esa es toda la decisión que se pide: dos opciones, un
-   gesto.
-4. **Si aceptas, genera el currículum para esa oferta concreta**, pensado para pasar
-   los filtros automáticos de cribado que descartan por palabras y formato antes de
-   que una persona lea nada. Se pierde gente válida por cómo está escrito el
-   documento, no por lo que sabe.
-5. **Y la pieza que cambia todo lo demás: no miente para encajar.** Si a la persona
-   le falta algo que la oferta pide, el sistema lo dice y la orienta para
-   aprenderlo, en vez de inflar el currículum como hace el resto del sector.
 
 ### La regla que no se rompe: sin mentir
 
@@ -87,31 +189,6 @@ Escribe que ha trabajado en dominios donde un error tiene consecuencias reales, 
 es cierto y sí se defiende. Reposicionar es legítimo. Inventar no.
 
 Adaptar es elegir. Mentir es añadir.
-
-### De dónde salen las ofertas
-
-Tecnoempleo, Adzuna y Remotive entran por workflows programados contra sus API.
-LinkedIn no ofrece una API para esto, así que entra por otro camino: una tarea diaria
-en la que un agente con acceso al navegador abre la oferta y rellena la ficha.
-
-Esa asimetría es deliberada. Donde hay una API se usa; donde no la hay, un agente hace
-el trabajo que haría una persona, una vez al día y con el alcance acotado, en lugar de
-montar un raspado permanente que es frágil y pone en riesgo la cuenta.
-
-**La lista de fuentes crece.** Añadir un portal es añadir un origen, no rehacer el
-sistema.
-
-### El criterio de diseño
-
-Uno, y se aplica a todo: **si registrar cuesta menos que no registrar, el tablero se
-mantiene solo.**
-
-Detrás hay un sistema que ya funciona: la captación descrita arriba y un servicio en
-FastAPI que genera los documentos adaptados con los guardrails puestos. Este proyecto
-es su cara.
-
-**Estado: en construcción.** Hay andamiaje, design system y pruebas. Todavía no hay
-pantallas.
 
 ## Decisiones
 
@@ -186,7 +263,7 @@ vive.
 ```
 n8n  ->  Notion
                 \
-                 '->  cv-server (FastAPI)  <-  este panel
+                 '->  cv-server  <-  este panel
                           |
                           '->  Postgres, Drive, modelos
 ```

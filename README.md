@@ -6,6 +6,10 @@ It finds the best paying jobs across several sources and emails them to you. You
 accept or decline. If you accept, it prepares your CV for that specific role, and if
 something is missing, it does not lie: it helps you learn it.
 
+That is not a plan. It has been running in production since July 2026. This
+repository is the panel being built on top of it: the shared place a job search is
+still missing.
+
 ## The problem
 
 Preparing one application properly takes close to an hour: reading the posting, deciding
@@ -28,10 +32,119 @@ who to follow up with, who replied, and what is dead.
 This is not a discipline problem. It is a time problem: you need one hour per source,
 and there is one hour for all of them.
 
+## The system already running
+
+Before this panel existed, the pipeline that finds jobs, filters them and writes the
+documents was already working end to end. What follows describes what runs today, not
+what is planned.
+
+### In production since July 2026
+
+A n8n workflow of about fifty nodes runs every morning at nine. It searches, filters,
+notifies and, once a job is approved, triggers the document generation. **None of this
+is simulated**: it runs against real data every morning.
+
+### Real postings, learned the hard way
+
+The previous version of the system asked a language model for job postings. It
+answered with postings that sounded plausible and did not exist. **Postings now come
+from three real sources by API** (Tecnoempleo, Adzuna, Remotive), filtered by each
+person's stack, with anything already saved discarded before it reaches the inbox.
+
+### LinkedIn takes a different path, on purpose
+
+LinkedIn offers no API for this, so it comes in another way: a daily task where an
+agent with browser access opens the posting and fills in the record. Where there is an
+API, it gets used. Where there is not, an agent does the work a person would do, once a
+day and with a bounded scope, instead of running a permanent scraper that is fragile
+and puts the account at risk.
+
+The list of sources grows by adding a source, not by rebuilding the system.
+
+### The text is written by a model, the truth is not
+
+Generating the CV and the cover letter lives in a separate service, `cv-server`,
+deployed on Render. It carries its own guardrails against
+overstatement, and **its evaluation cases were built from real production failures**,
+not imagined ones. The CV it writes is built to get through the automated screening
+filters that reject on keywords and formatting before a human ever reads it. Good
+candidates are lost over how a document is written, not over what they know.
+
+A model does not fail with an exception: it returns something plausible and worse.
+
+### Different models for different tasks
+
+The CV is written by `claude-haiku-4-5`. The cover letter, shorter and closer to a
+human voice, is written by `claude-sonnet-4-6`.
+
+### The flow, today
+
+Search at nine in the morning, filter by profile, notify by email. From that same
+email the person approves, discards, or forwards the posting to the company: two
+options, or a forward, from the inbox. **Approving is what triggers generation**,
+whether it comes from the email or, once the panel supports it, from the person's own
+hand on the board.
+
+### Secrets do not depend on anyone remembering
+
+The n8n webhooks run actions with effects outside the system, so their routes cannot
+sit in a public repository. A checker runs on the pre-commit hook and in continuous
+integration, and it fails the moment it finds one. **It was written after discovering
+the routes had been public for months.**
+
+A written rule is not a control. A control is code that fails.
+
+### A workflow you can diff
+
+An n8n export is a single JSON file with every code node packed
+inside an escaped string: a change of three lines is invisible in `git diff`. There
+are tools built for this that split it into readable pieces, rebuild it, and check it
+against eight rules drawn from real incidents.
+
+This project is the face being built for that system.
+
+## What the panel adds
+
+Today a single application lives split across four places with no link between them:
+the posting and its status in Notion, the CV in Google Drive, the interview prep in a
+folder inside a git repository, and the tracking of what comes next in the head of
+whoever is looking for the job.
+
+**There is no shared place.** The panel is meant to be that place.
+
+**One measurement backs this up.** The fields the system fills in automatically when
+it captures a posting are present in more than eighty percent of rows. The fields that
+have to be typed by hand after each contact (the stage of the process, the format of
+the technical test, the interview date, the name of the person on the other side) sit
+below fifteen percent. They are not empty because they do not matter. They are empty
+because filling them means leaving the flow to edit a row by hand.
+
+If recording something costs less than not recording it, the board maintains itself.
+That is the principle guiding what the panel builds next.
+
+## What is built, and what is not
+
+The panel is under construction and has no product screens yet. Saying otherwise would
+make this document worse than having none at all.
+
+Built so far:
+
+- Scaffolding for an Angular 22 application with signals and standalone components.
+- A design system carried over from the agency's own site, with its contrast tests.
+- The domain (`Oferta`, `Candidatura`, the eight states) separated from any concrete
+  data source.
+- One screen: a list with filters, running on bundled sample data.
+
+Not built yet:
+
+- Any connection to `cv-server` or to live data. The list runs on sample data alone.
+- The board actions described above: approving or discarding a job from the panel
+  itself instead of from the email.
+- Any screen beyond the list: no candidature detail view, no interview prep view.
+
 ## What it does
 
-It searches for the best paying roles across several sources at once and sends them by
-email. You just accept or decline.
+Two things make it trustworthy: knowing who you are, and the rule that never bends.
 
 ### First, who you are
 
@@ -46,22 +159,6 @@ Everything else depends on that detail. Without a real profile, «the jobs that 
 means nothing, and the no-lying rule would be a statement of good intentions rather than
 a consequence of how the system is built. There is nowhere to pull from what does not
 exist.
-
-### Then, the loop
-
-1. **It searches by salary, across several sources at once.** Pay is a search criterion,
-   not something you check after everything else.
-2. **It notifies by email.** No need to log into anything to see whether something new
-   arrived.
-3. **You accept or decline.** That is the whole decision being asked of you: two
-   options, one gesture.
-4. **If you accept, it generates the CV for that specific role**, built to get through
-   the automated screening filters that reject on keywords and formatting before a human
-   reads anything. Good candidates are lost over how the document is written, not over
-   what they know.
-5. **And the part that changes everything else: it does not lie to make you fit.** If
-   something the posting asks for is missing, the system says so and points you towards
-   learning it, instead of padding the CV the way the rest of the industry does.
 
 ### The rule that does not bend: no lying
 
@@ -87,31 +184,6 @@ writes that they have worked in domains where a mistake has real consequences, w
 true and can be defended. Repositioning is legitimate. Inventing is not.
 
 Tailoring is choosing. Lying is adding.
-
-### Where the jobs come from
-
-Tecnoempleo, Adzuna and Remotive come in through scheduled workflows against their APIs.
-LinkedIn offers no API for this, so it arrives another way: a daily task where an agent
-with browser access opens the posting and fills in the record.
-
-That asymmetry is deliberate. Where there is an API, use it. Where there is not, an
-agent does the work a person would do, once a day and with a bounded scope, rather than
-running a permanent scraper that is fragile and puts the account at risk.
-
-**The list of sources grows.** Adding a job board means adding a source, not rebuilding
-the system.
-
-### The design principle
-
-One, and it applies to everything: **if recording something costs less than not
-recording it, the board maintains itself.**
-
-There is a working system behind this: the ingestion described above, and a FastAPI
-service that generates the tailored documents with its guardrails in place. This project
-is its face.
-
-**Status: under construction.** Scaffolding, design system and tests are in place. There
-are no screens yet.
 
 ## Decisions
 
@@ -187,7 +259,7 @@ filesystem code for the browser, which is not where it lives.
 ```
 n8n  ->  Notion
                 \
-                 '->  cv-server (FastAPI)  <-  this panel
+                 '->  cv-server  <-  this panel
                           |
                           '->  Postgres, Drive, models
 ```
