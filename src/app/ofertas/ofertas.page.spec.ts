@@ -1,7 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
+import { EnlacesDeAccion } from './acciones';
 import { CandidaturasStore } from './candidaturas.store';
+import { FuenteDeAcciones, FuenteDeAccionesDemo } from './fuente-de-acciones';
 import { OfertasPage } from './ofertas.page';
 import { RepositorioDemo } from './repositorio-demo';
 import { RepositorioDeCandidaturas } from './repositorio-de-candidaturas';
@@ -16,6 +18,7 @@ describe('OfertasPage', () => {
         provideRouter([]),
         CandidaturasStore,
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
+        { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
       ],
     }).compileComponents();
   });
@@ -38,9 +41,9 @@ describe('OfertasPage', () => {
 
     const filtros = [...pagina.querySelectorAll('[data-filtro]')];
 
-    expect(filtros.length).toBe(9);
+    expect(filtros.length).toBe(10);
     expect(filtros[0].textContent).toContain('Todas');
-    expect(filtros[0].textContent).toContain('12');
+    expect(filtros[0].textContent).toContain('13');
   });
 
   it('cada fila lleva a su candidatura', async () => {
@@ -140,6 +143,32 @@ describe('OfertasPage', () => {
     expect(cabecera.getAttribute('aria-sort')).toBe('ascending');
     const primeras = [...pagina.querySelectorAll('tbody tr td:first-child')].map((td) => td.textContent?.trim());
     expect(primeras[0]).toBe('Arbórea');
+  });
+
+  it('en la demo publica no hay botones de accion', async () => {
+    const pagina = await pintar();
+
+    expect(pagina.querySelector('[data-accion]')).toBeNull();
+  });
+
+  it('con enlaces, una pendiente se puede aprobar o descartar desde la tabla', async () => {
+    const enlaces: EnlacesDeAccion = {
+      aprobar: 'https://n8n.test/webhook/A?id=',
+      descartar: 'https://n8n.test/webhook/D?id=',
+      enviarEmpresa: 'https://n8n.test/webhook/E?id=',
+    };
+    TestBed.overrideProvider(FuenteDeAcciones, { useValue: { enlaces: async () => enlaces } });
+    const pagina = await pintar();
+
+    const fila = [...pagina.querySelectorAll('tbody tr')].find((tr) => tr.textContent?.includes('Northwind Labs'))!;
+    const aprobar = fila.querySelector<HTMLAnchorElement>('[data-accion="aprobar"]');
+
+    expect(aprobar?.getAttribute('href')).toBe('https://n8n.test/webhook/A?id=c1');
+    expect(aprobar?.getAttribute('target')).toBe('_blank');
+    expect(fila.querySelector('[data-accion="descartar"]')).not.toBeNull();
+
+    const conCv = [...pagina.querySelectorAll('tbody tr')].find((tr) => tr.textContent?.includes('Lumen Grid'))!;
+    expect(conCv.querySelector('[data-accion="enviarEmpresa"]')?.textContent).toContain('Enviar a empresa');
   });
 });
 

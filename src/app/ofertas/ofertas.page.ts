@@ -1,8 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { Accion, accionesPara, EnlacesDeAccion } from './acciones';
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
 import { CandidaturasStore, ColumnaOrdenable } from './candidaturas.store';
+import { FuenteDeAcciones } from './fuente-de-acciones';
 
 /**
  * Las columnas ordenables, en el orden y con el ancho de la maqueta aprobada.
@@ -26,6 +28,9 @@ const COLUMNAS: { clave: ColumnaOrdenable; titulo: string; ancho: number }[] = [
 /** Las columnas de enlaces no se ordenan: no hay un orden util para una URL. */
 const ANCHO_ENLACE = 80;
 
+/** Cabe "Aprobar" y "Descartar" en una linea. */
+const ANCHO_ACCIONES = 210;
+
 /** Los estados que cierran la candidatura se pintan huecos: ya no piden nada. */
 const CERRADOS: readonly EstadoDeCandidatura[] = ['Rechazado', 'Descartado', 'Caducada'];
 
@@ -37,13 +42,26 @@ const CERRADOS: readonly EstadoDeCandidatura[] = ['Rechazado', 'Descartado', 'Ca
 })
 export class OfertasPage implements OnInit {
   protected readonly store = inject(CandidaturasStore);
+  private readonly fuenteDeAcciones = inject(FuenteDeAcciones);
+  /** null mientras no hay enlaces, y siempre en la demo publica. */
+  protected readonly enlaces = signal<EnlacesDeAccion | null>(null);
+  protected readonly anchoAcciones = ANCHO_ACCIONES;
   protected readonly estados = ESTADOS;
   protected readonly columnas = COLUMNAS;
   protected readonly anchoEnlace = ANCHO_ENLACE;
-  protected readonly anchoTotal = COLUMNAS.reduce((suma, c) => suma + c.ancho, 0) + 2 * ANCHO_ENLACE;
+  private readonly anchoBase = COLUMNAS.reduce((suma, c) => suma + c.ancho, 0) + 2 * ANCHO_ENLACE;
 
   ngOnInit(): void {
     void this.store.cargar();
+    void this.fuenteDeAcciones.enlaces().then((enlaces) => this.enlaces.set(enlaces));
+  }
+
+  protected anchoTotal(): number {
+    return this.anchoBase + (this.enlaces() ? ANCHO_ACCIONES : 0);
+  }
+
+  protected acciones(una: Candidatura): Accion[] {
+    return accionesPara(una, this.enlaces());
   }
 
   protected filtrarPor(estado: EstadoDeCandidatura | null): void {

@@ -49,13 +49,16 @@
      horizontal y vertical dentro de su caja, con la cabecera y la columna de
      empresa fijas para no perder la referencia de que fila se esta leyendo. -->
 <div class="caja-tabla" tabindex="0" role="region" aria-label="Tabla de ofertas, desplazable">
-  <table [style.width.px]="anchoTotal">
+  <table [style.width.px]="anchoTotal()">
     <caption class="visualmente-oculto">
       Ofertas, {{ store.visibles().length }} de {{ store.candidaturas().length }}
     </caption>
     <colgroup>
       @for (columna of columnas; track columna.clave) {
         <col [style.width.px]="columna.ancho" />
+        @if (columna.clave === 'estado' && enlaces()) {
+          <col [style.width.px]="anchoAcciones" />
+        }
       }
       <col [style.width.px]="anchoEnlace" />
       <col [style.width.px]="anchoEnlace" />
@@ -81,6 +84,9 @@
               </span>
             </button>
           </th>
+          @if (columna.clave === 'estado' && enlaces()) {
+            <th scope="col" class="sin-orden">Acción</th>
+          }
         }
         <th scope="col" class="sin-orden">Oferta</th>
         <th scope="col" class="sin-orden">CV</th>
@@ -107,6 +113,23 @@
                     >{{ candidatura.estado }}</span
                   >
                 </td>
+                @if (enlaces()) {
+                  <td class="acciones">
+                    <!-- Abre el mismo enlace del correo diario, en otra pestaña:
+                         ahi n8n confirma que la accion se hizo. -->
+                    @for (accion of acciones(candidatura); track accion.tipo) {
+                      <a
+                        class="accion"
+                        [attr.data-accion]="accion.tipo"
+                        [href]="accion.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        [attr.aria-label]="accion.etiqueta + ' la oferta de ' + candidatura.oferta.empresa"
+                        >{{ accion.etiqueta }}</a
+                      >
+                    }
+                  </td>
+                }
               }
               @default {
                 <td [attr.title]="celda(candidatura, columna.clave) || null">{{ celda(candidatura, columna.clave) }}</td>
@@ -138,7 +161,7 @@
         </tr>
       } @empty {
         <tr>
-          <td class="vacio" [attr.colspan]="columnas.length + 2">
+          <td class="vacio" [attr.colspan]="columnas.length + (enlaces() ? 3 : 2)">
             @if (store.busqueda().trim()) {
               Ninguna oferta coincide con la búsqueda.
             } @else {

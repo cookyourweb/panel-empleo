@@ -226,6 +226,42 @@ td a:focus-visible {
   text-decoration: underline;
 }
 
+/* Acciones: parecen botones porque lo son para quien las usa, aunque sean
+   enlaces (abren la misma URL que el correo). */
+td.acciones {
+  overflow: visible;
+}
+
+.accion {
+  display: inline-flex;
+  align-items: center;
+  height: 1.5rem;
+  padding: 0 0.6rem;
+  margin-right: 0.35rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+td .accion[data-accion='aprobar'],
+td .accion[data-accion='enviarEmpresa'] {
+  background: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+td .accion[data-accion='descartar'] {
+  color: hsl(var(--foreground));
+}
+
+td .accion:hover,
+td .accion:focus-visible {
+  text-decoration: none;
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 1px;
+}
+
 td.vacio {
   padding: 1.5rem 0.75rem;
   text-align: left;
@@ -274,6 +310,12 @@ td.vacio {
   --tono-texto: var(--color-verde-200);
 }
 
+/* Aprobado: invertido y lleno, porque es el que pide accion ya (enviarla). */
+.estado[data-estado='Aprobado'] {
+  --tono-fondo: var(--color-verde-200);
+  --tono-texto: var(--color-verde-900);
+}
+
 /* Contactada directamente: la empresa vino a buscarla. Mismo tono que
    Enviado, pero con borde, para no confundirlos sin depender del color. */
 .estado[data-estado='Contactada directamente'] {
@@ -307,6 +349,11 @@ td.vacio {
 :host-context(.light) .estado[data-estado='En proceso'] {
   --tono-fondo: var(--color-magenta-50);
   --tono-texto: var(--color-magenta-800);
+}
+
+:host-context(.light) .estado[data-estado='Aprobado'] {
+  --tono-fondo: var(--color-verde-700);
+  --tono-texto: var(--color-verde-50);
 }
 
 :host-context(.light) .estado[data-estado='Entrevista'] {
