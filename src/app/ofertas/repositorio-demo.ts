@@ -33,6 +33,7 @@ const DEMO: Candidatura[] = [
     },
   },
   { id: 'c2', estado: 'Pendiente', oferta: { id: 'o2', empresa: 'Marisma', puesto: 'Frontend Engineer (Angular)', idioma: 'es' } },
+  { id: 'c13', estado: 'Aprobado', cv: 'https://ejemplo.test/cv/lumen-grid', oferta: { id: 'o13', empresa: 'Lumen Grid', puesto: 'Senior Frontend (Vue)', idioma: 'en', modalidad: 'Remoto' } },
   { id: 'c3', estado: 'En proceso', viaEnvio: 'Portal empresa', fechaEnvio: '2026-09-22', oferta: { id: 'o3', empresa: 'Cobalt Rivers', puesto: 'Full-stack Engineer', idioma: 'es' } },
   { id: 'c4', estado: 'En proceso', viaEnvio: 'LinkedIn', fechaEnvio: '2026-09-25', oferta: { id: 'o4', empresa: 'Fábrica de Ideas', puesto: 'Tech Lead Frontend', idioma: 'es' } },
   { id: 'c5', estado: 'Enviado', viaEnvio: 'Email directo', fechaEnvio: '2026-10-01', oferta: { id: 'o5', empresa: 'Quintana Systems', puesto: 'Senior Web Engineer', idioma: 'es' } },

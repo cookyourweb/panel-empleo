@@ -31,7 +31,6 @@ export interface RegistroLocal {
  */
 const EQUIVALENCIAS: Record<string, EstadoDeCandidatura> = {
   'Enviado a empresa': 'Enviado',
-  Aprobado: 'Pendiente',
   'Oferta recibida': 'Entrevista',
 };
 

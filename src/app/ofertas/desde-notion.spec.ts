@@ -11,8 +11,8 @@ describe('estadoDesdeNotion', () => {
     expect(estadoDesdeNotion('Enviado a empresa')).toBe('Enviado');
   });
 
-  it('cuenta "Aprobado" como Pendiente: el CV esta hecho pero aun no ha salido', () => {
-    expect(estadoDesdeNotion('Aprobado')).toBe('Pendiente');
+  it('"Aprobado" es un estado propio: el CV esta hecho pero aun no ha salido', () => {
+    expect(estadoDesdeNotion('Aprobado')).toBe('Aprobado');
   });
 
   it('cuenta "Oferta recibida" como Entrevista, el estado mas avanzado del dominio', () => {

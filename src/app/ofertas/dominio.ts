@@ -1,12 +1,16 @@
 /**
  * Los estados por los que pasa una candidatura, en el orden en que se avanza.
  *
+ * Aprobado es un paso real y no un detalle de Pendiente: el CV y la carta ya
+ * estan hechos y solo falta enviarlos. Cada uno pide una accion distinta.
+ *
  * Descartado y Rechazado no son lo mismo: el primero lo decide quien busca, el
  * segundo la empresa. Fundirlos perderia el dato de cuantas puertas se cierran
  * fuera y cuantas se cierran dentro.
  */
 export const ESTADOS = [
   'Pendiente',
+  'Aprobado',
   'En proceso',
   'Enviado',
   'Entrevista',

@@ -1,3 +1,4 @@
+import { ESTADOS } from './dominio';
 import { RepositorioDemo } from './repositorio-demo';
 
 describe('RepositorioDemo', () => {
@@ -7,12 +8,12 @@ describe('RepositorioDemo', () => {
     expect(candidaturas.length).toBeGreaterThan(0);
   });
 
-  it('cubre los ocho estados, para que la demo enseñe el filtro entero', async () => {
+  it('cubre todos los estados, para que la demo enseñe el filtro entero', async () => {
     const candidaturas = await new RepositorioDemo().listar();
 
     const estados = new Set(candidaturas.map((una) => una.estado));
 
-    expect(estados.size).toBe(8);
+    expect(estados.size).toBe(ESTADOS.length);
   });
 
   it('no lleva datos de ninguna persona real', async () => {
