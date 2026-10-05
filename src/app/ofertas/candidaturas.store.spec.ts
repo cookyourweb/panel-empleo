@@ -103,3 +103,161 @@ describe('CandidaturasStore', () => {
     expect(s.recuentoPorEstado()).toEqual({ Pendiente: 2, Caducada: 1 });
   });
 });
+
+describe('CandidaturasStore · buscar', () => {
+  const VARIAS: Candidatura[] = [
+    { id: 'a', estado: 'Pendiente', oferta: { id: 'a', empresa: 'Heymondo', puesto: 'Senior Frontend', idioma: 'en', ubicacion: 'España' } },
+    { id: 'b', estado: 'Enviado', oferta: { id: 'b', empresa: 'Factorial', puesto: 'Product Engineer', idioma: 'en', ubicacion: 'Madrid' } },
+    { id: 'c', estado: 'Pendiente', oferta: { id: 'c', empresa: 'Axpo', puesto: 'AI Engineer', idioma: 'en', ubicacion: 'Málaga' } },
+  ];
+
+  it('encuentra por empresa, puesto o ubicacion', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.buscar('factorial');
+    expect(s.visibles().map((u) => u.id)).toEqual(['b']);
+
+    s.buscar('frontend');
+    expect(s.visibles().map((u) => u.id)).toEqual(['a']);
+
+    s.buscar('madrid');
+    expect(s.visibles().map((u) => u.id)).toEqual(['b']);
+  });
+
+  it('no distingue mayusculas ni tildes', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.buscar('MALAGA');
+    expect(s.visibles().map((u) => u.id)).toEqual(['c']);
+  });
+
+  it('se combina con el filtro de estado', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.filtrarPor('Pendiente');
+    s.buscar('engineer');
+    expect(s.visibles().map((u) => u.id)).toEqual(['c']);
+  });
+
+  it('una busqueda vacia o de espacios las deja ver todas', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.buscar('   ');
+    expect(s.visibles()).toHaveLength(3);
+  });
+
+  it('buscar no cambia los recuentos: siguen contando todas', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.buscar('axpo');
+    expect(s.recuentoPorEstado()).toEqual({ Pendiente: 2, Enviado: 1 });
+  });
+});
+
+describe('CandidaturasStore · ordenar', () => {
+  const VARIAS: Candidatura[] = [
+    { id: 'b', estado: 'Enviado', oferta: { id: 'b', empresa: 'beta', puesto: 'Z', idioma: 'es' } },
+    { id: 'a', estado: 'Pendiente', oferta: { id: 'a', empresa: 'Álamo', puesto: 'Y', idioma: 'es' } },
+    { id: 'c', estado: 'Caducada', oferta: { id: 'c', empresa: 'Ceta', puesto: 'X', idioma: 'es' } },
+  ];
+
+  it('sin orden se respeta el de la fuente', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    expect(s.orden()).toBeNull();
+    expect(s.visibles().map((u) => u.id)).toEqual(['b', 'a', 'c']);
+  });
+
+  it('la primera vez ordena ascendente, en orden alfabetico espanol', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.ordenarPor('empresa');
+    expect(s.orden()).toEqual({ columna: 'empresa', sentido: 'asc' });
+    expect(s.visibles().map((u) => u.id)).toEqual(['a', 'b', 'c']);
+  });
+
+  it('la segunda vez descendente y la tercera quita el orden', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.ordenarPor('puesto');
+    s.ordenarPor('puesto');
+    expect(s.visibles().map((u) => u.id)).toEqual(['b', 'a', 'c']);
+    expect(s.orden()?.sentido).toBe('desc');
+
+    s.ordenarPor('puesto');
+    expect(s.orden()).toBeNull();
+  });
+
+  it('cambiar de columna empieza de nuevo en ascendente', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.ordenarPor('empresa');
+    s.ordenarPor('estado');
+    expect(s.orden()).toEqual({ columna: 'estado', sentido: 'asc' });
+  });
+
+  it('el estado se ordena por el avance del proceso, no por el alfabeto', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.ordenarPor('estado');
+    expect(s.visibles().map((u) => u.estado)).toEqual(['Pendiente', 'Enviado', 'Caducada']);
+  });
+
+  it('los huecos van siempre al final, en los dos sentidos', async () => {
+    const conHueco: Candidatura[] = [
+      { id: 'x', estado: 'Pendiente', oferta: { id: 'x', empresa: 'X', puesto: 'p', idioma: 'es' } },
+      { id: 'y', estado: 'Pendiente', oferta: { id: 'y', empresa: 'Y', puesto: 'p', idioma: 'es', salario: '50k' } },
+    ];
+    const s = store(conHueco);
+    await s.cargar();
+
+    s.ordenarPor('salario');
+    expect(s.visibles().map((u) => u.id)).toEqual(['y', 'x']);
+    s.ordenarPor('salario');
+    expect(s.visibles().map((u) => u.id)).toEqual(['y', 'x']);
+  });
+});
+
+describe('CandidaturasStore · ordenar por seguimiento', () => {
+  const VARIAS: Candidatura[] = [
+    { id: 'a', estado: 'Enviado', fechaEnvio: '2026-09-14', viaEnvio: 'LinkedIn', oferta: { id: 'a', empresa: 'A', puesto: 'p', idioma: 'es' } },
+    { id: 'b', estado: 'Enviado', fechaEnvio: '2026-10-05', viaEnvio: 'Portal empresa', oferta: { id: 'b', empresa: 'B', puesto: 'p', idioma: 'es', fechaPublicacion: '2026-10-01' } },
+    { id: 'c', estado: 'Pendiente', oferta: { id: 'c', empresa: 'C', puesto: 'p', idioma: 'es', fechaPublicacion: '2026-09-20' } },
+  ];
+
+  it('ordena por fecha de envio, con las que no tienen fecha al final', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.ordenarPor('fechaEnvio');
+    s.ordenarPor('fechaEnvio');
+    expect(s.visibles().map((u) => u.id)).toEqual(['b', 'a', 'c']);
+  });
+
+  it('ordena por fecha de publicacion, que es de la oferta', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.ordenarPor('fechaPublicacion');
+    expect(s.visibles().map((u) => u.id)).toEqual(['c', 'b', 'a']);
+  });
+
+  it('ordena por via de envio', async () => {
+    const s = store(VARIAS);
+    await s.cargar();
+
+    s.ordenarPor('viaEnvio');
+    expect(s.visibles().map((u) => u.id)).toEqual(['a', 'b', 'c']);
+  });
+});
+
