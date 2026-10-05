@@ -3,12 +3,12 @@ import { RouterLink } from '@angular/router';
 
 import { accionesPara, EnlacesDeAccion } from './acciones';
 import { CandidaturasStore } from './candidaturas.store';
-import { fechaEspanola } from './fecha';
+import { FichaCandidatura } from './ficha-candidatura';
 import { FuenteDeAcciones } from './fuente-de-acciones';
 
 @Component({
   selector: 'app-detalle',
-  imports: [RouterLink],
+  imports: [RouterLink, FichaCandidatura],
   templateUrl: './detalle.page.html',
   styleUrl: './detalle.page.css',
 })
@@ -27,8 +27,6 @@ export class DetallePage implements OnInit {
     const una = this.candidatura();
     return una ? accionesPara(una, this.enlaces()) : [];
   });
-
-  protected readonly fecha = fechaEspanola;
 
   ngOnInit(): void {
     // El store se comparte con la lista: si ya cargo, esto no vuelve a pedir nada.

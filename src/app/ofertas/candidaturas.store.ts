@@ -98,6 +98,20 @@ export class CandidaturasStore {
     return this.todas().find((una) => una.id === id);
   }
 
+  /**
+   * La de encima y la de debajo entre las que se estan viendo, para recorrerlas
+   * desde la ficha sin volver a la tabla. En los extremos no da la vuelta: saltar
+   * de la ultima a la primera despista sobre donde se esta.
+   */
+  vecinosDe(id: string): { anterior?: string; siguiente?: string } {
+    const lista = this.visibles();
+    const posicion = lista.findIndex((una) => una.id === id);
+    if (posicion === -1) {
+      return { anterior: undefined, siguiente: undefined };
+    }
+    return { anterior: lista[posicion - 1]?.id, siguiente: lista[posicion + 1]?.id };
+  }
+
   /** Pasar null quita el filtro y vuelve a enseñarlas todas. */
   filtrarPor(estado: EstadoDeCandidatura | null): void {
     this.filtro.set(estado);

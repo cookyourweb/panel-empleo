@@ -46,15 +46,6 @@ describe('OfertasPage', () => {
     expect(filtros[0].textContent).toContain('13');
   });
 
-  it('cada fila lleva a su candidatura', async () => {
-    const pagina = await pintar();
-
-    const primer = pagina.querySelector<HTMLAnchorElement>('tbody a[href^="/candidatura/"]');
-
-    expect(primer?.getAttribute('href')).toBe('/candidatura/c1');
-    expect(primer?.textContent).toContain('Northwind Labs');
-  });
-
   it('al elegir un estado solo quedan sus ofertas', async () => {
     const fixture = TestBed.createComponent(OfertasPage);
     await fixture.whenStable();

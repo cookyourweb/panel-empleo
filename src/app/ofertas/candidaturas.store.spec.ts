@@ -259,5 +259,39 @@ describe('CandidaturasStore · ordenar por seguimiento', () => {
     s.ordenarPor('viaEnvio');
     expect(s.visibles().map((u) => u.id)).toEqual(['a', 'b', 'c']);
   });
-});
 
+  describe('vecinosDe', () => {
+    it('da la anterior y la siguiente de las que se estan viendo', async () => {
+      const s = store(TRES);
+      await s.cargar();
+
+      expect(s.vecinosDe('c2')).toEqual({ anterior: 'c1', siguiente: 'c3' });
+    });
+
+    it('en los extremos no hay vecina, en vez de dar la vuelta', async () => {
+      const s = store(TRES);
+      await s.cargar();
+
+      expect(s.vecinosDe('c1')).toEqual({ anterior: undefined, siguiente: 'c2' });
+      expect(s.vecinosDe('c3')).toEqual({ anterior: 'c2', siguiente: undefined });
+    });
+
+    it('sigue el filtro y el orden de la tabla', async () => {
+      const s = store(TRES);
+      await s.cargar();
+      s.filtrarPor('Pendiente');
+      s.ordenarPor('empresa');
+      s.ordenarPor('empresa');
+
+      expect(s.vecinosDe('c2')).toEqual({ anterior: undefined, siguiente: 'c1' });
+    });
+
+    it('una que el filtro ha dejado fuera no tiene vecinas', async () => {
+      const s = store(TRES);
+      await s.cargar();
+      s.filtrarPor('Caducada');
+
+      expect(s.vecinosDe('c1')).toEqual({ anterior: undefined, siguiente: undefined });
+    });
+  });
+});

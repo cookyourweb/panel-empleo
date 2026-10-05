@@ -94,14 +94,15 @@
     </thead>
     <tbody>
       @for (candidatura of store.visibles(); track candidatura.id) {
-        <tr>
+        <tr [class.abierta]="candidatura.id === ficha()" [attr.aria-current]="candidatura.id === ficha() || null">
           @for (columna of columnas; track columna.clave) {
             @switch (columna.clave) {
               @case ('empresa') {
                 <td class="empresa" [attr.title]="candidatura.oferta.empresa">
                   <!-- El enlace envuelve el nombre, no la fila entera: una fila
-                       clicable no se puede alcanzar con el teclado. -->
-                  <a [routerLink]="['/candidatura', candidatura.id]">{{ candidatura.oferta.empresa }}</a>
+                       clicable no se puede alcanzar con el teclado. Abre la
+                       ficha al lado, y la tabla sigue con su filtro y su orden. -->
+                  <a [routerLink]="[]" [queryParams]="{ ficha: candidatura.id }">{{ candidatura.oferta.empresa }}</a>
                 </td>
               }
               @case ('estado') {
@@ -173,3 +174,21 @@
     </tbody>
   </table>
 </div>
+
+<!-- La ficha al lado de la tabla, como el panel de Notion. No es modal: la
+     tabla sigue usable y pinchar otra empresa cambia lo que se ve aqui. -->
+@if (abierta(); as una) {
+  <aside #panel class="panel" data-panel aria-labelledby="titulo-panel" tabindex="-1">
+    <nav class="panel-barra" aria-label="Recorrer las candidaturas">
+      <button type="button" data-anterior [disabled]="!vecinos().anterior" (click)="irA(vecinos().anterior)">
+        Anterior
+      </button>
+      <button type="button" data-siguiente [disabled]="!vecinos().siguiente" (click)="irA(vecinos().siguiente)">
+        Siguiente
+      </button>
+      <a class="completa" [routerLink]="['/candidatura', una.id]">Pantalla completa</a>
+      <button type="button" data-cerrar class="cerrar" (click)="cerrar()" aria-label="Cerrar la ficha">Cerrar</button>
+    </nav>
+    <app-ficha-candidatura [candidatura]="una" [acciones]="acciones(una)" idTitulo="titulo-panel" />
+  </aside>
+}

@@ -1,10 +1,21 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import {
+  afterRenderEffect,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  input,
+  OnInit,
+  signal,
+  viewChild,
+} from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 
 import { Accion, accionesPara, EnlacesDeAccion } from './acciones';
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
 import { CandidaturasStore, ColumnaOrdenable } from './candidaturas.store';
 import { fechaEspanola } from './fecha';
+import { FichaCandidatura } from './ficha-candidatura';
 import { FuenteDeAcciones } from './fuente-de-acciones';
 
 /**
@@ -37,12 +48,31 @@ const CERRADOS: readonly EstadoDeCandidatura[] = ['Rechazado', 'Descartado', 'Ca
 
 @Component({
   selector: 'app-ofertas',
-  imports: [RouterLink],
+  imports: [RouterLink, FichaCandidatura],
   templateUrl: './ofertas.page.html',
   styleUrl: './ofertas.page.css',
+  host: { '(document:keydown.escape)': 'cerrar()' },
 })
 export class OfertasPage implements OnInit {
+  /**
+   * La que se ve en el panel lateral, de ?ficha= en la direccion. En la URL y
+   * no en una signal suelta: se puede enlazar, y Atras del navegador lo cierra.
+   */
+  readonly ficha = input<string>();
+
   protected readonly store = inject(CandidaturasStore);
+  private readonly router = inject(Router);
+  private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
+
+  protected readonly abierta = computed(() => {
+    const id = this.ficha();
+    return id ? this.store.buscarPorId(id) : undefined;
+  });
+
+  protected readonly vecinos = computed(() => {
+    const id = this.ficha();
+    return id ? this.store.vecinosDe(id) : {};
+  });
   private readonly fuenteDeAcciones = inject(FuenteDeAcciones);
   /** null mientras no hay enlaces, y siempre en la demo publica. */
   protected readonly enlaces = signal<EnlacesDeAccion | null>(null);
@@ -51,6 +81,19 @@ export class OfertasPage implements OnInit {
   protected readonly columnas = COLUMNAS;
   protected readonly anchoEnlace = ANCHO_ENLACE;
   private readonly anchoBase = COLUMNAS.reduce((suma, c) => suma + c.ancho, 0) + 2 * ANCHO_ENLACE;
+
+  constructor() {
+    // Al abrirse, el foco entra en el panel para que el teclado siga ahi. Solo
+    // al abrirse: al pasar a la siguiente, el foco se queda en el boton.
+    let estabaAbierto = false;
+    afterRenderEffect(() => {
+      const panel = this.panel();
+      if (panel && !estabaAbierto) {
+        panel.nativeElement.focus();
+      }
+      estabaAbierto = !!panel;
+    });
+  }
 
   ngOnInit(): void {
     void this.store.cargar();
@@ -63,6 +106,19 @@ export class OfertasPage implements OnInit {
 
   protected acciones(una: Candidatura): Accion[] {
     return accionesPara(una, this.enlaces());
+  }
+
+  /** Cambiar de ficha sustituye la entrada del historial: Atras cierra el panel, no recorre las vistas. */
+  protected irA(id: string | undefined): void {
+    if (id) {
+      void this.router.navigate([], { queryParams: { ficha: id }, replaceUrl: true });
+    }
+  }
+
+  protected cerrar(): void {
+    if (this.ficha()) {
+      void this.router.navigate([], { queryParams: {} });
+    }
   }
 
   protected filtrarPor(estado: EstadoDeCandidatura | null): void {
