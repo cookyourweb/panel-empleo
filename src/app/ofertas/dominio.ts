@@ -48,6 +48,8 @@ export interface Oferta {
   ubicacion?: string;
   modalidad?: Modalidad;
   salario?: string;
+  /** Fecha ISO (AAAA-MM-DD) en que la empresa publico la oferta. */
+  fechaPublicacion?: string;
 }
 
 /** La candidatura: una persona sobre una oferta. Aqui vive el seguimiento. */
@@ -55,4 +57,11 @@ export interface Candidatura {
   id: string;
   oferta: Oferta;
   estado: EstadoDeCandidatura;
+
+  /** Por donde se mando: LinkedIn, portal de la empresa, email... */
+  viaEnvio?: string;
+  /** Fecha ISO (AAAA-MM-DD) en que salio la candidatura. */
+  fechaEnvio?: string;
+  /** Enlace al CV que se mando, para saber que version vio la empresa. */
+  cv?: string;
 }

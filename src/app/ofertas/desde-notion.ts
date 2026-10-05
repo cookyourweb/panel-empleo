@@ -18,6 +18,10 @@ export interface RegistroLocal {
   ubicacion?: string;
   modalidad?: string;
   salario?: string;
+  fechaPublicacion?: string;
+  viaEnvio?: string;
+  fechaEnvio?: string;
+  cv?: string;
 }
 
 /**
@@ -55,7 +59,7 @@ export function candidaturaDesdeRegistro(registro: RegistroLocal): Candidatura |
     idioma: registro.idioma === 'en' ? 'en' : 'es',
   };
 
-  const opcionales = ['descripcion', 'enlace', 'ubicacion', 'salario'] as const;
+  const opcionales = ['descripcion', 'enlace', 'ubicacion', 'salario', 'fechaPublicacion'] as const;
   for (const campo of opcionales) {
     const valor = registro[campo]?.trim();
     if (valor) {
@@ -67,5 +71,14 @@ export function candidaturaDesdeRegistro(registro: RegistroLocal): Candidatura |
     oferta.modalidad = registro.modalidad as Modalidad;
   }
 
-  return { id: registro.id, oferta, estado };
+  const candidatura: Candidatura = { id: registro.id, oferta, estado };
+  const seguimiento = ['viaEnvio', 'fechaEnvio', 'cv'] as const;
+  for (const campo of seguimiento) {
+    const valor = registro[campo]?.trim();
+    if (valor) {
+      candidatura[campo] = valor;
+    }
+  }
+
+  return candidatura;
 }

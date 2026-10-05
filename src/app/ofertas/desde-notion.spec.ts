@@ -68,4 +68,26 @@ describe('candidaturaDesdeRegistro', () => {
   it('descarta las fichas marcadas para borrar en Notion', () => {
     expect(candidaturaDesdeRegistro({ ...base, empresa: 'ZZZ BORRAR - duplicado de Joppy' })).toBeNull();
   });
+
+  it('trae el seguimiento a la candidatura y la fecha de publicacion a la oferta', () => {
+    const una = candidaturaDesdeRegistro({
+      ...base,
+      viaEnvio: 'LinkedIn',
+      fechaEnvio: '2026-10-05',
+      fechaPublicacion: '2026-10-01',
+      cv: 'https://docs.google.com/document/d/x',
+    });
+
+    expect(una?.viaEnvio).toBe('LinkedIn');
+    expect(una?.fechaEnvio).toBe('2026-10-05');
+    expect(una?.cv).toBe('https://docs.google.com/document/d/x');
+    expect(una?.oferta.fechaPublicacion).toBe('2026-10-01');
+  });
+
+  it('no inventa campos de seguimiento vacios', () => {
+    const una = candidaturaDesdeRegistro({ ...base, viaEnvio: '', fechaEnvio: ' ' });
+
+    expect(una).not.toHaveProperty('viaEnvio');
+    expect(una).not.toHaveProperty('fechaEnvio');
+  });
 });
