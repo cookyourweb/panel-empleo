@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Accion, accionesPara, EnlacesDeAccion } from './acciones';
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
 import { CandidaturasStore, ColumnaOrdenable } from './candidaturas.store';
+import { fechaEspanola } from './fecha';
 import { FuenteDeAcciones } from './fuente-de-acciones';
 
 /**
@@ -104,15 +105,4 @@ export class OfertasPage implements OnInit {
         return una.oferta[columna] ?? '';
     }
   }
-}
-
-/**
- * AAAA-MM-DD a DD/MM/AAAA, cortando la hora si la trae.
- *
- * A mano y no con DatePipe: la fecha llega sin zona horaria, y convertirla a
- * Date puede moverla un dia segun donde se abra el panel.
- */
-function fechaEspanola(iso: string | undefined): string {
-  const partes = iso?.slice(0, 10).split('-');
-  return partes?.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : '';
 }

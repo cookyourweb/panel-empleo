@@ -76,11 +76,13 @@ describe('candidaturaDesdeRegistro', () => {
       fechaEnvio: '2026-10-05',
       fechaPublicacion: '2026-10-01',
       cv: 'https://docs.google.com/document/d/x',
+      carta: 'Dear Hiring Team,\n\nI am...',
     });
 
     expect(una?.viaEnvio).toBe('LinkedIn');
     expect(una?.fechaEnvio).toBe('2026-10-05');
     expect(una?.cv).toBe('https://docs.google.com/document/d/x');
+    expect(una?.carta).toBe('Dear Hiring Team,\n\nI am...');
     expect(una?.oferta.fechaPublicacion).toBe('2026-10-01');
   });
 

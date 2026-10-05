@@ -1,7 +1,10 @@
-import { Component, computed, inject, input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { accionesPara, EnlacesDeAccion } from './acciones';
 import { CandidaturasStore } from './candidaturas.store';
+import { fechaEspanola } from './fecha';
+import { FuenteDeAcciones } from './fuente-de-acciones';
 
 @Component({
   selector: 'app-detalle',
@@ -14,11 +17,22 @@ export class DetallePage implements OnInit {
   readonly id = input.required<string>();
 
   protected readonly store = inject(CandidaturasStore);
+  private readonly fuenteDeAcciones = inject(FuenteDeAcciones);
+  private readonly enlaces = signal<EnlacesDeAccion | null>(null);
 
   protected readonly candidatura = computed(() => this.store.buscarPorId(this.id()));
+
+  /** Las mismas reglas que la tabla: la ficha no decide por su cuenta. */
+  protected readonly acciones = computed(() => {
+    const una = this.candidatura();
+    return una ? accionesPara(una, this.enlaces()) : [];
+  });
+
+  protected readonly fecha = fechaEspanola;
 
   ngOnInit(): void {
     // El store se comparte con la lista: si ya cargo, esto no vuelve a pedir nada.
     void this.store.cargar();
+    void this.fuenteDeAcciones.enlaces().then((enlaces) => this.enlaces.set(enlaces));
   }
 }

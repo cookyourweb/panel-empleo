@@ -68,4 +68,6 @@ export interface Candidatura {
   fechaEnvio?: string;
   /** Enlace al CV que se mando, para saber que version vio la empresa. */
   cv?: string;
+  /** La carta tal como se mando, con sus saltos de linea. */
+  carta?: string;
 }

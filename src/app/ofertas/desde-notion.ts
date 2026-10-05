@@ -22,6 +22,7 @@ export interface RegistroLocal {
   viaEnvio?: string;
   fechaEnvio?: string;
   cv?: string;
+  carta?: string;
 }
 
 /**
@@ -71,7 +72,7 @@ export function candidaturaDesdeRegistro(registro: RegistroLocal): Candidatura |
   }
 
   const candidatura: Candidatura = { id: registro.id, oferta, estado };
-  const seguimiento = ['viaEnvio', 'fechaEnvio', 'cv'] as const;
+  const seguimiento = ['viaEnvio', 'fechaEnvio', 'cv', 'carta'] as const;
   for (const campo of seguimiento) {
     const valor = registro[campo]?.trim();
     if (valor) {

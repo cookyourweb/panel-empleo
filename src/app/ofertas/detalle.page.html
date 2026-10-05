@@ -7,6 +7,22 @@
 
     <p class="estado">{{ una.estado }}</p>
 
+    @if (acciones().length) {
+      <p class="acciones">
+        @for (accion of acciones(); track accion.tipo) {
+          <a
+            class="accion"
+            [attr.data-accion]="accion.tipo"
+            [href]="accion.url"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ accion.etiqueta }}
+          </a>
+        }
+      </p>
+    }
+
     <!-- Lo que la captacion no siempre encuentra solo se pinta si esta. Una
          fila vacia ocupa sitio y no dice nada. -->
     <dl>
@@ -24,11 +40,34 @@
       }
       <dt>Idioma de la oferta</dt>
       <dd>{{ una.oferta.idioma }}</dd>
+      @if (una.oferta.fechaPublicacion) {
+        <dt>Publicada</dt>
+        <dd>{{ fecha(una.oferta.fechaPublicacion) }}</dd>
+      }
+      @if (una.viaEnvio) {
+        <dt>Vía envío</dt>
+        <dd>{{ una.viaEnvio }}</dd>
+      }
+      @if (una.fechaEnvio) {
+        <dt>Fecha envío</dt>
+        <dd>{{ fecha(una.fechaEnvio) }}</dd>
+      }
+      @if (una.cv) {
+        <dt>CV</dt>
+        <dd>
+          <a data-cv [href]="una.cv" target="_blank" rel="noopener noreferrer">Abrir el CV enviado</a>
+        </dd>
+      }
     </dl>
+
+    @if (una.carta) {
+      <h3>Carta</h3>
+      <p class="texto-largo" data-carta>{{ una.carta }}</p>
+    }
 
     @if (una.oferta.descripcion) {
       <h3>Descripción</h3>
-      <p class="descripcion">{{ una.oferta.descripcion }}</p>
+      <p class="texto-largo">{{ una.oferta.descripcion }}</p>
     }
 
     @if (una.oferta.enlace) {
