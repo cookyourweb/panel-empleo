@@ -15,6 +15,7 @@ import { Accion, accionesPara, EnlacesDeAccion } from './acciones';
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
 import { CandidaturasStore, ColumnaOrdenable } from './candidaturas.store';
 import { fechaEspanola } from './fecha';
+import { EtiquetaEstado } from './etiqueta-estado';
 import { FichaCandidatura } from './ficha-candidatura';
 import { FuenteDeAcciones } from './fuente-de-acciones';
 
@@ -43,12 +44,9 @@ const ANCHO_ENLACE = 80;
 /** Cabe "Aprobar" y "Descartar" en una linea. */
 const ANCHO_ACCIONES = 210;
 
-/** Los estados que cierran la candidatura se pintan huecos: ya no piden nada. */
-const CERRADOS: readonly EstadoDeCandidatura[] = ['Rechazado', 'Descartado', 'Caducada'];
-
 @Component({
   selector: 'app-ofertas',
-  imports: [RouterLink, FichaCandidatura],
+  imports: [RouterLink, FichaCandidatura, EtiquetaEstado],
   templateUrl: './ofertas.page.html',
   styleUrl: './ofertas.page.css',
   host: { '(document:keydown.escape)': 'cerrar()' },
@@ -140,10 +138,6 @@ export class OfertasPage implements OnInit {
       return 'none';
     }
     return orden.sentido === 'asc' ? 'ascending' : 'descending';
-  }
-
-  protected cerrado(estado: EstadoDeCandidatura): boolean {
-    return CERRADOS.includes(estado);
   }
 
   /** El texto de cada celda ordenable. Las fechas, como se leen en Espana. */

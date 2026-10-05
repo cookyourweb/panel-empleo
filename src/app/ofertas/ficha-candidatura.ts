@@ -2,6 +2,7 @@ import { Component, input } from '@angular/core';
 
 import { Accion } from './acciones';
 import { Candidatura } from './dominio';
+import { EtiquetaEstado } from './etiqueta-estado';
 import { fechaEspanola } from './fecha';
 
 /**
@@ -12,6 +13,7 @@ import { fechaEspanola } from './fecha';
  */
 @Component({
   selector: 'app-ficha-candidatura',
+  imports: [EtiquetaEstado],
   templateUrl: './ficha-candidatura.html',
   styleUrl: './ficha-candidatura.css',
 })

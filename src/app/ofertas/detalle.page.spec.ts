@@ -103,4 +103,10 @@ describe('DetallePage', () => {
 
     expect(pagina.querySelector('[data-accion]')).toBeNull();
   });
+
+  it('el estado lleva la misma etiqueta de color que en la tabla', async () => {
+    const pagina = await abrir('/candidatura/c13');
+
+    expect(pagina.querySelector('.estado')?.getAttribute('data-estado')).toBe('Aprobado');
+  });
 });

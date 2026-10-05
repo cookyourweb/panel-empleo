@@ -3,7 +3,7 @@
 <h2 [id]="idTitulo()">{{ una.oferta.empresa }}</h2>
 <p class="puesto">{{ una.oferta.puesto }}</p>
 
-<p class="estado">{{ una.estado }}</p>
+<p><app-estado [estado]="una.estado" /></p>
 
 @if (acciones().length) {
   <p class="acciones">

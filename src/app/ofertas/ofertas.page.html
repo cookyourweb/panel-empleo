@@ -107,12 +107,7 @@
               }
               @case ('estado') {
                 <td>
-                  <span
-                    class="estado"
-                    [class.cerrado]="cerrado(candidatura.estado)"
-                    [attr.data-estado]="candidatura.estado"
-                    >{{ candidatura.estado }}</span
-                  >
+                  <app-estado [estado]="candidatura.estado" />
                 </td>
                 @if (enlaces()) {
                   <td class="acciones">
