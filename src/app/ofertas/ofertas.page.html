@@ -1,4 +1,23 @@
-<h2>Ofertas</h2>
+<div class="cabecera">
+  <h2>Ofertas</h2>
+
+  <label class="buscador">
+    <span class="visualmente-oculto">Buscar por empresa, puesto o ubicación</span>
+    <input
+      type="search"
+      placeholder="Buscar empresa, puesto o ubicación"
+      autocomplete="off"
+      [value]="store.busqueda()"
+      (input)="buscar($event)"
+    />
+  </label>
+
+  <!-- Cuantas se ven de cuantas hay: al buscar o filtrar no se pierde la
+       referencia del total. -->
+  <p class="total" aria-live="polite">
+    {{ store.visibles().length }} de {{ store.candidaturas().length }}
+  </p>
+</div>
 
 <!-- Los recuentos no son adorno: son lo que deja ver de un vistazo que un
      estado tiene mas de las que deberia. -->
@@ -24,32 +43,110 @@
   }
 </div>
 
-<table>
-  <caption class="visualmente-oculto">
-    Ofertas, {{ store.visibles().length }} de {{ store.candidaturas().length }}
-  </caption>
-  <thead>
-    <tr>
-      <th scope="col">Empresa</th>
-      <th scope="col">Puesto</th>
-      <th scope="col">Estado</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (candidatura of store.visibles(); track candidatura.id) {
+<!-- La tabla se desplaza dentro de su caja y la cabecera queda fija: con
+     cientos de filas, perder de vista las columnas obliga a subir. -->
+<!-- La tabla es mas ancha que la pantalla a proposito: se recorre con scroll
+     horizontal y vertical dentro de su caja, con la cabecera y la columna de
+     empresa fijas para no perder la referencia de que fila se esta leyendo. -->
+<div class="caja-tabla" tabindex="0" role="region" aria-label="Tabla de ofertas, desplazable">
+  <table [style.width.px]="anchoTotal">
+    <caption class="visualmente-oculto">
+      Ofertas, {{ store.visibles().length }} de {{ store.candidaturas().length }}
+    </caption>
+    <colgroup>
+      @for (columna of columnas; track columna.clave) {
+        <col [style.width.px]="columna.ancho" />
+      }
+      <col [style.width.px]="anchoEnlace" />
+      <col [style.width.px]="anchoEnlace" />
+    </colgroup>
+    <thead>
       <tr>
-        <td>
-          <!-- El enlace envuelve el nombre, no la fila entera: una fila
-               clicable no se puede alcanzar con el teclado. -->
-          <a [routerLink]="['/candidatura', candidatura.id]">{{ candidatura.oferta.empresa }}</a>
-        </td>
-        <td>{{ candidatura.oferta.puesto }}</td>
-        <td>{{ candidatura.estado }}</td>
+        @for (columna of columnas; track columna.clave) {
+          <th
+            scope="col"
+            [class.empresa]="columna.clave === 'empresa'"
+            [attr.data-columna]="columna.clave"
+            [attr.aria-sort]="ariaSort(columna.clave)"
+          >
+            <!-- El boton va dentro de la cabecera, no la sustituye: asi la
+                 tabla sigue siendo tabla para el lector de pantalla. -->
+            <button type="button" (click)="ordenarPor(columna.clave)">
+              {{ columna.titulo }}
+              <span class="flecha" aria-hidden="true">
+                @switch (ariaSort(columna.clave)) {
+                  @case ('ascending') { ▲ }
+                  @case ('descending') { ▼ }
+                }
+              </span>
+            </button>
+          </th>
+        }
+        <th scope="col" class="sin-orden">Oferta</th>
+        <th scope="col" class="sin-orden">CV</th>
       </tr>
-    } @empty {
-      <tr>
-        <td colspan="3">No hay candidaturas en este estado.</td>
-      </tr>
-    }
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      @for (candidatura of store.visibles(); track candidatura.id) {
+        <tr>
+          @for (columna of columnas; track columna.clave) {
+            @switch (columna.clave) {
+              @case ('empresa') {
+                <td class="empresa" [attr.title]="candidatura.oferta.empresa">
+                  <!-- El enlace envuelve el nombre, no la fila entera: una fila
+                       clicable no se puede alcanzar con el teclado. -->
+                  <a [routerLink]="['/candidatura', candidatura.id]">{{ candidatura.oferta.empresa }}</a>
+                </td>
+              }
+              @case ('estado') {
+                <td>
+                  <span
+                    class="estado"
+                    [class.cerrado]="cerrado(candidatura.estado)"
+                    [attr.data-estado]="candidatura.estado"
+                    >{{ candidatura.estado }}</span
+                  >
+                </td>
+              }
+              @default {
+                <td [attr.title]="celda(candidatura, columna.clave) || null">{{ celda(candidatura, columna.clave) }}</td>
+              }
+            }
+          }
+          <td>
+            @if (candidatura.oferta.enlace) {
+              <a
+                [href]="candidatura.oferta.enlace"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="'Abrir la oferta de ' + candidatura.oferta.empresa + ' en una pestaña nueva'"
+                >Abrir</a
+              >
+            }
+          </td>
+          <td>
+            @if (candidatura.cv) {
+              <a
+                [href]="candidatura.cv"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="'Abrir el CV enviado a ' + candidatura.oferta.empresa + ' en una pestaña nueva'"
+                >Ver</a
+              >
+            }
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td class="vacio" [attr.colspan]="columnas.length + 2">
+            @if (store.busqueda().trim()) {
+              Ninguna oferta coincide con la búsqueda.
+            } @else {
+              No hay candidaturas en este estado.
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,20 +1,69 @@
-.filtros {
+/* ============================================================
+   Tabla tipo hoja de calculo, segun la maqueta aprobada el 2-oct.
+   Se toma su forma (cabecera fija, filas densas, etiqueta de
+   estado con punto, estados cerrados huecos) y se pinta con las
+   rampas de marca: no se repiten hexadecimales aqui.
+   ============================================================ */
+
+.cabecera {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
 }
 
-.filtros button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 0.75rem;
+.cabecera h2 {
+  margin: 0;
+}
+
+.buscador {
+  flex: 1 1 18rem;
+  max-width: 32rem;
+}
+
+.buscador input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 2.25rem;
+  padding: 0 0.75rem;
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius);
   background: transparent;
   color: hsl(var(--foreground));
   font: inherit;
+}
+
+.buscador input:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.total {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  color: hsl(var(--muted-foreground));
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.filtros button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 1.75rem;
+  padding: 0 0.7rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 999px;
+  background: transparent;
+  color: hsl(var(--foreground));
+  font: inherit;
+  font-size: 0.85rem;
   cursor: pointer;
 }
 
@@ -36,16 +85,233 @@
   opacity: 0.75;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.caja-tabla {
+  max-width: 100%;
+  max-height: 70vh;
+  overflow: auto;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
 }
 
-th,
-td {
-  padding: 0.6rem 0.5rem;
-  text-align: left;
+.caja-tabla:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Barras de scroll siempre visibles. En macOS el sistema las esconde hasta que
+   te mueves, y con trackpad o teclado nadie se entera de que la tabla sigue a
+   la derecha. Darles tamano propio obliga a Chrome y Safari a pintarlas. */
+.caja-tabla::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.caja-tabla::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+.caja-tabla::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border: 2px solid hsl(var(--muted));
+  border-radius: 999px;
+}
+
+.caja-tabla::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--ring));
+}
+
+.caja-tabla::-webkit-scrollbar-corner {
+  background: hsl(var(--muted));
+}
+
+/* Firefox no entiende lo anterior y tiene su propia forma. Va aparte porque
+   en Chrome, si se declaran estas dos, ignora las de arriba. */
+@supports not selector(::-webkit-scrollbar) {
+  .caja-tabla {
+    scrollbar-width: auto;
+    scrollbar-color: hsl(var(--border)) hsl(var(--muted));
+  }
+}
+
+/* Ancho fijo por columna (colgroup) y la tabla tan ancha como sumen: si no
+   cabe, aparece el scroll horizontal en vez de aplastar las columnas. */
+table {
+  table-layout: fixed;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 0;
+  background: hsl(var(--muted));
   border-bottom: 1px solid hsl(var(--border));
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+thead th.sin-orden {
+  padding: 0 0.75rem;
+}
+
+thead th > button {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  cursor: pointer;
+}
+
+thead th > button:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: -2px;
+}
+
+.flecha {
+  font-size: 0.65rem;
+  color: hsl(var(--primary));
+}
+
+tbody td {
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  border-bottom: 1px solid hsl(var(--border) / 0.4);
+  background: hsl(var(--background));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+tbody tr:hover td {
+  background: hsl(var(--muted));
+}
+
+/* La empresa queda fija a la izquierda al desplazarse en horizontal. Lleva
+   fondo propio para que no se transparente lo que pasa por debajo. */
+th.empresa,
+td.empresa {
+  position: sticky;
+  left: 0;
+  box-shadow: 1px 0 0 hsl(var(--border));
+}
+
+td.empresa {
+  z-index: 1;
+}
+
+th.empresa {
+  z-index: 3;
+}
+
+td.empresa a {
+  font-weight: 600;
+}
+
+td a {
+  color: hsl(var(--primary));
+  text-decoration: none;
+}
+
+td a:hover,
+td a:focus-visible {
+  text-decoration: underline;
+}
+
+td.vacio {
+  padding: 1.5rem 0.75rem;
+  text-align: left;
+  color: hsl(var(--muted-foreground));
+}
+
+/* ---------- Etiqueta de estado ----------
+   Tema oscuro: fondo 900 y texto 200. Tema claro: fondo 50 y texto 800.
+   Son los extremos de cada rampa, los que dan mas contraste. */
+.estado {
+  --tono-fondo: var(--color-cian-900);
+  --tono-texto: var(--color-cian-200);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 1.3rem;
+  padding: 0 0.55rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--tono-fondo);
+  color: var(--tono-texto);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.estado::before {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.estado[data-estado='Pendiente'] {
+  --tono-fondo: var(--color-violeta-900);
+  --tono-texto: var(--color-violeta-200);
+}
+
+.estado[data-estado='En proceso'] {
+  --tono-fondo: var(--color-magenta-900);
+  --tono-texto: var(--color-magenta-200);
+}
+
+.estado[data-estado='Entrevista'] {
+  --tono-fondo: var(--color-verde-900);
+  --tono-texto: var(--color-verde-200);
+}
+
+/* Contactada directamente: la empresa vino a buscarla. Mismo tono que
+   Enviado, pero con borde, para no confundirlos sin depender del color. */
+.estado[data-estado='Contactada directamente'] {
+  border-color: currentColor;
+}
+
+/* Cerrados: hueco y apagado. Ya no piden accion. */
+.estado.cerrado {
+  background: transparent;
+  border-color: hsl(var(--foreground) / 0.35);
+  color: hsl(var(--foreground) / 0.75);
+  font-weight: 500;
+}
+
+.estado.cerrado::before {
+  background: transparent;
+  border: 1.5px solid currentColor;
+  box-sizing: border-box;
+}
+
+:host-context(.light) .estado {
+  --tono-fondo: var(--color-cian-50);
+  --tono-texto: var(--color-cian-800);
+}
+
+:host-context(.light) .estado[data-estado='Pendiente'] {
+  --tono-fondo: var(--color-violeta-50);
+  --tono-texto: var(--color-violeta-800);
+}
+
+:host-context(.light) .estado[data-estado='En proceso'] {
+  --tono-fondo: var(--color-magenta-50);
+  --tono-texto: var(--color-magenta-800);
+}
+
+:host-context(.light) .estado[data-estado='Entrevista'] {
+  --tono-fondo: var(--color-verde-50);
+  --tono-texto: var(--color-verde-800);
 }
 
 .visualmente-oculto {

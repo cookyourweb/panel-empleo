@@ -64,4 +64,82 @@ describe('OfertasPage', () => {
     expect(filas).toHaveLength(2);
     expect(pagina.querySelector('[data-filtro="Caducada"]')?.getAttribute('aria-pressed')).toBe('true');
   });
+  it('muestra las columnas por defecto de la maqueta aprobada', async () => {
+    const pagina = await pintar();
+
+    const cabeceras = [...pagina.querySelectorAll('thead th')].map((th) => th.textContent?.replace(/[▲▼]/g, '').trim());
+
+    expect(cabeceras).toEqual([
+      'Empresa',
+      'Puesto',
+      'Estado',
+      'Modalidad',
+      'Ubicación',
+      'Salario',
+      'Vía envío',
+      'Fecha envío',
+      'Publicada',
+      'Oferta',
+      'CV',
+    ]);
+  });
+
+  it('las fechas se leen en formato espanol', async () => {
+    const pagina = await pintar();
+
+    expect(pagina.querySelector('tbody')?.textContent).toMatch(/\d{2}\/\d{2}\/\d{4}/);
+  });
+
+  it('el estado va en una etiqueta que sabe de que estado es, para darle su color', async () => {
+    const pagina = await pintar();
+
+    const etiqueta = pagina.querySelector('tbody .estado');
+
+    expect(etiqueta?.getAttribute('data-estado')).toBe('Pendiente');
+  });
+
+  it('el buscador filtra la tabla mientras se escribe', async () => {
+    const fixture = TestBed.createComponent(OfertasPage);
+    await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+
+    const caja = pagina.querySelector<HTMLInputElement>('input[type="search"]')!;
+    caja.value = 'northwind';
+    caja.dispatchEvent(new Event('input'));
+    await fixture.whenStable();
+
+    const filas = pagina.querySelectorAll('table tbody tr');
+    expect(filas).toHaveLength(1);
+    expect(filas[0].textContent).toContain('Northwind Labs');
+  });
+
+  it('si la busqueda no encuentra nada lo dice, en vez de dejar la tabla vacia', async () => {
+    const fixture = TestBed.createComponent(OfertasPage);
+    await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+
+    const caja = pagina.querySelector<HTMLInputElement>('input[type="search"]')!;
+    caja.value = 'no existe esta empresa';
+    caja.dispatchEvent(new Event('input'));
+    await fixture.whenStable();
+
+    expect(pagina.querySelector('tbody')?.textContent).toContain('Ninguna oferta coincide');
+  });
+
+  it('al pulsar una cabecera ordena por esa columna y lo anuncia con aria-sort', async () => {
+    const fixture = TestBed.createComponent(OfertasPage);
+    await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+
+    const cabecera = pagina.querySelector<HTMLElement>('th[data-columna="empresa"]')!;
+    expect(cabecera.getAttribute('aria-sort')).toBe('none');
+
+    cabecera.querySelector('button')!.click();
+    await fixture.whenStable();
+
+    expect(cabecera.getAttribute('aria-sort')).toBe('ascending');
+    const primeras = [...pagina.querySelectorAll('tbody tr td:first-child')].map((td) => td.textContent?.trim());
+    expect(primeras[0]).toBe('Arbórea');
+  });
 });
+
