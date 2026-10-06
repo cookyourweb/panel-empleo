@@ -59,7 +59,7 @@ describe('DetallePage', () => {
   it('el CV que se genero se abre fuera, como en Notion', async () => {
     const pagina = await abrir('/candidatura/c13');
 
-    const cv = pagina.querySelector<HTMLAnchorElement>('[data-cv]');
+    const cv = pagina.querySelector<HTMLAnchorElement>('[data-campo="cv"] a');
 
     expect(cv?.href).toBe('https://ejemplo.test/cv/lumen-grid');
     expect(cv?.target).toBe('_blank');
@@ -69,7 +69,7 @@ describe('DetallePage', () => {
   it('enseña la carta respetando sus saltos de linea', async () => {
     const pagina = await abrir('/candidatura/c13');
 
-    const carta = pagina.querySelector('[data-carta]');
+    const carta = pagina.querySelector('[data-campo="carta"]');
 
     expect(carta?.textContent).toContain('Dear Lumen Grid team,');
     expect(carta?.textContent).toContain('\n');
@@ -85,8 +85,8 @@ describe('DetallePage', () => {
   it('sin CV ni carta no pinta esos apartados vacios', async () => {
     const pagina = await abrir('/candidatura/c2');
 
-    expect(pagina.querySelector('[data-cv]')).toBeNull();
-    expect(pagina.querySelector('[data-carta]')).toBeNull();
+    expect(pagina.querySelector('[data-campo="cv"]')).toBeNull();
+    expect(pagina.querySelector('[data-campo="carta"]')).toBeNull();
   });
 
   it('ofrece las mismas acciones que la tabla cuando hay enlaces', async () => {
@@ -108,5 +108,37 @@ describe('DetallePage', () => {
     const pagina = await abrir('/candidatura/c13');
 
     expect(pagina.querySelector('.estado')?.getAttribute('data-estado')).toBe('Aprobado');
+  });
+
+  it('agrupa los campos en Oferta, Candidatura y Documentos, como la maqueta', async () => {
+    const pagina = await abrir('/candidatura/c13');
+
+    const titulos = [...pagina.querySelectorAll('section h3')].map((h) => h.textContent?.trim());
+
+    expect(titulos).toContain('Oferta');
+    expect(titulos).toContain('Documentos');
+  });
+
+  it('pinta el contenido de la pagina de Notion con sus titulos y listas', async () => {
+    const pagina = await abrir('/candidatura/c1');
+
+    const cuerpo = pagina.querySelector('[data-cuerpo]');
+
+    expect(cuerpo?.querySelector('h4')?.textContent).toContain('Historial');
+    expect(cuerpo?.querySelectorAll('li').length).toBeGreaterThan(0);
+  });
+
+  it('ofrece abrir la ficha en Notion', async () => {
+    const pagina = await abrir('/candidatura/c1');
+
+    const notion = pagina.querySelector<HTMLAnchorElement>('[data-notion]');
+
+    expect(notion?.target).toBe('_blank');
+  });
+
+  it('cuenta los campos sin dato en un desplegable, sin ocupar sitio', async () => {
+    const pagina = await abrir('/candidatura/c2');
+
+    expect(pagina.querySelector('details summary')?.textContent).toMatch(/\d+ campos sin dato/);
   });
 });

@@ -285,18 +285,36 @@ td.vacio {
 }
 
 /* ---------- Panel lateral ----------
-   Encima de la tabla y pegado a la derecha. En movil ocupa todo el ancho. */
+   Encima de la tabla y pegado a la derecha, del ancho de la maqueta. La
+   cabecera de la ficha se queda quieta y solo se desplaza el contenido. */
 .panel {
   position: fixed;
   inset: 0 0 0 auto;
   z-index: 20;
-  box-sizing: border-box;
-  width: min(36rem, 100vw);
-  padding: 0 1.5rem 2rem;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  width: min(560px, 100vw);
   background: hsl(var(--background));
   border-left: 1px solid hsl(var(--border));
   box-shadow: -12px 0 32px hsl(0 0% 0% / 0.35);
+  animation: entrar 0.14s ease-out;
+}
+
+@keyframes entrar {
+  from {
+    transform: translateX(16px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}
+
+.panel app-ficha-candidatura {
+  flex: 1;
 }
 
 .panel:focus-visible {
@@ -304,45 +322,36 @@ td.vacio {
   outline-offset: -2px;
 }
 
-.panel-barra {
-  position: sticky;
-  top: 0;
+.nav {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0 -1.5rem 1rem;
-  padding: 0.75rem 1.5rem;
-  background: hsl(var(--background));
-  border-bottom: 1px solid hsl(var(--border));
+  flex: none;
+  gap: 0.25rem;
 }
 
-.panel-barra button,
-.panel-barra .completa {
+.nav button,
+.completa {
   display: inline-flex;
   align-items: center;
-  height: 2rem;
-  padding: 0 0.8rem;
+  height: 1.75rem;
+  padding: 0 0.65rem;
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius);
   background: transparent;
   color: hsl(var(--foreground));
   font: inherit;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
   text-decoration: none;
   cursor: pointer;
 }
 
-.panel-barra button:disabled {
+.nav button:disabled {
   opacity: 0.4;
   cursor: default;
 }
 
-.panel-barra .cerrar {
-  margin-left: auto;
-}
-
-.panel-barra button:focus-visible,
-.panel-barra .completa:focus-visible {
+.nav button:focus-visible,
+.completa:focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }

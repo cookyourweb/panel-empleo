@@ -54,6 +54,42 @@ export interface Oferta {
   salario?: string;
   /** Fecha ISO (AAAA-MM-DD) en que la empresa publico la oferta. */
   fechaPublicacion?: string;
+  tipoContrato?: string;
+  modoContratacion?: string;
+  palabrasClave?: string;
+  /** Las etiquetas, ya unidas por comas: aqui solo se leen. */
+  tags?: string;
+  /** Que alguien comprobo que la oferta existe de verdad. */
+  verificada?: boolean;
+}
+
+/**
+ * Un trozo del contenido de la pagina de Notion (historial, encaje...).
+ *
+ * Llega con estructura y no como HTML: asi se pinta con la plantilla, sin
+ * innerHTML, y un texto raro en Notion no puede colar nada en el panel.
+ */
+export const TIPOS_DE_BLOQUE = [
+  'titulo',
+  'subtitulo',
+  'parrafo',
+  'vineta',
+  'numerado',
+  'tarea',
+  'cita',
+  'codigo',
+  'separador',
+] as const;
+
+export type TipoDeBloque = (typeof TIPOS_DE_BLOQUE)[number];
+
+export interface Bloque {
+  tipo: TipoDeBloque;
+  texto: string;
+  /** Anidamiento en las listas: 1 es un elemento dentro de otro. */
+  nivel?: number;
+  /** Solo en las tareas. */
+  hecho?: boolean;
 }
 
 /** La candidatura: una persona sobre una oferta. Aqui vive el seguimiento. */
@@ -70,4 +106,26 @@ export interface Candidatura {
   cv?: string;
   /** La carta tal como se mando, con sus saltos de linea. */
   carta?: string;
+
+  /** En que punto del proceso esta, mas fino que el estado. */
+  fase?: string;
+  /** Fecha ISO del proximo seguimiento. */
+  seguimiento?: string;
+  fechaEntrevista?: string;
+  formatoTecnico?: string;
+  nombreContacto?: string;
+  telefonoContacto?: string;
+  emailEmpresa?: string;
+  emailEnviado?: string;
+  notas?: string;
+  /** De que CV base salio el que se mando. */
+  cvUsado?: string;
+  /** Enlace a la preparacion de la entrevista. */
+  prep?: string;
+  /** Que la carta avisa de que se trabaja como autonoma. */
+  avisoAutonoma?: boolean;
+  /** La ficha original en Notion. */
+  notion?: string;
+  /** El contenido de la pagina de Notion, si tiene. */
+  cuerpo?: Bloque[];
 }

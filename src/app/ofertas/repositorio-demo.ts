@@ -16,6 +16,15 @@ const DEMO: Candidatura[] = [
   {
     id: 'c1',
     estado: 'Pendiente',
+    notion: 'https://www.notion.so/ejemplo-northwind',
+    notas: 'Encaja por accesibilidad y design systems. Preguntar si el remoto es total.',
+    cuerpo: [
+      { tipo: 'titulo', texto: 'Historial de la candidatura' },
+      { tipo: 'vineta', texto: '28-sep: oferta encontrada en LinkedIn' },
+      { tipo: 'vineta', texto: '29-sep: CV adaptado y revisado' },
+      { tipo: 'subtitulo', texto: 'Encaje' },
+      { tipo: 'parrafo', texto: 'Cubre 9 de 10 requisitos. Falta experiencia con Nx.' },
+    ],
     oferta: {
       id: 'o1',
       empresa: 'Northwind Labs',

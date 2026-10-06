@@ -174,16 +174,17 @@
      tabla sigue usable y pinchar otra empresa cambia lo que se ve aqui. -->
 @if (abierta(); as una) {
   <aside #panel class="panel" data-panel aria-labelledby="titulo-panel" tabindex="-1">
-    <nav class="panel-barra" aria-label="Recorrer las candidaturas">
-      <button type="button" data-anterior [disabled]="!vecinos().anterior" (click)="irA(vecinos().anterior)">
-        Anterior
-      </button>
-      <button type="button" data-siguiente [disabled]="!vecinos().siguiente" (click)="irA(vecinos().siguiente)">
-        Siguiente
-      </button>
-      <a class="completa" [routerLink]="['/candidatura', una.id]">Pantalla completa</a>
-      <button type="button" data-cerrar class="cerrar" (click)="cerrar()" aria-label="Cerrar la ficha">Cerrar</button>
-    </nav>
-    <app-ficha-candidatura [candidatura]="una" [acciones]="acciones(una)" idTitulo="titulo-panel" />
+    <app-ficha-candidatura [candidatura]="una" [acciones]="acciones(una)" idTitulo="titulo-panel">
+      <nav navegacion class="nav" aria-label="Recorrer las candidaturas">
+        <button type="button" data-anterior [disabled]="!vecinos().anterior" (click)="irA(vecinos().anterior)">
+          Anterior
+        </button>
+        <button type="button" data-siguiente [disabled]="!vecinos().siguiente" (click)="irA(vecinos().siguiente)">
+          Siguiente
+        </button>
+        <button type="button" data-cerrar (click)="cerrar()" aria-label="Cerrar la ficha (Esc)">Cerrar</button>
+      </nav>
+      <a extra class="completa" [routerLink]="['/candidatura', una.id]">Pantalla completa</a>
+    </app-ficha-candidatura>
   </aside>
 }

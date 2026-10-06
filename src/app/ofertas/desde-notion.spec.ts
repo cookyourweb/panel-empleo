@@ -92,4 +92,54 @@ describe('candidaturaDesdeRegistro', () => {
     expect(una).not.toHaveProperty('viaEnvio');
     expect(una).not.toHaveProperty('fechaEnvio');
   });
+
+  it('trae el resto de campos de Notion, cada uno a donde pertenece', () => {
+    const una = candidaturaDesdeRegistro({
+      ...base,
+      fase: 'Primera entrevista',
+      notas: 'Llamar el lunes',
+      telefonoContacto: '+34 600 000 000',
+      notion: 'https://www.notion.so/n1',
+      tipoContrato: 'Indefinido',
+      tags: 'IA, Remoto',
+      verificada: true,
+      avisoAutonoma: false,
+    });
+
+    expect(una?.fase).toBe('Primera entrevista');
+    expect(una?.notas).toBe('Llamar el lunes');
+    expect(una?.telefonoContacto).toBe('+34 600 000 000');
+    expect(una?.notion).toBe('https://www.notion.so/n1');
+    expect(una?.oferta.tipoContrato).toBe('Indefinido');
+    expect(una?.oferta.tags).toBe('IA, Remoto');
+    expect(una?.oferta.verificada).toBe(true);
+    // Una casilla sin marcar no dice nada que no diga su ausencia.
+    expect(una).not.toHaveProperty('avisoAutonoma');
+  });
+
+  it('trae el cuerpo de la pagina como bloques y se salta los que no reconoce', () => {
+    const una = candidaturaDesdeRegistro({
+      ...base,
+      cuerpo: [
+        { tipo: 'titulo', texto: 'Historial' },
+        { tipo: 'vineta', texto: 'Aplicado por Indeed', nivel: 1 },
+        { tipo: 'tarea', texto: 'Mandar CV', hecho: true },
+        { tipo: 'separador' },
+        { tipo: 'imagen', texto: 'x' },
+        'basura',
+      ],
+    });
+
+    expect(una?.cuerpo).toEqual([
+      { tipo: 'titulo', texto: 'Historial' },
+      { tipo: 'vineta', texto: 'Aplicado por Indeed', nivel: 1 },
+      { tipo: 'tarea', texto: 'Mandar CV', hecho: true },
+      { tipo: 'separador', texto: '' },
+    ]);
+  });
+
+  it('una pagina sin contenido no deja un cuerpo vacio', () => {
+    expect(candidaturaDesdeRegistro({ ...base, cuerpo: [] })).not.toHaveProperty('cuerpo');
+    expect(candidaturaDesdeRegistro({ ...base, cuerpo: 'no es una lista' as never })).not.toHaveProperty('cuerpo');
+  });
 });

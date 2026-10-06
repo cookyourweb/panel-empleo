@@ -1,15 +1,29 @@
 @let una = candidatura();
 
-<h2 [id]="idTitulo()">{{ una.oferta.empresa }}</h2>
-<p class="puesto">{{ una.oferta.puesto }}</p>
-
-<p><app-estado [estado]="una.estado" /></p>
-
-@if (acciones().length) {
-  <p class="acciones">
+<header class="cabecera">
+  <div class="arriba">
+    <h2 [id]="idTitulo()">{{ una.oferta.empresa }}</h2>
+    <!-- Quien la contiene pone aqui su navegacion (el panel: anterior,
+         siguiente y cerrar). La pagina completa no pone nada. -->
+    <ng-content select="[navegacion]" />
+  </div>
+  <p class="puesto">{{ una.oferta.puesto }}</p>
+  <div class="botones">
+    <app-estado [estado]="una.estado" />
+    @if (una.oferta.enlace) {
+      <a class="boton" data-oferta-original [href]="una.oferta.enlace" target="_blank" rel="noopener noreferrer">
+        Abrir oferta
+      </a>
+    }
+    @if (una.notion) {
+      <a class="boton" data-notion [href]="una.notion" target="_blank" rel="noopener noreferrer">Abrir en Notion</a>
+    }
+    <ng-content select="[extra]" />
+    <!-- Abren el mismo enlace del correo diario, en otra pestaña: ahi n8n
+         confirma que la accion se hizo. -->
     @for (accion of acciones(); track accion.tipo) {
       <a
-        class="accion"
+        class="boton accion"
         [attr.data-accion]="accion.tipo"
         [href]="accion.url"
         target="_blank"
@@ -18,65 +32,117 @@
         {{ accion.etiqueta }}
       </a>
     }
-  </p>
-}
+  </div>
+</header>
 
-<!-- Lo que la captacion no siempre encuentra solo se pinta si esta. Una
-     fila vacia ocupa sitio y no dice nada. -->
-<dl>
-  @if (una.oferta.ubicacion) {
-    <dt>Ubicación</dt>
-    <dd>{{ una.oferta.ubicacion }}</dd>
+<div class="contenido">
+  @for (seccion of ficha().secciones; track seccion.titulo) {
+    <section [attr.aria-label]="seccion.titulo">
+      <h3>{{ seccion.titulo }}</h3>
+      @if (seccion.campos.length) {
+        <dl>
+          @for (campo of seccion.campos; track campo.clave) {
+            <div class="campo" [class.completo]="campo.completo" [attr.data-campo]="campo.clave">
+              <dt>{{ campo.etiqueta }}</dt>
+              <dd>
+                @switch (campo.tipo) {
+                  @case ('enlace') {
+                    <a [href]="campo.valor" target="_blank" rel="noopener noreferrer">{{
+                      campo.textoEnlace ?? campo.valor
+                    }}</a>
+                    @if (campo.vistaPrevia) {
+                      <iframe
+                        class="visor"
+                        [src]="incrustable(campo.vistaPrevia)"
+                        [title]="'CV generado para ' + una.oferta.empresa"
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                      ></iframe>
+                    }
+                  }
+                  @case ('email') {
+                    <a [href]="'mailto:' + campo.valor">{{ campo.valor }}</a>
+                  }
+                  @case ('tel') {
+                    <a [href]="'tel:' + sinEspacios(campo.valor)">{{ campo.valor }}</a>
+                  }
+                  @case ('largo') {
+                    <div class="largo">{{ campo.valor }}</div>
+                  }
+                  @default {
+                    {{ campo.valor }}
+                  }
+                }
+              </dd>
+            </div>
+          }
+        </dl>
+      } @else {
+        <p class="apagado">Sin datos en este grupo.</p>
+      }
+    </section>
   }
-  @if (una.oferta.modalidad) {
-    <dt>Modalidad</dt>
-    <dd>{{ una.oferta.modalidad }}</dd>
-  }
-  @if (una.oferta.salario) {
-    <dt>Salario</dt>
-    <dd>{{ una.oferta.salario }}</dd>
-  }
-  <dt>Idioma de la oferta</dt>
-  <dd>{{ una.oferta.idioma }}</dd>
-  @if (una.oferta.fechaPublicacion) {
-    <dt>Publicada</dt>
-    <dd>{{ fecha(una.oferta.fechaPublicacion) }}</dd>
-  }
-  @if (una.viaEnvio) {
-    <dt>Vía envío</dt>
-    <dd>{{ una.viaEnvio }}</dd>
-  }
-  @if (una.fechaEnvio) {
-    <dt>Fecha envío</dt>
-    <dd>{{ fecha(una.fechaEnvio) }}</dd>
-  }
-  @if (una.cv) {
-    <dt>CV</dt>
-    <dd>
-      <a data-cv [href]="una.cv" target="_blank" rel="noopener noreferrer">Abrir el CV enviado</a>
-    </dd>
-  }
-</dl>
 
-@if (una.carta) {
-  <h3>Carta</h3>
-  <p class="texto-largo" data-carta>{{ una.carta }}</p>
-}
+  <section aria-label="Contenido de la ficha">
+    @if (grupos().length) {
+      <h3>Contenido de la ficha (historial y encaje)</h3>
+      <div class="cuerpo" data-cuerpo>
+        @for (grupo of grupos(); track $index) {
+          @if (grupo.tipo === 'lista') {
+            @if (grupo.ordenada) {
+              <ol>
+                @for (elemento of grupo.elementos; track $index) {
+                  <li [style.margin-left.rem]="(elemento.nivel ?? 0) * 1.25">{{ elemento.texto }}</li>
+                }
+              </ol>
+            } @else {
+              <ul>
+                @for (elemento of grupo.elementos; track $index) {
+                  <li [style.margin-left.rem]="(elemento.nivel ?? 0) * 1.25">{{ elemento.texto }}</li>
+                }
+              </ul>
+            }
+          } @else {
+            @let bloque = comoBloque(grupo);
+            @switch (bloque.tipo) {
+              @case ('titulo') {
+                <h4>{{ bloque.texto }}</h4>
+              }
+              @case ('subtitulo') {
+                <h5>{{ bloque.texto }}</h5>
+              }
+              @case ('cita') {
+                <blockquote>{{ bloque.texto }}</blockquote>
+              }
+              @case ('codigo') {
+                <pre><code>{{ bloque.texto }}</code></pre>
+              }
+              @case ('separador') {
+                <hr />
+              }
+              @case ('tarea') {
+                <label class="tarea">
+                  <input type="checkbox" disabled [checked]="bloque.hecho" />
+                  {{ bloque.texto }}
+                </label>
+              }
+              @default {
+                <p>{{ bloque.texto }}</p>
+              }
+            }
+          }
+        }
+      </div>
+    } @else {
+      <h3>Contenido de la ficha</h3>
+      <p class="apagado">La ficha no tiene contenido en el cuerpo de la página.</p>
+    }
+  </section>
 
-@if (una.oferta.descripcion) {
-  <h3>Descripción</h3>
-  <p class="texto-largo">{{ una.oferta.descripcion }}</p>
-}
-
-@if (una.oferta.enlace) {
-  <p>
-    <a
-      data-oferta-original
-      [href]="una.oferta.enlace"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      Ver la oferta original
-    </a>
-  </p>
-}
+  @if (ficha().vacios.length) {
+    <details>
+      <summary>{{ ficha().vacios.length }} {{ ficha().vacios.length === 1 ? 'campo sin dato' : 'campos sin dato' }}</summary>
+      <p>{{ ficha().vacios.join(', ') }}</p>
+    </details>
+  }
+</div>

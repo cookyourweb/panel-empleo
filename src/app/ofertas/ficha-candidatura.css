@@ -1,48 +1,53 @@
-.puesto {
-  margin-top: 0;
-  font-size: 1.125rem;
+/* La ficha de la maqueta aprobada el 2-oct: cabecera con lo esencial y
+   debajo los campos en dos columnas, con la etiqueta pequeña encima. */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-dl {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 0.4rem 1.5rem;
-  margin: 1.5rem 0;
+.cabecera {
+  flex: none;
+  padding: 0.9rem 1rem 0.65rem;
+  border-bottom: 1px solid hsl(var(--border));
 }
 
-dt {
-  font-weight: 600;
+.arriba {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
 }
 
-dd {
+h2 {
+  flex: 1;
   margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
-/* Carta y descripcion llegan con saltos de linea: se respetan tal cual. */
-.texto-largo {
-  max-width: 70ch;
-  white-space: pre-wrap;
+.puesto {
+  margin: 0.15rem 0 0.5rem;
+  color: hsl(var(--muted-foreground));
+  overflow-wrap: anywhere;
 }
 
-a:focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
-}
-
-.acciones {
+.botones {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  align-items: center;
 }
 
-.accion {
+.boton {
   display: inline-flex;
   align-items: center;
-  height: 2rem;
-  padding: 0 0.9rem;
+  height: 1.75rem;
+  padding: 0 0.7rem;
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius);
   color: hsl(var(--foreground));
+  font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
 }
@@ -52,4 +57,153 @@ a:focus-visible {
   background: hsl(var(--primary));
   border-color: hsl(var(--primary));
   color: hsl(var(--primary-foreground));
+}
+
+.contenido {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.25rem 1rem 1.5rem;
+}
+
+section {
+  padding-top: 0.9rem;
+}
+
+h3 {
+  margin: 0 0 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 1rem;
+  margin: 0;
+}
+
+.campo {
+  min-width: 0;
+}
+
+.campo.completo {
+  grid-column: 1 / -1;
+}
+
+dt {
+  margin-bottom: 1px;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.7rem;
+}
+
+dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* El CV generado, a tamaño de lectura, para revisarlo antes de enviarlo. */
+.visor {
+  display: block;
+  width: 100%;
+  height: 32rem;
+  margin-top: 0.4rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 6px;
+  background: white;
+}
+
+/* Descripcion, notas y carta: con sus saltos de linea y su propio scroll,
+   para que una carta larga no empuje los grupos de debajo fuera de vista. */
+.largo {
+  max-height: 21rem;
+  overflow: auto;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 6px;
+  background: hsl(var(--muted));
+  white-space: pre-wrap;
+}
+
+.cuerpo h4 {
+  margin: 0.9rem 0 0.25rem;
+  font-size: 0.875rem;
+}
+
+.cuerpo h5 {
+  margin: 0.75rem 0 0.15rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.8rem;
+}
+
+.cuerpo p,
+.cuerpo ul,
+.cuerpo ol {
+  margin: 0.4rem 0;
+}
+
+.cuerpo ul,
+.cuerpo ol {
+  padding-left: 1.4rem;
+}
+
+.cuerpo blockquote {
+  margin: 0.5rem 0;
+  padding: 0.25rem 0.65rem;
+  border-left: 3px solid hsl(var(--border));
+  border-radius: 0 4px 4px 0;
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+}
+
+.cuerpo pre {
+  overflow: auto;
+  padding: 0.5rem;
+  border-radius: 4px;
+  background: hsl(var(--muted));
+}
+
+.cuerpo hr {
+  margin: 0.75rem 0;
+  border: 0;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.tarea {
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+  margin: 0.3rem 0;
+}
+
+.apagado,
+details {
+  color: hsl(var(--muted-foreground));
+}
+
+details {
+  margin-top: 1rem;
+}
+
+summary {
+  cursor: pointer;
+}
+
+a {
+  color: hsl(var(--primary));
+}
+
+.boton,
+.accion {
+  text-decoration: none;
+}
+
+a:focus-visible,
+summary:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
 }

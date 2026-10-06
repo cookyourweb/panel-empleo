@@ -1,4 +1,13 @@
-import { Candidatura, EstadoDeCandidatura, ESTADOS, Modalidad, MODALIDADES, Oferta } from './dominio';
+import {
+  Bloque,
+  Candidatura,
+  EstadoDeCandidatura,
+  ESTADOS,
+  Modalidad,
+  MODALIDADES,
+  Oferta,
+  TIPOS_DE_BLOQUE,
+} from './dominio';
 
 /**
  * Una ficha tal como sale del seguimiento en Notion, ya aplanada.
@@ -23,6 +32,26 @@ export interface RegistroLocal {
   fechaEnvio?: string;
   cv?: string;
   carta?: string;
+  tipoContrato?: string;
+  modoContratacion?: string;
+  palabrasClave?: string;
+  tags?: string;
+  verificada?: boolean;
+  fase?: string;
+  seguimiento?: string;
+  fechaEntrevista?: string;
+  formatoTecnico?: string;
+  nombreContacto?: string;
+  telefonoContacto?: string;
+  emailEmpresa?: string;
+  emailEnviado?: string;
+  notas?: string;
+  cvUsado?: string;
+  prep?: string;
+  avisoAutonoma?: boolean;
+  notion?: string;
+  /** Sin tipo a proposito: se valida bloque a bloque al traducirlo. */
+  cuerpo?: unknown;
 }
 
 /**
@@ -59,7 +88,17 @@ export function candidaturaDesdeRegistro(registro: RegistroLocal): Candidatura |
     idioma: registro.idioma === 'en' ? 'en' : 'es',
   };
 
-  const opcionales = ['descripcion', 'enlace', 'ubicacion', 'salario', 'fechaPublicacion'] as const;
+  const opcionales = [
+    'descripcion',
+    'enlace',
+    'ubicacion',
+    'salario',
+    'fechaPublicacion',
+    'tipoContrato',
+    'modoContratacion',
+    'palabrasClave',
+    'tags',
+  ] as const;
   for (const campo of opcionales) {
     const valor = registro[campo]?.trim();
     if (valor) {
@@ -67,12 +106,34 @@ export function candidaturaDesdeRegistro(registro: RegistroLocal): Candidatura |
     }
   }
 
+  // Una casilla sin marcar no se copia: no dice nada que no diga su ausencia.
+  if (registro.verificada === true) {
+    oferta.verificada = true;
+  }
+
   if ((MODALIDADES as readonly string[]).includes(registro.modalidad ?? '')) {
     oferta.modalidad = registro.modalidad as Modalidad;
   }
 
   const candidatura: Candidatura = { id: registro.id, oferta, estado };
-  const seguimiento = ['viaEnvio', 'fechaEnvio', 'cv', 'carta'] as const;
+  const seguimiento = [
+    'viaEnvio',
+    'fechaEnvio',
+    'cv',
+    'carta',
+    'fase',
+    'seguimiento',
+    'fechaEntrevista',
+    'formatoTecnico',
+    'nombreContacto',
+    'telefonoContacto',
+    'emailEmpresa',
+    'emailEnviado',
+    'notas',
+    'cvUsado',
+    'prep',
+    'notion',
+  ] as const;
   for (const campo of seguimiento) {
     const valor = registro[campo]?.trim();
     if (valor) {
@@ -80,5 +141,40 @@ export function candidaturaDesdeRegistro(registro: RegistroLocal): Candidatura |
     }
   }
 
+  if (registro.avisoAutonoma === true) {
+    candidatura.avisoAutonoma = true;
+  }
+
+  const cuerpo = bloquesDesde(registro.cuerpo);
+  if (cuerpo.length) {
+    candidatura.cuerpo = cuerpo;
+  }
+
   return candidatura;
+}
+
+/** Se queda con los bloques que sabe pintar y deja fuera el resto sin romper. */
+function bloquesDesde(cuerpo: unknown): Bloque[] {
+  if (!Array.isArray(cuerpo)) {
+    return [];
+  }
+  const bloques: Bloque[] = [];
+  for (const crudo of cuerpo) {
+    if (typeof crudo !== 'object' || crudo === null) {
+      continue;
+    }
+    const { tipo, texto, nivel, hecho } = crudo as Record<string, unknown>;
+    if (!(TIPOS_DE_BLOQUE as readonly unknown[]).includes(tipo)) {
+      continue;
+    }
+    const bloque: Bloque = { tipo: tipo as Bloque['tipo'], texto: typeof texto === 'string' ? texto : '' };
+    if (typeof nivel === 'number' && nivel > 0) {
+      bloque.nivel = nivel;
+    }
+    if (bloque.tipo === 'tarea' && typeof hecho === 'boolean') {
+      bloque.hecho = hecho;
+    }
+    bloques.push(bloque);
+  }
+  return bloques;
 }
