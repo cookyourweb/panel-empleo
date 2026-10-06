@@ -2,7 +2,12 @@
   <article>
     <p class="volver"><a routerLink="/">Volver a las candidaturas</a></p>
 
-    <app-ficha-candidatura [candidatura]="una" [acciones]="acciones()" />
+    <app-ficha-candidatura
+      [candidatura]="una"
+      [acciones]="acciones()"
+      [opciones]="store.opcionesDeEdicion()"
+      [alGuardar]="guardar"
+    />
   </article>
 } @else {
   <article>

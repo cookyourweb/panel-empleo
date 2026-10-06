@@ -1,7 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CandidaturasStore } from './candidaturas.store';
-import { Candidatura } from './dominio';
+import { Candidatura, MODALIDADES } from './dominio';
+import { CambiosDeCandidatura } from './edicion';
+import { EditorDeCandidaturas } from './editor-de-candidaturas';
 import { RepositorioDeCandidaturas } from './repositorio-de-candidaturas';
 
 /** Doble de prueba: la aplicacion depende de la abstraccion, no de una fuente. */
@@ -293,5 +295,51 @@ describe('CandidaturasStore · ordenar por seguimiento', () => {
 
       expect(s.vecinosDe('c1')).toEqual({ anterior: undefined, siguiente: undefined });
     });
+  });
+
+  describe('guardarCambios', () => {
+    function conEditor(guardar: (id: string, cambios: CambiosDeCandidatura) => Promise<void>): CandidaturasStore {
+      TestBed.configureTestingModule({
+        providers: [
+          CandidaturasStore,
+          { provide: RepositorioDeCandidaturas, useValue: new RepositorioFalso(TRES) },
+          { provide: EditorDeCandidaturas, useValue: { opciones: async () => ({ fase: ['CV enviado'] }), guardar } },
+        ],
+      });
+      return TestBed.inject(CandidaturasStore);
+    }
+
+    it('al cargar trae las opciones de Notion, y las de modalidad del dominio', async () => {
+      const s = conEditor(async () => undefined);
+      await s.cargar();
+
+      expect(s.opcionesDeEdicion()).toEqual({ fase: ['CV enviado'], modalidad: [...MODALIDADES] });
+    });
+
+    it('cuando Notion lo acepta, el cambio se ve ya en la tabla', async () => {
+      const s = conEditor(async () => undefined);
+      await s.cargar();
+
+      await s.guardarCambios('c2', { salario: '70k' });
+
+      expect(s.buscarPorId('c2')?.oferta.salario).toBe('70k');
+    });
+
+    it('si Notion lo rechaza, no se finge que se guardo', async () => {
+      const s = conEditor(async () => {
+        throw new Error('Notion no responde');
+      });
+      await s.cargar();
+
+      await expect(s.guardarCambios('c2', { salario: '70k' })).rejects.toThrow('Notion no responde');
+      expect(s.buscarPorId('c2')?.oferta).not.toHaveProperty('salario');
+    });
+  });
+
+  it('sin editor no hay opciones de edicion', async () => {
+    const s = store(TRES);
+    await s.cargar();
+
+    expect(s.opcionesDeEdicion()).toBeNull();
   });
 });

@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 
 import { accionesPara, EnlacesDeAccion } from './acciones';
 import { CandidaturasStore } from './candidaturas.store';
+import { CambiosDeCandidatura } from './edicion';
 import { FichaCandidatura } from './ficha-candidatura';
 import { FuenteDeAcciones } from './fuente-de-acciones';
 
@@ -27,6 +28,8 @@ export class DetallePage implements OnInit {
     const una = this.candidatura();
     return una ? accionesPara(una, this.enlaces()) : [];
   });
+
+  protected readonly guardar = (id: string, cambios: CambiosDeCandidatura) => this.store.guardarCambios(id, cambios);
 
   ngOnInit(): void {
     // El store se comparte con la lista: si ya cargo, esto no vuelve a pedir nada.

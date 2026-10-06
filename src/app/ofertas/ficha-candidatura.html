@@ -19,6 +19,23 @@
       <a class="boton" data-notion [href]="una.notion" target="_blank" rel="noopener noreferrer">Abrir en Notion</a>
     }
     <ng-content select="[extra]" />
+    @if (editable() && !editando()) {
+      <button type="button" class="boton" data-editar (click)="editar()">
+        <svg class="icono" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4" />
+        </svg>
+        Editar
+      </button>
+    }
+    @if (editando()) {
+      <button type="button" class="boton primario" data-guardar [disabled]="guardando()" (click)="guardar()">
+        <svg class="icono" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6" />
+        </svg>
+        {{ guardando() ? 'Guardando...' : 'Guardar' }}
+      </button>
+      <button type="button" class="boton" data-cancelar [disabled]="guardando()" (click)="cancelar()">Cancelar</button>
+    }
     <!-- Abren el mismo enlace del correo diario, en otra pestaña: ahi n8n
          confirma que la accion se hizo. -->
     @for (accion of acciones(); track accion.tipo) {
@@ -35,6 +52,72 @@
   </div>
 </header>
 
+@if (editando()) {
+  <!-- Escape dentro del formulario cancela la edicion y no llega a cerrar el
+       panel: perder lo escrito por una tecla seria peor que no tener atajo. -->
+  <form
+    class="contenido"
+    [attr.aria-label]="'Editar ' + una.oferta.empresa"
+    (submit)="$event.preventDefault(); guardar()"
+    (keydown.escape)="$event.stopPropagation(); cancelar()"
+  >
+    @if (error(); as mensaje) {
+      <p class="error" role="alert">No se guardó: {{ mensaje }}</p>
+    }
+    @for (grupo of gruposEditables; track grupo.seccion) {
+      <fieldset [disabled]="guardando()">
+        <legend>{{ grupo.seccion === 'Cabecera' ? 'Oferta: lo principal' : grupo.seccion }}</legend>
+        <div class="rejilla">
+          @for (campo of grupo.campos; track campo.clave) {
+            <div class="campo" [class.completo]="campo.tipo === 'largo'" [class.casilla]="campo.tipo === 'casilla'">
+              @switch (campo.tipo) {
+                @case ('casilla') {
+                  <input
+                    type="checkbox"
+                    [id]="'editar-' + campo.clave"
+                    [checked]="borrador()[campo.clave] === true"
+                    (change)="cambiar(campo.clave, $event)"
+                  />
+                  <label [for]="'editar-' + campo.clave">{{ campo.etiqueta }}</label>
+                }
+                @case ('opcion') {
+                  <label [for]="'editar-' + campo.clave">{{ campo.etiqueta }}</label>
+                  <select [id]="'editar-' + campo.clave" (change)="cambiar(campo.clave, $event)">
+                    <option value="" [selected]="!texto(campo.clave)">Sin dato</option>
+                    @for (opcion of opcionesDe(campo); track opcion) {
+                      <option [value]="opcion" [selected]="opcion === texto(campo.clave)">{{ opcion }}</option>
+                    }
+                  </select>
+                }
+                @case ('largo') {
+                  <label [for]="'editar-' + campo.clave">{{ campo.etiqueta }}</label>
+                  <textarea
+                    [id]="'editar-' + campo.clave"
+                    rows="6"
+                    [value]="texto(campo.clave)"
+                    (input)="cambiar(campo.clave, $event)"
+                  ></textarea>
+                }
+                @default {
+                  <label [for]="'editar-' + campo.clave">{{ campo.etiqueta }}</label>
+                  <input
+                    [id]="'editar-' + campo.clave"
+                    [type]="tipoDeEntrada(campo)"
+                    [value]="texto(campo.clave)"
+                    (input)="cambiar(campo.clave, $event)"
+                  />
+                }
+              }
+            </div>
+          }
+        </div>
+      </fieldset>
+    }
+    <p class="apagado">
+      El estado se cambia con las acciones; la fecha de envío y el contenido de la página, en Notion.
+    </p>
+  </form>
+} @else {
 <div class="contenido">
   @for (seccion of ficha().secciones; track seccion.titulo) {
     <section [attr.aria-label]="seccion.titulo">
@@ -146,3 +229,4 @@
     </details>
   }
 </div>
+}

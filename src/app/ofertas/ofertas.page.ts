@@ -14,6 +14,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Accion, accionesPara, EnlacesDeAccion } from './acciones';
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
 import { CandidaturasStore, ColumnaOrdenable } from './candidaturas.store';
+import { CambiosDeCandidatura } from './edicion';
 import { fechaEspanola } from './fecha';
 import { EtiquetaEstado } from './etiqueta-estado';
 import { FichaCandidatura } from './ficha-candidatura';
@@ -118,6 +119,9 @@ export class OfertasPage implements OnInit {
       void this.router.navigate([], { queryParams: {} });
     }
   }
+
+  /** Lo que la ficha llama al guardar. Funcion flecha para no perder el this. */
+  protected readonly guardar = (id: string, cambios: CambiosDeCandidatura) => this.store.guardarCambios(id, cambios);
 
   protected filtrarPor(estado: EstadoDeCandidatura | null): void {
     this.store.filtrarPor(estado);

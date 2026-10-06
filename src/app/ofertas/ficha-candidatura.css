@@ -207,3 +207,111 @@ summary:focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }
+
+/* ---------- Edicion ---------- */
+.icono {
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-right: 0.3rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+button.boton {
+  background: transparent;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button.boton.primario {
+  background: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+button.boton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+button.boton:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+fieldset {
+  margin: 0.9rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+legend {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rejilla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 1rem;
+}
+
+.rejilla label {
+  display: block;
+  margin-bottom: 2px;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.7rem;
+}
+
+.rejilla input:not([type='checkbox']),
+.rejilla select,
+.rejilla textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 6px;
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+  font: inherit;
+}
+
+.rejilla textarea {
+  resize: vertical;
+}
+
+.rejilla :is(input, select, textarea):focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 1px;
+}
+
+.campo.casilla {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.campo.casilla label {
+  margin: 0;
+  color: hsl(var(--foreground));
+  font-size: 0.875rem;
+}
+
+.error {
+  margin: 0.75rem 0 0;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid hsl(var(--destructive, 0 70% 50%));
+  border-radius: 6px;
+  color: hsl(var(--foreground));
+}

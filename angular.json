@@ -59,7 +59,8 @@
               "buildTarget": "panel-empleo:build:production"
             },
             "development": {
-              "buildTarget": "panel-empleo:build:development"
+              "buildTarget": "panel-empleo:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

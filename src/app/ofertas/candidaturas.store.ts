@@ -1,6 +1,8 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, PendingTasks, signal } from '@angular/core';
 
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
+import { aplicarCambios, CambiosDeCandidatura, OpcionesDeEdicion, OPCIONES_FIJAS } from './edicion';
+import { EditorDeCandidaturas } from './editor-de-candidaturas';
 import { RepositorioDeCandidaturas } from './repositorio-de-candidaturas';
 
 /** Las columnas por las que se puede ordenar la tabla. */
@@ -43,6 +45,10 @@ const COMPARADOR = new Intl.Collator('es', { sensitivity: 'base', numeric: true 
 @Injectable()
 export class CandidaturasStore {
   private readonly repositorio = inject(RepositorioDeCandidaturas);
+  /** Opcional: sin editor (tests, o una pantalla que solo lee) todo sigue igual. */
+  private readonly editor = inject(EditorDeCandidaturas, { optional: true });
+  private readonly opciones = signal<OpcionesDeEdicion | null>(null);
+  private readonly tareas = inject(PendingTasks);
   private readonly todas = signal<Candidatura[]>([]);
   private readonly filtro = signal<EstadoDeCandidatura | null>(null);
   private readonly texto = signal('');
@@ -52,6 +58,8 @@ export class CandidaturasStore {
   readonly filtroActivo = this.filtro.asReadonly();
   readonly busqueda = this.texto.asReadonly();
   readonly orden = this.ordenActual.asReadonly();
+  /** null mientras no se pueda editar. Con datos, la ficha ofrece el boton. */
+  readonly opcionesDeEdicion = this.opciones.asReadonly();
 
   /**
    * Las que se estan viendo ahora mismo: filtradas por estado, por texto y en
@@ -136,8 +144,32 @@ export class CandidaturasStore {
     }
   }
 
+  /**
+   * Va como tarea pendiente de Angular: asi "la aplicacion esta estable" quiere
+   * decir de verdad que los datos ya llegaron, y no solo que no queda nada
+   * pintandose.
+   */
   async cargar(): Promise<void> {
-    this.todas.set(await this.repositorio.listar());
+    await this.tareas.run(async () => {
+      const [candidaturas, opciones] = await Promise.all([
+        this.repositorio.listar(),
+        this.editor?.opciones() ?? null,
+      ]);
+      this.todas.set(candidaturas);
+      this.opciones.set(opciones ? { ...opciones, ...OPCIONES_FIJAS } : null);
+    });
+  }
+
+  /**
+   * Guarda en la fuente y, solo si la fuente lo acepta, lo pone en la tabla.
+   * Al reves, un fallo dejaria en pantalla un dato que en Notion no esta.
+   */
+  async guardarCambios(id: string, cambios: CambiosDeCandidatura): Promise<void> {
+    if (!this.editor) {
+      throw new Error('No se puede editar desde aqui');
+    }
+    await this.editor.guardar(id, cambios);
+    this.todas.update((todas) => todas.map((una) => (una.id === id ? aplicarCambios(una, cambios) : una)));
   }
 
   /**
