@@ -1,0 +1,117 @@
+/* Comun a los dialogos de la tabla: fondo que tapa y caja centrada. */
+.fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: hsl(0 0% 0% / 0.55);
+}
+
+.caja {
+  box-sizing: border-box;
+  width: min(30rem, 100%);
+  max-height: 85vh;
+  overflow: auto;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 10px;
+  background: hsl(var(--background));
+  box-shadow: 0 16px 48px hsl(0 0% 0% / 0.45);
+}
+
+.caja.ancha {
+  width: min(40rem, 100%);
+}
+
+h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+ol,
+ul {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+}
+
+li {
+  margin: 0.2rem 0;
+}
+
+.apagado {
+  color: hsl(var(--muted-foreground));
+}
+
+.aviso {
+  margin: 0.75rem 0 0;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid hsl(40 90% 55%);
+  border-radius: 6px;
+}
+
+.pie {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.boton {
+  height: 2rem;
+  padding: 0 0.85rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: transparent;
+  color: hsl(var(--foreground));
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.boton.peligro {
+  border-color: hsl(0 70% 50%);
+  background: hsl(0 70% 45%);
+  color: white;
+}
+
+.boton.primario {
+  border-color: hsl(var(--primary));
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.boton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.boton:focus-visible,
+a:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.fila {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid hsl(var(--border) / 0.5);
+}
+
+.fila .texto {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.fila a {
+  overflow: hidden;
+  color: hsl(var(--primary));
+  font-size: 0.8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

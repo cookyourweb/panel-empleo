@@ -1,6 +1,13 @@
 import { Injectable, Type } from '@angular/core';
 
+import { RegistroLocal } from './desde-notion';
 import { CambiosDeCandidatura, OpcionesDeEdicion } from './edicion';
+
+/** Una ficha eliminada desde el panel: cuando, y como estaba para poder devolverla. */
+export interface EliminadaGuardada {
+  cuando: string;
+  registro: RegistroLocal;
+}
 
 /**
  * Donde se guardan los cambios hechos desde la ficha. Mismo patron que el
@@ -11,6 +18,11 @@ export abstract class EditorDeCandidaturas {
   /** null si no se puede editar: la ficha entonces no ofrece el boton. */
   abstract opciones(): Promise<OpcionesDeEdicion | null>;
   abstract guardar(id: string, cambios: CambiosDeCandidatura): Promise<void>;
+  /** A la papelera de Notion, nunca un borrado del todo. Devuelve las que fueron. */
+  abstract eliminar(ids: string[]): Promise<string[]>;
+  /** De vuelta desde la papelera. Devuelve las que volvieron. */
+  abstract restaurar(ids: string[]): Promise<string[]>;
+  abstract eliminadas(): Promise<EliminadaGuardada[]>;
 }
 
 /**
@@ -40,6 +52,37 @@ export class EditorLocal implements EditorDeCandidaturas {
       throw new Error(cuerpo?.error ?? `El puente respondio ${respuesta.status}`);
     }
   }
+
+  eliminar(ids: string[]): Promise<string[]> {
+    return this.papelera('eliminar', ids);
+  }
+
+  restaurar(ids: string[]): Promise<string[]> {
+    return this.papelera('restaurar', ids);
+  }
+
+  async eliminadas(): Promise<EliminadaGuardada[]> {
+    try {
+      const respuesta = await fetch('/api/eliminadas');
+      return respuesta.ok ? ((await respuesta.json()) as EliminadaGuardada[]) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  /** Si unas salen y otras no (207), devuelve solo las que salieron: no se finge el resto. */
+  private async papelera(accion: 'eliminar' | 'restaurar', ids: string[]): Promise<string[]> {
+    const respuesta = await fetch(`/api/candidaturas/${accion}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids }),
+    });
+    const cuerpo = (await respuesta.json().catch(() => null)) as { hechas?: string[]; error?: string } | null;
+    if (!respuesta.ok) {
+      throw new Error(cuerpo?.error ?? `El puente respondio ${respuesta.status}`);
+    }
+    return cuerpo?.hechas ?? [];
+  }
 }
 
 /** La demo publica enseña datos de ejemplo: no hay nada que guardar. */
@@ -51,6 +94,18 @@ export class EditorDemo implements EditorDeCandidaturas {
 
   async guardar(): Promise<void> {
     throw new Error('La demo no guarda cambios');
+  }
+
+  async eliminar(): Promise<string[]> {
+    throw new Error('La demo no elimina nada');
+  }
+
+  async restaurar(): Promise<string[]> {
+    throw new Error('La demo no elimina nada');
+  }
+
+  async eliminadas(): Promise<EliminadaGuardada[]> {
+    return [];
   }
 }
 

@@ -19,6 +19,12 @@
   </p>
 
   <app-selector-de-columnas />
+
+  @if (conSeleccion()) {
+    <button type="button" class="boton-cabecera" data-ver-eliminadas (click)="viendoEliminadas.set(true)">
+      Eliminadas <span class="recuento">{{ store.eliminadas().length }}</span>
+    </button>
+  }
 </div>
 
 <!-- Los recuentos no son adorno: son lo que deja ver de un vistazo que un
@@ -45,17 +51,30 @@
   }
 </div>
 
+@if (store.seleccionadas().size) {
+  <app-barra-de-seleccion
+    [cuantas]="store.seleccionadas().size"
+    (eliminar)="pedirEliminar()"
+    (cambiarEstado)="cambiarEstado($event)"
+    (caducar)="cambiarEstado('Caducada')"
+    (limpiar)="store.marcarTodas(false)"
+  />
+}
+
 <!-- La tabla se desplaza dentro de su caja y la cabecera queda fija: con
      cientos de filas, perder de vista las columnas obliga a subir. -->
 <!-- La tabla es mas ancha que la pantalla a proposito: se recorre con scroll
      horizontal y vertical dentro de su caja, con la cabecera y la columna de
      empresa fijas para no perder la referencia de que fila se esta leyendo. -->
 <div class="caja-tabla" tabindex="0" role="region" aria-label="Tabla de ofertas, desplazable">
-  <table [style.width.px]="anchoTotal()">
+  <table [style.width.px]="anchoTotal()" [class.con-seleccion]="conSeleccion()">
     <caption class="visualmente-oculto">
       Ofertas, {{ store.visibles().length }} de {{ store.candidaturas().length }}
     </caption>
     <colgroup>
+      @if (conSeleccion()) {
+        <col [style.width.px]="anchoCheck" />
+      }
       @for (columna of columnas(); track columna.clave) {
         <col [style.width.px]="columna.ancho" />
         @if (columna.clave === 'estado' && conAcciones()) {
@@ -65,6 +84,17 @@
     </colgroup>
     <thead>
       <tr>
+        @if (conSeleccion()) {
+          <th scope="col" class="sel">
+            <input
+              type="checkbox"
+              aria-label="Seleccionar todas las ofertas filtradas"
+              [checked]="todasMarcadas()"
+              [indeterminate]="algunaMarcada()"
+              (change)="marcarTodas($event)"
+            />
+          </th>
+        }
         @for (columna of columnas(); track columna.clave) {
           @if (columna.tipo === 'enlace') {
             <!-- Las de enlaces no se ordenan: no hay un orden util para una URL. -->
@@ -97,7 +127,25 @@
     </thead>
     <tbody>
       @for (candidatura of store.visibles(); track candidatura.id) {
-        <tr [class.abierta]="candidatura.id === ficha()" [attr.aria-current]="candidatura.id === ficha() || null">
+        <tr
+          [class.abierta]="candidatura.id === ficha()"
+          [attr.aria-current]="candidatura.id === ficha() || null"
+          [attr.aria-selected]="conSeleccion() ? store.seleccionadas().has(candidatura.id) : null"
+        >
+          @if (conSeleccion()) {
+            <td class="sel">
+              <!-- Las que aun no estan en Notion no se pueden eliminar ni
+                   cambiar: el puente las rechazaria. -->
+              <input
+                type="checkbox"
+                [attr.aria-label]="'Seleccionar ' + candidatura.oferta.empresa"
+                [checked]="store.seleccionadas().has(candidatura.id)"
+                [disabled]="candidatura.id.startsWith('local-')"
+                [attr.title]="candidatura.id.startsWith('local-') ? 'Aún no está en Notion' : null"
+                (click)="alternarSeleccion(candidatura.id, $event)"
+              />
+            </td>
+          }
           @for (columna of columnas(); track columna.clave) {
             @switch (columna.tipo) {
               @case ('empresa') {
@@ -151,7 +199,7 @@
         </tr>
       } @empty {
         <tr>
-          <td class="vacio" [attr.colspan]="columnas().length + (conAcciones() ? 1 : 0)">
+          <td class="vacio" [attr.colspan]="columnas().length + (conAcciones() ? 1 : 0) + (conSeleccion() ? 1 : 0)">
             @if (store.busqueda().trim()) {
               Ninguna oferta coincide con la búsqueda.
             } @else {
@@ -187,4 +235,34 @@
       <a extra class="completa" [routerLink]="['/candidatura', una.id]">Pantalla completa</a>
     </app-ficha-candidatura>
   </aside>
+}
+
+@if (confirmando(); as candidaturas) {
+  <app-confirmar-eliminar [candidaturas]="candidaturas" (confirmar)="eliminar()" (cancelar)="confirmando.set(null)" />
+}
+
+@if (viendoEliminadas()) {
+  <app-lista-de-eliminadas
+    [eliminadas]="store.eliminadas()"
+    (restaurar)="restaurar($event)"
+    (cerrar)="viendoEliminadas.set(false)"
+  />
+}
+
+<!-- El aviso de lo que acaba de pasar, con Deshacer cuando se puede. Se queda
+     mientras el raton esta encima, para que de tiempo a leerlo. -->
+@if (aviso(); as a) {
+  <div
+    class="aviso-general"
+    data-aviso-general
+    role="status"
+    aria-live="polite"
+    (mouseenter)="pausarAviso()"
+    (mouseleave)="reanudarAviso()"
+  >
+    <span>{{ a.texto }}</span>
+    @if (a.deshacer) {
+      <button type="button" data-deshacer (click)="deshacer()">Deshacer</button>
+    }
+  </div>
 }

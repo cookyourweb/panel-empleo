@@ -128,4 +128,6 @@ export interface Candidatura {
   notion?: string;
   /** El contenido de la pagina de Notion, si tiene. */
   cuerpo?: Bloque[];
+  /** Fecha y hora ISO en que entro en el sistema. Ordena la tabla por defecto. */
+  creada?: string;
 }

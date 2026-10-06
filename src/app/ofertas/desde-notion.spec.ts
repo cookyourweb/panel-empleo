@@ -142,4 +142,8 @@ describe('candidaturaDesdeRegistro', () => {
     expect(candidaturaDesdeRegistro({ ...base, cuerpo: [] })).not.toHaveProperty('cuerpo');
     expect(candidaturaDesdeRegistro({ ...base, cuerpo: 'no es una lista' as never })).not.toHaveProperty('cuerpo');
   });
+
+  it('trae cuando entro la ficha en Notion, para ordenar por lo mas reciente', () => {
+    expect(candidaturaDesdeRegistro({ ...base, creada: '2026-10-05T18:00:00.000Z' })?.creada).toBe('2026-10-05T18:00:00.000Z');
+  });
 });

@@ -355,3 +355,102 @@ td.vacio {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }
+
+/* ---------- Seleccion ----------
+   El check va fijo a la izquierda, y la empresa se corre su ancho. */
+th.sel,
+td.sel {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  padding: 0;
+  text-align: center;
+}
+
+th.sel {
+  z-index: 3;
+}
+
+.con-seleccion th.empresa,
+.con-seleccion td.empresa {
+  left: 40px;
+}
+
+th.sel input,
+td.sel input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: hsl(var(--primary));
+  cursor: pointer;
+}
+
+td.sel input:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+th.sel input:focus-visible,
+td.sel input:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+tbody tr[aria-selected='true'] td {
+  background: hsl(var(--primary) / 0.14);
+}
+
+.boton-cabecera {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.25rem;
+  padding: 0 0.8rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: transparent;
+  color: hsl(var(--foreground));
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.boton-cabecera:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Abajo en el centro, encima de todo, como en la maqueta. */
+.aviso-general {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  z-index: 60;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  max-width: min(640px, 92vw);
+  padding: 0.5rem 0.5rem 0.5rem 0.9rem;
+  border-radius: 8px;
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+  box-shadow: 0 12px 32px hsl(0 0% 0% / 0.35);
+  transform: translateX(-50%);
+}
+
+.aviso-general button {
+  height: 1.75rem;
+  padding: 0 0.65rem;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.aviso-general button:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}

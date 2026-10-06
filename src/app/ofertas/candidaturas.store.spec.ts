@@ -303,7 +303,16 @@ describe('CandidaturasStore · ordenar por seguimiento', () => {
         providers: [
           CandidaturasStore,
           { provide: RepositorioDeCandidaturas, useValue: new RepositorioFalso(TRES) },
-          { provide: EditorDeCandidaturas, useValue: { opciones: async () => ({ fase: ['CV enviado'] }), guardar } },
+          {
+            provide: EditorDeCandidaturas,
+            useValue: {
+              opciones: async () => ({ fase: ['CV enviado'] }),
+              guardar,
+              eliminar: async () => [],
+              restaurar: async () => [],
+              eliminadas: async () => [],
+            },
+          },
         ],
       });
       return TestBed.inject(CandidaturasStore);
@@ -341,5 +350,135 @@ describe('CandidaturasStore · ordenar por seguimiento', () => {
     await s.cargar();
 
     expect(s.opcionesDeEdicion()).toBeNull();
+  });
+
+  describe('seleccion y acciones en bloque', () => {
+    const CUATRO: Candidatura[] = [
+      ...TRES,
+      { id: 'c4', estado: 'En proceso', oferta: { id: 'o4', empresa: 'Delta', puesto: 'Tech Lead', idioma: 'es' } },
+    ];
+
+    function conPapelera(): { s: CandidaturasStore; papelera: { eliminar: string[][]; restaurar: string[][]; estados: [string, CambiosDeCandidatura][] } } {
+      const papelera = { eliminar: [] as string[][], restaurar: [] as string[][], estados: [] as [string, CambiosDeCandidatura][] };
+      TestBed.configureTestingModule({
+        providers: [
+          CandidaturasStore,
+          { provide: RepositorioDeCandidaturas, useValue: new RepositorioFalso(CUATRO) },
+          {
+            provide: EditorDeCandidaturas,
+            useValue: {
+              opciones: async () => ({}),
+              guardar: async (id: string, cambios: CambiosDeCandidatura) => {
+                papelera.estados.push([id, cambios]);
+              },
+              eliminar: async (ids: string[]) => {
+                papelera.eliminar.push(ids);
+                return ids;
+              },
+              restaurar: async (ids: string[]) => {
+                papelera.restaurar.push(ids);
+                return ids;
+              },
+              eliminadas: async () => [],
+            },
+          },
+        ],
+      });
+      return { s: TestBed.inject(CandidaturasStore), papelera };
+    }
+
+    it('marcar y desmarcar una fila', async () => {
+      const { s } = conPapelera();
+      await s.cargar();
+
+      s.alternarSeleccion('c2');
+      expect([...s.seleccionadas()]).toEqual(['c2']);
+      s.alternarSeleccion('c2');
+      expect(s.seleccionadas().size).toBe(0);
+    });
+
+    it('con Shift marca todo el tramo desde la ultima, como en la maqueta', async () => {
+      const { s } = conPapelera();
+      await s.cargar();
+
+      s.alternarSeleccion('c1');
+      s.alternarSeleccion('c3', true);
+
+      expect([...s.seleccionadas()].sort()).toEqual(['c1', 'c2', 'c3']);
+    });
+
+    it('marcar todas es marcar las que se ven, no las que el filtro esconde', async () => {
+      const { s } = conPapelera();
+      await s.cargar();
+      s.filtrarPor('Pendiente');
+
+      s.marcarTodas(true);
+
+      expect([...s.seleccionadas()].sort()).toEqual(['c1', 'c2']);
+    });
+
+    it('lo que el filtro esconde deja de contar como seleccionado', async () => {
+      const { s } = conPapelera();
+      await s.cargar();
+      s.alternarSeleccion('c3');
+
+      s.filtrarPor('Pendiente');
+
+      expect(s.seleccionadas().size).toBe(0);
+    });
+
+    it('eliminar las saca de la tabla y de la seleccion, y restaurar las devuelve', async () => {
+      const { s, papelera } = conPapelera();
+      await s.cargar();
+      s.alternarSeleccion('c1');
+
+      expect(await s.eliminar(['c1'])).toEqual(['c1']);
+      expect(s.buscarPorId('c1')).toBeUndefined();
+      expect(s.seleccionadas().size).toBe(0);
+      expect(s.eliminadas().map((e) => e.candidatura.id)).toEqual(['c1']);
+
+      await s.restaurar(['c1']);
+      expect(s.buscarPorId('c1')?.oferta.empresa).toBe('Acme');
+      expect(s.eliminadas()).toEqual([]);
+      expect(papelera.eliminar).toEqual([['c1']]);
+      expect(papelera.restaurar).toEqual([['c1']]);
+    });
+
+    it('cambiar el estado solo toca las que cambian, y dice como estaban para deshacer', async () => {
+      const { s, papelera } = conPapelera();
+      await s.cargar();
+
+      const antes = await s.cambiarEstado(['c1', 'c3'], 'Caducada');
+
+      expect(antes).toEqual([{ id: 'c1', estado: 'Pendiente' }]);
+      expect(s.buscarPorId('c1')?.estado).toBe('Caducada');
+      expect(papelera.estados).toEqual([['c1', { estado: 'Caducada' }]]);
+    });
+  });
+
+  describe('orden por defecto', () => {
+    const conFechas: Candidatura[] = [
+      { ...TRES[0], creada: '2026-09-01T10:00:00.000Z' },
+      { ...TRES[1], creada: '2026-10-05T18:00:00.000Z' },
+      { ...TRES[2] },
+      { id: 'c4', estado: 'Pendiente', creada: '2026-10-05T09:00:00.000Z', oferta: { id: 'o4', empresa: 'Delta', puesto: 'X', idioma: 'es' } },
+    ];
+
+    it('sin orden elegido, la ultima que entro va arriba', async () => {
+      const s = store(conFechas);
+      await s.cargar();
+
+      expect(s.visibles().map((una) => una.id)).toEqual(['c2', 'c4', 'c1', 'c3']);
+    });
+
+    it('quitar el orden de una columna vuelve a la mas reciente arriba', async () => {
+      const s = store(conFechas);
+      await s.cargar();
+      s.ordenarPor('empresa');
+      s.ordenarPor('empresa');
+      s.ordenarPor('empresa');
+
+      expect(s.visibles()[0].id).toBe('c2');
+    });
   });
 });

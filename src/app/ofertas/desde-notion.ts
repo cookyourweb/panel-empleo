@@ -50,6 +50,7 @@ export interface RegistroLocal {
   prep?: string;
   avisoAutonoma?: boolean;
   notion?: string;
+  creada?: string;
   /** Sin tipo a proposito: se valida bloque a bloque al traducirlo. */
   cuerpo?: unknown;
 }
@@ -133,6 +134,7 @@ export function candidaturaDesdeRegistro(registro: RegistroLocal): Candidatura |
     'cvUsado',
     'prep',
     'notion',
+    'creada',
   ] as const;
   for (const campo of seguimiento) {
     const valor = registro[campo]?.trim();
