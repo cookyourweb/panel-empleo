@@ -10,6 +10,7 @@ import { RepositorioDeCandidaturas } from './repositorio-de-candidaturas';
 
 describe('OfertasPage', () => {
   beforeEach(async () => {
+    localStorage.clear();
     await TestBed.configureTestingModule({
       imports: [OfertasPage],
       // El store lo provee la ruta en la aplicacion real. Aqui se monta el
@@ -161,5 +162,74 @@ describe('OfertasPage', () => {
     const conCv = [...pagina.querySelectorAll('tbody tr')].find((tr) => tr.textContent?.includes('Lumen Grid'))!;
     expect(conCv.querySelector('[data-accion="enviarEmpresa"]')?.textContent).toContain('Enviar a empresa');
   });
-});
 
+  describe('selector de columnas', () => {
+    async function abrirSelector(): Promise<{ pagina: HTMLElement; fixture: ReturnType<typeof TestBed.createComponent<OfertasPage>> }> {
+      const fixture = TestBed.createComponent(OfertasPage);
+      await fixture.whenStable();
+      const pagina = fixture.nativeElement as HTMLElement;
+      pagina.querySelector<HTMLButtonElement>('[data-columnas]')!.click();
+      await fixture.whenStable();
+      return { pagina, fixture };
+    }
+
+    const cabeceras = (pagina: HTMLElement) =>
+      [...pagina.querySelectorAll('thead th')].map((th) => th.textContent?.replace(/[▲▼]/g, '').trim());
+
+    it('el boton dice cuantas columnas se ven de cuantas hay', async () => {
+      const fixture = TestBed.createComponent(OfertasPage);
+      await fixture.whenStable();
+
+      const boton = (fixture.nativeElement as HTMLElement).querySelector('[data-columnas]');
+
+      expect(boton?.textContent).toMatch(/11\/\d{2}/);
+      expect(boton?.getAttribute('aria-expanded')).toBe('false');
+    });
+
+    it('agrupa las columnas como la maqueta, con cuantas fichas tienen dato', async () => {
+      const { pagina } = await abrirSelector();
+
+      const grupos = [...pagina.querySelectorAll('[data-selector] legend')].map((l) => l.textContent?.trim());
+      expect(grupos).toEqual(['Oferta', 'Candidatura', 'Documentos']);
+      expect(pagina.querySelector('[data-selector] [data-con-dato="empresa"]')?.textContent?.trim()).toBe('13');
+    });
+
+    it('desmarcar una columna la quita de la tabla', async () => {
+      const { pagina, fixture } = await abrirSelector();
+
+      pagina.querySelector<HTMLInputElement>('[data-selector] input[value="salario"]')!.click();
+      await fixture.whenStable();
+
+      expect(cabeceras(pagina)).not.toContain('Salario');
+    });
+
+    it('marcar una que no estaba la añade en su sitio', async () => {
+      const { pagina, fixture } = await abrirSelector();
+
+      pagina.querySelector<HTMLInputElement>('[data-selector] input[value="fase"]')!.click();
+      await fixture.whenStable();
+
+      const lista = cabeceras(pagina);
+      expect(lista.indexOf('Fase')).toBe(lista.indexOf('Estado') + 1);
+    });
+
+    it('la empresa viene marcada y no se puede desmarcar', async () => {
+      const { pagina } = await abrirSelector();
+
+      const empresa = pagina.querySelector<HTMLInputElement>('[data-selector] input[value="empresa"]');
+      expect(empresa?.checked).toBe(true);
+      expect(empresa?.disabled).toBe(true);
+    });
+
+    it('Escape cierra el selector', async () => {
+      const { pagina, fixture } = await abrirSelector();
+
+      pagina
+        .querySelector('[data-selector]')!
+        .dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      await fixture.whenStable();
+
+      expect(pagina.querySelector('[data-selector]')).toBeNull();
+    });
+  });
+});

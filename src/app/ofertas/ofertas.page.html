@@ -17,6 +17,8 @@
   <p class="total" aria-live="polite">
     {{ store.visibles().length }} de {{ store.candidaturas().length }}
   </p>
+
+  <app-selector-de-columnas />
 </div>
 
 <!-- Los recuentos no son adorno: son lo que deja ver de un vistazo que un
@@ -54,49 +56,50 @@
       Ofertas, {{ store.visibles().length }} de {{ store.candidaturas().length }}
     </caption>
     <colgroup>
-      @for (columna of columnas; track columna.clave) {
+      @for (columna of columnas(); track columna.clave) {
         <col [style.width.px]="columna.ancho" />
-        @if (columna.clave === 'estado' && enlaces()) {
+        @if (columna.clave === 'estado' && conAcciones()) {
           <col [style.width.px]="anchoAcciones" />
         }
       }
-      <col [style.width.px]="anchoEnlace" />
-      <col [style.width.px]="anchoEnlace" />
     </colgroup>
     <thead>
       <tr>
-        @for (columna of columnas; track columna.clave) {
-          <th
-            scope="col"
-            [class.empresa]="columna.clave === 'empresa'"
-            [attr.data-columna]="columna.clave"
-            [attr.aria-sort]="ariaSort(columna.clave)"
-          >
-            <!-- El boton va dentro de la cabecera, no la sustituye: asi la
-                 tabla sigue siendo tabla para el lector de pantalla. -->
-            <button type="button" (click)="ordenarPor(columna.clave)">
-              {{ columna.titulo }}
-              <span class="flecha" aria-hidden="true">
-                @switch (ariaSort(columna.clave)) {
-                  @case ('ascending') { ▲ }
-                  @case ('descending') { ▼ }
-                }
-              </span>
-            </button>
-          </th>
-          @if (columna.clave === 'estado' && enlaces()) {
+        @for (columna of columnas(); track columna.clave) {
+          @if (columna.tipo === 'enlace') {
+            <!-- Las de enlaces no se ordenan: no hay un orden util para una URL. -->
+            <th scope="col" class="sin-orden" [attr.data-columna]="columna.clave">{{ columna.titulo }}</th>
+          } @else {
+            <th
+              scope="col"
+              [class.empresa]="columna.clave === 'empresa'"
+              [attr.data-columna]="columna.clave"
+              [attr.aria-sort]="ariaSort(columna.clave)"
+            >
+              <!-- El boton va dentro de la cabecera, no la sustituye: asi la
+                   tabla sigue siendo tabla para el lector de pantalla. -->
+              <button type="button" (click)="ordenarPor(columna.clave)">
+                {{ columna.titulo }}
+                <span class="flecha" aria-hidden="true">
+                  @switch (ariaSort(columna.clave)) {
+                    @case ('ascending') { ▲ }
+                    @case ('descending') { ▼ }
+                  }
+                </span>
+              </button>
+            </th>
+          }
+          @if (columna.clave === 'estado' && conAcciones()) {
             <th scope="col" class="sin-orden">Acción</th>
           }
         }
-        <th scope="col" class="sin-orden">Oferta</th>
-        <th scope="col" class="sin-orden">CV</th>
       </tr>
     </thead>
     <tbody>
       @for (candidatura of store.visibles(); track candidatura.id) {
         <tr [class.abierta]="candidatura.id === ficha()" [attr.aria-current]="candidatura.id === ficha() || null">
-          @for (columna of columnas; track columna.clave) {
-            @switch (columna.clave) {
+          @for (columna of columnas(); track columna.clave) {
+            @switch (columna.tipo) {
               @case ('empresa') {
                 <td class="empresa" [attr.title]="candidatura.oferta.empresa">
                   <!-- El enlace envuelve el nombre, no la fila entera: una fila
@@ -109,7 +112,7 @@
                 <td>
                   <app-estado [estado]="candidatura.estado" />
                 </td>
-                @if (enlaces()) {
+                @if (conAcciones()) {
                   <td class="acciones">
                     <!-- Abre el mismo enlace del correo diario, en otra pestaña:
                          ahi n8n confirma que la accion se hizo. -->
@@ -127,37 +130,28 @@
                   </td>
                 }
               }
+              @case ('enlace') {
+                <td>
+                  @if (enlaceDe(candidatura, columna); as url) {
+                    <a
+                      [href]="url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      [attr.aria-label]="columna.titulo + ' de ' + candidatura.oferta.empresa + ', en una pestaña nueva'"
+                      >{{ columna.textoEnlace }}</a
+                    >
+                  }
+                </td>
+              }
               @default {
-                <td [attr.title]="celda(candidatura, columna.clave) || null">{{ celda(candidatura, columna.clave) }}</td>
+                <td [attr.title]="celda(candidatura, columna) || null">{{ celda(candidatura, columna) }}</td>
               }
             }
           }
-          <td>
-            @if (candidatura.oferta.enlace) {
-              <a
-                [href]="candidatura.oferta.enlace"
-                target="_blank"
-                rel="noopener noreferrer"
-                [attr.aria-label]="'Abrir la oferta de ' + candidatura.oferta.empresa + ' en una pestaña nueva'"
-                >Abrir</a
-              >
-            }
-          </td>
-          <td>
-            @if (candidatura.cv) {
-              <a
-                [href]="candidatura.cv"
-                target="_blank"
-                rel="noopener noreferrer"
-                [attr.aria-label]="'Abrir el CV enviado a ' + candidatura.oferta.empresa + ' en una pestaña nueva'"
-                >Ver</a
-              >
-            }
-          </td>
         </tr>
       } @empty {
         <tr>
-          <td class="vacio" [attr.colspan]="columnas.length + (enlaces() ? 3 : 2)">
+          <td class="vacio" [attr.colspan]="columnas().length + (conAcciones() ? 1 : 0)">
             @if (store.busqueda().trim()) {
               Ninguna oferta coincide con la búsqueda.
             } @else {

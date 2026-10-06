@@ -1,0 +1,50 @@
+<button
+  type="button"
+  class="boton"
+  data-columnas
+  aria-haspopup="true"
+  [attr.aria-expanded]="abierto()"
+  aria-controls="selector-columnas"
+  (click)="alternarDesplegable()"
+>
+  Columnas <span class="recuento">{{ preferencias.visibles().size }}/{{ total }}</span>
+</button>
+
+@if (abierto()) {
+  <div
+    #desplegable
+    id="selector-columnas"
+    class="desplegable"
+    data-selector
+    role="group"
+    aria-label="Columnas visibles"
+    (keydown.escape)="cerrarConTeclado($event)"
+  >
+    <div class="atajos">
+      <button type="button" class="boton pequeno" (click)="preferencias.todas()">Todas</button>
+      <button type="button" class="boton pequeno" (click)="preferencias.porDefecto()">Por defecto</button>
+    </div>
+    @for (grupo of grupos(); track grupo.grupo) {
+      <fieldset>
+        <legend>{{ grupo.grupo }}</legend>
+        <div class="rejilla">
+          @for (item of grupo.columnas; track item.columna.clave) {
+            <label>
+              <input
+                type="checkbox"
+                [value]="item.columna.clave"
+                [checked]="preferencias.visibles().has(item.columna.clave)"
+                [disabled]="item.columna.fija"
+                (change)="preferencias.alternar(item.columna.clave)"
+              />
+              <span>{{ item.columna.titulo }}</span>
+              <span class="con-dato" [attr.data-con-dato]="item.columna.clave" title="Fichas con dato">{{
+                item.conDato
+              }}</span>
+            </label>
+          }
+        </div>
+      </fieldset>
+    }
+  </div>
+}

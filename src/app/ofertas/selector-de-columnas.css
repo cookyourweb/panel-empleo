@@ -1,0 +1,120 @@
+:host {
+  position: relative;
+}
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.25rem;
+  padding: 0 0.8rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: transparent;
+  color: hsl(var(--foreground));
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.boton.pequeno {
+  height: 1.75rem;
+  font-size: 0.8rem;
+}
+
+.boton:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.recuento {
+  color: hsl(var(--muted-foreground));
+  font-variant-numeric: tabular-nums;
+}
+
+/* Encima de la tabla, del ancho de la maqueta y con su propio scroll. */
+.desplegable {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 30;
+  box-sizing: border-box;
+  width: min(560px, 92vw);
+  max-height: min(70vh, 520px);
+  overflow: auto;
+  padding: 0 0.65rem 0.65rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  background: hsl(var(--background));
+  box-shadow: 0 12px 32px hsl(0 0% 0% / 0.35);
+}
+
+.atajos {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.65rem 0 0.4rem;
+  background: hsl(var(--background));
+}
+
+fieldset {
+  margin: 0 0 0.65rem;
+  padding: 0;
+  border: 0;
+}
+
+legend {
+  margin-bottom: 0.25rem;
+  padding: 0;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 0.75rem;
+}
+
+label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.25rem 0.15rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+label:hover {
+  background: hsl(var(--muted));
+}
+
+input {
+  width: 15px;
+  height: 15px;
+  accent-color: hsl(var(--primary));
+}
+
+input:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.con-dato {
+  margin-left: auto;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 480px) {
+  .rejilla {
+    grid-template-columns: 1fr;
+  }
+}

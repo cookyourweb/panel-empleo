@@ -1,0 +1,112 @@
+import { Candidatura } from './dominio';
+import { fechaEspanola } from './fecha';
+
+export type TipoDeColumna = 'empresa' | 'estado' | 'texto' | 'fecha' | 'enlace' | 'largo' | 'casilla';
+
+export interface Columna {
+  clave: string;
+  titulo: string;
+  grupo: 'Oferta' | 'Candidatura' | 'Documentos';
+  tipo: TipoDeColumna;
+  ancho: number;
+  porDefecto: boolean;
+  /** No se puede quitar. */
+  fija?: boolean;
+  leer: (una: Candidatura) => string | boolean | undefined;
+  /** Lo que se lee en la celda de un enlace, en vez de la direccion. */
+  textoEnlace?: string;
+}
+
+const IDIOMAS = { es: 'Español', en: 'Inglés' } as const;
+
+/**
+ * Todas las columnas que puede tener la tabla, en el orden de la maqueta
+ * aprobada. Las marcadas porDefecto son las que se ven al llegar; el resto se
+ * añade desde el selector y aparece en su sitio, no al final.
+ */
+export const COLUMNAS: readonly Columna[] = [
+  { clave: 'empresa', titulo: 'Empresa', grupo: 'Oferta', tipo: 'empresa', ancho: 190, porDefecto: true, fija: true, leer: (u) => u.oferta.empresa },
+  { clave: 'puesto', titulo: 'Puesto', grupo: 'Oferta', tipo: 'texto', ancho: 280, porDefecto: true, leer: (u) => u.oferta.puesto },
+  { clave: 'estado', titulo: 'Estado', grupo: 'Candidatura', tipo: 'estado', ancho: 170, porDefecto: true, leer: (u) => u.estado },
+  { clave: 'fase', titulo: 'Fase', grupo: 'Candidatura', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.fase },
+  { clave: 'modalidad', titulo: 'Modalidad', grupo: 'Oferta', tipo: 'texto', ancho: 110, porDefecto: true, leer: (u) => u.oferta.modalidad },
+  { clave: 'ubicacion', titulo: 'Ubicación', grupo: 'Oferta', tipo: 'texto', ancho: 180, porDefecto: true, leer: (u) => u.oferta.ubicacion },
+  { clave: 'salario', titulo: 'Salario', grupo: 'Oferta', tipo: 'texto', ancho: 170, porDefecto: true, leer: (u) => u.oferta.salario },
+  { clave: 'viaEnvio', titulo: 'Vía envío', grupo: 'Candidatura', tipo: 'texto', ancho: 140, porDefecto: true, leer: (u) => u.viaEnvio },
+  { clave: 'fechaEnvio', titulo: 'Fecha envío', grupo: 'Candidatura', tipo: 'fecha', ancho: 120, porDefecto: true, leer: (u) => u.fechaEnvio },
+  { clave: 'fechaPublicacion', titulo: 'Publicada', grupo: 'Oferta', tipo: 'fecha', ancho: 120, porDefecto: true, leer: (u) => u.oferta.fechaPublicacion },
+  { clave: 'enlace', titulo: 'Oferta', grupo: 'Oferta', tipo: 'enlace', ancho: 80, porDefecto: true, leer: (u) => u.oferta.enlace, textoEnlace: 'Abrir' },
+  { clave: 'seguimiento', titulo: 'Seguimiento', grupo: 'Candidatura', tipo: 'fecha', ancho: 120, porDefecto: false, leer: (u) => u.seguimiento },
+  { clave: 'descripcion', titulo: 'Descripción', grupo: 'Oferta', tipo: 'largo', ancho: 280, porDefecto: false, leer: (u) => u.oferta.descripcion },
+  { clave: 'tipoContrato', titulo: 'Tipo contrato', grupo: 'Oferta', tipo: 'texto', ancho: 140, porDefecto: false, leer: (u) => u.oferta.tipoContrato },
+  { clave: 'modoContratacion', titulo: 'Modo contratación', grupo: 'Oferta', tipo: 'texto', ancho: 150, porDefecto: false, leer: (u) => u.oferta.modoContratacion },
+  { clave: 'idioma', titulo: 'Idioma', grupo: 'Oferta', tipo: 'texto', ancho: 90, porDefecto: false, leer: (u) => IDIOMAS[u.oferta.idioma] },
+  { clave: 'palabrasClave', titulo: 'Palabras clave', grupo: 'Oferta', tipo: 'largo', ancho: 240, porDefecto: false, leer: (u) => u.oferta.palabrasClave },
+  { clave: 'verificada', titulo: 'Verificada', grupo: 'Oferta', tipo: 'casilla', ancho: 100, porDefecto: false, leer: (u) => u.oferta.verificada },
+  { clave: 'tags', titulo: 'Tags', grupo: 'Oferta', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.oferta.tags },
+  { clave: 'fechaEntrevista', titulo: 'Fecha entrevista', grupo: 'Candidatura', tipo: 'fecha', ancho: 130, porDefecto: false, leer: (u) => u.fechaEntrevista },
+  { clave: 'formatoTecnico', titulo: 'Formato técnico', grupo: 'Candidatura', tipo: 'texto', ancho: 140, porDefecto: false, leer: (u) => u.formatoTecnico },
+  { clave: 'nombreContacto', titulo: 'Nombre contacto', grupo: 'Candidatura', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.nombreContacto },
+  { clave: 'telefonoContacto', titulo: 'Teléfono contacto', grupo: 'Candidatura', tipo: 'texto', ancho: 150, porDefecto: false, leer: (u) => u.telefonoContacto },
+  { clave: 'emailEmpresa', titulo: 'Email empresa', grupo: 'Candidatura', tipo: 'texto', ancho: 200, porDefecto: false, leer: (u) => u.emailEmpresa },
+  { clave: 'emailEnviado', titulo: 'Email enviado', grupo: 'Candidatura', tipo: 'texto', ancho: 200, porDefecto: false, leer: (u) => u.emailEnviado },
+  { clave: 'notas', titulo: 'Notas', grupo: 'Candidatura', tipo: 'largo', ancho: 280, porDefecto: false, leer: (u) => u.notas },
+  { clave: 'cvUsado', titulo: 'CV usado', grupo: 'Documentos', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.cvUsado },
+  { clave: 'cv', titulo: 'CV', grupo: 'Documentos', tipo: 'enlace', ancho: 80, porDefecto: true, leer: (u) => u.cv, textoEnlace: 'Ver' },
+  { clave: 'carta', titulo: 'Carta', grupo: 'Documentos', tipo: 'largo', ancho: 260, porDefecto: false, leer: (u) => u.carta },
+  { clave: 'prep', titulo: 'Prep', grupo: 'Documentos', tipo: 'enlace', ancho: 80, porDefecto: false, leer: (u) => u.prep, textoEnlace: 'Abrir' },
+  { clave: 'avisoAutonoma', titulo: 'Aviso autónoma', grupo: 'Documentos', tipo: 'casilla', ancho: 130, porDefecto: false, leer: (u) => u.avisoAutonoma },
+];
+
+export const GRUPOS_DE_COLUMNAS = ['Oferta', 'Candidatura', 'Documentos'] as const;
+
+export const CLAVES_POR_DEFECTO: readonly string[] = COLUMNAS.filter((c) => c.porDefecto).map((c) => c.clave);
+
+const POR_CLAVE = new Map(COLUMNAS.map((c) => [c.clave, c]));
+
+export function columnaPorClave(clave: string): Columna | undefined {
+  return POR_CLAVE.get(clave);
+}
+
+/** El texto de la celda: fechas en DD/MM/AAAA, casillas como "Sí". */
+export function valorDeCelda(una: Candidatura, columna: Columna): string {
+  const valor = columna.leer(una);
+  if (columna.tipo === 'casilla') {
+    return valor === true ? 'Sí' : '';
+  }
+  if (typeof valor !== 'string') {
+    return '';
+  }
+  return columna.tipo === 'fecha' ? fechaEspanola(valor) : valor;
+}
+
+/**
+ * El valor por el que se ordena: las fechas en ISO, que ordenan bien como
+ * texto; el resto, lo mismo que se lee en la celda.
+ */
+export function valorParaOrdenar(una: Candidatura, columna: Columna): string {
+  const valor = columna.leer(una);
+  return columna.tipo === 'fecha' && typeof valor === 'string' ? valor : valorDeCelda(una, columna);
+}
+
+/** Cuantas fichas tienen algo en esa columna. Ayuda a decidir si merece la pena verla. */
+export function conDato(candidaturas: readonly Candidatura[], columna: Columna): number {
+  return candidaturas.filter((una) => {
+    const valor = columna.leer(una);
+    return valor === true || (typeof valor === 'string' && valor.trim() !== '');
+  }).length;
+}
+
+/**
+ * Lo guardado en el navegador, si se puede usar. Lo que no es una lista de
+ * nombres no vale; los nombres que ya no existen se descartan, y la empresa
+ * va siempre aunque alguien la haya quitado a mano.
+ */
+export function columnasGuardadas(crudo: unknown): string[] | null {
+  if (!Array.isArray(crudo) || !crudo.every((c) => typeof c === 'string')) {
+    return null;
+  }
+  const fijas = COLUMNAS.filter((c) => c.fija).map((c) => c.clave);
+  const conocidas = (crudo as string[]).filter((c) => POR_CLAVE.has(c) && !fijas.includes(c));
+  return [...fijas, ...conocidas];
+}

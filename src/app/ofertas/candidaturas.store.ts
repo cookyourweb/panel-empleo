@@ -1,21 +1,13 @@
 import { computed, inject, Injectable, PendingTasks, signal } from '@angular/core';
 
+import { columnaPorClave, valorParaOrdenar } from './columnas';
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
 import { aplicarCambios, CambiosDeCandidatura, OpcionesDeEdicion, OPCIONES_FIJAS } from './edicion';
 import { EditorDeCandidaturas } from './editor-de-candidaturas';
 import { RepositorioDeCandidaturas } from './repositorio-de-candidaturas';
 
-/** Las columnas por las que se puede ordenar la tabla. */
-export type ColumnaOrdenable =
-  | 'empresa'
-  | 'puesto'
-  | 'estado'
-  | 'modalidad'
-  | 'ubicacion'
-  | 'salario'
-  | 'viaEnvio'
-  | 'fechaEnvio'
-  | 'fechaPublicacion';
+/** La clave de una columna del catalogo (columnas.ts). Cualquiera se puede ordenar. */
+export type ColumnaOrdenable = string;
 
 export interface Orden {
   columna: ColumnaOrdenable;
@@ -27,17 +19,10 @@ function normalizar(texto: string): string {
   return texto.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
 }
 
-/** Unas columnas son de la candidatura (el seguimiento) y otras de la oferta. */
-function valorDe(una: Candidatura, columna: ColumnaOrdenable): string {
-  switch (columna) {
-    case 'estado':
-      return una.estado;
-    case 'viaEnvio':
-    case 'fechaEnvio':
-      return una[columna] ?? '';
-    default:
-      return una.oferta[columna] ?? '';
-  }
+/** Lo que vale una columna para ordenar. Una clave que no existe ordena como vacia. */
+function valorDe(una: Candidatura, clave: ColumnaOrdenable): string {
+  const columna = columnaPorClave(clave);
+  return columna ? valorParaOrdenar(una, columna) : '';
 }
 
 const COMPARADOR = new Intl.Collator('es', { sensitivity: 'base', numeric: true });
