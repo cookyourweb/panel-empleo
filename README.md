@@ -5,6 +5,32 @@
 **A job search system that automates the repetitive work without automating the
 decisions that belong to the candidate.**
 
+This repository is its front end: an Angular 22 panel where every application lives in
+one place, with its CV, its cover letter and its tracking. The jobs, the tailored
+documents and the daily search already run in production. The panel is where the
+candidate reviews and decides.
+
+## At a glance
+
+| What is technically interesting | Where to look |
+|---|---|
+| State in signals, standalone components, `OnPush`, no `zone.js` | [Engineering decisions](#engineering-decisions) |
+| Hexagonal ports: the screens never know where data comes from | [Inside the app](#inside-the-app) |
+| TDD with Vitest: 269 component tests and 24 design token tests | [Development](#development) |
+| Sign-in by invitation: the token lives in memory only and a scoped interceptor sends it to one origin | [Sign-in](#sign-in) |
+| Public demo that stays open to visitors, with sample data and no sign-in | [Try it](#try-it) |
+| Contrast tests that read the stylesheet from disk | [The contrast tests](#the-contrast-tests) |
+
+## Try it
+
+| Mode | Command | Data | Sign-in |
+|---|---|---|---|
+| Demo (what visitors see) | `npx ng serve --configuration production` | Sample data bundled with the project | No |
+| Development with real data | `npm start` | Local files and a local bridge that are not in this repository | Yes |
+
+You can run the demo right after cloning. The development mode needs files and a bridge
+that live outside this public repository (see [Development](#development)).
+
 Looking for work is usually a collection of disconnected tools. Jobs are discovered on
 several platforms. Applications are tracked somewhere else. The CV lives in a folder,
 interview preparation in another, and follow-ups depend on memory.
@@ -87,8 +113,8 @@ Good candidates are lost over how the document is written, not over what they kn
 
 > A model does not fail with an exception. It returns something plausible and worse.
 
-Different models for different jobs: the CV is written by `claude-haiku-4-5`, the cover
-letter by `claude-sonnet-4-6`.
+In production, `cv-server` writes both the CV and the cover letter with
+`claude-sonnet-4-6`, with `openai/gpt-oss-120b` as the fallback model.
 
 **Secrets do not depend on anyone remembering.** The n8n webhooks trigger actions with
 effects outside the system, so their paths cannot live in a public repository. A checker
@@ -122,22 +148,48 @@ That is the criterion that decides what gets built next.
 
 ### What is built, and what is not
 
-The panel has no product screens yet. Saying otherwise would make this document worse
-than not having one.
+The panel already has the screens a candidate uses every day. The table, the side panel
+and the detail page run on sample data in the public demo. Actions, editing and deleting
+only work with real data in development: the demo has none of them switched on.
 
-Built so far:
-
-- An Angular 22 application shell with signals and standalone components.
-- A design system inherited from the agency site, with its contrast tests.
-- The domain (`Oferta`, `Candidatura`, the eight states) separated from any concrete
-  data source.
-- One screen: a list with filters, running on sample data bundled with the project.
+| Screen | What you can do |
+|---|---|
+| Applications table | Sort, search, choose columns (31 available, your choice is stored in `localStorage`), newest first |
+| Side panel | Open an application without leaving the table and move to the previous or next one |
+| Detail page | Read the full job, the embedded CV and cover letter, and the content of the Notion page |
+| Actions | Approve, discard and send, using the same links the daily email uses |
+| Editing | Change the fields of an application through a local bridge to Notion |
+| Selection | Select rows, move them to the Notion trash, change their status and undo |
+| Sign-in | Enter with a Google account that has been invited (see [Sign-in](#sign-in)) |
 
 Not built yet:
 
-- Any connection to `cv-server` or live data. The list runs on sample data only.
-- Approving or declining from the panel instead of from the email.
-- Any screen beyond the list: no application detail, no interview preparation view.
+- Interview preparation view.
+- Panel-owned storage. Postgres (Neon) is **planned** (ADR-002 in the
+  [system repository](https://github.com/cookyourweb/buscartrabajo)), not implemented.
+- A public deployment with real data. Real data only appears in development, behind
+  sign-in.
+
+## Sign-in
+
+Added on 7 October 2026. It protects real data and leaves the demo open.
+
+| Piece | What it does |
+|---|---|
+| `ProveedorDeIdentidad` (port) and `IdentidadGoogle` (adapter) | Sign in with Google Identity Services. The panel does not know which provider is behind the port |
+| `Sesion` | Holds the token in memory only. It is never written to `localStorage` or cookies, so reloading the page signs you out |
+| `Servidor` | Health check of `cv-server`, used to detect a cold start |
+| `soloConSesion` | Functional route guard: no session, no panel |
+| `conToken` | HTTP interceptor. It adds `Authorization: Bearer` **only** to the origin of `cv-server`, never to the local bridge or to third parties, and on a `401` it ends the session and goes back to sign-in |
+| Sign-in page | Shows a cold start message after 3 seconds (the free server sleeps) and offers a retry at 90 seconds |
+
+`cv-server` validates the token on `GET /yo` and checks the account against an
+invitation allowlist. The Google client id in `src/app/sesion/configuracion.ts` is public
+on purpose: it is not a secret, and Google protects it with the authorised origins set in
+its console.
+
+The guard applies only with real data (`elegirGuardas(isDevMode())`). The demo build has
+no guard, because it has nothing to protect.
 
 ---
 
@@ -145,6 +197,11 @@ Not built yet:
 
 **Angular 22 without `zone.js`, with signals and standalone components.** Change
 detection runs on signals, which is how Angular is written today.
+
+**Hexagonal ports.** `RepositorioDeCandidaturas`, `FuenteDeAcciones`,
+`EditorDeCandidaturas` and `ProveedorDeIdentidad` are abstract classes. Each one has a
+demo or local adapter and the app picks one by mode, so the same screens run on sample
+data, on real data or in tests.
 
 **Vitest.** It has been the default runner since Angular 22, and Karma is on its way
 out.
@@ -189,11 +246,12 @@ n8n  ->  Notion
                 \
                  '->  cv-server  <-  this panel
                           |
-                          '->  Postgres, Drive, models
+                          '->  Postgres (planned), Drive, models
 ```
 
-The panel talks only to `cv-server`. Never to Notion, Drive, or a language model: the
-browser never sees a third party credential.
+The panel talks to `cv-server` for sign-in. In development it also reads local files and
+uses a local bridge to Notion. It never reaches Notion, Drive or a language model from
+the browser: the browser never sees a third party credential.
 
 ### Inside the app
 
@@ -202,6 +260,12 @@ src/app/ofertas/
   dominio.ts                      Oferta, Candidatura and the eight states
   repositorio-de-candidaturas.ts  where they come from, as an abstract class
   candidaturas.store.ts           state in signals, plus the count per state
+  ofertas.page.ts, detalle.page.ts  the table and the detail page
+  editor-de-candidaturas.ts       editing through the local bridge
+  fuente-de-acciones.ts           approve, discard and send links
+src/app/sesion/                   sign-in: port, Google adapter, in-memory session,
+                                  guard and interceptor
+src/app/entrada/                  the sign-in page
 tools/design-system/              contrast formula and token reader, run in Node
 ```
 
@@ -240,10 +304,28 @@ Requires Node 22, pinned in `.nvmrc`.
 ```bash
 nvm use
 npm ci
-npm start          # development server
-npm test           # component and contrast tests
-npm run build
+npx ng serve --configuration production   # demo: sample data, no sign-in
+npm start                                 # development: real data, sign-in
+npx ng test --watch=false                 # 269 component tests
+npm test                                  # those 269 plus 24 design token tests
 ```
+
+### Real data in development
+
+`npm start` reads real applications from `public/local/candidaturas.json`, which is
+gitignored, and proxies `/api` to a local bridge on `127.0.0.1:4300`. The script that
+creates that file and the bridge live in a **private** repository, so whoever clones this
+one does not have them. Without them, run the demo.
+
+### Sign-in in development
+
+`cv-server` must run on `localhost:5000` with these environment variables set:
+`OIDC_AUDIENCIA`, `OIDC_EMISORES`, `OIDC_JWKS_URL`, `INVITADAS` and
+`CORS_ORIGENES=http://localhost:4200`. See the
+[`cv-server` repository](https://github.com/cookyourweb/cv-server) and its
+`.env.example` for what each one means.
+
+### Tests
 
 The tests run in two runners on purpose. Component tests run in a browser; contrast
 tests read the stylesheet from disk and run in Node. Mixing them would mean compiling

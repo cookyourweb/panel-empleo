@@ -5,6 +5,32 @@
 **Un sistema de búsqueda de empleo que automatiza el trabajo repetitivo sin automatizar
 las decisiones que son de quien busca.**
 
+Este repositorio es su parte visible: un panel en Angular 22 donde cada candidatura vive
+en un solo sitio, con su currículum, su carta y su seguimiento. Las ofertas, los
+documentos adaptados y la búsqueda diaria ya corren en producción. El panel es donde
+quien busca revisa y decide.
+
+## De un vistazo
+
+| Qué tiene de interesante técnicamente | Dónde verlo |
+|---|---|
+| Estado en signals, componentes standalone, `OnPush`, sin `zone.js` | [Decisiones de ingeniería](#decisiones-de-ingeniería) |
+| Puertos hexagonales: las pantallas no saben de dónde salen los datos | [Por dentro](#por-dentro) |
+| TDD con Vitest: 269 pruebas de componentes y 24 de tokens de diseño | [Desarrollo](#desarrollo) |
+| Entrada por invitación: el token solo vive en memoria y un interceptor acotado lo envía a un único origen | [Inicio de sesión](#inicio-de-sesión) |
+| Demo pública abierta a quien visita, con datos de ejemplo y sin inicio de sesión | [Pruébalo](#pruébalo) |
+| Pruebas de contraste que leen la hoja de estilos del disco | [Las pruebas de contraste](#las-pruebas-de-contraste) |
+
+## Pruébalo
+
+| Modo | Comando | Datos | Inicio de sesión |
+|---|---|---|---|
+| Demo (lo que ve quien visita) | `npx ng serve --configuration production` | Datos de ejemplo incluidos en el proyecto | No |
+| Desarrollo con datos reales | `npm start` | Ficheros locales y un puente local que no están en este repositorio | Sí |
+
+La demo funciona nada más clonar. El modo de desarrollo necesita ficheros y un puente que
+viven fuera de este repositorio público (mira [Desarrollo](#desarrollo)).
+
 Buscar trabajo es, casi siempre, una colección de herramientas desconectadas. Las
 ofertas aparecen en varias plataformas. Las candidaturas se apuntan en otro sitio. El
 currículum vive en una carpeta, la preparación de la entrevista en otra, y el
@@ -90,8 +116,8 @@ pierde gente válida por cómo está escrito el documento, no por lo que sabe.
 
 > Un modelo no falla con una excepción: devuelve algo verosímil y peor.
 
-Modelos distintos para tareas distintas: el currículum lo escribe `claude-haiku-4-5`, la
-carta `claude-sonnet-4-6`.
+En producción, `cv-server` escribe el currículum y la carta con `claude-sonnet-4-6`, y
+`openai/gpt-oss-120b` queda como modelo de reserva.
 
 **Los secretos no dependen de que nadie se acuerde.** Los webhooks de n8n ejecutan
 acciones con efectos fuera del sistema, así que sus rutas no pueden vivir en un
@@ -127,24 +153,49 @@ el criterio que decide qué se construye a continuación.
 
 ### Qué está construido y qué no
 
-El panel todavía no tiene pantallas de producto. Decir lo contrario dejaría este
-documento peor que no tenerlo.
+El panel ya tiene las pantallas que se usan cada día. La tabla, el panel lateral y la
+ficha funcionan con datos de ejemplo en la demo pública. Las acciones, la edición y el
+borrado solo funcionan con datos reales en desarrollo: la demo no los tiene activados.
 
-Construido hasta ahora:
-
-- El andamiaje de una aplicación Angular 22 con signals y componentes standalone.
-- Un design system heredado del sitio de la agencia, con sus pruebas de contraste.
-- El dominio (`Oferta`, `Candidatura`, los ocho estados) separado de cualquier fuente
-  concreta de datos.
-- Una pantalla: una lista con filtros, sobre datos de ejemplo incluidos en el proyecto.
+| Pantalla | Qué se puede hacer |
+|---|---|
+| Tabla de candidaturas | Ordenar, buscar, elegir columnas (31 disponibles, la elección se guarda en `localStorage`), lo más reciente arriba |
+| Panel lateral | Abrir una candidatura sin salir de la tabla y pasar a la anterior o a la siguiente |
+| Ficha | Leer la oferta entera, el currículum y la carta incrustados, y el contenido de la página de Notion |
+| Acciones | Aprobar, descartar y enviar, con los mismos enlaces que usa el correo diario |
+| Edición | Cambiar los campos de una candidatura a través de un puente local a Notion |
+| Selección | Elegir filas, mandarlas a la papelera de Notion, cambiar su estado y deshacer |
+| Inicio de sesión | Entrar con una cuenta de Google invitada (mira [Inicio de sesión](#inicio-de-sesión)) |
 
 Todavía sin construir:
 
-- Cualquier conexión con `cv-server` o con datos en vivo. La lista corre solo sobre
-  datos de ejemplo.
-- Aprobar o descartar desde el panel en vez de desde el correo.
-- Cualquier pantalla más allá de la lista: ni detalle de candidatura, ni preparación de
-  entrevista.
+- La vista de preparación de entrevista.
+- Almacenamiento propio del panel. Postgres (Neon) está **planificado** (ADR-002 del
+  [repositorio del sistema](https://github.com/cookyourweb/buscartrabajo)), no
+  implementado.
+- Un despliegue público con datos reales. Los datos reales solo aparecen en desarrollo,
+  detrás del inicio de sesión.
+
+## Inicio de sesión
+
+Añadido el 7 de octubre de 2026. Protege los datos reales y deja la demo abierta.
+
+| Pieza | Qué hace |
+|---|---|
+| `ProveedorDeIdentidad` (puerto) e `IdentidadGoogle` (adaptador) | Entra con Google Identity Services. El panel no sabe qué proveedor hay detrás del puerto |
+| `Sesion` | Guarda el token solo en memoria. Nunca lo escribe en `localStorage` ni en cookies, así que recargar la página cierra la sesión |
+| `Servidor` | Comprobación de salud de `cv-server`, para detectar un arranque en frío |
+| `soloConSesion` | Guarda funcional de rutas: sin sesión no hay panel |
+| `conToken` | Interceptor HTTP. Añade `Authorization: Bearer` **solo** al origen de `cv-server`, nunca al puente local ni a terceros, y ante un `401` cierra la sesión y vuelve a la entrada |
+| Página de entrada | Muestra un aviso de arranque en frío a los 3 segundos (el servidor gratuito se duerme) y ofrece reintentar a los 90 |
+
+`cv-server` valida el token en `GET /yo` y comprueba la cuenta contra una lista de
+invitadas. El id de cliente de Google de `src/app/sesion/configuracion.ts` es público a
+propósito: no es un secreto, y Google lo protege con los orígenes autorizados de su
+consola.
+
+La guarda solo se aplica con datos reales (`elegirGuardas(isDevMode())`). La build de la
+demo no tiene guarda, porque no hay nada que proteger.
 
 ---
 
@@ -152,6 +203,11 @@ Todavía sin construir:
 
 **Angular 22 sin `zone.js`, con signals y componentes standalone.** La detección de
 cambios va por signals, que es como se escribe Angular hoy.
+
+**Puertos hexagonales.** `RepositorioDeCandidaturas`, `FuenteDeAcciones`,
+`EditorDeCandidaturas` y `ProveedorDeIdentidad` son clases abstractas. Cada una tiene un
+adaptador de demo o local y la aplicación elige uno según el modo, así que las mismas
+pantallas funcionan con datos de ejemplo, con datos reales o en los tests.
 
 **Vitest.** Es el runner por defecto desde Angular 22, y Karma está en las últimas.
 
@@ -194,11 +250,12 @@ n8n  ->  Notion
                 \
                  '->  cv-server  <-  este panel
                           |
-                          '->  Postgres, Drive, modelos
+                          '->  Postgres (planificado), Drive, modelos
 ```
 
-El panel habla solo con `cv-server`. Nunca con Notion, ni con Drive, ni con un modelo de
-lenguaje: el navegador no ve jamás una credencial de terceros.
+El panel habla con `cv-server` para la entrada. En desarrollo, además, lee ficheros
+locales y usa un puente local a Notion. Nunca llega a Notion, ni a Drive, ni a un modelo
+de lenguaje desde el navegador: el navegador no ve jamás una credencial de terceros.
 
 ### Por dentro
 
@@ -207,6 +264,12 @@ src/app/ofertas/
   dominio.ts                      Oferta, Candidatura y los ocho estados
   repositorio-de-candidaturas.ts  de dónde salen, como clase abstracta
   candidaturas.store.ts           el estado en signals y el recuento por estado
+  ofertas.page.ts, detalle.page.ts  la tabla y la ficha
+  editor-de-candidaturas.ts       edición a través del puente local
+  fuente-de-acciones.ts           enlaces de aprobar, descartar y enviar
+src/app/sesion/                   entrada: puerto, adaptador de Google, sesión en
+                                  memoria, guarda e interceptor
+src/app/entrada/                  la página de entrada
 tools/design-system/              fórmula de contraste y lector de tokens, en Node
 ```
 
@@ -246,10 +309,28 @@ Requiere Node 22, fijado en `.nvmrc`.
 ```bash
 nvm use
 npm ci
-npm start          # servidor de desarrollo
-npm test           # pruebas de componentes y de contraste
-npm run build
+npx ng serve --configuration production   # demo: datos de ejemplo, sin inicio de sesión
+npm start                                 # desarrollo: datos reales, con inicio de sesión
+npx ng test --watch=false                 # 269 pruebas de componentes
+npm test                                  # esas 269 más 24 de tokens de diseño
 ```
+
+### Datos reales en desarrollo
+
+`npm start` lee las candidaturas reales de `public/local/candidaturas.json`, que está en
+`.gitignore`, y redirige `/api` a un puente local en `127.0.0.1:4300`. El script que crea
+ese fichero y el puente viven en un repositorio **privado**, así que quien clone este no
+los tiene. Sin ellos, usa la demo.
+
+### Inicio de sesión en desarrollo
+
+`cv-server` debe correr en `localhost:5000` con estas variables de entorno:
+`OIDC_AUDIENCIA`, `OIDC_EMISORES`, `OIDC_JWKS_URL`, `INVITADAS` y
+`CORS_ORIGENES=http://localhost:4200`. Mira el
+[repositorio de `cv-server`](https://github.com/cookyourweb/cv-server) y su
+`.env.example` para saber qué significa cada una.
+
+### Pruebas
 
 Las pruebas van en dos runners a propósito. Las de componentes corren en un navegador;
 las de contraste leen la hoja de estilos del disco y corren en Node. Mezclarlas
