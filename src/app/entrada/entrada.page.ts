@@ -21,6 +21,9 @@ const MENSAJES = {
   [RESULTADO_DE_ENTRADA.sinServidor]: 'El servidor no puede comprobar la identidad ahora',
 } as const satisfies Record<ResultadoDeEntrada, string | null>;
 
+const SIN_GOOGLE =
+  'No se pudo cargar el acceso con Google. Revisa la conexión o desactiva el bloqueador y recarga la página.';
+
 const AVISO_TRAS_MS = 3_000;
 const RENDICION_TRAS_MS = 90_000;
 
@@ -44,6 +47,7 @@ export class EntradaPage {
   private readonly ruta = inject(ActivatedRoute);
   private readonly servidor = inject(Servidor);
   private readonly destruccion = inject(DestroyRef);
+  private readonly anfitrion = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly acceso = viewChild.required<ElementRef<HTMLElement>>('acceso');
 
   protected readonly error = signal<string | null>(null);
@@ -52,6 +56,7 @@ export class EntradaPage {
 
   private plazos: ReturnType<typeof setTimeout>[] = [];
   private intento = 0;
+  private cancelacion = new AbortController();
 
   constructor() {
     this.destruccion.onDestroy(() => this.cancelar());
@@ -59,11 +64,14 @@ export class EntradaPage {
   }
 
   protected reintentar(): void {
+    // El boton va a desaparecer: sin esto el foco cae al body (WCAG 2.4.3).
+    this.anfitrion.nativeElement.closest('main')?.focus();
     void this.comprobar();
   }
 
   private cancelar(): void {
     this.intento++;
+    this.cancelacion.abort();
     this.plazos.forEach(clearTimeout);
     this.plazos = [];
   }
@@ -73,6 +81,7 @@ export class EntradaPage {
     this.cancelar();
     const actual = this.intento;
     this.sinRespuesta.set(false);
+    this.error.set(null);
     this.plazos = [
       setTimeout(() => this.despertando.set(true), AVISO_TRAS_MS),
       setTimeout(() => this.rendirse(), RENDICION_TRAS_MS),
@@ -87,10 +96,18 @@ export class EntradaPage {
     }
     this.cancelar();
     this.despertando.set(false);
-    void this.proveedor.preparar(
-      this.acceso().nativeElement,
-      (credencial) => void this.entrar(credencial),
-    );
+    this.cancelacion = new AbortController();
+    const { signal } = this.cancelacion;
+    try {
+      await this.proveedor.preparar(
+        this.acceso().nativeElement,
+        (credencial) => void this.entrar(credencial),
+        signal,
+      );
+    } catch {
+      // Si la pantalla ya no existe o hay un intento nuevo, nadie espera este error.
+      if (!signal.aborted) this.error.set(SIN_GOOGLE);
+    }
   }
 
   private rendirse(): void {
@@ -100,6 +117,7 @@ export class EntradaPage {
   }
 
   private async entrar(credencial: string): Promise<void> {
+    this.error.set(null);
     const resultado = await this.sesion.entrar(credencial);
     if (resultado === RESULTADO_DE_ENTRADA.dentro) {
       await this.router.navigateByUrl(rutaInterna(this.ruta.snapshot.queryParamMap.get('volver')));

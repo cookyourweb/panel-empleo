@@ -60,6 +60,7 @@ describe('EntradaPage', () => {
     expect(identidad.preparar).toHaveBeenCalledWith(
       pagina.querySelector('[data-acceso]'),
       expect.any(Function),
+      expect.any(AbortSignal),
     );
   });
 
@@ -102,6 +103,22 @@ describe('EntradaPage', () => {
     expect(navegar).not.toHaveBeenCalled();
   });
 
+  it('al empezar un intento nuevo quita el error del anterior', async () => {
+    const pagina = await abrir();
+    await recibir(RESULTADO_DE_ENTRADA.rechazada);
+    expect(pagina.querySelector('[role="alert"]')).not.toBeNull();
+
+    let terminar: (resultado: ResultadoDeEntrada) => void = () => undefined;
+    entrar.mockReturnValue(new Promise<ResultadoDeEntrada>((resolver) => (terminar = resolver)));
+    identidad.alRecibir?.('otra-credencial');
+    await vi.waitFor(() => expect(entrar).toHaveBeenCalledTimes(2));
+    fixture.detectChanges();
+
+    expect(pagina.querySelector('[role="alert"]')).toBeNull();
+    terminar(RESULTADO_DE_ENTRADA.rechazada);
+    await fixture.whenStable();
+  });
+
   it('si la cuenta no esta invitada lo dice y olvida la cuenta', async () => {
     const pagina = await abrir();
 
@@ -137,7 +154,10 @@ describe('EntradaPage con el servidor dormido', () => {
   }
 
   const pagina = () => fixture.nativeElement as HTMLElement;
-  const aviso = () => pagina().querySelector('[role="status"]');
+  const region = () => pagina().querySelector('[role="status"]');
+  // El aviso solo cuenta como mostrado si la region tiene texto: la region
+  // vive siempre en la pagina para que los lectores de pantalla la anuncien.
+  const aviso = () => (region()?.textContent?.trim() ? region() : null);
   const reintentar = () =>
     Array.from(pagina().querySelectorAll('button')).find((b) =>
       b.textContent?.includes('Reintentar'),
@@ -203,6 +223,7 @@ describe('EntradaPage con el servidor dormido', () => {
     expect(preparar).toHaveBeenCalledWith(
       pagina().querySelector('[data-acceso]'),
       expect.any(Function),
+      expect.any(AbortSignal),
     );
     expect(aviso()).toBeNull();
   });
@@ -265,6 +286,63 @@ describe('EntradaPage con el servidor dormido', () => {
     expect(vi.getTimerCount()).toBe(0);
     await vi.advanceTimersByTimeAsync(120000);
     expect(comprobar).toHaveBeenCalledTimes(1);
+  });
+
+  it('mantiene una unica region de estado siempre presente, aunque este vacia', async () => {
+    const inicial = region();
+    expect(inicial).not.toBeNull();
+    expect(inicial?.textContent?.trim()).toBe('');
+
+    await pasar(3000);
+
+    expect(pagina().querySelectorAll('[role="status"]')).toHaveLength(1);
+    expect(region()).toBe(inicial);
+    expect(region()?.textContent).toContain(MENSAJE_DESPERTANDO);
+  });
+
+  it('si el script de identidad no carga lo dice con un alert y no deja la pagina muda', async () => {
+    preparar.mockRejectedValueOnce(new Error('script bloqueado'));
+
+    await responder(true);
+
+    const alerta = pagina().querySelector('[role="alert"]');
+    expect(alerta?.textContent).toContain('No se pudo cargar el acceso con Google');
+    expect(alerta?.textContent).toContain('recarga la página');
+  });
+
+  it('pasa al proveedor una senal que se cancela al destruir la pagina', async () => {
+    await responder(true);
+    const senal = preparar.mock.calls[0][2] as AbortSignal;
+    expect(senal.aborted).toBe(false);
+
+    fixture.destroy();
+
+    expect(senal.aborted).toBe(true);
+  });
+
+  it('un intento nuevo cancela la preparacion del anterior', async () => {
+    await responder(true);
+    const primera = preparar.mock.calls[0][2] as AbortSignal;
+
+    fixture.componentInstance['reintentar']();
+    await pasar(0);
+
+    expect(primera.aborted).toBe(true);
+  });
+
+  it('al pulsar reintentar el foco pasa al main en vez de perderse en el body', async () => {
+    const principal = document.createElement('main');
+    principal.tabIndex = -1;
+    document.body.appendChild(principal);
+    principal.appendChild(pagina());
+    await responder(false);
+
+    reintentar()?.focus();
+    reintentar()?.click();
+    await pasar(0);
+
+    expect(document.activeElement).toBe(principal);
+    principal.remove();
   });
 
   it('ignora la respuesta de un servidor tras destruir la pagina', async () => {

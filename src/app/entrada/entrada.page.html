@@ -4,12 +4,18 @@
 
   <div #acceso data-acceso></div>
 
-  @if (despertando()) {
-    <p class="aviso" role="status">Despertando el servidor, puede tardar un minuto</p>
-  }
+  <!-- La region existe siempre: un role="status" que nace ya con texto no se
+       anuncia de forma fiable. Solo cambia el texto de dentro. -->
+  <div class="aviso" role="status">
+    @if (despertando()) {
+      <p>Despertando el servidor, puede tardar un minuto</p>
+    }
+    @if (sinRespuesta()) {
+      <p>El servidor no ha respondido. Prueba de nuevo.</p>
+    }
+  </div>
 
   @if (sinRespuesta()) {
-    <p class="aviso" role="status">El servidor no ha respondido. Prueba de nuevo.</p>
     <button type="button" (click)="reintentar()">Reintentar</button>
   }
 
