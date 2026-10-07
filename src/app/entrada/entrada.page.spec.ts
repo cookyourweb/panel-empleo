@@ -242,7 +242,9 @@ describe('EntradaPage con el servidor dormido', () => {
   });
 
   it('ignora la respuesta tardia de un intento superado', async () => {
-    await responder(false);
+    // El intento 0 sigue pendiente: nunca ha respondido, solo se agoto el plazo.
+    await pasar(90000);
+    expect(reintentar()).toBeDefined();
     reintentar()?.click();
     await pasar(0);
 
@@ -254,11 +256,14 @@ describe('EntradaPage con el servidor dormido', () => {
   });
 
   it('al destruir la pagina se limpian los plazos', async () => {
+    expect(vi.getTimerCount()).toBeGreaterThan(0);
+
     fixture.destroy();
 
-    await vi.advanceTimersByTimeAsync(120000);
-
+    // Antes de dejar correr el tiempo: si avanzaramos primero, los plazos
+    // vencerian solos y el test pasaria aunque no se limpiaran.
     expect(vi.getTimerCount()).toBe(0);
+    await vi.advanceTimersByTimeAsync(120000);
     expect(comprobar).toHaveBeenCalledTimes(1);
   });
 
