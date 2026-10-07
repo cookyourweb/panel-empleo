@@ -132,3 +132,32 @@ describe("mensajes del codigo", () => {
     expect(sinId).toEqual([]);
   });
 });
+
+/**
+ * El servidor de desarrollo solo sabe servir un idioma por build: con
+ * localize: true lo desactiva con un aviso, y la pantalla sale en español
+ * pero con LOCALE_ID en-US (fechas y miles en ingles). Por eso cada
+ * configuracion de serve apunta a una build de un solo idioma.
+ */
+describe("angular.json", () => {
+  const build = angular.projects["panel-empleo"].architect.build;
+  const serve = angular.projects["panel-empleo"].architect.serve;
+
+  it("la build de produccion genera todos los idiomas", () => {
+    expect(build.configurations.production.localize).toBe(true);
+    expect(i18n.sourceLocale).toEqual({ code: "es", subPath: "es" });
+  });
+
+  it.each(Object.entries<{ buildTarget: string }>(serve.configurations))(
+    "serve %s sirve una build de un solo idioma",
+    (_nombre, { buildTarget }) => {
+      const configuraciones = buildTarget.split(":")[2].split(",");
+      const localize = configuraciones.reduce(
+        (actual: unknown, nombre) => build.configurations[nombre]?.localize ?? actual,
+        build.options?.localize,
+      );
+
+      expect(Array.isArray(localize) && localize.length === 1).toBe(true);
+    },
+  );
+});
