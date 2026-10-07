@@ -318,7 +318,7 @@
       </notes>
       <segment>
         <source> La ficha va a la papelera de Notion: libera espacio y se puede recuperar durante 30 días. </source>
-        <target> The record goes to the Notion trash: it frees up space and can be recovered for 30 days. </target>
+        <target> The offer goes to the Notion trash: it frees up space and can be recovered for 30 days. </target>
       </segment>
     </unit>
     <unit id="confirmar.efectoLista">
@@ -388,7 +388,7 @@
       </notes>
       <segment>
         <source><ph id="0" equiv="cuantas" disp="cuantas"/> ficha está en curso (aprobadas, enviadas, en proceso o con entrevista). Revísalo antes de confirmar.</source>
-        <target><ph id="0" equiv="cuantas" disp="cuantas"/> record is in progress (approved, sent, in progress or with an interview). Check before confirming.</target>
+        <target><ph id="0" equiv="cuantas" disp="cuantas"/> offer is in progress (approved, sent, in progress or with an interview). Check before confirming.</target>
       </segment>
     </unit>
     <unit id="confirmar.enCursoVarias">
@@ -398,7 +398,7 @@
       </notes>
       <segment>
         <source><ph id="0" equiv="cuantas" disp="cuantas"/> fichas están en curso (aprobadas, enviadas, en proceso o con entrevista). Revísalo antes de confirmar.</source>
-        <target><ph id="0" equiv="cuantas" disp="cuantas"/> records are in progress (approved, sent, in progress or with an interview). Check before confirming.</target>
+        <target><ph id="0" equiv="cuantas" disp="cuantas"/> offers are in progress (approved, sent, in progress or with an interview). Check before confirming.</target>
       </segment>
     </unit>
     <unit id="detalle.volver">
@@ -1099,7 +1099,7 @@
       </notes>
       <segment>
         <source>Contenido de la ficha</source>
-        <target>Record content</target>
+        <target>Offer details</target>
       </segment>
     </unit>
     <unit id="ficha.contenido.conCuerpo">
@@ -1109,7 +1109,7 @@
       </notes>
       <segment>
         <source>Contenido de la ficha (historial y encaje)</source>
-        <target>Record content (history and fit)</target>
+        <target>Offer details (history and fit)</target>
       </segment>
     </unit>
     <unit id="ficha.contenido.sinCuerpo">
@@ -1119,7 +1119,7 @@
       </notes>
       <segment>
         <source>Contenido de la ficha</source>
-        <target>Record content</target>
+        <target>Offer details</target>
       </segment>
     </unit>
     <unit id="ficha.contenido.vacio">
@@ -1129,7 +1129,7 @@
       </notes>
       <segment>
         <source> La ficha no tiene contenido en el cuerpo de la página. </source>
-        <target> The record has no content in its page body. </target>
+        <target> This offer has no content in its page body. </target>
       </segment>
     </unit>
     <unit id="ficha.camposSinDato">
@@ -1198,7 +1198,7 @@
       </notes>
       <segment>
         <source> Están en la papelera de Notion, que las guarda 30 días. Restaurar devuelve la ficha a Notion y a la tabla. </source>
-        <target> They are in the Notion trash, which keeps them for 30 days. Restoring returns the record to Notion and to the table. </target>
+        <target> They are in the Notion trash, which keeps them for 30 days. Restoring returns the offer to Notion and to the table. </target>
       </segment>
     </unit>
     <unit id="eliminadas.fila">
@@ -1518,7 +1518,7 @@
       </notes>
       <segment>
         <source>Cerrar la ficha (Esc)</source>
-        <target>Close the record (Esc)</target>
+        <target>Close details (Esc)</target>
       </segment>
     </unit>
     <unit id="ofertas.panel.cerrar">
@@ -1658,7 +1658,7 @@
       </notes>
       <segment>
         <source><ph id="0" equiv="cuantas" disp="antes.length"/> ficha pasa a <ph id="1" equiv="estado" disp="nombreDeEstado(estado)"/>.</source>
-        <target><ph id="0" equiv="cuantas" disp="antes.length"/> record moves to <ph id="1" equiv="estado" disp="nombreDeEstado(estado)"/>.</target>
+        <target><ph id="0" equiv="cuantas" disp="antes.length"/> offer moves to <ph id="1" equiv="estado" disp="nombreDeEstado(estado)"/>.</target>
       </segment>
     </unit>
     <unit id="ofertas.aviso.cambioVarias">
@@ -1668,7 +1668,7 @@
       </notes>
       <segment>
         <source><ph id="0" equiv="cuantas" disp="antes.length"/> fichas pasan a <ph id="1" equiv="estado" disp="nombreDeEstado(estado)"/>.</source>
-        <target><ph id="0" equiv="cuantas" disp="antes.length"/> records move to <ph id="1" equiv="estado" disp="nombreDeEstado(estado)"/>.</target>
+        <target><ph id="0" equiv="cuantas" disp="antes.length"/> offers move to <ph id="1" equiv="estado" disp="nombreDeEstado(estado)"/>.</target>
       </segment>
     </unit>
     <unit id="ofertas.aviso.deshecho">
@@ -1748,7 +1748,7 @@
       </notes>
       <segment>
         <source>Fichas con dato</source>
-        <target>Records with data</target>
+        <target>Offers with data</target>
       </segment>
     </unit>
   </file>
