@@ -6,6 +6,7 @@ import { EditorDeCandidaturas, elegirEditor } from './ofertas/editor-de-candidat
 import { elegirRepositorio } from './ofertas/elegir-repositorio';
 import { elegirFuenteDeAcciones, FuenteDeAcciones } from './ofertas/fuente-de-acciones';
 import { RepositorioDeCandidaturas } from './ofertas/repositorio-de-candidaturas';
+import { elegirGuardas } from './sesion/elegir-guardas';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,7 @@ export const routes: Routes = [
   },
   {
     path: '',
+    canActivate: elegirGuardas(isDevMode()),
     // El store vive en la ruta y no en cada pantalla: la lista y el detalle
     // comparten las mismas candidaturas, y abrir una no vuelve a pedirlas.
     providers: [
