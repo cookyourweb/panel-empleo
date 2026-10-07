@@ -9,6 +9,11 @@ import { RepositorioDeCandidaturas } from './ofertas/repositorio-de-candidaturas
 
 export const routes: Routes = [
   {
+    path: 'entrar',
+    title: 'Entrar',
+    loadComponent: () => import('./entrada/entrada.page').then((m) => m.EntradaPage),
+  },
+  {
     path: '',
     // El store vive en la ruta y no en cada pantalla: la lista y el detalle
     // comparten las mismas candidaturas, y abrir una no vuelve a pedirlas.

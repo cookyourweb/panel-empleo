@@ -3,6 +3,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { appConfig } from './app.config';
 import { CONFIGURACION_DE_SESION } from './sesion/configuracion';
+import { IdentidadGoogle } from './sesion/identidad-google';
+import { ProveedorDeIdentidad } from './sesion/proveedor-de-identidad';
 
 describe('appConfig', () => {
   beforeEach(() => {
@@ -18,5 +20,9 @@ describe('appConfig', () => {
 
     expect(configuracion.urlApi).toMatch(/^https?:\/\//);
     expect(configuracion.idCliente).toMatch(/\.apps\.googleusercontent\.com$/);
+  });
+
+  it('resuelve el proveedor de identidad a Google', () => {
+    expect(TestBed.inject(ProveedorDeIdentidad)).toBeInstanceOf(IdentidadGoogle);
   });
 });
