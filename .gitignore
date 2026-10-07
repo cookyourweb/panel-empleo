@@ -45,3 +45,6 @@ Thumbs.db
 
 # Datos reales para desarrollo local. El repositorio es publico: nunca subir esto.
 /public/local/
+
+# Registro local de skills para agentes
+.atl/
