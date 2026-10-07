@@ -3,7 +3,19 @@
   "framework": "angular",
   "buildCommand": "npx ng build",
   "outputDirectory": "dist/panel-empleo/browser",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "header", "key": "accept-language", "value": "^es($|[-,;])" }],
+      "destination": "/es/",
+      "permanent": false
+    },
+    { "source": "/", "destination": "/en/", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/es/:path*", "destination": "/es/index.html" },
+    { "source": "/en/:path*", "destination": "/en/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
