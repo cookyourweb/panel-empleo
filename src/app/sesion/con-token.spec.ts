@@ -1,11 +1,16 @@
-import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 
 import { CONFIGURACION_DE_SESION } from './configuracion';
 import { conToken } from './con-token';
-import { Sesion } from './sesion';
+import { RESULTADO_DE_ENTRADA, Sesion } from './sesion';
 
 const URL_API = 'http://api.prueba';
 const USUARIA = { sub: 'sub-1', email: 'invitada@ejemplo.test', nombre: 'Invitada' };
@@ -96,6 +101,74 @@ describe('conToken', () => {
       const peticion = http.expectOne(`${URL_API}/yo`);
       expect(peticion.request.headers.get('Authorization')).toBe('Bearer a-mano');
       peticion.flush(USUARIA);
+    });
+  });
+
+  describe('ante un error', () => {
+    let navegar: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+      navegar = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    });
+
+    function fallar(url: string, status: number, statusText: string) {
+      let error: unknown;
+      cliente.get(url).subscribe({ error: (e: unknown) => (error = e) });
+      http.expectOne(url).flush(null, { status, statusText });
+      return error;
+    }
+
+    it('un 401 de cv-server cierra la sesion, vuelve a entrar y el error llega a quien llamo', async () => {
+      await conSesion();
+
+      const error = fallar(`${URL_API}/candidaturas`, 401, 'Unauthorized');
+
+      expect(error).toBeInstanceOf(HttpErrorResponse);
+      expect((error as HttpErrorResponse).status).toBe(401);
+      expect(sesion.activa()).toBe(false);
+      expect(sesion.token()).toBeNull();
+      expect(navegar).toHaveBeenCalledWith(['/entrar'], {
+        queryParams: { volver: TestBed.inject(Router).url },
+      });
+    });
+
+    it('un 401 de otro origen no toca la sesion ni navega', async () => {
+      await conSesion();
+
+      const error = fallar('https://otro.ejemplo.test/datos', 401, 'Unauthorized');
+
+      expect(error).toBeInstanceOf(HttpErrorResponse);
+      expect(sesion.activa()).toBe(true);
+      expect(navegar).not.toHaveBeenCalled();
+    });
+
+    it('un 401 del puente local /api no toca la sesion ni navega', async () => {
+      await conSesion();
+
+      fallar('/api/candidaturas', 401, 'Unauthorized');
+
+      expect(sesion.activa()).toBe(true);
+      expect(navegar).not.toHaveBeenCalled();
+    });
+
+    it.each([403, 500, 503])('un %i de cv-server no cierra la sesion', async (status) => {
+      await conSesion();
+
+      const error = fallar(`${URL_API}/candidaturas`, status, 'Error');
+
+      expect((error as HttpErrorResponse).status).toBe(status);
+      expect(sesion.activa()).toBe(true);
+      expect(navegar).not.toHaveBeenCalled();
+    });
+
+    it('un 401 en /yo durante entrar no navega: entrar ya devuelve rechazada', async () => {
+      const resultado = sesion.entrar('credencial-mala');
+      http
+        .expectOne(`${URL_API}/yo`)
+        .flush(null, { status: 401, statusText: 'Unauthorized' });
+
+      expect(await resultado).toBe(RESULTADO_DE_ENTRADA.rechazada);
+      expect(navegar).not.toHaveBeenCalled();
     });
   });
 });
