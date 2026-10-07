@@ -50,7 +50,7 @@ the time it takes making rigour impossible.**
 > **Tailoring is choosing. Lying is adding.**
 
 A tailored CV should emphasise different parts of a person's real experience. It should
-not invent skills, stretch responsibilities, or turn partial exposure into expertise.
+not invent skills or turn partial exposure into expertise. It is designed not to invent: what it adds is checked against the master CV and flagged. Exaggerated role scope is not yet detected automatically.
 
 When a role asks for something the candidate does not have, the system names the gap
 instead of hiding it. The rule that governs tailoring puts it in terms anyone can check:
@@ -65,8 +65,7 @@ worked in domains where a mistake has real consequences, which is true and can b
 defended.
 
 This is not a moral footnote. It is the reason the whole thing is built the way it is:
-every document is generated from a master CV that the candidate wrote. **There is
-nowhere to pull from what does not exist.**
+every document is generated from a master CV that the candidate wrote. **It is designed not to invent: what it adds is checked against the master CV and flagged. Exaggerated role scope is not yet detected automatically.**
 
 ## What it does
 
@@ -114,7 +113,9 @@ Good candidates are lost over how the document is written, not over what they kn
 > A model does not fail with an exception. It returns something plausible and worse.
 
 In production, `cv-server` writes both the CV and the cover letter with
-`claude-sonnet-4-6`, with `openai/gpt-oss-120b` as the fallback model.
+`claude-sonnet-4-6`.
+If Claude fails, `openai/gpt-oss-120b` takes over, then Gemini, then Claude Haiku 4.5,
+and every response reports the model used in `modelo_usado`.
 
 **Secrets do not depend on anyone remembering.** The n8n webhooks trigger actions with
 effects outside the system, so their paths cannot live in a public repository. A checker

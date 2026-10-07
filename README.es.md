@@ -51,8 +51,7 @@ sin que el tiempo que exige haga imposible ser riguroso.**
 > **Adaptar es elegir. Mentir es añadir.**
 
 Un currículum adaptado pone delante otras partes de la experiencia real de la persona.
-No inventa tecnologías, no estira responsabilidades y no convierte tres meses de roce en
-experiencia sólida.
+No inventa tecnologías ni convierte tres meses de roce en experiencia sólida. Está diseñado para no inventar: lo que añade se contrasta contra el currículum maestro y se avisa. La exageración del alcance de un rol todavía no se detecta de forma automática.
 
 Cuando una oferta pide algo que la persona no tiene, el sistema nombra el hueco en vez
 de taparlo. La regla que gobierna la adaptación lo dice con un criterio que se puede
@@ -68,8 +67,7 @@ trabajado en dominios donde un error tiene consecuencias reales, que sí es cier
 se defiende.
 
 Esto no es un matiz moral. Es la razón de que todo esté construido como está: cada
-documento sale de un currículum maestro que escribió la propia persona. **No hay de
-dónde sacar lo que no existe.**
+documento sale de un currículum maestro que escribió la propia persona. **Está diseñado para no inventar: lo que añade se contrasta contra el currículum maestro y se avisa. La exageración del alcance de un rol todavía no se detecta de forma automática.**
 
 ## Qué hace
 
@@ -116,8 +114,9 @@ pierde gente válida por cómo está escrito el documento, no por lo que sabe.
 
 > Un modelo no falla con una excepción: devuelve algo verosímil y peor.
 
-En producción, `cv-server` escribe el currículum y la carta con `claude-sonnet-4-6`, y
-`openai/gpt-oss-120b` queda como modelo de reserva.
+En producción, `cv-server` escribe el currículum y la carta con `claude-sonnet-4-6`.
+Si Claude falla, entran `openai/gpt-oss-120b`, después Gemini y después Claude Haiku
+4.5, y cada respuesta indica el modelo usado en `modelo_usado`.
 
 **Los secretos no dependen de que nadie se acuerde.** Los webhooks de n8n ejecutan
 acciones con efectos fuera del sistema, así que sus rutas no pueden vivir en un
