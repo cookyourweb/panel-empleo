@@ -6,7 +6,7 @@
 .error {
   margin: 1rem 0 0;
   padding: 0.5rem 0.65rem;
-  border: 1px solid hsl(var(--destructive, 0 70% 50%));
+  border: 1px solid hsl(var(--error-borde));
   border-radius: 6px;
   color: hsl(var(--foreground));
 }

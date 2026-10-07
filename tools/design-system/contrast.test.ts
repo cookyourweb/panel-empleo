@@ -49,7 +49,7 @@ describe.each([
    * necesitan 3:1 contra lo que tienen detras. Un foco que no se ve deja
    * la navegacion por teclado a ciegas.
    */
-  it.each(["--border", "--input", "--ring"])("%s se distingue del fondo", (token) => {
+  it.each(["--border", "--input", "--ring", "--error-borde"])("%s se distingue del fondo", (token) => {
     expect(contrastRatio(tokens["--background"], tokens[token])).toBeGreaterThanOrEqual(3);
   });
 });

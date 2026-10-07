@@ -107,6 +107,11 @@
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 210 40% 98%;
 
+  /* Borde de un mensaje de error. --destructive es un fondo oscuro pensado
+     para llevar texto encima y como borde da 1,98:1 sobre el negro; WCAG
+     1.4.11 pide 3:1. Este rojo claro da 5,24:1 sobre --background. */
+  --error-borde: 0 84% 60%;
+
   /* cian-600 #018188 — 4,24:1 sobre el fondo. El paso 700 que decia la
      documentacion daba 2,90:1 y no llegaba al 3:1 que pide WCAG 1.4.11
      para elementos que no son texto. Lo cazo el test de contraste. */
@@ -153,6 +158,9 @@
      ilegible para texto normal. Se oscurece hasta pasar AA. */
   --destructive: 0 73.7% 41.8%;
   --destructive-foreground: 210 40% 98%;
+
+  /* Sobre blanco el rojo oscuro de --destructive ya pasa de sobra. */
+  --error-borde: 0 73.7% 41.8%;
 
   /* cian-600 #018188 — 4,67:1 sobre blanco. La regla "bordes claro: 200"
      de la documentacion daba 1,42:1: un borde practicamente invisible. */
