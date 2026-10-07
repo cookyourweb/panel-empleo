@@ -1,0 +1,1755 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="es" trgLang="en">
+  <file id="ngi18n" original="ng.template">
+    <unit id="app.saltarAlContenido">
+      <notes>
+        <note category="location">src/app/app.html:2,8</note>
+        <note category="description">Enlace para saltar la cabecera y llegar al contenido</note>
+      </notes>
+      <segment>
+        <source>Saltar al contenido principal</source>
+        <target>Skip to main content</target>
+      </segment>
+    </unit>
+    <unit id="ruta.entrar">
+      <notes>
+        <note category="location">src/app/app.routes.ts:14</note>
+        <note category="description">Titulo de la pestana en la pantalla de entrada</note>
+      </notes>
+      <segment>
+        <source>Entrar</source>
+        <target>Sign in</target>
+      </segment>
+    </unit>
+    <unit id="ruta.candidaturas">
+      <notes>
+        <note category="location">src/app/app.routes.ts:31</note>
+        <note category="description">Titulo de la pestana en la tabla</note>
+      </notes>
+      <segment>
+        <source>Candidaturas</source>
+        <target>Applications</target>
+      </segment>
+    </unit>
+    <unit id="ruta.candidatura">
+      <notes>
+        <note category="location">src/app/app.routes.ts:36</note>
+        <note category="description">Titulo de la pestana en la ficha</note>
+      </notes>
+      <segment>
+        <source>Candidatura</source>
+        <target>Application</target>
+      </segment>
+    </unit>
+    <unit id="app.titulo">
+      <notes>
+        <note category="location">src/app/app.ts:15</note>
+        <note category="description">Nombre de la aplicacion, titulo de la cabecera</note>
+      </notes>
+      <segment>
+        <source>Panel de empleo</source>
+        <target>Job search dashboard</target>
+      </segment>
+    </unit>
+    <unit id="entrada.titulo">
+      <notes>
+        <note category="location">src/app/entrada/entrada.page.html:2,3</note>
+        <note category="description">Titulo de la pantalla de entrada</note>
+      </notes>
+      <segment>
+        <source>Entrar</source>
+        <target>Sign in</target>
+      </segment>
+    </unit>
+    <unit id="entrada.invitacion">
+      <notes>
+        <note category="location">src/app/entrada/entrada.page.html:3,7</note>
+        <note category="description">Invitacion a entrar con la cuenta</note>
+      </notes>
+      <segment>
+        <source>Entra con tu cuenta para ver tus candidaturas.</source>
+        <target>Sign in with your account to see your applications.</target>
+      </segment>
+    </unit>
+    <unit id="entrada.despertando">
+      <notes>
+        <note category="location">src/app/entrada/entrada.page.html:11,14</note>
+        <note category="description">Aviso de que el servidor esta arrancando</note>
+      </notes>
+      <segment>
+        <source>Despertando el servidor, puede tardar un minuto</source>
+        <target>Waking up the server, this can take a minute</target>
+      </segment>
+    </unit>
+    <unit id="entrada.sinRespuesta">
+      <notes>
+        <note category="location">src/app/entrada/entrada.page.html:14,19</note>
+        <note category="description">Aviso de que el servidor no respondio</note>
+      </notes>
+      <segment>
+        <source>El servidor no ha respondido. Prueba de nuevo.</source>
+        <target>The server did not respond. Try again.</target>
+      </segment>
+    </unit>
+    <unit id="entrada.reintentar">
+      <notes>
+        <note category="location">src/app/entrada/entrada.page.html:20,25</note>
+        <note category="description">Boton que vuelve a comprobar el servidor</note>
+      </notes>
+      <segment>
+        <source> Reintentar </source>
+        <target> Retry </target>
+      </segment>
+    </unit>
+    <unit id="entrada.error.rechazada">
+      <notes>
+        <note category="location">src/app/entrada/entrada.page.ts:19</note>
+        <note category="description">Error al entrar, la cuenta no se valido</note>
+      </notes>
+      <segment>
+        <source>No se pudo comprobar tu cuenta</source>
+        <target>Could not verify your account</target>
+      </segment>
+    </unit>
+    <unit id="entrada.error.noInvitada">
+      <notes>
+        <note category="location">src/app/entrada/entrada.page.ts:20</note>
+        <note category="description">Error al entrar, la cuenta no tiene acceso</note>
+      </notes>
+      <segment>
+        <source>Tu cuenta no está invitada</source>
+        <target>Your account has not been invited</target>
+      </segment>
+    </unit>
+    <unit id="entrada.error.sinServidor">
+      <notes>
+        <note category="location">src/app/entrada/entrada.page.ts:21</note>
+        <note category="description">Error al entrar, el servidor no responde</note>
+      </notes>
+      <segment>
+        <source>El servidor no puede comprobar la identidad ahora</source>
+        <target>The server cannot verify your identity right now</target>
+      </segment>
+    </unit>
+    <unit id="entrada.error.sinGoogle">
+      <notes>
+        <note category="location">src/app/entrada/entrada.page.ts:24</note>
+        <note category="description">Error cuando el script de Google no carga</note>
+      </notes>
+      <segment>
+        <source>No se pudo cargar el acceso con Google. Revisa la conexión o desactiva el bloqueador y recarga la página.</source>
+        <target>Could not load Google sign-in. Check your connection or disable your blocker, then reload the page.</target>
+      </segment>
+    </unit>
+    <unit id="selectorIdioma.etiqueta">
+      <notes>
+        <note category="location">src/app/idioma/selector-de-idioma.ts:19</note>
+        <note category="description">Etiqueta accesible de la navegación entre idiomas</note>
+      </notes>
+      <segment>
+        <source>Idioma</source>
+        <target>Language</target>
+      </segment>
+    </unit>
+    <unit id="accion.aprobar">
+      <notes>
+        <note category="location">src/app/ofertas/acciones.ts:27</note>
+        <note category="description">Boton de accion sobre una candidatura</note>
+      </notes>
+      <segment>
+        <source>Aprobar</source>
+        <target>Approve</target>
+      </segment>
+    </unit>
+    <unit id="accion.descartar">
+      <notes>
+        <note category="location">src/app/ofertas/acciones.ts:28</note>
+        <note category="description">Boton de accion sobre una candidatura</note>
+      </notes>
+      <segment>
+        <source>Descartar</source>
+        <target>Dismiss</target>
+      </segment>
+    </unit>
+    <unit id="accion.enviarEmpresa">
+      <notes>
+        <note category="location">src/app/ofertas/acciones.ts:29</note>
+        <note category="description">Boton de accion sobre una candidatura</note>
+      </notes>
+      <segment>
+        <source>Enviar a empresa</source>
+        <target>Send to company</target>
+      </segment>
+    </unit>
+    <unit id="accion.aprobar.descripcion">
+      <notes>
+        <note category="location">src/app/ofertas/acciones.ts:41</note>
+        <note category="description">Descripcion accesible del boton Aprobar</note>
+      </notes>
+      <segment>
+        <source>Aprobar la oferta de <ph id="0" equiv="empresa" disp="empresa"/></source>
+        <target>Approve the job at <ph id="0" equiv="empresa" disp="empresa"/></target>
+      </segment>
+    </unit>
+    <unit id="accion.descartar.descripcion">
+      <notes>
+        <note category="location">src/app/ofertas/acciones.ts:43</note>
+        <note category="description">Descripcion accesible del boton Descartar</note>
+      </notes>
+      <segment>
+        <source>Descartar la oferta de <ph id="0" equiv="empresa" disp="empresa"/></source>
+        <target>Dismiss the job at <ph id="0" equiv="empresa" disp="empresa"/></target>
+      </segment>
+    </unit>
+    <unit id="accion.enviarEmpresa.descripcion">
+      <notes>
+        <note category="location">src/app/ofertas/acciones.ts:45</note>
+        <note category="description">Descripcion accesible del boton Enviar a empresa</note>
+      </notes>
+      <segment>
+        <source>Enviar a empresa la oferta de <ph id="0" equiv="empresa" disp="empresa"/></source>
+        <target>Send the application to <ph id="0" equiv="empresa" disp="empresa"/></target>
+      </segment>
+    </unit>
+    <unit id="barra.etiqueta">
+      <notes>
+        <note category="location">src/app/ofertas/barra-de-seleccion.ts:13</note>
+        <note category="description">Nombre de la barra de acciones sobre varias filas</note>
+      </notes>
+      <segment>
+        <source>Acciones en bloque</source>
+        <target>Bulk actions</target>
+      </segment>
+    </unit>
+    <unit id="barra.eliminar">
+      <notes>
+        <note category="location">src/app/ofertas/barra-de-seleccion.ts:15,18</note>
+        <note category="description">Boton que elimina las filas marcadas</note>
+      </notes>
+      <segment>
+        <source>Eliminar</source>
+        <target>Delete</target>
+      </segment>
+    </unit>
+    <unit id="barra.cambiarEstado">
+      <notes>
+        <note category="location">src/app/ofertas/barra-de-seleccion.ts:27,30</note>
+        <note category="description">Boton que abre el menu de estados</note>
+      </notes>
+      <segment>
+        <source> Cambiar estado </source>
+        <target> Change status </target>
+      </segment>
+    </unit>
+    <unit id="barra.menuEstados">
+      <notes>
+        <note category="location">src/app/ofertas/barra-de-seleccion.ts:30</note>
+        <note category="description">Nombre del menu de estados</note>
+      </notes>
+      <segment>
+        <source>Nuevo estado</source>
+        <target>New status</target>
+      </segment>
+    </unit>
+    <unit id="barra.marcarCaducada">
+      <notes>
+        <note category="location">src/app/ofertas/barra-de-seleccion.ts:37,39</note>
+        <note category="description">Boton que pasa las filas marcadas a Caducada</note>
+      </notes>
+      <segment>
+        <source>Marcar caducada</source>
+        <target>Mark as expired</target>
+      </segment>
+    </unit>
+    <unit id="barra.quitarSeleccion">
+      <notes>
+        <note category="location">src/app/ofertas/barra-de-seleccion.ts:39,44</note>
+        <note category="description">Boton que desmarca todas las filas</note>
+      </notes>
+      <segment>
+        <source>Quitar selección</source>
+        <target>Clear selection</target>
+      </segment>
+    </unit>
+    <unit id="barra.seleccionada">
+      <notes>
+        <note category="location">src/app/ofertas/barra-de-seleccion.ts:62</note>
+        <note category="description">Una fila marcada, detras del numero</note>
+      </notes>
+      <segment>
+        <source>seleccionada</source>
+        <target>selected</target>
+      </segment>
+    </unit>
+    <unit id="barra.seleccionadas">
+      <notes>
+        <note category="location">src/app/ofertas/barra-de-seleccion.ts:63</note>
+        <note category="description">Varias filas marcadas, detras del numero</note>
+      </notes>
+      <segment>
+        <source>seleccionadas</source>
+        <target>selected</target>
+      </segment>
+    </unit>
+    <unit id="store.error.sinEdicion">
+      <notes>
+        <note category="location">src/app/ofertas/candidaturas.store.ts:46</note>
+        <note category="description">Error al editar sin puente disponible</note>
+      </notes>
+      <segment>
+        <source>No se puede editar desde aquí</source>
+        <target>Editing is not available here</target>
+      </segment>
+    </unit>
+    <unit id="confirmar.titulo">
+      <notes>
+        <note category="location">src/app/ofertas/confirmar-eliminar.ts:27,29</note>
+        <note category="description">Titulo del dialogo de confirmacion, con el numero de ofertas</note>
+      </notes>
+      <segment>
+        <source> Eliminar <ph id="0" equiv="INTERPOLATION" disp="{{ cuantas() }}"/> </source>
+        <target> Delete <ph id="0" equiv="INTERPOLATION" disp="{{ cuantas() }}"/> </target>
+      </segment>
+    </unit>
+    <unit id="confirmar.efectoPapelera">
+      <notes>
+        <note category="location">src/app/ofertas/confirmar-eliminar.ts:32,34</note>
+        <note category="description">Primer efecto de eliminar</note>
+      </notes>
+      <segment>
+        <source> La ficha va a la papelera de Notion: libera espacio y se puede recuperar durante 30 días. </source>
+        <target> The record goes to the Notion trash: it frees up space and can be recovered for 30 days. </target>
+      </segment>
+    </unit>
+    <unit id="confirmar.efectoLista">
+      <notes>
+        <note category="location">src/app/ofertas/confirmar-eliminar.ts:35,38</note>
+        <note category="description">Segundo efecto de eliminar</note>
+      </notes>
+      <segment>
+        <source> Su copia queda en la lista de Eliminadas, desde donde se puede restaurar. </source>
+        <target> A copy stays in the Deleted list, where it can be restored. </target>
+      </segment>
+    </unit>
+    <unit id="confirmar.resto">
+      <notes>
+        <note category="location">src/app/ofertas/confirmar-eliminar.ts:45,46</note>
+        <note category="description">Cuantas ofertas mas hay sin nombrar</note>
+      </notes>
+      <segment>
+        <source>y <ph id="0" equiv="INTERPOLATION" disp="{{ resto() }}"/> más</source>
+        <target>and <ph id="0" equiv="INTERPOLATION" disp="{{ resto() }}"/> more</target>
+      </segment>
+    </unit>
+    <unit id="confirmar.cancelar">
+      <notes>
+        <note category="location">src/app/ofertas/confirmar-eliminar.ts:54,56</note>
+        <note category="description">Boton que cierra el dialogo sin eliminar</note>
+      </notes>
+      <segment>
+        <source> Cancelar </source>
+        <target> Cancel </target>
+      </segment>
+    </unit>
+    <unit id="confirmar.confirmar">
+      <notes>
+        <note category="location">src/app/ofertas/confirmar-eliminar.ts:57,58</note>
+        <note category="description">Boton que confirma la eliminacion, con el numero de ofertas</note>
+      </notes>
+      <segment>
+        <source> Eliminar <ph id="0" equiv="INTERPOLATION" disp="{{ cuantas() }}"/> </source>
+        <target> Delete <ph id="0" equiv="INTERPOLATION" disp="{{ cuantas() }}"/> </target>
+      </segment>
+    </unit>
+    <unit id="confirmar.oferta">
+      <notes>
+        <note category="location">src/app/ofertas/confirmar-eliminar.ts:74</note>
+        <note category="description">Una oferta, detras del numero</note>
+      </notes>
+      <segment>
+        <source>oferta</source>
+        <target>job</target>
+      </segment>
+    </unit>
+    <unit id="confirmar.ofertas">
+      <notes>
+        <note category="location">src/app/ofertas/confirmar-eliminar.ts:75</note>
+        <note category="description">Varias ofertas, detras del numero</note>
+      </notes>
+      <segment>
+        <source>ofertas</source>
+        <target>jobs</target>
+      </segment>
+    </unit>
+    <unit id="confirmar.enCursoUna">
+      <notes>
+        <note category="location">src/app/ofertas/confirmar-eliminar.ts:83</note>
+        <note category="description">Aviso de que una ficha esta en curso</note>
+      </notes>
+      <segment>
+        <source><ph id="0" equiv="cuantas" disp="cuantas"/> ficha está en curso (aprobadas, enviadas, en proceso o con entrevista). Revísalo antes de confirmar.</source>
+        <target><ph id="0" equiv="cuantas" disp="cuantas"/> record is in progress (approved, sent, in progress or with an interview). Check before confirming.</target>
+      </segment>
+    </unit>
+    <unit id="confirmar.enCursoVarias">
+      <notes>
+        <note category="location">src/app/ofertas/confirmar-eliminar.ts:84</note>
+        <note category="description">Aviso de que varias fichas estan en curso</note>
+      </notes>
+      <segment>
+        <source><ph id="0" equiv="cuantas" disp="cuantas"/> fichas están en curso (aprobadas, enviadas, en proceso o con entrevista). Revísalo antes de confirmar.</source>
+        <target><ph id="0" equiv="cuantas" disp="cuantas"/> records are in progress (approved, sent, in progress or with an interview). Check before confirming.</target>
+      </segment>
+    </unit>
+    <unit id="detalle.volver">
+      <notes>
+        <note category="location">src/app/ofertas/detalle.page.html:3,6</note>
+        <note category="description">Enlace de la ficha a la tabla</note>
+      </notes>
+      <segment>
+        <source>Volver a las candidaturas</source>
+        <target>Back to applications</target>
+      </segment>
+    </unit>
+    <unit id="detalle.noEsta.titulo">
+      <notes>
+        <note category="location">src/app/ofertas/detalle.page.html:14,15</note>
+        <note category="description">Titulo cuando la candidatura no existe</note>
+      </notes>
+      <segment>
+        <source>Esa candidatura no está</source>
+        <target>That application does not exist</target>
+      </segment>
+    </unit>
+    <unit id="detalle.noEsta.explicacion">
+      <notes>
+        <note category="location">src/app/ofertas/detalle.page.html:16,18</note>
+        <note category="description">Explicacion cuando la candidatura no existe</note>
+      </notes>
+      <segment>
+        <source> Puede que se haya borrado, o que el enlace no sea correcto. </source>
+        <target> It may have been deleted, or the link may be wrong. </target>
+      </segment>
+    </unit>
+    <unit id="detalle.noEsta.volver">
+      <notes>
+        <note category="location">src/app/ofertas/detalle.page.html:18,21</note>
+        <note category="description">Enlace de la pantalla de error a la tabla</note>
+      </notes>
+      <segment>
+        <source>Volver a las candidaturas</source>
+        <target>Back to applications</target>
+      </segment>
+    </unit>
+    <unit id="editor.puente.respuesta">
+      <notes>
+        <note category="location">src/app/ofertas/editor-de-candidaturas.ts:52</note>
+        <note category="location">src/app/ofertas/editor-de-candidaturas.ts:82</note>
+        <note category="description">Error del servicio intermedio con su codigo HTTP</note>
+      </notes>
+      <segment>
+        <source>El puente respondió <ph id="0" equiv="estado" disp="respuesta.status"/></source>
+        <target>The bridge responded with <ph id="0" equiv="estado" disp="respuesta.status"/></target>
+      </segment>
+    </unit>
+    <unit id="editor.demo.noElimina">
+      <notes>
+        <note category="location">src/app/ofertas/editor-de-candidaturas.ts:88</note>
+        <note category="description">Error al eliminar en la demo</note>
+      </notes>
+      <segment>
+        <source>La demo no elimina nada</source>
+        <target>The demo does not delete anything</target>
+      </segment>
+    </unit>
+    <unit id="editor.demo.noGuarda">
+      <notes>
+        <note category="location">src/app/ofertas/editor-de-candidaturas.ts:98</note>
+        <note category="description">Error al guardar en la demo</note>
+      </notes>
+      <segment>
+        <source>La demo no guarda cambios</source>
+        <target>The demo does not save changes</target>
+      </segment>
+    </unit>
+    <unit id="campo.empresa">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:11</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Empresa</source>
+        <target>Company</target>
+      </segment>
+    </unit>
+    <unit id="campo.puesto">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:12</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Puesto</source>
+        <target>Role</target>
+      </segment>
+    </unit>
+    <unit id="campo.estado">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:13</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Estado</source>
+        <target>Status</target>
+      </segment>
+    </unit>
+    <unit id="campo.fase">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:14</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Fase</source>
+        <target>Stage</target>
+      </segment>
+    </unit>
+    <unit id="campo.modalidad">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:15</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Modalidad</source>
+        <target>Work mode</target>
+      </segment>
+    </unit>
+    <unit id="campo.ubicacion">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:16</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Ubicación</source>
+        <target>Location</target>
+      </segment>
+    </unit>
+    <unit id="campo.salario">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:17</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Salario</source>
+        <target>Salary</target>
+      </segment>
+    </unit>
+    <unit id="campo.viaEnvio">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:18</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Vía envío</source>
+        <target>Sent via</target>
+      </segment>
+    </unit>
+    <unit id="campo.fechaEnvio">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:19</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Fecha envío</source>
+        <target>Sent on</target>
+      </segment>
+    </unit>
+    <unit id="campo.fechaPublicacion">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:20</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Publicada</source>
+        <target>Posted</target>
+      </segment>
+    </unit>
+    <unit id="campo.enlaceDeOferta">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:21</note>
+        <note category="description">Columna con el enlace a la oferta</note>
+      </notes>
+      <segment>
+        <source>Oferta</source>
+        <target>Job</target>
+      </segment>
+    </unit>
+    <unit id="campo.linkOferta">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:22</note>
+        <note category="description">Campo del formulario con la direccion de la oferta</note>
+      </notes>
+      <segment>
+        <source>Link oferta</source>
+        <target>Job link</target>
+      </segment>
+    </unit>
+    <unit id="campo.seguimiento">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:23</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Seguimiento</source>
+        <target>Follow-up</target>
+      </segment>
+    </unit>
+    <unit id="campo.descripcion">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:24</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Descripción</source>
+        <target>Description</target>
+      </segment>
+    </unit>
+    <unit id="campo.tipoContratoCorto">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:25</note>
+        <note category="description">Nombre de campo, version corta de la tabla</note>
+      </notes>
+      <segment>
+        <source>Tipo contrato</source>
+        <target>Contract type</target>
+      </segment>
+    </unit>
+    <unit id="campo.tipoContrato">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:26</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Tipo de contrato</source>
+        <target>Contract type</target>
+      </segment>
+    </unit>
+    <unit id="campo.modoContratacionCorto">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:27</note>
+        <note category="description">Nombre de campo, version corta de la tabla</note>
+      </notes>
+      <segment>
+        <source>Modo contratación</source>
+        <target>Hiring mode</target>
+      </segment>
+    </unit>
+    <unit id="campo.modoContratacion">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:28</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Modo de contratación</source>
+        <target>Hiring mode</target>
+      </segment>
+    </unit>
+    <unit id="campo.idioma">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:29</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Idioma</source>
+        <target>Language</target>
+      </segment>
+    </unit>
+    <unit id="campo.palabrasClave">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:30</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Palabras clave</source>
+        <target>Keywords</target>
+      </segment>
+    </unit>
+    <unit id="campo.verificada">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:31</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Verificada</source>
+        <target>Verified</target>
+      </segment>
+    </unit>
+    <unit id="campo.tags">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:32</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Tags</source>
+        <target>Tags</target>
+      </segment>
+    </unit>
+    <unit id="campo.fechaEntrevista">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:33</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Fecha entrevista</source>
+        <target>Interview date</target>
+      </segment>
+    </unit>
+    <unit id="campo.formatoTecnico">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:34</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Formato técnico</source>
+        <target>Technical format</target>
+      </segment>
+    </unit>
+    <unit id="campo.nombreContacto">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:35</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Nombre contacto</source>
+        <target>Contact name</target>
+      </segment>
+    </unit>
+    <unit id="campo.telefonoContacto">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:36</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Teléfono contacto</source>
+        <target>Contact phone</target>
+      </segment>
+    </unit>
+    <unit id="campo.emailEmpresa">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:37</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Email empresa</source>
+        <target>Company email</target>
+      </segment>
+    </unit>
+    <unit id="campo.emailEnviado">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:38</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Email enviado</source>
+        <target>Email sent</target>
+      </segment>
+    </unit>
+    <unit id="campo.notas">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:39</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Notas</source>
+        <target>Notes</target>
+      </segment>
+    </unit>
+    <unit id="campo.cvUsado">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:40</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>CV usado</source>
+        <target>CV used</target>
+      </segment>
+    </unit>
+    <unit id="campo.cv">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:41</note>
+        <note category="description">Columna del CV enviado</note>
+      </notes>
+      <segment>
+        <source>CV</source>
+        <target>CV</target>
+      </segment>
+    </unit>
+    <unit id="campo.cvGenerado">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:42</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>CV generado</source>
+        <target>Generated CV</target>
+      </segment>
+    </unit>
+    <unit id="campo.cvGeneradoEnlace">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:43</note>
+        <note category="description">Campo del formulario</note>
+      </notes>
+      <segment>
+        <source>CV generado (enlace)</source>
+        <target>Generated CV (link)</target>
+      </segment>
+    </unit>
+    <unit id="campo.carta">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:44</note>
+        <note category="description">Columna de la carta</note>
+      </notes>
+      <segment>
+        <source>Carta</source>
+        <target>Cover letter</target>
+      </segment>
+    </unit>
+    <unit id="campo.cartaDePresentacion">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:45</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Carta de presentación</source>
+        <target>Cover letter</target>
+      </segment>
+    </unit>
+    <unit id="campo.prep">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:46</note>
+        <note category="description">Columna de la preparacion de la entrevista</note>
+      </notes>
+      <segment>
+        <source>Prep</source>
+        <target>Prep</target>
+      </segment>
+    </unit>
+    <unit id="campo.preparacion">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:47</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Preparación</source>
+        <target>Preparation</target>
+      </segment>
+    </unit>
+    <unit id="campo.preparacionEnlace">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:48</note>
+        <note category="description">Campo del formulario</note>
+      </notes>
+      <segment>
+        <source>Preparación (enlace)</source>
+        <target>Preparation (link)</target>
+      </segment>
+    </unit>
+    <unit id="campo.avisoAutonoma">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:49</note>
+        <note category="description">Columna</note>
+      </notes>
+      <segment>
+        <source>Aviso autónoma</source>
+        <target>Freelancer notice</target>
+      </segment>
+    </unit>
+    <unit id="campo.avisoAutonomaEnCarta">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:50</note>
+        <note category="description">Nombre de campo</note>
+      </notes>
+      <segment>
+        <source>Aviso autónoma en carta</source>
+        <target>Freelancer notice in letter</target>
+      </segment>
+    </unit>
+    <unit id="enlace.abrir">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:55</note>
+        <note category="description">Texto de un enlace de la tabla</note>
+      </notes>
+      <segment>
+        <source>Abrir</source>
+        <target>Open</target>
+      </segment>
+    </unit>
+    <unit id="enlace.ver">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:56</note>
+        <note category="description">Texto de un enlace de la tabla</note>
+      </notes>
+      <segment>
+        <source>Ver</source>
+        <target>View</target>
+      </segment>
+    </unit>
+    <unit id="enlace.abrirCv">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:57</note>
+        <note category="description">Texto de un enlace de la ficha</note>
+      </notes>
+      <segment>
+        <source>Abrir CV</source>
+        <target>Open CV</target>
+      </segment>
+    </unit>
+    <unit id="enlace.abrirCvBase">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:58</note>
+        <note category="description">Texto de un enlace de la ficha</note>
+      </notes>
+      <segment>
+        <source>Abrir CV base</source>
+        <target>Open base CV</target>
+      </segment>
+    </unit>
+    <unit id="enlace.abrirPrep">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:59</note>
+        <note category="description">Texto de un enlace de la ficha</note>
+      </notes>
+      <segment>
+        <source>Abrir prep</source>
+        <target>Open prep</target>
+      </segment>
+    </unit>
+    <unit id="idiomaDeOferta.es">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:64</note>
+        <note category="description">Idioma de una oferta</note>
+      </notes>
+      <segment>
+        <source>Español</source>
+        <target>Spanish</target>
+      </segment>
+    </unit>
+    <unit id="idiomaDeOferta.en">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:65</note>
+        <note category="description">Idioma de una oferta</note>
+      </notes>
+      <segment>
+        <source>Inglés</source>
+        <target>English</target>
+      </segment>
+    </unit>
+    <unit id="casilla.si">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:69</note>
+        <note category="description">Casilla marcada</note>
+      </notes>
+      <segment>
+        <source>Sí</source>
+        <target>Yes</target>
+      </segment>
+    </unit>
+    <unit id="grupo.oferta">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:73</note>
+        <note category="description">Grupo de campos</note>
+      </notes>
+      <segment>
+        <source>Oferta</source>
+        <target>Job</target>
+      </segment>
+    </unit>
+    <unit id="grupo.candidatura">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:74</note>
+        <note category="description">Grupo de campos</note>
+      </notes>
+      <segment>
+        <source>Candidatura</source>
+        <target>Application</target>
+      </segment>
+    </unit>
+    <unit id="grupo.documentos">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:75</note>
+        <note category="description">Grupo de campos</note>
+      </notes>
+      <segment>
+        <source>Documentos</source>
+        <target>Documents</target>
+      </segment>
+    </unit>
+    <unit id="grupo.cabecera">
+      <notes>
+        <note category="location">src/app/ofertas/etiquetas.ts:76</note>
+        <note category="description">Grupo del formulario de edicion</note>
+      </notes>
+      <segment>
+        <source>Oferta: lo principal</source>
+        <target>Job: key details</target>
+      </segment>
+    </unit>
+    <unit id="ficha.abrirOferta">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:22,27</note>
+        <note category="description">Enlace a la oferta original</note>
+      </notes>
+      <segment>
+        <source> Abrir oferta </source>
+        <target> Open job </target>
+      </segment>
+    </unit>
+    <unit id="ficha.abrirNotion">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:33,37</note>
+        <note category="description">Enlace a la ficha en Notion</note>
+      </notes>
+      <segment>
+        <source>Abrir en Notion</source>
+        <target>Open in Notion</target>
+      </segment>
+    </unit>
+    <unit id="ficha.editar">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:42,46</note>
+        <note category="description">Boton que empieza a editar la ficha</note>
+      </notes>
+      <segment>
+        <source>Editar</source>
+        <target>Edit</target>
+      </segment>
+    </unit>
+    <unit id="ficha.guardando">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:51,53</note>
+        <note category="description">Boton Guardar mientras guarda</note>
+      </notes>
+      <segment>
+        <source>Guardando...</source>
+        <target>Saving...</target>
+      </segment>
+    </unit>
+    <unit id="ficha.guardar">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:53,56</note>
+        <note category="description">Boton que guarda los cambios de la ficha</note>
+      </notes>
+      <segment>
+        <source>Guardar</source>
+        <target>Save</target>
+      </segment>
+    </unit>
+    <unit id="ficha.cancelar">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:57,60</note>
+        <note category="description">Boton que descarta la edicion</note>
+      </notes>
+      <segment>
+        <source> Cancelar </source>
+        <target> Cancel </target>
+      </segment>
+    </unit>
+    <unit id="ficha.errorAlGuardar">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:86,88</note>
+        <note category="description">Error al guardar, con el motivo</note>
+      </notes>
+      <segment>
+        <source>No se guardó: <ph id="0" equiv="INTERPOLATION" disp="{{ mensaje }}"/></source>
+        <target>Not saved: <ph id="0" equiv="INTERPOLATION" disp="{{ mensaje }}"/></target>
+      </segment>
+    </unit>
+    <unit id="ficha.sinDato">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:107,108</note>
+        <note category="description">Opcion vacia de un desplegable</note>
+      </notes>
+      <segment>
+        <source>Sin dato</source>
+        <target>No data</target>
+      </segment>
+    </unit>
+    <unit id="ficha.avisoNoEditable">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:138,143</note>
+        <note category="description">Aviso de lo que no se edita aqui</note>
+      </notes>
+      <segment>
+        <source> El estado se cambia con las acciones; la fecha de envío y el contenido de la página, en Notion. </source>
+        <target> Status is changed with the actions; the sent date and the page content are edited in Notion. </target>
+      </segment>
+    </unit>
+    <unit id="ficha.grupoVacio">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:185,190</note>
+        <note category="description">Seccion de la ficha sin ningun campo con dato</note>
+      </notes>
+      <segment>
+        <source>Sin datos en este grupo.</source>
+        <target>No data in this group.</target>
+      </segment>
+    </unit>
+    <unit id="ficha.contenido.etiqueta">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:190</note>
+        <note category="description">Nombre de la seccion con el cuerpo de la pagina de Notion</note>
+      </notes>
+      <segment>
+        <source>Contenido de la ficha</source>
+        <target>Record content</target>
+      </segment>
+    </unit>
+    <unit id="ficha.contenido.conCuerpo">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:192,194</note>
+        <note category="description">Titulo del contenido de la pagina de Notion</note>
+      </notes>
+      <segment>
+        <source>Contenido de la ficha (historial y encaje)</source>
+        <target>Record content (history and fit)</target>
+      </segment>
+    </unit>
+    <unit id="ficha.contenido.sinCuerpo">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:241,242</note>
+        <note category="description">Titulo del contenido de la pagina de Notion</note>
+      </notes>
+      <segment>
+        <source>Contenido de la ficha</source>
+        <target>Record content</target>
+      </segment>
+    </unit>
+    <unit id="ficha.contenido.vacio">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:243,249</note>
+        <note category="description">Aviso de que la pagina de Notion esta vacia</note>
+      </notes>
+      <segment>
+        <source> La ficha no tiene contenido en el cuerpo de la página. </source>
+        <target> The record has no content in its page body. </target>
+      </segment>
+    </unit>
+    <unit id="ficha.camposSinDato">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:251,253</note>
+        <note category="description">Cuantos campos no tienen dato</note>
+      </notes>
+      <segment>
+        <source> <ph id="0" equiv="ICU" disp="{ficha().vacios.length, plural, =1 {1 campo sin dato} other {{{ ficha().vacios.length }} campos sin dato}}" subFlows="1565633304281777342"/> </source>
+        <target> <ph id="0" equiv="ICU" disp="{ficha().vacios.length, plural, =1 {1 campo sin dato} other {{{ ficha().vacios.length }} campos sin dato}}" subFlows="1565633304281777342"/> </target>
+      </segment>
+    </unit>
+    <unit id="4415986342485755354">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:251</note>
+      </notes>
+      <segment>
+        <source>{VAR_PLURAL, plural, =1 {1 campo sin dato} other {<ph id="0" equiv="INTERPOLATION"/> campos sin dato}}</source>
+        <target>{VAR_PLURAL, plural, =1 {1 field without data} other {<ph id="0" equiv="INTERPOLATION"/> fields without data}}</target>
+      </segment>
+    </unit>
+    <unit id="ficha.formulario.etiqueta">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.ts:91</note>
+        <note category="description">Nombre accesible del formulario de edicion</note>
+      </notes>
+      <segment>
+        <source>Editar <ph id="0" equiv="empresa" disp="empresa"/></source>
+        <target>Edit <ph id="0" equiv="empresa" disp="empresa"/></target>
+      </segment>
+    </unit>
+    <unit id="ficha.visor.titulo">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.ts:95</note>
+        <note category="description">Titulo del visor incrustado con el CV</note>
+      </notes>
+      <segment>
+        <source>CV generado para <ph id="0" equiv="empresa" disp="empresa"/></source>
+        <target>Generated CV for <ph id="0" equiv="empresa" disp="empresa"/></target>
+      </segment>
+    </unit>
+    <unit id="ficha.errorDesconocido">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.ts:140</note>
+        <note category="description">Error al guardar sin motivo conocido</note>
+      </notes>
+      <segment>
+        <source>No se pudo guardar</source>
+        <target>Could not save</target>
+      </segment>
+    </unit>
+    <unit id="eliminadas.titulo">
+      <notes>
+        <note category="location">src/app/ofertas/lista-de-eliminadas.ts:19,20</note>
+        <note category="description">Titulo de la lista de ofertas eliminadas</note>
+      </notes>
+      <segment>
+        <source>Eliminadas</source>
+        <target>Deleted</target>
+      </segment>
+    </unit>
+    <unit id="eliminadas.explicacion">
+      <notes>
+        <note category="location">src/app/ofertas/lista-de-eliminadas.ts:21,24</note>
+        <note category="description">Explica donde estan las eliminadas y que hace restaurar</note>
+      </notes>
+      <segment>
+        <source> Están en la papelera de Notion, que las guarda 30 días. Restaurar devuelve la ficha a Notion y a la tabla. </source>
+        <target> They are in the Notion trash, which keeps them for 30 days. Restoring returns the record to Notion and to the table. </target>
+      </segment>
+    </unit>
+    <unit id="eliminadas.fila">
+      <notes>
+        <note category="location">src/app/ofertas/lista-de-eliminadas.ts:27,28</note>
+        <note category="description">Puesto y fecha de eliminacion de una oferta</note>
+      </notes>
+      <segment>
+        <source><ph id="0" equiv="INTERPOLATION" disp="{{ e.candidatura.oferta.puesto }}"/> · eliminada el <ph id="1" equiv="INTERPOLATION_1" disp="{{ fecha(e.cuando) }}"/></source>
+        <target><ph id="0" equiv="INTERPOLATION" disp="{{ e.candidatura.oferta.puesto }}"/> · deleted on <ph id="1" equiv="INTERPOLATION_1" disp="{{ fecha(e.cuando) }}"/></target>
+      </segment>
+    </unit>
+    <unit id="eliminadas.restaurar">
+      <notes>
+        <note category="location">src/app/ofertas/lista-de-eliminadas.ts:42,46</note>
+        <note category="description">Boton que restaura una oferta eliminada</note>
+      </notes>
+      <segment>
+        <source> Restaurar </source>
+        <target> Restore </target>
+      </segment>
+    </unit>
+    <unit id="eliminadas.vacia">
+      <notes>
+        <note category="location">src/app/ofertas/lista-de-eliminadas.ts:46,49</note>
+        <note category="description">Lista vacia</note>
+      </notes>
+      <segment>
+        <source>No hay nada eliminado desde el panel.</source>
+        <target>Nothing has been deleted from the dashboard.</target>
+      </segment>
+    </unit>
+    <unit id="eliminadas.restaurarTodas">
+      <notes>
+        <note category="location">src/app/ofertas/lista-de-eliminadas.ts:50,52</note>
+        <note category="description">Boton que restaura todas las eliminadas</note>
+      </notes>
+      <segment>
+        <source> Restaurar todas </source>
+        <target> Restore all </target>
+      </segment>
+    </unit>
+    <unit id="eliminadas.cerrar">
+      <notes>
+        <note category="location">src/app/ofertas/lista-de-eliminadas.ts:53,56</note>
+        <note category="description">Boton que cierra la lista</note>
+      </notes>
+      <segment>
+        <source> Cerrar </source>
+        <target> Close </target>
+      </segment>
+    </unit>
+    <unit id="eliminadas.restaurar.descripcion">
+      <notes>
+        <note category="location">src/app/ofertas/lista-de-eliminadas.ts:76</note>
+        <note category="description">Nombre accesible del boton Restaurar</note>
+      </notes>
+      <segment>
+        <source>Restaurar <ph id="0" equiv="empresa" disp="empresa"/></source>
+        <target>Restore <ph id="0" equiv="empresa" disp="empresa"/></target>
+      </segment>
+    </unit>
+    <unit id="estado.pendiente">
+      <notes>
+        <note category="location">src/app/ofertas/nombre-de-estado.ts:8</note>
+        <note category="description">Estado de una candidatura</note>
+      </notes>
+      <segment>
+        <source>Pendiente</source>
+        <target>Pending</target>
+      </segment>
+    </unit>
+    <unit id="estado.aprobado">
+      <notes>
+        <note category="location">src/app/ofertas/nombre-de-estado.ts:9</note>
+        <note category="description">Estado de una candidatura</note>
+      </notes>
+      <segment>
+        <source>Aprobado</source>
+        <target>Approved</target>
+      </segment>
+    </unit>
+    <unit id="estado.enProceso">
+      <notes>
+        <note category="location">src/app/ofertas/nombre-de-estado.ts:10</note>
+        <note category="description">Estado de una candidatura</note>
+      </notes>
+      <segment>
+        <source>En proceso</source>
+        <target>In progress</target>
+      </segment>
+    </unit>
+    <unit id="estado.enviado">
+      <notes>
+        <note category="location">src/app/ofertas/nombre-de-estado.ts:11</note>
+        <note category="description">Estado de una candidatura</note>
+      </notes>
+      <segment>
+        <source>Enviado</source>
+        <target>Sent</target>
+      </segment>
+    </unit>
+    <unit id="estado.entrevista">
+      <notes>
+        <note category="location">src/app/ofertas/nombre-de-estado.ts:12</note>
+        <note category="description">Estado de una candidatura</note>
+      </notes>
+      <segment>
+        <source>Entrevista</source>
+        <target>Interview</target>
+      </segment>
+    </unit>
+    <unit id="estado.rechazado">
+      <notes>
+        <note category="location">src/app/ofertas/nombre-de-estado.ts:13</note>
+        <note category="description">Estado de una candidatura, lo decide la empresa</note>
+      </notes>
+      <segment>
+        <source>Rechazado</source>
+        <target>Rejected</target>
+      </segment>
+    </unit>
+    <unit id="estado.descartado">
+      <notes>
+        <note category="location">src/app/ofertas/nombre-de-estado.ts:14</note>
+        <note category="description">Estado de una candidatura, lo decide quien busca</note>
+      </notes>
+      <segment>
+        <source>Descartado</source>
+        <target>Dismissed</target>
+      </segment>
+    </unit>
+    <unit id="estado.caducada">
+      <notes>
+        <note category="location">src/app/ofertas/nombre-de-estado.ts:15</note>
+        <note category="description">Estado de una candidatura</note>
+      </notes>
+      <segment>
+        <source>Caducada</source>
+        <target>Expired</target>
+      </segment>
+    </unit>
+    <unit id="estado.contactadaDirectamente">
+      <notes>
+        <note category="location">src/app/ofertas/nombre-de-estado.ts:16</note>
+        <note category="description">Estado de una candidatura</note>
+      </notes>
+      <segment>
+        <source>Contactada directamente</source>
+        <target>Contacted directly</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.titulo">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:2,5</note>
+        <note category="description">Titulo de la pantalla de la tabla</note>
+      </notes>
+      <segment>
+        <source>Ofertas</source>
+        <target>Jobs</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.buscar.etiqueta">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:6,10</note>
+        <note category="description">Etiqueta accesible del buscador</note>
+      </notes>
+      <segment>
+        <source>Buscar por empresa, puesto o ubicación</source>
+        <target>Search by company, role or location</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.buscar.ayuda">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:10,11</note>
+        <note category="description">Texto de ayuda del buscador</note>
+      </notes>
+      <segment>
+        <source>Buscar empresa, puesto o ubicación</source>
+        <target>Search company, role or location</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.total">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:21,24</note>
+        <note category="description">Cuantas ofertas se ven de cuantas hay</note>
+      </notes>
+      <segment>
+        <source> <ph id="0" equiv="INTERPOLATION" disp="{{ store.visibles().length | number }}"/> de <ph id="1" equiv="INTERPOLATION_1" disp="{{ store.candidaturas().length | number }}"/> </source>
+        <target> <ph id="0" equiv="INTERPOLATION" disp="{{ store.visibles().length | number }}"/> of <ph id="1" equiv="INTERPOLATION_1" disp="{{ store.candidaturas().length | number }}"/> </target>
+      </segment>
+    </unit>
+    <unit id="ofertas.verEliminadas">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:28,29</note>
+        <note category="description">Boton que abre la lista de eliminadas</note>
+      </notes>
+      <segment>
+        <source>Eliminadas</source>
+        <target>Deleted</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.filtros.etiqueta">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:37,38</note>
+        <note category="description">Nombre del grupo de botones de filtro</note>
+      </notes>
+      <segment>
+        <source>Filtrar ofertas por estado</source>
+        <target>Filter jobs by status</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.filtros.todas">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:46,47</note>
+        <note category="description">Filtro que no filtra por estado</note>
+      </notes>
+      <segment>
+        <source>Todas</source>
+        <target>All</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.tabla.etiqueta">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:77,78</note>
+        <note category="description">Nombre de la region desplazable de la tabla</note>
+      </notes>
+      <segment>
+        <source>Tabla de ofertas, desplazable</source>
+        <target>Jobs table, scrollable</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.tabla.titulo">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:82,84</note>
+        <note category="description">Titulo accesible de la tabla con el recuento</note>
+      </notes>
+      <segment>
+        <source> Ofertas, <ph id="0" equiv="INTERPOLATION" disp="{{ store.visibles().length | number }}"/> de <ph id="1" equiv="INTERPOLATION_1" disp="{{ store.candidaturas().length | number }}"/> </source>
+        <target> Jobs, <ph id="0" equiv="INTERPOLATION" disp="{{ store.visibles().length | number }}"/> of <ph id="1" equiv="INTERPOLATION_1" disp="{{ store.candidaturas().length | number }}"/> </target>
+      </segment>
+    </unit>
+    <unit id="ofertas.seleccionarTodas">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:101,102</note>
+        <note category="description">Casilla de la cabecera que marca todas las filas</note>
+      </notes>
+      <segment>
+        <source>Seleccionar todas las ofertas filtradas</source>
+        <target>Select all filtered jobs</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.columnaAccion">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:134,140</note>
+        <note category="description">Cabecera de la columna de botones de accion</note>
+      </notes>
+      <segment>
+        <source>Acción</source>
+        <target>Action</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.vacia.busqueda">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:215,217</note>
+        <note category="description">Tabla vacia por la busqueda</note>
+      </notes>
+      <segment>
+        <source>Ninguna oferta coincide con la búsqueda.</source>
+        <target>No jobs match the search.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.vacia.estado">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:217,222</note>
+        <note category="description">Tabla vacia por el filtro de estado</note>
+      </notes>
+      <segment>
+        <source>No hay candidaturas en este estado.</source>
+        <target>There are no applications in this status.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.panel.navegacion">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:240,241</note>
+        <note category="description">Nombre de la navegacion entre fichas</note>
+      </notes>
+      <segment>
+        <source>Recorrer las candidaturas</source>
+        <target>Browse applications</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.panel.anterior">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:244,246</note>
+        <note category="description">Boton que abre la ficha anterior</note>
+      </notes>
+      <segment>
+        <source> Anterior </source>
+        <target> Previous </target>
+      </segment>
+    </unit>
+    <unit id="ofertas.panel.siguiente">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:247,251</note>
+        <note category="description">Boton que abre la ficha siguiente</note>
+      </notes>
+      <segment>
+        <source> Siguiente </source>
+        <target> Next </target>
+      </segment>
+    </unit>
+    <unit id="ofertas.panel.cerrar.etiqueta">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:253,254</note>
+        <note category="description">Nombre accesible del boton Cerrar, con su atajo</note>
+      </notes>
+      <segment>
+        <source>Cerrar la ficha (Esc)</source>
+        <target>Close the record (Esc)</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.panel.cerrar">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:257,260</note>
+        <note category="description">Boton que cierra el panel lateral</note>
+      </notes>
+      <segment>
+        <source> Cerrar </source>
+        <target> Close </target>
+      </segment>
+    </unit>
+    <unit id="ofertas.panel.pantallaCompleta">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:261,267</note>
+        <note category="description">Enlace que abre la ficha en su propia pantalla</note>
+      </notes>
+      <segment>
+        <source>Pantalla completa</source>
+        <target>Full screen</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.deshacer">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:292,296</note>
+        <note category="description">Boton que revierte la ultima accion</note>
+      </notes>
+      <segment>
+        <source>Deshacer</source>
+        <target>Undo</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.sinNotion">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:103</note>
+        <note category="description">Explica por que una fila no se puede marcar</note>
+      </notes>
+      <segment>
+        <source>Aún no está en Notion</source>
+        <target>Not in Notion yet</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.seleccionar.descripcion">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:196</note>
+        <note category="description">Nombre accesible de la casilla de una fila</note>
+      </notes>
+      <segment>
+        <source>Seleccionar <ph id="0" equiv="empresa" disp="empresa"/></source>
+        <target>Select <ph id="0" equiv="empresa" disp="empresa"/></target>
+      </segment>
+    </unit>
+    <unit id="ofertas.enlace.descripcion">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:200</note>
+        <note category="description">Nombre accesible de un enlace de la tabla</note>
+      </notes>
+      <segment>
+        <source><ph id="0" equiv="columna" disp="columna"/> de <ph id="1" equiv="empresa" disp="empresa"/>, en una pestaña nueva</source>
+        <target><ph id="0" equiv="columna" disp="columna"/> for <ph id="1" equiv="empresa" disp="empresa"/>, opens in a new tab</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.eliminada">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:232</note>
+        <note category="description">Una oferta eliminada, detras del numero</note>
+      </notes>
+      <segment>
+        <source>oferta eliminada</source>
+        <target>job deleted</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.eliminadas">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:233</note>
+        <note category="description">Varias ofertas eliminadas, detras del numero</note>
+      </notes>
+      <segment>
+        <source>ofertas eliminadas</source>
+        <target>jobs deleted</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.noEliminada">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:238</note>
+        <note category="description">Una oferta que no se pudo eliminar, detras del numero</note>
+      </notes>
+      <segment>
+        <source>no se pudo eliminar</source>
+        <target>could not be deleted</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.noEliminadas">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:239</note>
+        <note category="description">Varias ofertas que no se pudieron eliminar, detras del numero</note>
+      </notes>
+      <segment>
+        <source>no se pudieron eliminar</source>
+        <target>could not be deleted</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.restaurada">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:253</note>
+        <note category="description">Una oferta restaurada, detras del numero</note>
+      </notes>
+      <segment>
+        <source>oferta restaurada</source>
+        <target>job restored</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.restauradas">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:254</note>
+        <note category="description">Varias ofertas restauradas, detras del numero</note>
+      </notes>
+      <segment>
+        <source>ofertas restauradas</source>
+        <target>jobs restored</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.sinCambios">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:267</note>
+        <note category="description">Aviso de que ningun cambio de estado hizo falta</note>
+      </notes>
+      <segment>
+        <source>Ninguna cambia: ya estaban en <ph id="0" equiv="estado" disp="nuevo"/>.</source>
+        <target>None changed: they were already in <ph id="0" equiv="estado" disp="nuevo"/>.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.cambioUna">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:274</note>
+        <note category="description">Aviso de que una ficha cambio de estado</note>
+      </notes>
+      <segment>
+        <source><ph id="0" equiv="cuantas" disp="antes.length"/> ficha pasa a <ph id="1" equiv="estado" disp="nombreDeEstado(estado)"/>.</source>
+        <target><ph id="0" equiv="cuantas" disp="antes.length"/> record moves to <ph id="1" equiv="estado" disp="nombreDeEstado(estado)"/>.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.cambioVarias">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:275</note>
+        <note category="description">Aviso de que varias fichas cambiaron de estado</note>
+      </notes>
+      <segment>
+        <source><ph id="0" equiv="cuantas" disp="antes.length"/> fichas pasan a <ph id="1" equiv="estado" disp="nombreDeEstado(estado)"/>.</source>
+        <target><ph id="0" equiv="cuantas" disp="antes.length"/> records move to <ph id="1" equiv="estado" disp="nombreDeEstado(estado)"/>.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.deshecho">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:278</note>
+        <note category="description">Aviso tras deshacer un cambio de estado</note>
+      </notes>
+      <segment>
+        <source>Cambio deshecho.</source>
+        <target>Change undone.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.errorDesconocido">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:314</note>
+        <note category="description">Motivo cuando el error no trae mensaje</note>
+      </notes>
+      <segment>
+        <source>error desconocido</source>
+        <target>unknown error</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.aviso.fallo">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:315</note>
+        <note category="description">Aviso de que una accion fallo, con el motivo</note>
+      </notes>
+      <segment>
+        <source>No se pudo: <ph id="0" equiv="motivo" disp="motivo"/></source>
+        <target>Could not complete: <ph id="0" equiv="motivo" disp="motivo"/></target>
+      </segment>
+    </unit>
+    <unit id="columnas.boton">
+      <notes>
+        <note category="location">src/app/ofertas/selector-de-columnas.html:10,11</note>
+        <note category="description">Boton que abre el selector de columnas</note>
+      </notes>
+      <segment>
+        <source>Columnas</source>
+        <target>Columns</target>
+      </segment>
+    </unit>
+    <unit id="columnas.etiqueta">
+      <notes>
+        <note category="location">src/app/ofertas/selector-de-columnas.html:21,22</note>
+        <note category="description">Nombre del grupo de casillas de columnas</note>
+      </notes>
+      <segment>
+        <source>Columnas visibles</source>
+        <target>Visible columns</target>
+      </segment>
+    </unit>
+    <unit id="columnas.todas">
+      <notes>
+        <note category="location">src/app/ofertas/selector-de-columnas.html:27,29</note>
+        <note category="description">Boton que muestra todas las columnas</note>
+      </notes>
+      <segment>
+        <source> Todas </source>
+        <target> All </target>
+      </segment>
+    </unit>
+    <unit id="columnas.porDefecto">
+      <notes>
+        <note category="location">src/app/ofertas/selector-de-columnas.html:30,33</note>
+        <note category="description">Boton que restablece las columnas de serie</note>
+      </notes>
+      <segment>
+        <source> Por defecto </source>
+        <target> Default </target>
+      </segment>
+    </unit>
+    <unit id="columnas.conDato">
+      <notes>
+        <note category="location">src/app/ofertas/selector-de-columnas.html:47</note>
+        <note category="description">Explica el numero junto a cada columna</note>
+      </notes>
+      <segment>
+        <source>Fichas con dato</source>
+        <target>Records with data</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
