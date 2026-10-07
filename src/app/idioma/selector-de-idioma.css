@@ -1,0 +1,31 @@
+ul {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  display: inline-block;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius);
+  color: hsl(var(--foreground));
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* El actual no es un enlace a ningun sitio nuevo: se distingue por algo mas que
+   el color (WCAG 1.4.1). */
+a[aria-current='true'] {
+  border: 1px solid hsl(var(--border));
+  font-weight: 700;
+}

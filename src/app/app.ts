@@ -3,8 +3,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, skip } from 'rxjs';
 
+import { SelectorDeIdioma } from './idioma/selector-de-idioma';
+
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SelectorDeIdioma],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
