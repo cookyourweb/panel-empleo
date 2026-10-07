@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, LOCALE_ID, signal } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { Accion } from './acciones';
@@ -65,7 +65,8 @@ export class FichaCandidatura {
     });
   }
 
-  protected readonly ficha = computed(() => seccionesDeFicha(this.candidatura()));
+  private readonly locale = inject(LOCALE_ID);
+  protected readonly ficha = computed(() => seccionesDeFicha(this.candidatura(), this.locale));
   protected readonly grupos = computed(() => agruparBloques(this.candidatura().cuerpo ?? []));
 
   /** La plantilla no estrecha el tipo en el @else de una lista. */

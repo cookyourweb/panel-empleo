@@ -40,17 +40,21 @@ describe('valorDeCelda', () => {
   const columna = (clave: string) => COLUMNAS.find((c) => c.clave === clave)!;
 
   it('las fechas se leen en formato espanol', () => {
-    expect(valorDeCelda(UNA, columna('fechaEnvio'))).toBe('05/10/2026');
+    expect(valorDeCelda(UNA, columna('fechaEnvio'), 'es')).toBe('05/10/2026');
+  });
+
+  it('las fechas siguen el idioma activo, no uno fijo', () => {
+    expect(valorDeCelda(UNA, columna('fechaEnvio'), 'en')).toBe('Oct 5, 2026');
   });
 
   it('una casilla marcada se lee Si, y sin marcar no dice nada', () => {
-    expect(valorDeCelda(UNA, columna('verificada'))).toBe('Sí');
-    expect(valorDeCelda(UNA, columna('avisoAutonoma'))).toBe('');
+    expect(valorDeCelda(UNA, columna('verificada'), 'es')).toBe('Sí');
+    expect(valorDeCelda(UNA, columna('avisoAutonoma'), 'es')).toBe('');
   });
 
   it('cada columna lee de la oferta o de la candidatura, segun de quien sea', () => {
-    expect(valorDeCelda(UNA, columna('puesto'))).toBe('Frontend');
-    expect(valorDeCelda(UNA, columna('fase'))).toBe('CV enviado');
+    expect(valorDeCelda(UNA, columna('puesto'), 'es')).toBe('Frontend');
+    expect(valorDeCelda(UNA, columna('fase'), 'es')).toBe('CV enviado');
   });
 });
 

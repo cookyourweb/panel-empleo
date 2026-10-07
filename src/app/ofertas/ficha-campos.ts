@@ -1,5 +1,5 @@
 import { Bloque, Candidatura } from './dominio';
-import { fechaEspanola } from './fecha';
+import { formatearFecha } from './fecha';
 
 export type TipoDeCampo = 'texto' | 'enlace' | 'email' | 'tel' | 'largo';
 
@@ -99,13 +99,13 @@ const SECCIONES: { titulo: string; campos: Definicion[] }[] = [
 /** Por encima de esto un valor corto ya no cabe en media columna. */
 const LARGO_PARA_MEDIA_COLUMNA = 48;
 
-function campoDesde(def: Definicion, valor: string | true): Campo {
+function campoDesde(def: Definicion, valor: string | true, locale: string): Campo {
   let tipo: TipoDeCampo;
   let texto: string;
   switch (def.formato) {
     case 'fecha':
       tipo = 'texto';
-      texto = fechaEspanola(String(valor)) || String(valor);
+      texto = formatearFecha(String(valor), locale) || String(valor);
       break;
     case 'casilla':
       tipo = 'texto';
@@ -168,7 +168,7 @@ export function vistaPreviaDeCv(url: string): string | null {
 }
 
 /** Los campos con dato, por secciones, y los nombres de los que no tienen. */
-export function seccionesDeFicha(una: Candidatura): { secciones: Seccion[]; vacios: string[] } {
+export function seccionesDeFicha(una: Candidatura, locale: string): { secciones: Seccion[]; vacios: string[] } {
   const vacios: string[] = [];
   const secciones = SECCIONES.map(({ titulo, campos }) => ({
     titulo,
@@ -178,7 +178,7 @@ export function seccionesDeFicha(una: Candidatura): { secciones: Seccion[]; vaci
         vacios.push(def.etiqueta);
         return [];
       }
-      return [campoDesde(def, valor)];
+      return [campoDesde(def, valor, locale)];
     }),
   }));
   return { secciones, vacios };

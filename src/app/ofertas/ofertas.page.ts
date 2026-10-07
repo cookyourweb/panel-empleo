@@ -5,6 +5,7 @@ import {
   ElementRef,
   inject,
   input,
+  LOCALE_ID,
   OnInit,
   signal,
   viewChild,
@@ -65,6 +66,7 @@ export class OfertasPage implements OnInit {
 
   protected readonly store = inject(CandidaturasStore);
   private readonly router = inject(Router);
+  private readonly locale = inject(LOCALE_ID);
   private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
 
   protected readonly abierta = computed(() => {
@@ -175,7 +177,7 @@ export class OfertasPage implements OnInit {
   }
 
   protected celda(una: Candidatura, columna: Columna): string {
-    return valorDeCelda(una, columna);
+    return valorDeCelda(una, columna, this.locale);
   }
 
   protected enlaceDe(una: Candidatura, columna: Columna): string | null {

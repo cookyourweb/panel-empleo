@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, LOCALE_ID } from '@angular/core';
 
 import { CONFIGURACION_DE_SESION } from './configuracion';
 import { ProveedorDeIdentidad } from './proveedor-de-identidad';
@@ -36,6 +36,7 @@ function leerGoogle(ventana: Window): GoogleAccountsId | null {
 export class IdentidadGoogle extends ProveedorDeIdentidad {
   private readonly documento = inject(DOCUMENT);
   private readonly configuracion = inject(CONFIGURACION_DE_SESION);
+  private readonly locale = inject(LOCALE_ID);
   private carga: Promise<void> | null = null;
 
   async preparar(
@@ -52,7 +53,7 @@ export class IdentidadGoogle extends ProveedorDeIdentidad {
       callback: (respuesta) => alRecibir(respuesta.credential),
       auto_select: true,
     });
-    google.renderButton(contenedor, { type: 'standard', theme: 'filled_black', size: 'large', locale: 'es' });
+    google.renderButton(contenedor, { type: 'standard', theme: 'filled_black', size: 'large', locale: this.locale });
     google.prompt();
   }
 

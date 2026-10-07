@@ -1,5 +1,5 @@
 import { Candidatura } from './dominio';
-import { fechaEspanola } from './fecha';
+import { formatearFecha } from './fecha';
 
 export type TipoDeColumna = 'empresa' | 'estado' | 'texto' | 'fecha' | 'enlace' | 'largo' | 'casilla';
 
@@ -68,16 +68,19 @@ export function columnaPorClave(clave: string): Columna | undefined {
   return POR_CLAVE.get(clave);
 }
 
-/** El texto de la celda: fechas en DD/MM/AAAA, casillas como "Sí". */
-export function valorDeCelda(una: Candidatura, columna: Columna): string {
+/** El texto de la celda que no depende del idioma de la fecha: casillas como "Sí". */
+function textoDeCelda(una: Candidatura, columna: Columna): string {
   const valor = columna.leer(una);
   if (columna.tipo === 'casilla') {
     return valor === true ? 'Sí' : '';
   }
-  if (typeof valor !== 'string') {
-    return '';
-  }
-  return columna.tipo === 'fecha' ? fechaEspanola(valor) : valor;
+  return typeof valor === 'string' ? valor : '';
+}
+
+/** El texto de la celda: fechas en el formato del idioma activo, casillas como "Sí". */
+export function valorDeCelda(una: Candidatura, columna: Columna, locale: string): string {
+  const texto = textoDeCelda(una, columna);
+  return columna.tipo === 'fecha' ? formatearFecha(texto, locale) : texto;
 }
 
 /**
@@ -85,8 +88,7 @@ export function valorDeCelda(una: Candidatura, columna: Columna): string {
  * texto; el resto, lo mismo que se lee en la celda.
  */
 export function valorParaOrdenar(una: Candidatura, columna: Columna): string {
-  const valor = columna.leer(una);
-  return columna.tipo === 'fecha' && typeof valor === 'string' ? valor : valorDeCelda(una, columna);
+  return textoDeCelda(una, columna);
 }
 
 /** Cuantas fichas tienen algo en esa columna. Ayuda a decidir si merece la pena verla. */

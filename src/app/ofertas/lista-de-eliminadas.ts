@@ -1,7 +1,7 @@
-import { Component, ElementRef, input, output, viewChild, afterNextRender } from '@angular/core';
+import { Component, ElementRef, inject, input, LOCALE_ID, output, viewChild, afterNextRender } from '@angular/core';
 
 import { Eliminada } from './candidaturas.store';
-import { fechaEspanola } from './fecha';
+import { formatearFecha } from './fecha';
 
 @Component({
   selector: 'app-lista-de-eliminadas',
@@ -60,7 +60,8 @@ export class ListaDeEliminadas {
   readonly restaurar = output<string[]>();
   readonly cerrar = output<void>();
 
-  protected readonly fecha = fechaEspanola;
+  private readonly locale = inject(LOCALE_ID);
+  protected readonly fecha = (iso: string) => formatearFecha(iso, this.locale);
   private readonly cerrarBoton = viewChild<ElementRef<HTMLButtonElement>>('cerrarBoton');
 
   constructor() {

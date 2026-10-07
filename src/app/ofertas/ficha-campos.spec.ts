@@ -25,11 +25,11 @@ const etiquetas = (seccion: { campos: { etiqueta: string }[] }) => seccion.campo
 
 describe('seccionesDeFicha', () => {
   it('reparte los campos en Oferta, Candidatura y Documentos, en ese orden', () => {
-    expect(seccionesDeFicha(UNA).secciones.map((s) => s.titulo)).toEqual(['Oferta', 'Candidatura', 'Documentos']);
+    expect(seccionesDeFicha(UNA, 'es').secciones.map((s) => s.titulo)).toEqual(['Oferta', 'Candidatura', 'Documentos']);
   });
 
   it('solo pinta los campos con dato y cuenta aparte los vacios', () => {
-    const { secciones, vacios } = seccionesDeFicha(UNA);
+    const { secciones, vacios } = seccionesDeFicha(UNA, 'es');
 
     expect(etiquetas(secciones[0])).toContain('Salario');
     expect(etiquetas(secciones[0])).not.toContain('Modalidad');
@@ -38,7 +38,7 @@ describe('seccionesDeFicha', () => {
   });
 
   it('empresa, puesto, estado y enlace no se repiten: ya van en la cabecera', () => {
-    const todas = seccionesDeFicha(UNA).secciones.flatMap(etiquetas);
+    const todas = seccionesDeFicha(UNA, 'es').secciones.flatMap(etiquetas);
 
     for (const cabecera of ['Empresa', 'Puesto', 'Estado', 'Link oferta']) {
       expect(todas).not.toContain(cabecera);
@@ -46,32 +46,38 @@ describe('seccionesDeFicha', () => {
   });
 
   it('las fechas, como se leen en Espana', () => {
-    const envio = seccionesDeFicha(UNA).secciones[1].campos.find((c) => c.clave === 'fechaEnvio');
+    const envio = seccionesDeFicha(UNA, 'es').secciones[1].campos.find((c) => c.clave === 'fechaEnvio');
 
     expect(envio?.valor).toBe('05/10/2026');
   });
 
+  it('las fechas siguen el idioma activo, no uno fijo', () => {
+    const envio = seccionesDeFicha(UNA, 'en').secciones[1].campos.find((c) => c.clave === 'fechaEnvio');
+
+    expect(envio?.valor).toBe('Oct 5, 2026');
+  });
+
   it('los textos largos ocupan todo el ancho', () => {
-    const carta = seccionesDeFicha(UNA).secciones[2].campos.find((c) => c.clave === 'carta');
+    const carta = seccionesDeFicha(UNA, 'es').secciones[2].campos.find((c) => c.clave === 'carta');
 
     expect(carta?.tipo).toBe('largo');
     expect(carta?.completo).toBe(true);
   });
 
   it('un enlace se ofrece con un texto que dice que abre', () => {
-    const cv = seccionesDeFicha(UNA).secciones[2].campos.find((c) => c.clave === 'cv');
+    const cv = seccionesDeFicha(UNA, 'es').secciones[2].campos.find((c) => c.clave === 'cv');
 
     expect(cv).toMatchObject({ tipo: 'enlace', valor: 'https://docs.test/cv', textoEnlace: 'Abrir CV' });
   });
 
   it('el CV usado que no es una direccion se queda como texto', () => {
-    const usado = seccionesDeFicha(UNA).secciones[2].campos.find((c) => c.clave === 'cvUsado');
+    const usado = seccionesDeFicha(UNA, 'es').secciones[2].campos.find((c) => c.clave === 'cvUsado');
 
     expect(usado?.tipo).toBe('texto');
   });
 
   it('una casilla marcada se lee Si, y el idioma con su nombre', () => {
-    const oferta = seccionesDeFicha(UNA).secciones[0].campos;
+    const oferta = seccionesDeFicha(UNA, 'es').secciones[0].campos;
 
     expect(oferta.find((c) => c.clave === 'verificada')?.valor).toBe('Sí');
     expect(oferta.find((c) => c.clave === 'idioma')?.valor).toBe('Inglés');
@@ -120,7 +126,7 @@ describe('vistaPreviaDeCv', () => {
 
 describe('Documentos de la ficha', () => {
   it('el CV de Google trae su vista previa y ocupa todo el ancho', () => {
-    const cv = seccionesDeFicha({ ...UNA, cv: 'https://docs.google.com/document/d/abc/edit' }).secciones[2].campos.find(
+    const cv = seccionesDeFicha({ ...UNA, cv: 'https://docs.google.com/document/d/abc/edit' }, 'es').secciones[2].campos.find(
       (c) => c.clave === 'cv',
     );
 
@@ -129,13 +135,13 @@ describe('Documentos de la ficha', () => {
   });
 
   it('el CV y la carta van primero: es lo que se revisa antes de enviar', () => {
-    const claves = seccionesDeFicha(UNA).secciones[2].campos.map((c) => c.clave);
+    const claves = seccionesDeFicha(UNA, 'es').secciones[2].campos.map((c) => c.clave);
 
     expect(claves.slice(0, 2)).toEqual(['cv', 'carta']);
   });
 
   it('la carta se llama por su nombre', () => {
-    const carta = seccionesDeFicha(UNA).secciones[2].campos.find((c) => c.clave === 'carta');
+    const carta = seccionesDeFicha(UNA, 'es').secciones[2].campos.find((c) => c.clave === 'carta');
 
     expect(carta?.etiqueta).toBe('Carta de presentación');
   });
