@@ -65,6 +65,11 @@ export class Sesion {
       return resultadoDeError(error);
     }
   }
+
+  cerrar(): void {
+    this._usuaria.set(null);
+    this.credencial = null;
+  }
 }
 
 function resultadoDeError(error: unknown): ResultadoDeEntrada {

@@ -112,4 +112,21 @@ describe('Sesion', () => {
       expect(sessionStorage.length).toBe(0);
     });
   });
+
+  describe('cerrar', () => {
+    it('olvida a la usuaria y el token', async () => {
+      await entrarRespondiendo(USUARIA, { status: 200, statusText: 'OK' });
+
+      sesion.cerrar();
+
+      expect(sesion.usuaria()).toBeNull();
+      expect(sesion.activa()).toBe(false);
+      expect(sesion.token()).toBeNull();
+    });
+
+    it('sin sesion no da error', () => {
+      expect(() => sesion.cerrar()).not.toThrow();
+      expect(sesion.activa()).toBe(false);
+    });
+  });
 });
