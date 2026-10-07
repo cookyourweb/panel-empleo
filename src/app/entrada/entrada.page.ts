@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   afterNextRender,
   inject,
@@ -11,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ProveedorDeIdentidad } from '../sesion/proveedor-de-identidad';
 import { RESULTADO_DE_ENTRADA, ResultadoDeEntrada, Sesion } from '../sesion/sesion';
+import { Servidor } from '../sesion/servidor';
 
 const MENSAJES = {
   [RESULTADO_DE_ENTRADA.dentro]: null,
@@ -18,6 +20,9 @@ const MENSAJES = {
   [RESULTADO_DE_ENTRADA.noInvitada]: 'Tu cuenta no está invitada',
   [RESULTADO_DE_ENTRADA.sinServidor]: 'El servidor no puede comprobar la identidad ahora',
 } as const satisfies Record<ResultadoDeEntrada, string | null>;
+
+const AVISO_TRAS_MS = 3_000;
+const RENDICION_TRAS_MS = 90_000;
 
 /** Solo rutas internas: evita que un enlace de entrada nos mande a otro sitio. */
 function rutaInterna(volver: string | null): string {
@@ -37,17 +42,61 @@ export class EntradaPage {
   private readonly sesion = inject(Sesion);
   private readonly router = inject(Router);
   private readonly ruta = inject(ActivatedRoute);
+  private readonly servidor = inject(Servidor);
+  private readonly destruccion = inject(DestroyRef);
   private readonly acceso = viewChild.required<ElementRef<HTMLElement>>('acceso');
 
   protected readonly error = signal<string | null>(null);
+  protected readonly despertando = signal(false);
+  protected readonly sinRespuesta = signal(false);
+
+  private plazos: ReturnType<typeof setTimeout>[] = [];
+  private intento = 0;
 
   constructor() {
-    afterNextRender(() => {
-      void this.proveedor.preparar(
-        this.acceso().nativeElement,
-        (credencial) => void this.entrar(credencial),
-      );
-    });
+    this.destruccion.onDestroy(() => this.cancelar());
+    afterNextRender(() => void this.comprobar());
+  }
+
+  protected reintentar(): void {
+    void this.comprobar();
+  }
+
+  private cancelar(): void {
+    this.intento++;
+    this.plazos.forEach(clearTimeout);
+    this.plazos = [];
+  }
+
+  /** Render duerme el servidor: avisamos si tarda y damos salida si no llega. */
+  private async comprobar(): Promise<void> {
+    this.cancelar();
+    const actual = this.intento;
+    this.sinRespuesta.set(false);
+    this.plazos = [
+      setTimeout(() => this.despertando.set(true), AVISO_TRAS_MS),
+      setTimeout(() => this.rendirse(), RENDICION_TRAS_MS),
+    ];
+
+    const despierto = await this.servidor.comprobar();
+    if (actual !== this.intento) return;
+
+    if (!despierto) {
+      this.rendirse();
+      return;
+    }
+    this.cancelar();
+    this.despertando.set(false);
+    void this.proveedor.preparar(
+      this.acceso().nativeElement,
+      (credencial) => void this.entrar(credencial),
+    );
+  }
+
+  private rendirse(): void {
+    this.cancelar();
+    this.despertando.set(false);
+    this.sinRespuesta.set(true);
   }
 
   private async entrar(credencial: string): Promise<void> {

@@ -10,3 +10,7 @@
   border-radius: 6px;
   color: hsl(var(--foreground));
 }
+
+.aviso {
+  margin: 1rem 0 0;
+}

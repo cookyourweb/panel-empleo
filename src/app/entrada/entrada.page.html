@@ -4,6 +4,15 @@
 
   <div #acceso data-acceso></div>
 
+  @if (despertando()) {
+    <p class="aviso" role="status">Despertando el servidor, puede tardar un minuto</p>
+  }
+
+  @if (sinRespuesta()) {
+    <p class="aviso" role="status">El servidor no ha respondido. Prueba de nuevo.</p>
+    <button type="button" (click)="reintentar()">Reintentar</button>
+  }
+
   @if (error(); as mensaje) {
     <p class="error" role="alert">{{ mensaje }}</p>
   }
