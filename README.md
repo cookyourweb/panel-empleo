@@ -16,7 +16,7 @@ candidate reviews and decides.
 |---|---|
 | State in signals, standalone components, `OnPush`, no `zone.js` | [Engineering decisions](#engineering-decisions) |
 | Hexagonal ports: the screens never know where data comes from | [Inside the app](#inside-the-app) |
-| TDD with Vitest: 279 component tests and 28 design token tests | [Development](#development) |
+| TDD with Vitest: 297 component tests and 53 design token tests | [Development](#development) |
 | Sign-in by invitation: the token lives in memory only and a scoped interceptor sends it to one origin | [Sign-in](#sign-in) |
 | Public demo that stays open to visitors, with sample data and no sign-in | [Try it](#try-it) |
 | Contrast tests that read the stylesheet from disk | [The contrast tests](#the-contrast-tests) |
@@ -194,6 +194,44 @@ no guard, because it has nothing to protect.
 
 ---
 
+## Internationalization
+
+The panel comes in Spanish (the source language) and English, with Angular's official
+`@angular/localize`. It is resolved at compile time: one build per language, served under
+`/es/` and `/en/`, with no translation code at runtime. `/` redirects by the
+`Accept-Language` header (see `vercel.json`), and a switcher in the header links to the
+same screen under the other prefix.
+
+- **What is translated:** the interface (titles, buttons, labels, column headers,
+  messages, `aria-label`s, route titles). The data (jobs, companies, descriptions) stays
+  in Spanish on purpose: it is sample data, not interface.
+- **Dates, numbers and alphabetical order** follow `LOCALE_ID`. Nothing hard-codes a
+  locale.
+- **Every message has a hand-written id** (`@@area.name`). A generated id changes when a
+  typo is fixed and leaves the translation orphaned without warning.
+
+**Adding a language:**
+
+1. Declare it in `angular.json` under `i18n.locales` (its `translation` file and its
+   `subPath`) and in `src/app/idioma/idiomas.ts`, with its name written in that language.
+2. Run `npx ng extract-i18n --format xlf2 --output-path src/locale` to refresh
+   `src/locale/messages.xlf`, the source.
+3. Copy it to `src/locale/messages.<code>.xlf`, add `trgLang` to the header and a
+   `<target>` to every unit.
+4. Add a rewrite for the new prefix in `vercel.json`, plus a redirect rule if
+   `Accept-Language` should pick it.
+
+**The completeness test.** With one build per language, a missing translation stays in
+Spanish without a warning. `tools/i18n.test.ts` reads `angular.json` and, for each
+language, fails if a message has no translation, if a target is empty, if a placeholder
+was dropped, if an obsolete message is left over, or if `messages.xlf` is out of date
+with the ids in the code. A new language is checked without touching the test.
+`tools/vercel.test.ts` does the same for the per-language routing and the redirect.
+
+**Locally:** `npm start` and `npx ng serve --configuration production` serve Spanish, and
+`npx ng serve --configuration production-en` serves English. The dev server serves one
+language at a time, so the header switcher only works once deployed.
+
 ## Engineering decisions
 
 **Angular 22 without `zone.js`, with signals and standalone components.** Change
@@ -308,8 +346,8 @@ nvm use
 npm ci
 npx ng serve --configuration production   # demo: sample data, no sign-in
 npm start                                 # development: real data, sign-in
-npx ng test --watch=false                 # 279 component tests
-npm test                                  # those 279 plus 28 design token tests
+npx ng test --watch=false                 # 297 component tests
+npm test                                  # those 297 plus 53 design token tests
 ```
 
 ### Real data in development
