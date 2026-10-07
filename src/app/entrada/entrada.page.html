@@ -1,0 +1,10 @@
+<article class="entrada">
+  <h2>Entrar</h2>
+  <p>Entra con tu cuenta para ver tus candidaturas.</p>
+
+  <div #acceso data-acceso></div>
+
+  @if (error(); as mensaje) {
+    <p class="error" role="alert">{{ mensaje }}</p>
+  }
+</article>
