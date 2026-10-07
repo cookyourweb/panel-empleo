@@ -38,8 +38,13 @@ export class IdentidadGoogle extends ProveedorDeIdentidad {
   private readonly configuracion = inject(CONFIGURACION_DE_SESION);
   private carga: Promise<void> | null = null;
 
-  async preparar(contenedor: HTMLElement, alRecibir: (credencial: string) => void): Promise<void> {
+  async preparar(
+    contenedor: HTMLElement,
+    alRecibir: (credencial: string) => void,
+    cancelacion?: AbortSignal,
+  ): Promise<void> {
     await this.cargarScript();
+    if (cancelacion?.aborted) return;
     const google = this.google();
     if (!google) throw new Error('El script de identidad no dejo su objeto global');
     google.initialize({

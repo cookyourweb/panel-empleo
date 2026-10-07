@@ -139,6 +139,19 @@ describe('IdentidadGoogle', () => {
       expect(recibidas).toEqual(['jwt-de-prueba']);
     });
 
+    it('si se cancela mientras carga el script no pinta el boton ni lanza el aviso', async () => {
+      const cancelacion = new AbortController();
+      const preparada = identidad.preparar(contenedor, () => undefined, cancelacion.signal);
+
+      cancelacion.abort();
+      scriptsInyectados()[0].dispatchEvent(new Event('load'));
+      await preparada;
+
+      expect(google.accounts.id.initialize).not.toHaveBeenCalled();
+      expect(google.accounts.id.renderButton).not.toHaveBeenCalled();
+      expect(google.accounts.id.prompt).not.toHaveBeenCalled();
+    });
+
     it('olvidar deja de elegir la cuenta sola', async () => {
       await preparar();
 
