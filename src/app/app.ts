@@ -12,7 +12,7 @@ import { SelectorDeIdioma } from './idioma/selector-de-idioma';
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly titulo = signal('Panel de empleo');
+  protected readonly titulo = signal($localize`:Nombre de la aplicacion, titulo de la cabecera@@app.titulo:Panel de empleo`);
   private readonly principal = viewChild.required<ElementRef<HTMLElement>>('principal');
 
   constructor() {

@@ -16,13 +16,12 @@ import { Servidor } from '../sesion/servidor';
 
 const MENSAJES = {
   [RESULTADO_DE_ENTRADA.dentro]: null,
-  [RESULTADO_DE_ENTRADA.rechazada]: 'No se pudo comprobar tu cuenta',
-  [RESULTADO_DE_ENTRADA.noInvitada]: 'Tu cuenta no está invitada',
-  [RESULTADO_DE_ENTRADA.sinServidor]: 'El servidor no puede comprobar la identidad ahora',
+  [RESULTADO_DE_ENTRADA.rechazada]: $localize`:Error al entrar, la cuenta no se valido@@entrada.error.rechazada:No se pudo comprobar tu cuenta`,
+  [RESULTADO_DE_ENTRADA.noInvitada]: $localize`:Error al entrar, la cuenta no tiene acceso@@entrada.error.noInvitada:Tu cuenta no está invitada`,
+  [RESULTADO_DE_ENTRADA.sinServidor]: $localize`:Error al entrar, el servidor no responde@@entrada.error.sinServidor:El servidor no puede comprobar la identidad ahora`,
 } as const satisfies Record<ResultadoDeEntrada, string | null>;
 
-const SIN_GOOGLE =
-  'No se pudo cargar el acceso con Google. Revisa la conexión o desactiva el bloqueador y recarga la página.';
+const SIN_GOOGLE = $localize`:Error cuando el script de Google no carga@@entrada.error.sinGoogle:No se pudo cargar el acceso con Google. Revisa la conexión o desactiva el bloqueador y recarga la página.`;
 
 const AVISO_TRAS_MS = 3_000;
 const RENDICION_TRAS_MS = 90_000;

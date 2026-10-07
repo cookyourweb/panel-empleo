@@ -1,6 +1,6 @@
 <article class="entrada">
-  <h2>Entrar</h2>
-  <p>Entra con tu cuenta para ver tus candidaturas.</p>
+  <h2 i18n="Titulo de la pantalla de entrada@@entrada.titulo">Entrar</h2>
+  <p i18n="Invitacion a entrar con la cuenta@@entrada.invitacion">Entra con tu cuenta para ver tus candidaturas.</p>
 
   <div #acceso data-acceso></div>
 
@@ -8,15 +8,17 @@
        anuncia de forma fiable. Solo cambia el texto de dentro. -->
   <div class="aviso" role="status">
     @if (despertando()) {
-      <p>Despertando el servidor, puede tardar un minuto</p>
+      <p i18n="Aviso de que el servidor esta arrancando@@entrada.despertando">Despertando el servidor, puede tardar un minuto</p>
     }
     @if (sinRespuesta()) {
-      <p>El servidor no ha respondido. Prueba de nuevo.</p>
+      <p i18n="Aviso de que el servidor no respondio@@entrada.sinRespuesta">El servidor no ha respondido. Prueba de nuevo.</p>
     }
   </div>
 
   @if (sinRespuesta()) {
-    <button type="button" (click)="reintentar()">Reintentar</button>
+    <button type="button" (click)="reintentar()" i18n="Boton que vuelve a comprobar el servidor@@entrada.reintentar">
+      Reintentar
+    </button>
   }
 
   @if (error(); as mensaje) {

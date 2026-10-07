@@ -12,6 +12,7 @@ import {
   valoresEditables,
 } from './edicion';
 import { EtiquetaEstado } from './etiqueta-estado';
+import { TITULOS_DE_GRUPO } from './etiquetas';
 import { agruparBloques, GrupoDeBloques, seccionesDeFicha } from './ficha-campos';
 
 /**
@@ -50,8 +51,9 @@ export class FichaCandidatura {
   protected readonly borrador = signal<CambiosDeCandidatura>({});
 
   /** Los campos editables por secciones, en el mismo orden que la lectura. */
-  protected readonly gruposEditables = ['Cabecera', 'Oferta', 'Candidatura', 'Documentos'].map((seccion) => ({
+  protected readonly gruposEditables = (['Cabecera', 'Oferta', 'Candidatura', 'Documentos'] as const).map((seccion) => ({
     seccion,
+    titulo: TITULOS_DE_GRUPO[seccion],
     campos: CAMPOS_EDITABLES.filter((c) => c.seccion === seccion),
   }));
 
@@ -82,6 +84,15 @@ export class FichaCandidatura {
    */
   protected incrustable(vistaPrevia: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(vistaPrevia);
+  }
+
+  /** Nombre accesible del formulario: lleva la empresa para distinguirlo de otros. */
+  protected descripcionDelFormulario(empresa: string): string {
+    return $localize`:Nombre accesible del formulario de edicion@@ficha.formulario.etiqueta:Editar ${empresa}:empresa:`;
+  }
+
+  protected tituloDelVisor(empresa: string): string {
+    return $localize`:Titulo del visor incrustado con el CV@@ficha.visor.titulo:CV generado para ${empresa}:empresa:`;
   }
 
   protected editar(): void {
@@ -126,7 +137,7 @@ export class FichaCandidatura {
       await guardar(this.candidatura().id, cambios);
       this.editando.set(false);
     } catch (e) {
-      this.error.set(e instanceof Error ? e.message : 'No se pudo guardar');
+      this.error.set(e instanceof Error ? e.message : $localize`:Error al guardar sin motivo conocido@@ficha.errorDesconocido:No se pudo guardar`);
     } finally {
       this.guardando.set(false);
     }

@@ -7,7 +7,8 @@
   aria-controls="selector-columnas"
   (click)="alternarDesplegable()"
 >
-  Columnas <span class="recuento">{{ preferencias.visibles().size }}/{{ total }}</span>
+  <ng-container i18n="Boton que abre el selector de columnas@@columnas.boton">Columnas</ng-container
+  >&ngsp;<span class="recuento">{{ preferencias.visibles().size }}/{{ total }}</span>
 </button>
 
 @if (abierto()) {
@@ -18,15 +19,20 @@
     data-selector
     role="group"
     aria-label="Columnas visibles"
+    i18n-aria-label="Nombre del grupo de casillas de columnas@@columnas.etiqueta"
     (keydown.escape)="cerrarConTeclado($event)"
   >
     <div class="atajos">
-      <button type="button" class="boton pequeno" (click)="preferencias.todas()">Todas</button>
-      <button type="button" class="boton pequeno" (click)="preferencias.porDefecto()">Por defecto</button>
+      <button type="button" class="boton pequeno" (click)="preferencias.todas()" i18n="Boton que muestra todas las columnas@@columnas.todas">
+        Todas
+      </button>
+      <button type="button" class="boton pequeno" (click)="preferencias.porDefecto()" i18n="Boton que restablece las columnas de serie@@columnas.porDefecto">
+        Por defecto
+      </button>
     </div>
     @for (grupo of grupos(); track grupo.grupo) {
       <fieldset>
-        <legend>{{ grupo.grupo }}</legend>
+        <legend>{{ titulo(grupo.grupo) }}</legend>
         <div class="rejilla">
           @for (item of grupo.columnas; track item.columna.clave) {
             <label>
@@ -38,7 +44,7 @@
                 (change)="preferencias.alternar(item.columna.clave)"
               />
               <span>{{ item.columna.titulo }}</span>
-              <span class="con-dato" [attr.data-con-dato]="item.columna.clave" title="Fichas con dato">{{
+              <span class="con-dato" [attr.data-con-dato]="item.columna.clave" title="Fichas con dato" i18n-title="Explica el numero junto a cada columna@@columnas.conDato">{{
                 item.conDato
               }}</span>
             </label>

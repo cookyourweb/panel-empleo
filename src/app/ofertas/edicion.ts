@@ -1,4 +1,5 @@
 import { Candidatura, Modalidad, MODALIDADES, Oferta } from './dominio';
+import { ETIQUETAS } from './etiquetas';
 
 /** Lo que se cambia al editar: el campo y su valor nuevo. Vacio o false lo borra. */
 export type CambiosDeCandidatura = Record<string, string | boolean>;
@@ -33,33 +34,33 @@ const campo = (
  * tags (deciden el CV y la captacion), ni la fecha de envio (en Notion son dos).
  */
 export const CAMPOS_EDITABLES: readonly CampoEditable[] = [
-  campo('empresa', 'Empresa', 'texto', 'Cabecera'),
-  campo('puesto', 'Puesto', 'texto', 'Cabecera'),
-  campo('enlace', 'Link oferta', 'enlace', 'Cabecera'),
-  campo('modalidad', 'Modalidad', 'opcion', 'Oferta'),
-  campo('ubicacion', 'Ubicación', 'texto', 'Oferta'),
-  campo('salario', 'Salario', 'texto', 'Oferta'),
-  campo('fechaPublicacion', 'Publicada', 'fecha', 'Oferta'),
-  campo('tipoContrato', 'Tipo de contrato', 'texto', 'Oferta'),
-  campo('modoContratacion', 'Modo de contratación', 'opcion', 'Oferta'),
-  campo('verificada', 'Verificada', 'casilla', 'Oferta'),
-  campo('palabrasClave', 'Palabras clave', 'largo', 'Oferta'),
-  campo('descripcion', 'Descripción', 'largo', 'Oferta'),
-  campo('fase', 'Fase', 'opcion', 'Candidatura'),
-  campo('viaEnvio', 'Vía envío', 'opcion', 'Candidatura'),
-  campo('seguimiento', 'Seguimiento', 'fecha', 'Candidatura'),
-  campo('fechaEntrevista', 'Fecha entrevista', 'fecha', 'Candidatura'),
-  campo('formatoTecnico', 'Formato técnico', 'opcion', 'Candidatura'),
-  campo('nombreContacto', 'Nombre contacto', 'texto', 'Candidatura'),
-  campo('telefonoContacto', 'Teléfono contacto', 'tel', 'Candidatura'),
-  campo('emailEmpresa', 'Email empresa', 'email', 'Candidatura'),
-  campo('emailEnviado', 'Email enviado', 'email', 'Candidatura'),
-  campo('notas', 'Notas', 'largo', 'Candidatura'),
-  campo('cv', 'CV generado (enlace)', 'enlace', 'Documentos'),
-  campo('carta', 'Carta de presentación', 'largo', 'Documentos'),
-  campo('cvUsado', 'CV usado', 'texto', 'Documentos'),
-  campo('prep', 'Preparación (enlace)', 'enlace', 'Documentos'),
-  campo('avisoAutonoma', 'Aviso autónoma en carta', 'casilla', 'Documentos'),
+  campo('empresa', ETIQUETAS.empresa, 'texto', 'Cabecera'),
+  campo('puesto', ETIQUETAS.puesto, 'texto', 'Cabecera'),
+  campo('enlace', ETIQUETAS.linkOferta, 'enlace', 'Cabecera'),
+  campo('modalidad', ETIQUETAS.modalidad, 'opcion', 'Oferta'),
+  campo('ubicacion', ETIQUETAS.ubicacion, 'texto', 'Oferta'),
+  campo('salario', ETIQUETAS.salario, 'texto', 'Oferta'),
+  campo('fechaPublicacion', ETIQUETAS.fechaPublicacion, 'fecha', 'Oferta'),
+  campo('tipoContrato', ETIQUETAS.tipoContrato, 'texto', 'Oferta'),
+  campo('modoContratacion', ETIQUETAS.modoContratacion, 'opcion', 'Oferta'),
+  campo('verificada', ETIQUETAS.verificada, 'casilla', 'Oferta'),
+  campo('palabrasClave', ETIQUETAS.palabrasClave, 'largo', 'Oferta'),
+  campo('descripcion', ETIQUETAS.descripcion, 'largo', 'Oferta'),
+  campo('fase', ETIQUETAS.fase, 'opcion', 'Candidatura'),
+  campo('viaEnvio', ETIQUETAS.viaEnvio, 'opcion', 'Candidatura'),
+  campo('seguimiento', ETIQUETAS.seguimiento, 'fecha', 'Candidatura'),
+  campo('fechaEntrevista', ETIQUETAS.fechaEntrevista, 'fecha', 'Candidatura'),
+  campo('formatoTecnico', ETIQUETAS.formatoTecnico, 'opcion', 'Candidatura'),
+  campo('nombreContacto', ETIQUETAS.nombreContacto, 'texto', 'Candidatura'),
+  campo('telefonoContacto', ETIQUETAS.telefonoContacto, 'tel', 'Candidatura'),
+  campo('emailEmpresa', ETIQUETAS.emailEmpresa, 'email', 'Candidatura'),
+  campo('emailEnviado', ETIQUETAS.emailEnviado, 'email', 'Candidatura'),
+  campo('notas', ETIQUETAS.notas, 'largo', 'Candidatura'),
+  campo('cv', ETIQUETAS.cvGeneradoEnlace, 'enlace', 'Documentos'),
+  campo('carta', ETIQUETAS.cartaDePresentacion, 'largo', 'Documentos'),
+  campo('cvUsado', ETIQUETAS.cvUsado, 'texto', 'Documentos'),
+  campo('prep', ETIQUETAS.preparacionEnlace, 'enlace', 'Documentos'),
+  campo('avisoAutonoma', ETIQUETAS.avisoAutonomaEnCarta, 'casilla', 'Documentos'),
 ];
 
 /** Modalidad es del dominio, no de Notion: sus opciones son las que el panel entiende. */

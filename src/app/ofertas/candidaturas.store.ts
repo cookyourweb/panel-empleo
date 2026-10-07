@@ -43,6 +43,8 @@ function masRecientePrimero(a: Candidatura, b: Candidatura): number {
   return b.creada.localeCompare(a.creada);
 }
 
+const SIN_EDICION = $localize`:Error al editar sin puente disponible@@store.error.sinEdicion:No se puede editar desde aquí`;
+
 @Injectable()
 export class CandidaturasStore {
   private readonly repositorio = inject(RepositorioDeCandidaturas);
@@ -215,7 +217,7 @@ export class CandidaturasStore {
 
   private editorObligatorio(): EditorDeCandidaturas {
     if (!this.editor) {
-      throw new Error('No se puede editar desde aqui');
+      throw new Error(SIN_EDICION);
     }
     return this.editor;
   }
@@ -273,7 +275,7 @@ export class CandidaturasStore {
    */
   async guardarCambios(id: string, cambios: CambiosDeCandidatura): Promise<void> {
     if (!this.editor) {
-      throw new Error('No se puede editar desde aqui');
+      throw new Error(SIN_EDICION);
     }
     await this.editor.guardar(id, cambios);
     this.todas.update((todas) => todas.map((una) => (una.id === id ? aplicarCambios(una, cambios) : una)));

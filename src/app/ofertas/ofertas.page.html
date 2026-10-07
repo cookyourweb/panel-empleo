@@ -1,11 +1,14 @@
 <div class="cabecera">
-  <h2>Ofertas</h2>
+  <h2 i18n="Titulo de la pantalla de la tabla@@ofertas.titulo">Ofertas</h2>
 
   <label class="buscador">
-    <span class="visualmente-oculto">Buscar por empresa, puesto o ubicación</span>
+    <span class="visualmente-oculto" i18n="Etiqueta accesible del buscador@@ofertas.buscar.etiqueta"
+      >Buscar por empresa, puesto o ubicación</span
+    >
     <input
       type="search"
       placeholder="Buscar empresa, puesto o ubicación"
+      i18n-placeholder="Texto de ayuda del buscador@@ofertas.buscar.ayuda"
       autocomplete="off"
       [value]="store.busqueda()"
       (input)="buscar($event)"
@@ -14,29 +17,34 @@
 
   <!-- Cuantas se ven de cuantas hay: al buscar o filtrar no se pierde la
        referencia del total. -->
-  <p class="total" aria-live="polite">
-    {{ store.visibles().length }} de {{ store.candidaturas().length }}
+  <p class="total" aria-live="polite" i18n="Cuantas ofertas se ven de cuantas hay@@ofertas.total">
+    {{ store.visibles().length | number }} de {{ store.candidaturas().length | number }}
   </p>
 
   <app-selector-de-columnas />
 
   @if (conSeleccion()) {
     <button type="button" class="boton-cabecera" data-ver-eliminadas (click)="viendoEliminadas.set(true)">
-      Eliminadas <span class="recuento">{{ store.eliminadas().length }}</span>
+      <ng-container i18n="Boton que abre la lista de eliminadas@@ofertas.verEliminadas">Eliminadas</ng-container
+      >&ngsp;<span class="recuento">{{ store.eliminadas().length | number }}</span>
     </button>
   }
 </div>
 
 <!-- Los recuentos no son adorno: son lo que deja ver de un vistazo que un
      estado tiene mas de las que deberia. -->
-<div class="filtros" role="group" aria-label="Filtrar ofertas por estado">
+<div class="filtros" role="group"
+  aria-label="Filtrar ofertas por estado"
+  i18n-aria-label="Nombre del grupo de botones de filtro@@ofertas.filtros.etiqueta"
+>
   <button
     type="button"
     data-filtro="todas"
     [attr.aria-pressed]="store.filtroActivo() === null"
     (click)="filtrarPor(null)"
   >
-    Todas <span class="recuento">{{ store.candidaturas().length }}</span>
+    <ng-container i18n="Filtro que no filtra por estado@@ofertas.filtros.todas">Todas</ng-container
+    >&ngsp;<span class="recuento">{{ store.candidaturas().length | number }}</span>
   </button>
 
   @for (estado of estados; track estado) {
@@ -46,7 +54,7 @@
       [attr.aria-pressed]="store.filtroActivo() === estado"
       (click)="filtrarPor(estado)"
     >
-      {{ estado }} <span class="recuento">{{ store.recuentoPorEstado()[estado] ?? 0 }}</span>
+      {{ nombre(estado) }} <span class="recuento">{{ store.recuentoPorEstado()[estado] ?? 0 | number }}</span>
     </button>
   }
 </div>
@@ -66,10 +74,12 @@
 <!-- La tabla es mas ancha que la pantalla a proposito: se recorre con scroll
      horizontal y vertical dentro de su caja, con la cabecera y la columna de
      empresa fijas para no perder la referencia de que fila se esta leyendo. -->
-<div class="caja-tabla" tabindex="0" role="region" aria-label="Tabla de ofertas, desplazable">
+<div class="caja-tabla" tabindex="0" role="region" aria-label="Tabla de ofertas, desplazable"
+  i18n-aria-label="Nombre de la region desplazable de la tabla@@ofertas.tabla.etiqueta"
+>
   <table [style.width.px]="anchoTotal()" [class.con-seleccion]="conSeleccion()">
-    <caption class="visualmente-oculto">
-      Ofertas, {{ store.visibles().length }} de {{ store.candidaturas().length }}
+    <caption class="visualmente-oculto" i18n="Titulo accesible de la tabla con el recuento@@ofertas.tabla.titulo">
+      Ofertas, {{ store.visibles().length | number }} de {{ store.candidaturas().length | number }}
     </caption>
     <colgroup>
       @if (conSeleccion()) {
@@ -89,6 +99,7 @@
             <input
               type="checkbox"
               aria-label="Seleccionar todas las ofertas filtradas"
+              i18n-aria-label="Casilla de la cabecera que marca todas las filas@@ofertas.seleccionarTodas"
               [checked]="todasMarcadas()"
               [indeterminate]="algunaMarcada()"
               (change)="marcarTodas($event)"
@@ -120,7 +131,7 @@
             </th>
           }
           @if (columna.clave === 'estado' && conAcciones()) {
-            <th scope="col" class="sin-orden">Acción</th>
+            <th scope="col" class="sin-orden" i18n="Cabecera de la columna de botones de accion@@ofertas.columnaAccion">Acción</th>
           }
         }
       </tr>
@@ -138,10 +149,10 @@
                    cambiar: el puente las rechazaria. -->
               <input
                 type="checkbox"
-                [attr.aria-label]="'Seleccionar ' + candidatura.oferta.empresa"
+                [attr.aria-label]="descripcionDeSeleccionar(candidatura.oferta.empresa)"
                 [checked]="store.seleccionadas().has(candidatura.id)"
                 [disabled]="candidatura.id.startsWith('local-')"
-                [attr.title]="candidatura.id.startsWith('local-') ? 'Aún no está en Notion' : null"
+                [attr.title]="candidatura.id.startsWith('local-') ? sinNotion : null"
                 (click)="alternarSeleccion(candidatura.id, $event)"
               />
             </td>
@@ -171,7 +182,7 @@
                         [href]="accion.url"
                         target="_blank"
                         rel="noopener noreferrer"
-                        [attr.aria-label]="accion.etiqueta + ' la oferta de ' + candidatura.oferta.empresa"
+                        [attr.aria-label]="descripcionDeAccion(accion.tipo, candidatura.oferta.empresa)"
                         >{{ accion.etiqueta }}</a
                       >
                     }
@@ -185,7 +196,7 @@
                       [href]="url"
                       target="_blank"
                       rel="noopener noreferrer"
-                      [attr.aria-label]="columna.titulo + ' de ' + candidatura.oferta.empresa + ', en una pestaña nueva'"
+                      [attr.aria-label]="descripcionDeEnlace(columna.titulo, candidatura.oferta.empresa)"
                       >{{ columna.textoEnlace }}</a
                     >
                   }
@@ -201,9 +212,9 @@
         <tr>
           <td class="vacio" [attr.colspan]="columnas().length + (conAcciones() ? 1 : 0) + (conSeleccion() ? 1 : 0)">
             @if (store.busqueda().trim()) {
-              Ninguna oferta coincide con la búsqueda.
+              <ng-container i18n="Tabla vacia por la busqueda@@ofertas.vacia.busqueda">Ninguna oferta coincide con la búsqueda.</ng-container>
             } @else {
-              No hay candidaturas en este estado.
+              <ng-container i18n="Tabla vacia por el filtro de estado@@ofertas.vacia.estado">No hay candidaturas en este estado.</ng-container>
             }
           </td>
         </tr>
@@ -223,16 +234,32 @@
       [alGuardar]="guardar"
       idTitulo="titulo-panel"
     >
-      <nav navegacion class="nav" aria-label="Recorrer las candidaturas">
-        <button type="button" data-anterior [disabled]="!vecinos().anterior" (click)="irA(vecinos().anterior)">
+      <nav
+        navegacion
+        class="nav"
+        aria-label="Recorrer las candidaturas"
+        i18n-aria-label="Nombre de la navegacion entre fichas@@ofertas.panel.navegacion"
+      >
+        <button type="button" data-anterior [disabled]="!vecinos().anterior" (click)="irA(vecinos().anterior)" i18n="Boton que abre la ficha anterior@@ofertas.panel.anterior">
           Anterior
         </button>
-        <button type="button" data-siguiente [disabled]="!vecinos().siguiente" (click)="irA(vecinos().siguiente)">
+        <button type="button" data-siguiente [disabled]="!vecinos().siguiente" (click)="irA(vecinos().siguiente)" i18n="Boton que abre la ficha siguiente@@ofertas.panel.siguiente">
           Siguiente
         </button>
-        <button type="button" data-cerrar (click)="cerrar()" aria-label="Cerrar la ficha (Esc)">Cerrar</button>
+        <button
+          type="button"
+          data-cerrar
+          (click)="cerrar()"
+          aria-label="Cerrar la ficha (Esc)"
+          i18n-aria-label="Nombre accesible del boton Cerrar, con su atajo@@ofertas.panel.cerrar.etiqueta"
+          i18n="Boton que cierra el panel lateral@@ofertas.panel.cerrar"
+        >
+          Cerrar
+        </button>
       </nav>
-      <a extra class="completa" [routerLink]="['/candidatura', una.id]">Pantalla completa</a>
+      <a extra class="completa" [routerLink]="['/candidatura', una.id]" i18n="Enlace que abre la ficha en su propia pantalla@@ofertas.panel.pantallaCompleta"
+        >Pantalla completa</a
+      >
     </app-ficha-candidatura>
   </aside>
 }
@@ -262,7 +289,7 @@
   >
     <span>{{ a.texto }}</span>
     @if (a.deshacer) {
-      <button type="button" data-deshacer (click)="deshacer()">Deshacer</button>
+      <button type="button" data-deshacer (click)="deshacer()" i18n="Boton que revierte la ultima accion@@ofertas.aviso.deshacer">Deshacer</button>
     }
   </div>
 }

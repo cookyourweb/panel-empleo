@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import {
   afterRenderEffect,
   Component,
@@ -12,7 +13,7 @@ import {
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
-import { Accion, accionesPara, EnlacesDeAccion } from './acciones';
+import { Accion, accionesPara, descripcionDeAccion, EnlacesDeAccion } from './acciones';
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
 import { CandidaturasStore, ColumnaOrdenable } from './candidaturas.store';
 import { CambiosDeCandidatura } from './edicion';
@@ -22,6 +23,7 @@ import { BarraDeSeleccion } from './barra-de-seleccion';
 import { ConfirmarEliminar } from './confirmar-eliminar';
 import { FichaCandidatura } from './ficha-candidatura';
 import { ListaDeEliminadas } from './lista-de-eliminadas';
+import { nombreDeEstado } from './nombre-de-estado';
 import { plural } from './plural';
 import { FuenteDeAcciones } from './fuente-de-acciones';
 import { PreferenciasDeColumnas } from './preferencias-de-columnas';
@@ -45,6 +47,7 @@ interface Aviso {
 @Component({
   selector: 'app-ofertas',
   imports: [
+    DecimalPipe,
     RouterLink,
     FichaCandidatura,
     EtiquetaEstado,
@@ -95,6 +98,9 @@ export class OfertasPage implements OnInit {
   protected readonly aviso = signal<Aviso | null>(null);
   private temporizador?: ReturnType<typeof setTimeout>;
   protected readonly estados = ESTADOS;
+  protected readonly nombre = nombreDeEstado;
+  protected readonly descripcionDeAccion = descripcionDeAccion;
+  protected readonly sinNotion = $localize`:Explica por que una fila no se puede marcar@@ofertas.sinNotion:Aún no está en Notion`;
   private readonly preferencias = inject(PreferenciasDeColumnas);
 
   /**
@@ -185,6 +191,15 @@ export class OfertasPage implements OnInit {
     return typeof valor === 'string' && /^https?:\/\//.test(valor) ? valor : null;
   }
 
+  /** Nombres accesibles que llevan la empresa, para distinguir filas que se parecen. */
+  protected descripcionDeSeleccionar(empresa: string): string {
+    return $localize`:Nombre accesible de la casilla de una fila@@ofertas.seleccionar.descripcion:Seleccionar ${empresa}:empresa:`;
+  }
+
+  protected descripcionDeEnlace(columna: string, empresa: string): string {
+    return $localize`:Nombre accesible de un enlace de la tabla@@ofertas.enlace.descripcion:${columna}:columna: de ${empresa}:empresa:, en una pestaña nueva`;
+  }
+
   // ---------- Seleccion y acciones en bloque ----------
 
   /** Con Shift marca el tramo desde la ultima, como en la maqueta. */
@@ -212,8 +227,18 @@ export class OfertasPage implements OnInit {
       const fallidas = ids.length - hechas.length;
       this.avisar({
         texto:
-          plural(hechas.length, 'oferta eliminada', 'ofertas eliminadas') +
-          (fallidas ? `; ${plural(fallidas, 'no se pudo', 'no se pudieron')} eliminar` : ''),
+          plural(
+            hechas.length,
+            $localize`:Una oferta eliminada, detras del numero@@ofertas.aviso.eliminada:oferta eliminada`,
+            $localize`:Varias ofertas eliminadas, detras del numero@@ofertas.aviso.eliminadas:ofertas eliminadas`,
+          ) +
+          (fallidas
+            ? `; ${plural(
+                fallidas,
+                $localize`:Una oferta que no se pudo eliminar, detras del numero@@ofertas.aviso.noEliminada:no se pudo eliminar`,
+                $localize`:Varias ofertas que no se pudieron eliminar, detras del numero@@ofertas.aviso.noEliminadas:no se pudieron eliminar`,
+              )}`
+            : ''),
         deshacer: hechas.length ? () => this.restaurar(hechas) : undefined,
       });
     });
@@ -222,7 +247,13 @@ export class OfertasPage implements OnInit {
   protected async restaurar(ids: string[]): Promise<void> {
     await this.intentar(async () => {
       const vueltas = await this.store.restaurar(ids);
-      this.avisar({ texto: plural(vueltas.length, 'oferta restaurada', 'ofertas restauradas') });
+      this.avisar({
+        texto: plural(
+          vueltas.length,
+          $localize`:Una oferta restaurada, detras del numero@@ofertas.aviso.restaurada:oferta restaurada`,
+          $localize`:Varias ofertas restauradas, detras del numero@@ofertas.aviso.restauradas:ofertas restauradas`,
+        ),
+      });
     });
   }
 
@@ -231,14 +262,20 @@ export class OfertasPage implements OnInit {
     await this.intentar(async () => {
       const antes = await this.store.cambiarEstado(ids, estado);
       if (!antes.length) {
-        this.avisar({ texto: `Ninguna cambia: ya estaban en ${estado}.` });
+        const nuevo = nombreDeEstado(estado);
+        this.avisar({
+          texto: $localize`:Aviso de que ningun cambio de estado hizo falta@@ofertas.aviso.sinCambios:Ninguna cambia: ya estaban en ${nuevo}:estado:.`,
+        });
         return;
       }
       this.avisar({
-        texto: `${plural(antes.length, 'ficha pasa', 'fichas pasan')} a ${estado}.`,
+        texto:
+          antes.length === 1
+            ? $localize`:Aviso de que una ficha cambio de estado@@ofertas.aviso.cambioUna:${antes.length}:cuantas: ficha pasa a ${nombreDeEstado(estado)}:estado:.`
+            : $localize`:Aviso de que varias fichas cambiaron de estado@@ofertas.aviso.cambioVarias:${antes.length}:cuantas: fichas pasan a ${nombreDeEstado(estado)}:estado:.`,
         deshacer: async () => {
           await this.store.devolverEstados(antes);
-          this.avisar({ texto: 'Cambio deshecho.' });
+          this.avisar({ texto: $localize`:Aviso tras deshacer un cambio de estado@@ofertas.aviso.deshecho:Cambio deshecho.` });
         },
       });
     });
@@ -274,7 +311,8 @@ export class OfertasPage implements OnInit {
     try {
       await accion();
     } catch (e) {
-      this.avisar({ texto: `No se pudo: ${e instanceof Error ? e.message : 'error desconocido'}` });
+      const motivo = e instanceof Error ? e.message : $localize`:Motivo cuando el error no trae mensaje@@ofertas.aviso.errorDesconocido:error desconocido`;
+      this.avisar({ texto: $localize`:Aviso de que una accion fallo, con el motivo@@ofertas.aviso.fallo:No se pudo: ${motivo}:motivo:` });
     }
   }
 }
