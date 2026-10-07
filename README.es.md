@@ -261,7 +261,7 @@ navegador no ve jamás una credencial de terceros.
 
 ```
 src/app/ofertas/
-  dominio.ts                      Oferta, Candidatura y los ocho estados
+  dominio.ts                      Oferta, Candidatura y los nueve estados
   repositorio-de-candidaturas.ts  de dónde salen, como clase abstracta
   candidaturas.store.ts           el estado en signals y el recuento por estado
   ofertas.page.ts, detalle.page.ts  la tabla y la ficha

@@ -259,7 +259,7 @@ sees a third party credential.
 
 ```
 src/app/ofertas/
-  dominio.ts                      Oferta, Candidatura and the eight states
+  dominio.ts                      Oferta, Candidatura and the nine states
   repositorio-de-candidaturas.ts  where they come from, as an abstract class
   candidaturas.store.ts           state in signals, plus the count per state
   ofertas.page.ts, detalle.page.ts  the table and the detail page
