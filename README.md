@@ -16,7 +16,7 @@ candidate reviews and decides.
 |---|---|
 | State in signals, standalone components, `OnPush`, no `zone.js` | [Engineering decisions](#engineering-decisions) |
 | Hexagonal ports: the screens never know where data comes from | [Inside the app](#inside-the-app) |
-| TDD with Vitest: 269 component tests and 24 design token tests | [Development](#development) |
+| TDD with Vitest: 279 component tests and 28 design token tests | [Development](#development) |
 | Sign-in by invitation: the token lives in memory only and a scoped interceptor sends it to one origin | [Sign-in](#sign-in) |
 | Public demo that stays open to visitors, with sample data and no sign-in | [Try it](#try-it) |
 | Contrast tests that read the stylesheet from disk | [The contrast tests](#the-contrast-tests) |
@@ -209,7 +209,7 @@ out.
 
 **The design system is not invented here.** These are the CookYourWeb brand tokens,
 measured in OKLCh and already proven on the agency site. They travel with their
-twenty-four contrast tests.
+twenty-six contrast tests.
 
 **They are copied, not shared through a library.** Not yet. With one live consumer and
 another about to exist, the boundary between what is shared and what belongs to each
@@ -308,8 +308,8 @@ nvm use
 npm ci
 npx ng serve --configuration production   # demo: sample data, no sign-in
 npm start                                 # development: real data, sign-in
-npx ng test --watch=false                 # 269 component tests
-npm test                                  # those 269 plus 24 design token tests
+npx ng test --watch=false                 # 279 component tests
+npm test                                  # those 279 plus 28 design token tests
 ```
 
 ### Real data in development

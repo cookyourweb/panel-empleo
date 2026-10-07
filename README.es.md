@@ -16,7 +16,7 @@ quien busca revisa y decide.
 |---|---|
 | Estado en signals, componentes standalone, `OnPush`, sin `zone.js` | [Decisiones de ingeniería](#decisiones-de-ingeniería) |
 | Puertos hexagonales: las pantallas no saben de dónde salen los datos | [Por dentro](#por-dentro) |
-| TDD con Vitest: 269 pruebas de componentes y 24 de tokens de diseño | [Desarrollo](#desarrollo) |
+| TDD con Vitest: 279 pruebas de componentes y 28 de tokens de diseño | [Desarrollo](#desarrollo) |
 | Entrada por invitación: el token solo vive en memoria y un interceptor acotado lo envía a un único origen | [Inicio de sesión](#inicio-de-sesión) |
 | Demo pública abierta a quien visita, con datos de ejemplo y sin inicio de sesión | [Pruébalo](#pruébalo) |
 | Pruebas de contraste que leen la hoja de estilos del disco | [Las pruebas de contraste](#las-pruebas-de-contraste) |
@@ -211,7 +211,7 @@ pantallas funcionan con datos de ejemplo, con datos reales o en los tests.
 **Vitest.** Es el runner por defecto desde Angular 22, y Karma está en las últimas.
 
 **El design system no se inventa aquí.** Son los tokens de marca de CookYourWeb, medidos
-en OKLCh y ya probados en el sitio de la agencia. Viajan con sus veinticuatro pruebas de
+en OKLCh y ya probados en el sitio de la agencia. Viajan con sus veintiséis pruebas de
 contraste.
 
 **Se copian, no se comparten en una librería.** Todavía no. Con un consumidor vivo y
@@ -311,8 +311,8 @@ nvm use
 npm ci
 npx ng serve --configuration production   # demo: datos de ejemplo, sin inicio de sesión
 npm start                                 # desarrollo: datos reales, con inicio de sesión
-npx ng test --watch=false                 # 269 pruebas de componentes
-npm test                                  # esas 269 más 24 de tokens de diseño
+npx ng test --watch=false                 # 279 pruebas de componentes
+npm test                                  # esas 279 más 28 de tokens de diseño
 ```
 
 ### Datos reales en desarrollo
