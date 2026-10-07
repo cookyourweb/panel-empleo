@@ -71,6 +71,32 @@ describe('IdentidadGoogle', () => {
 
       await expect(preparada).rejects.toBeDefined();
     });
+
+    it('tras un fallo retira el script roto para no dejar basura en el head', async () => {
+      const preparada = identidad.preparar(contenedor, () => undefined);
+
+      scriptsInyectados()[0].dispatchEvent(new Event('error'));
+      await preparada.catch(() => undefined);
+
+      expect(scriptsInyectados()).toHaveLength(0);
+    });
+
+    it('tras un fallo, preparar de nuevo carga un script nuevo y puede salir bien', async () => {
+      const primera = identidad.preparar(contenedor, () => undefined);
+      const roto = scriptsInyectados()[0];
+      roto.dispatchEvent(new Event('error'));
+      await primera.catch(() => undefined);
+      const google = instalarGoogleFalso();
+
+      const segunda = identidad.preparar(contenedor, () => undefined);
+      const nuevo = scriptsInyectados()[0];
+      nuevo?.dispatchEvent(new Event('load'));
+      await segunda;
+
+      expect(nuevo).toBeDefined();
+      expect(nuevo).not.toBe(roto);
+      expect(google.accounts.id.renderButton).toHaveBeenCalled();
+    });
   });
 
   describe('acceso', () => {

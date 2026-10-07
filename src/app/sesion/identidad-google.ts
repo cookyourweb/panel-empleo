@@ -60,14 +60,22 @@ export class IdentidadGoogle extends ProveedorDeIdentidad {
     return ventana ? leerGoogle(ventana) : null;
   }
 
-  /** Una sola carga aunque se prepare varias veces: se reutiliza la promesa. */
+  /**
+   * Una sola carga aunque se prepare varias veces: se reutiliza la promesa.
+   * Si falla no se guarda: se retira el script roto y el siguiente intento
+   * (el boton Reintentar) vuelve a pedirlo en vez de heredar el rechazo.
+   */
   private cargarScript(): Promise<void> {
     this.carga ??= new Promise<void>((resolver, rechazar) => {
       const script = this.documento.createElement('script');
       script.src = URL_SCRIPT;
       script.async = true;
       script.addEventListener('load', () => resolver());
-      script.addEventListener('error', () => rechazar(new Error('No se pudo cargar el script de identidad')));
+      script.addEventListener('error', () => {
+        script.remove();
+        this.carga = null;
+        rechazar(new Error('No se pudo cargar el script de identidad'));
+      });
       this.documento.head.appendChild(script);
     });
     return this.carga;
