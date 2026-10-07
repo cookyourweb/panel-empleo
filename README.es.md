@@ -245,17 +245,18 @@ datos medidos.
 
 ## Arquitectura
 
-```
-n8n  ->  Notion
-                \
-                 '->  cv-server  <-  este panel
-                          |
-                          '->  Postgres (planificado), Drive, modelos
-```
+| Pieza | Papel | Estado |
+|---|---|---|
+| n8n | Busca, filtra, avisa y dispara la generación | En producción |
+| Notion | Donde hoy se guardan las ofertas y su estado | En producción |
+| `cv-server` | Escribe currículum y carta, valida la entrada | En producción |
+| Este panel | Revisa y decide | Pantallas construidas, mira arriba |
+| Postgres | Futuro almacén de datos del panel | Planificado (ADR-002) |
 
-El panel habla con `cv-server` para la entrada. En desarrollo, además, lee ficheros
-locales y usa un puente local a Notion. Nunca llega a Notion, ni a Drive, ni a un modelo
-de lenguaje desde el navegador: el navegador no ve jamás una credencial de terceros.
+n8n escribe en Notion y llama a `cv-server`. El panel habla con `cv-server` para la
+entrada. En desarrollo, además, lee ficheros locales y usa un puente local a Notion. El
+panel no llega a Notion, ni a Drive, ni a un modelo de lenguaje desde el navegador: el
+navegador no ve jamás una credencial de terceros.
 
 ### Por dentro
 

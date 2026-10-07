@@ -241,17 +241,18 @@ measured data.
 
 ## Architecture
 
-```
-n8n  ->  Notion
-                \
-                 '->  cv-server  <-  this panel
-                          |
-                          '->  Postgres (planned), Drive, models
-```
+| Piece | Role | Status |
+|---|---|---|
+| n8n | Searches, filters, notifies and triggers generation | In production |
+| Notion | Where jobs and their status are stored today | In production |
+| `cv-server` | Writes CV and cover letter, validates sign-in | In production |
+| This panel | Reviews and decides | Screens built, see above |
+| Postgres | Future data store for the panel | Planned (ADR-002) |
 
-The panel talks to `cv-server` for sign-in. In development it also reads local files and
-uses a local bridge to Notion. It never reaches Notion, Drive or a language model from
-the browser: the browser never sees a third party credential.
+n8n writes to Notion and calls `cv-server`. The panel talks to `cv-server` for sign-in.
+In development it also reads local files and uses a local bridge to Notion. The panel
+does not reach Notion, Drive or a language model from the browser: the browser never
+sees a third party credential.
 
 ### Inside the app
 
