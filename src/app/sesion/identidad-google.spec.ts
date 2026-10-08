@@ -1,3 +1,4 @@
+import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { CONFIGURACION_DE_SESION } from './configuracion';
@@ -125,6 +126,25 @@ describe('IdentidadGoogle', () => {
 
       expect(google.accounts.id.renderButton).toHaveBeenCalledWith(contenedor, expect.any(Object));
       expect(google.accounts.id.prompt).toHaveBeenCalled();
+    });
+
+    it('el boton de Google sale en el idioma activo de la pagina', async () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          IdentidadGoogle,
+          { provide: LOCALE_ID, useValue: 'en' },
+          { provide: CONFIGURACION_DE_SESION, useValue: { urlApi: 'http://api.prueba', idCliente: 'cliente-prueba' } },
+        ],
+      });
+      identidad = TestBed.inject(IdentidadGoogle);
+
+      await preparar();
+
+      expect(google.accounts.id.renderButton).toHaveBeenCalledWith(
+        contenedor,
+        expect.objectContaining({ locale: 'en' }),
+      );
     });
 
     it('reenvia la credencial que entrega Google', async () => {

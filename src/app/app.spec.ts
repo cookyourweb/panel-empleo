@@ -30,6 +30,17 @@ describe('App', () => {
     expect(salto?.textContent).toContain('Saltar al contenido principal');
   });
 
+  it('ofrece en la cabecera el cambio de idioma, con el idioma actual marcado', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const cabecera = (fixture.nativeElement as HTMLElement).querySelector('header');
+
+    const enlaces = [...(cabecera?.querySelectorAll('nav a[hreflang]') ?? [])];
+
+    expect(enlaces.map((a) => a.getAttribute('hreflang'))).toEqual(['es', 'en']);
+    expect(cabecera?.querySelectorAll('a[aria-current="true"]')).toHaveLength(1);
+  });
+
   it('tiene un unico landmark main, y es el que alcanza el enlace de salto', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();

@@ -1,7 +1,10 @@
-<a class="salto-al-contenido" href="#contenido">Saltar al contenido principal</a>
+<a class="salto-al-contenido" href="#contenido" i18n="Enlace para saltar la cabecera y llegar al contenido@@app.saltarAlContenido"
+  >Saltar al contenido principal</a
+>
 
 <header class="cabecera">
   <h1>{{ titulo() }}</h1>
+  <app-selector-de-idioma />
 </header>
 
 <main #principal id="contenido" tabindex="-1">

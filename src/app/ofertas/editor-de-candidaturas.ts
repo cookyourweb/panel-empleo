@@ -49,7 +49,7 @@ export class EditorLocal implements EditorDeCandidaturas {
     });
     if (!respuesta.ok) {
       const cuerpo = (await respuesta.json().catch(() => null)) as { error?: string } | null;
-      throw new Error(cuerpo?.error ?? `El puente respondio ${respuesta.status}`);
+      throw new Error(cuerpo?.error ?? $localize`:Error del servicio intermedio con su codigo HTTP@@editor.puente.respuesta:El puente respondió ${respuesta.status}:estado:`);
     }
   }
 
@@ -79,11 +79,13 @@ export class EditorLocal implements EditorDeCandidaturas {
     });
     const cuerpo = (await respuesta.json().catch(() => null)) as { hechas?: string[]; error?: string } | null;
     if (!respuesta.ok) {
-      throw new Error(cuerpo?.error ?? `El puente respondio ${respuesta.status}`);
+      throw new Error(cuerpo?.error ?? $localize`:Error del servicio intermedio con su codigo HTTP@@editor.puente.respuesta:El puente respondió ${respuesta.status}:estado:`);
     }
     return cuerpo?.hechas ?? [];
   }
 }
+
+const DEMO_NO_ELIMINA = $localize`:Error al eliminar en la demo@@editor.demo.noElimina:La demo no elimina nada`;
 
 /** La demo publica enseña datos de ejemplo: no hay nada que guardar. */
 @Injectable()
@@ -93,15 +95,15 @@ export class EditorDemo implements EditorDeCandidaturas {
   }
 
   async guardar(): Promise<void> {
-    throw new Error('La demo no guarda cambios');
+    throw new Error($localize`:Error al guardar en la demo@@editor.demo.noGuarda:La demo no guarda cambios`);
   }
 
   async eliminar(): Promise<string[]> {
-    throw new Error('La demo no elimina nada');
+    throw new Error(DEMO_NO_ELIMINA);
   }
 
   async restaurar(): Promise<string[]> {
-    throw new Error('La demo no elimina nada');
+    throw new Error(DEMO_NO_ELIMINA);
   }
 
   async eliminadas(): Promise<EliminadaGuardada[]> {

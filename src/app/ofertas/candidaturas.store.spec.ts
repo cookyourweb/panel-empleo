@@ -1,3 +1,4 @@
+import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { CandidaturasStore } from './candidaturas.store';
@@ -26,9 +27,10 @@ const TRES: Candidatura[] = [
   { id: 'c3', estado: 'Caducada', oferta: { id: 'o3', empresa: 'Ceta', puesto: 'Frontend', idioma: 'es' } },
 ];
 
-function store(candidaturas?: Candidatura[]): CandidaturasStore {
+function store(candidaturas?: Candidatura[], locale = 'es'): CandidaturasStore {
   TestBed.configureTestingModule({
     providers: [
+      { provide: LOCALE_ID, useValue: locale },
       CandidaturasStore,
       { provide: RepositorioDeCandidaturas, useValue: new RepositorioFalso(candidaturas) },
     ],
@@ -183,6 +185,25 @@ describe('CandidaturasStore · ordenar', () => {
     s.ordenarPor('empresa');
     expect(s.orden()).toEqual({ columna: 'empresa', sentido: 'asc' });
     expect(s.visibles().map((u) => u.id)).toEqual(['a', 'b', 'c']);
+  });
+
+  it('el alfabeto es el del idioma activo: en sueco la Ä va detrás de la Z', async () => {
+    const palabras: Candidatura[] = ['Zeta', 'Ärbol'].map((empresa, i) => ({
+      id: `p${i}`,
+      estado: 'Pendiente',
+      oferta: { id: `p${i}`, empresa, puesto: 'X', idioma: 'es' },
+    }));
+
+    const espanol = store(palabras, 'es');
+    await espanol.cargar();
+    espanol.ordenarPor('empresa');
+    expect(espanol.visibles().map((u) => u.oferta.empresa)).toEqual(['Ärbol', 'Zeta']);
+
+    TestBed.resetTestingModule();
+    const sueco = store(palabras, 'sv');
+    await sueco.cargar();
+    sueco.ordenarPor('empresa');
+    expect(sueco.visibles().map((u) => u.oferta.empresa)).toEqual(['Zeta', 'Ärbol']);
   });
 
   it('la segunda vez descendente y la tercera quita el orden', async () => {

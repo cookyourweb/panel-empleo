@@ -1,8 +1,12 @@
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { EnlacesDeAccion } from './acciones';
 import { CandidaturasStore } from './candidaturas.store';
+import { Candidatura } from './dominio';
 import { FuenteDeAcciones, FuenteDeAccionesDemo } from './fuente-de-acciones';
 import { OfertasPage } from './ofertas.page';
 import { RepositorioDemo } from './repositorio-demo';
@@ -231,5 +235,36 @@ describe('OfertasPage', () => {
 
       expect(pagina.querySelector('[data-selector]')).toBeNull();
     });
+  });
+});
+
+describe('OfertasPage · números según el idioma activo', () => {
+  const MUCHAS: Candidatura[] = Array.from({ length: 1100 }, (_, i) => ({
+    id: `c${i}`,
+    estado: 'Pendiente',
+    oferta: { id: `o${i}`, empresa: `Empresa ${i}`, puesto: 'Frontend', idioma: 'es' },
+  }));
+
+  async function recuentoEn(locale: string): Promise<string> {
+    localStorage.clear();
+    await TestBed.configureTestingModule({
+      imports: [OfertasPage],
+      providers: [
+        provideRouter([]),
+        { provide: LOCALE_ID, useValue: locale },
+        CandidaturasStore,
+        { provide: RepositorioDeCandidaturas, useValue: { listar: async () => MUCHAS } },
+        { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
+      ],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(OfertasPage);
+    await fixture.whenStable();
+    return (fixture.nativeElement as HTMLElement).querySelector('.total')?.textContent?.trim() ?? '';
+  }
+
+  it('el separador de miles es el del idioma, no uno fijo', async () => {
+    registerLocaleData(localeDe);
+
+    expect(await recuentoEn('de')).toBe('1.100 de 1.100');
   });
 });

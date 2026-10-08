@@ -16,7 +16,7 @@ quien busca revisa y decide.
 |---|---|
 | Estado en signals, componentes standalone, `OnPush`, sin `zone.js` | [Decisiones de ingeniería](#decisiones-de-ingeniería) |
 | Puertos hexagonales: las pantallas no saben de dónde salen los datos | [Por dentro](#por-dentro) |
-| TDD con Vitest: 279 pruebas de componentes y 28 de tokens de diseño | [Desarrollo](#desarrollo) |
+| TDD con Vitest: 297 pruebas de componentes y 53 de tokens de diseño | [Desarrollo](#desarrollo) |
 | Entrada por invitación: el token solo vive en memoria y un interceptor acotado lo envía a un único origen | [Inicio de sesión](#inicio-de-sesión) |
 | Demo pública abierta a quien visita, con datos de ejemplo y sin inicio de sesión | [Pruébalo](#pruébalo) |
 | Pruebas de contraste que leen la hoja de estilos del disco | [Las pruebas de contraste](#las-pruebas-de-contraste) |
@@ -198,6 +198,44 @@ demo no tiene guarda, porque no hay nada que proteger.
 
 ---
 
+## Internacionalización
+
+El panel viene en español (el idioma de origen) e inglés, con el `@angular/localize`
+oficial de Angular. Se resuelve al compilar: una build por idioma, servida bajo `/es/` y
+`/en/`, sin código de traducción en tiempo de ejecución. `/` redirige según la cabecera
+`Accept-Language` (mira `vercel.json`), y un selector en la cabecera enlaza a la misma
+pantalla bajo el otro prefijo.
+
+- **Qué se traduce:** la interfaz (títulos, botones, etiquetas, cabeceras de columna,
+  mensajes, `aria-label`, títulos de ruta). Los datos (ofertas, empresas, descripciones)
+  siguen en español a propósito: son datos de ejemplo, no interfaz.
+- **Fechas, números y orden alfabético** siguen a `LOCALE_ID`. Nada lleva un idioma
+  escrito a mano.
+- **Cada mensaje tiene un id escrito a mano** (`@@area.nombre`). Un id generado cambia al
+  corregir una errata y deja la traducción huérfana sin avisar.
+
+**Añadir un idioma:**
+
+1. Declararlo en `angular.json`, en `i18n.locales` (su fichero `translation` y su
+   `subPath`), y en `src/app/idioma/idiomas.ts`, con su nombre escrito en ese idioma.
+2. Ejecutar `npx ng extract-i18n --format xlf2 --output-path src/locale` para refrescar
+   `src/locale/messages.xlf`, el origen.
+3. Copiarlo a `src/locale/messages.<codigo>.xlf`, añadir `trgLang` a la cabecera y un
+   `<target>` a cada unidad.
+4. Añadir en `vercel.json` un rewrite para el prefijo nuevo, y una regla de redirección
+   si `Accept-Language` debe elegirlo.
+
+**La prueba de completitud.** Con una build por idioma, una traducción que falta se queda
+en español sin avisar. `tools/i18n.test.ts` lee `angular.json` y, para cada idioma, falla
+si un mensaje no tiene traducción, si un destino está vacío, si se perdió un marcador, si
+sobra un mensaje obsoleto o si `messages.xlf` no está al día con los ids del código. Un
+idioma nuevo se comprueba sin tocar la prueba. `tools/vercel.test.ts` hace lo mismo con el
+enrutado por idioma y la redirección.
+
+**En local:** `npm start` y `npx ng serve --configuration production` sirven español, y
+`npx ng serve --configuration production-en` sirve inglés. El servidor de desarrollo sirve
+un idioma cada vez, así que el selector de la cabecera solo funciona ya desplegado.
+
 ## Decisiones de ingeniería
 
 **Angular 22 sin `zone.js`, con signals y componentes standalone.** La detección de
@@ -299,8 +337,9 @@ Entrega por rebanadas verticales completas, no por capas. La primera vale por s�
 ver las ofertas, abrir una, generar currículum y carta, descargar. La segunda cierra el
 seguimiento, que es el problema de arriba.
 
-Los mensajes de commit y los documentos de diseño van en español. Son el razonamiento de
-la autora, y se leen mejor en el idioma en que se pensaron.
+Desde el 8 de octubre de 2026 los mensajes de commit y los comentarios del código van en inglés
+(ver [CONTRIBUTING](CONTRIBUTING.md)). El historial anterior y los documentos de diseño están
+en español, el idioma en que se pensó el razonamiento.
 
 ## Desarrollo
 
@@ -311,8 +350,8 @@ nvm use
 npm ci
 npx ng serve --configuration production   # demo: datos de ejemplo, sin inicio de sesión
 npm start                                 # desarrollo: datos reales, con inicio de sesión
-npx ng test --watch=false                 # 279 pruebas de componentes
-npm test                                  # esas 279 más 28 de tokens de diseño
+npx ng test --watch=false                 # 297 pruebas de componentes
+npm test                                  # esas 297 más 53 de tokens de diseño
 ```
 
 ### Datos reales en desarrollo
@@ -352,3 +391,7 @@ proveedor:
   Las cuatro rampas de marca, su contraste medido y la regla de uso.
 - [Plan de arranque](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-06-plan-arranque-panel-angular.md).
   Cómo encajan las piezas y las reglas que las mantienen separadas.
+
+## Licencia
+
+[PolyForm Noncommercial 1.0.0](LICENSE). Puedes leer, estudiar y usar este código para fines personales, de aprendizaje u otros no comerciales. El uso comercial, como venderlo, ofrecerlo como servicio o usarlo en una empresa con ánimo de lucro, necesita permiso: escribe a través de [cookyourwebai.es](https://cookyourwebai.es).

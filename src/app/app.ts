@@ -3,14 +3,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, skip } from 'rxjs';
 
+import { SelectorDeIdioma } from './idioma/selector-de-idioma';
+
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SelectorDeIdioma],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly titulo = signal('Panel de empleo');
+  protected readonly titulo = signal($localize`:Nombre de la aplicacion, titulo de la cabecera@@app.titulo:Panel de empleo`);
   private readonly principal = viewChild.required<ElementRef<HTMLElement>>('principal');
 
   constructor() {

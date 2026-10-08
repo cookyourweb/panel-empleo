@@ -1,5 +1,6 @@
 import { Bloque, Candidatura } from './dominio';
-import { fechaEspanola } from './fecha';
+import { ETIQUETAS, IDIOMAS_DE_OFERTA, SI, TEXTOS_DE_ENLACE, TITULOS_DE_GRUPO } from './etiquetas';
+import { formatearFecha } from './fecha';
 
 export type TipoDeCampo = 'texto' | 'enlace' | 'email' | 'tel' | 'largo';
 
@@ -32,8 +33,6 @@ interface Definicion {
   textoEnlace?: string;
 }
 
-const IDIOMAS = { es: 'Español', en: 'Inglés' } as const;
-
 /**
  * Los campos de la ficha, en el orden y los grupos de la maqueta aprobada.
  *
@@ -42,53 +41,53 @@ const IDIOMAS = { es: 'Español', en: 'Inglés' } as const;
  */
 const SECCIONES: { titulo: string; campos: Definicion[] }[] = [
   {
-    titulo: 'Oferta',
+    titulo: TITULOS_DE_GRUPO.Oferta,
     campos: [
-      { clave: 'modalidad', etiqueta: 'Modalidad', formato: 'texto', leer: (u) => u.oferta.modalidad },
-      { clave: 'ubicacion', etiqueta: 'Ubicación', formato: 'texto', leer: (u) => u.oferta.ubicacion },
-      { clave: 'salario', etiqueta: 'Salario', formato: 'texto', leer: (u) => u.oferta.salario },
-      { clave: 'fechaPublicacion', etiqueta: 'Publicada', formato: 'fecha', leer: (u) => u.oferta.fechaPublicacion },
-      { clave: 'idioma', etiqueta: 'Idioma', formato: 'texto', leer: (u) => IDIOMAS[u.oferta.idioma] },
-      { clave: 'tipoContrato', etiqueta: 'Tipo de contrato', formato: 'texto', leer: (u) => u.oferta.tipoContrato },
+      { clave: 'modalidad', etiqueta: ETIQUETAS.modalidad, formato: 'texto', leer: (u) => u.oferta.modalidad },
+      { clave: 'ubicacion', etiqueta: ETIQUETAS.ubicacion, formato: 'texto', leer: (u) => u.oferta.ubicacion },
+      { clave: 'salario', etiqueta: ETIQUETAS.salario, formato: 'texto', leer: (u) => u.oferta.salario },
+      { clave: 'fechaPublicacion', etiqueta: ETIQUETAS.fechaPublicacion, formato: 'fecha', leer: (u) => u.oferta.fechaPublicacion },
+      { clave: 'idioma', etiqueta: ETIQUETAS.idioma, formato: 'texto', leer: (u) => IDIOMAS_DE_OFERTA[u.oferta.idioma] },
+      { clave: 'tipoContrato', etiqueta: ETIQUETAS.tipoContrato, formato: 'texto', leer: (u) => u.oferta.tipoContrato },
       {
         clave: 'modoContratacion',
-        etiqueta: 'Modo de contratación',
+        etiqueta: ETIQUETAS.modoContratacion,
         formato: 'texto',
         leer: (u) => u.oferta.modoContratacion,
       },
-      { clave: 'tags', etiqueta: 'Tags', formato: 'texto', leer: (u) => u.oferta.tags },
-      { clave: 'verificada', etiqueta: 'Verificada', formato: 'casilla', leer: (u) => u.oferta.verificada },
-      { clave: 'palabrasClave', etiqueta: 'Palabras clave', formato: 'largo', leer: (u) => u.oferta.palabrasClave },
-      { clave: 'descripcion', etiqueta: 'Descripción', formato: 'largo', leer: (u) => u.oferta.descripcion },
+      { clave: 'tags', etiqueta: ETIQUETAS.tags, formato: 'texto', leer: (u) => u.oferta.tags },
+      { clave: 'verificada', etiqueta: ETIQUETAS.verificada, formato: 'casilla', leer: (u) => u.oferta.verificada },
+      { clave: 'palabrasClave', etiqueta: ETIQUETAS.palabrasClave, formato: 'largo', leer: (u) => u.oferta.palabrasClave },
+      { clave: 'descripcion', etiqueta: ETIQUETAS.descripcion, formato: 'largo', leer: (u) => u.oferta.descripcion },
     ],
   },
   {
-    titulo: 'Candidatura',
+    titulo: TITULOS_DE_GRUPO.Candidatura,
     campos: [
-      { clave: 'fase', etiqueta: 'Fase', formato: 'texto', leer: (u) => u.fase },
-      { clave: 'viaEnvio', etiqueta: 'Vía envío', formato: 'texto', leer: (u) => u.viaEnvio },
-      { clave: 'fechaEnvio', etiqueta: 'Fecha envío', formato: 'fecha', leer: (u) => u.fechaEnvio },
-      { clave: 'seguimiento', etiqueta: 'Seguimiento', formato: 'fecha', leer: (u) => u.seguimiento },
-      { clave: 'fechaEntrevista', etiqueta: 'Fecha entrevista', formato: 'fecha', leer: (u) => u.fechaEntrevista },
-      { clave: 'formatoTecnico', etiqueta: 'Formato técnico', formato: 'texto', leer: (u) => u.formatoTecnico },
-      { clave: 'nombreContacto', etiqueta: 'Nombre contacto', formato: 'texto', leer: (u) => u.nombreContacto },
-      { clave: 'telefonoContacto', etiqueta: 'Teléfono contacto', formato: 'tel', leer: (u) => u.telefonoContacto },
-      { clave: 'emailEmpresa', etiqueta: 'Email empresa', formato: 'email', leer: (u) => u.emailEmpresa },
-      { clave: 'emailEnviado', etiqueta: 'Email enviado', formato: 'email', leer: (u) => u.emailEnviado },
-      { clave: 'notas', etiqueta: 'Notas', formato: 'largo', leer: (u) => u.notas },
+      { clave: 'fase', etiqueta: ETIQUETAS.fase, formato: 'texto', leer: (u) => u.fase },
+      { clave: 'viaEnvio', etiqueta: ETIQUETAS.viaEnvio, formato: 'texto', leer: (u) => u.viaEnvio },
+      { clave: 'fechaEnvio', etiqueta: ETIQUETAS.fechaEnvio, formato: 'fecha', leer: (u) => u.fechaEnvio },
+      { clave: 'seguimiento', etiqueta: ETIQUETAS.seguimiento, formato: 'fecha', leer: (u) => u.seguimiento },
+      { clave: 'fechaEntrevista', etiqueta: ETIQUETAS.fechaEntrevista, formato: 'fecha', leer: (u) => u.fechaEntrevista },
+      { clave: 'formatoTecnico', etiqueta: ETIQUETAS.formatoTecnico, formato: 'texto', leer: (u) => u.formatoTecnico },
+      { clave: 'nombreContacto', etiqueta: ETIQUETAS.nombreContacto, formato: 'texto', leer: (u) => u.nombreContacto },
+      { clave: 'telefonoContacto', etiqueta: ETIQUETAS.telefonoContacto, formato: 'tel', leer: (u) => u.telefonoContacto },
+      { clave: 'emailEmpresa', etiqueta: ETIQUETAS.emailEmpresa, formato: 'email', leer: (u) => u.emailEmpresa },
+      { clave: 'emailEnviado', etiqueta: ETIQUETAS.emailEnviado, formato: 'email', leer: (u) => u.emailEnviado },
+      { clave: 'notas', etiqueta: ETIQUETAS.notas, formato: 'largo', leer: (u) => u.notas },
     ],
   },
   {
-    titulo: 'Documentos',
+    titulo: TITULOS_DE_GRUPO.Documentos,
     campos: [
       // El CV y la carta primero: es lo que se revisa antes de darle a enviar.
-      { clave: 'cv', etiqueta: 'CV generado', formato: 'enlace', leer: (u) => u.cv, textoEnlace: 'Abrir CV' },
-      { clave: 'carta', etiqueta: 'Carta de presentación', formato: 'largo', leer: (u) => u.carta },
-      { clave: 'cvUsado', etiqueta: 'CV usado', formato: 'enlace', leer: (u) => u.cvUsado, textoEnlace: 'Abrir CV base' },
-      { clave: 'prep', etiqueta: 'Preparación', formato: 'enlace', leer: (u) => u.prep, textoEnlace: 'Abrir prep' },
+      { clave: 'cv', etiqueta: ETIQUETAS.cvGenerado, formato: 'enlace', leer: (u) => u.cv, textoEnlace: TEXTOS_DE_ENLACE.abrirCv },
+      { clave: 'carta', etiqueta: ETIQUETAS.cartaDePresentacion, formato: 'largo', leer: (u) => u.carta },
+      { clave: 'cvUsado', etiqueta: ETIQUETAS.cvUsado, formato: 'enlace', leer: (u) => u.cvUsado, textoEnlace: TEXTOS_DE_ENLACE.abrirCvBase },
+      { clave: 'prep', etiqueta: ETIQUETAS.preparacion, formato: 'enlace', leer: (u) => u.prep, textoEnlace: TEXTOS_DE_ENLACE.abrirPrep },
       {
         clave: 'avisoAutonoma',
-        etiqueta: 'Aviso autónoma en carta',
+        etiqueta: ETIQUETAS.avisoAutonomaEnCarta,
         formato: 'casilla',
         leer: (u) => u.avisoAutonoma,
       },
@@ -99,17 +98,17 @@ const SECCIONES: { titulo: string; campos: Definicion[] }[] = [
 /** Por encima de esto un valor corto ya no cabe en media columna. */
 const LARGO_PARA_MEDIA_COLUMNA = 48;
 
-function campoDesde(def: Definicion, valor: string | true): Campo {
+function campoDesde(def: Definicion, valor: string | true, locale: string): Campo {
   let tipo: TipoDeCampo;
   let texto: string;
   switch (def.formato) {
     case 'fecha':
       tipo = 'texto';
-      texto = fechaEspanola(String(valor)) || String(valor);
+      texto = formatearFecha(String(valor), locale) || String(valor);
       break;
     case 'casilla':
       tipo = 'texto';
-      texto = 'Sí';
+      texto = SI;
       break;
     case 'enlace':
       // Hay campos de "enlace" que en Notion son texto libre: si no es una
@@ -168,7 +167,7 @@ export function vistaPreviaDeCv(url: string): string | null {
 }
 
 /** Los campos con dato, por secciones, y los nombres de los que no tienen. */
-export function seccionesDeFicha(una: Candidatura): { secciones: Seccion[]; vacios: string[] } {
+export function seccionesDeFicha(una: Candidatura, locale: string): { secciones: Seccion[]; vacios: string[] } {
   const vacios: string[] = [];
   const secciones = SECCIONES.map(({ titulo, campos }) => ({
     titulo,
@@ -178,7 +177,7 @@ export function seccionesDeFicha(una: Candidatura): { secciones: Seccion[]; vaci
         vacios.push(def.etiqueta);
         return [];
       }
-      return [campoDesde(def, valor)];
+      return [campoDesde(def, valor, locale)];
     }),
   }));
   return { secciones, vacios };

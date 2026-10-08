@@ -11,12 +11,27 @@
   <div class="botones">
     <app-estado [estado]="una.estado" />
     @if (una.oferta.enlace) {
-      <a class="boton" data-oferta-original [href]="una.oferta.enlace" target="_blank" rel="noopener noreferrer">
+      <a
+        class="boton"
+        data-oferta-original
+        [href]="una.oferta.enlace"
+        target="_blank"
+        rel="noopener noreferrer"
+        i18n="Enlace a la oferta original@@ficha.abrirOferta"
+      >
         Abrir oferta
       </a>
     }
     @if (una.notion) {
-      <a class="boton" data-notion [href]="una.notion" target="_blank" rel="noopener noreferrer">Abrir en Notion</a>
+      <a
+        class="boton"
+        data-notion
+        [href]="una.notion"
+        target="_blank"
+        rel="noopener noreferrer"
+        i18n="Enlace a la ficha en Notion@@ficha.abrirNotion"
+        >Abrir en Notion</a
+      >
     }
     <ng-content select="[extra]" />
     @if (editable() && !editando()) {
@@ -24,7 +39,7 @@
         <svg class="icono" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4" />
         </svg>
-        Editar
+        <ng-container i18n="Boton que empieza a editar la ficha@@ficha.editar">Editar</ng-container>
       </button>
     }
     @if (editando()) {
@@ -32,9 +47,15 @@
         <svg class="icono" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6" />
         </svg>
-        {{ guardando() ? 'Guardando...' : 'Guardar' }}
+        @if (guardando()) {
+          <ng-container i18n="Boton Guardar mientras guarda@@ficha.guardando">Guardando...</ng-container>
+        } @else {
+          <ng-container i18n="Boton que guarda los cambios de la ficha@@ficha.guardar">Guardar</ng-container>
+        }
       </button>
-      <button type="button" class="boton" data-cancelar [disabled]="guardando()" (click)="cancelar()">Cancelar</button>
+      <button type="button" class="boton" data-cancelar [disabled]="guardando()" (click)="cancelar()" i18n="Boton que descarta la edicion@@ficha.cancelar">
+        Cancelar
+      </button>
     }
     <!-- Abren el mismo enlace del correo diario, en otra pestaña: ahi n8n
          confirma que la accion se hizo. -->
@@ -57,16 +78,16 @@
        panel: perder lo escrito por una tecla seria peor que no tener atajo. -->
   <form
     class="contenido"
-    [attr.aria-label]="'Editar ' + una.oferta.empresa"
+    [attr.aria-label]="descripcionDelFormulario(una.oferta.empresa)"
     (submit)="$event.preventDefault(); guardar()"
     (keydown.escape)="$event.stopPropagation(); cancelar()"
   >
     @if (error(); as mensaje) {
-      <p class="error" role="alert">No se guardó: {{ mensaje }}</p>
+      <p class="error" role="alert" i18n="Error al guardar, con el motivo@@ficha.errorAlGuardar">No se guardó: {{ mensaje }}</p>
     }
     @for (grupo of gruposEditables; track grupo.seccion) {
       <fieldset [disabled]="guardando()">
-        <legend>{{ grupo.seccion === 'Cabecera' ? 'Oferta: lo principal' : grupo.seccion }}</legend>
+        <legend>{{ grupo.titulo }}</legend>
         <div class="rejilla">
           @for (campo of grupo.campos; track campo.clave) {
             <div class="campo" [class.completo]="campo.tipo === 'largo'" [class.casilla]="campo.tipo === 'casilla'">
@@ -83,7 +104,7 @@
                 @case ('opcion') {
                   <label [for]="'editar-' + campo.clave">{{ campo.etiqueta }}</label>
                   <select [id]="'editar-' + campo.clave" (change)="cambiar(campo.clave, $event)">
-                    <option value="" [selected]="!texto(campo.clave)">Sin dato</option>
+                    <option value="" [selected]="!texto(campo.clave)" i18n="Opcion vacia de un desplegable@@ficha.sinDato">Sin dato</option>
                     @for (opcion of opcionesDe(campo); track opcion) {
                       <option [value]="opcion" [selected]="opcion === texto(campo.clave)">{{ opcion }}</option>
                     }
@@ -113,7 +134,7 @@
         </div>
       </fieldset>
     }
-    <p class="apagado">
+    <p class="apagado" i18n="Aviso de lo que no se edita aqui@@ficha.avisoNoEditable">
       El estado se cambia con las acciones; la fecha de envío y el contenido de la página, en Notion.
     </p>
   </form>
@@ -137,7 +158,7 @@
                       <iframe
                         class="visor"
                         [src]="incrustable(campo.vistaPrevia)"
-                        [title]="'CV generado para ' + una.oferta.empresa"
+                        [title]="tituloDelVisor(una.oferta.empresa)"
                         loading="lazy"
                         referrerpolicy="no-referrer"
                       ></iframe>
@@ -161,14 +182,14 @@
           }
         </dl>
       } @else {
-        <p class="apagado">Sin datos en este grupo.</p>
+        <p class="apagado" i18n="Seccion de la ficha sin ningun campo con dato@@ficha.grupoVacio">Sin datos en este grupo.</p>
       }
     </section>
   }
 
-  <section aria-label="Contenido de la ficha">
+  <section aria-label="Contenido de la ficha" i18n-aria-label="Nombre de la seccion con el cuerpo de la pagina de Notion@@ficha.contenido.etiqueta">
     @if (grupos().length) {
-      <h3>Contenido de la ficha (historial y encaje)</h3>
+      <h3 i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.conCuerpo">Contenido de la ficha (historial y encaje)</h3>
       <div class="cuerpo" data-cuerpo>
         @for (grupo of grupos(); track $index) {
           @if (grupo.tipo === 'lista') {
@@ -217,14 +238,18 @@
         }
       </div>
     } @else {
-      <h3>Contenido de la ficha</h3>
-      <p class="apagado">La ficha no tiene contenido en el cuerpo de la página.</p>
+      <h3 i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.sinCuerpo">Contenido de la ficha</h3>
+      <p class="apagado" i18n="Aviso de que la pagina de Notion esta vacia@@ficha.contenido.vacio">
+        La ficha no tiene contenido en el cuerpo de la página.
+      </p>
     }
   </section>
 
   @if (ficha().vacios.length) {
     <details>
-      <summary>{{ ficha().vacios.length }} {{ ficha().vacios.length === 1 ? 'campo sin dato' : 'campos sin dato' }}</summary>
+      <summary i18n="Cuantos campos no tienen dato@@ficha.camposSinDato">
+        {ficha().vacios.length, plural, =1 {1 campo sin dato} other {{{ ficha().vacios.length }} campos sin dato}}
+      </summary>
       <p>{{ ficha().vacios.join(', ') }}</p>
     </details>
   }

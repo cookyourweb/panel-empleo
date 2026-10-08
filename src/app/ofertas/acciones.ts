@@ -24,10 +24,27 @@ export interface Accion {
 }
 
 const ETIQUETAS: Record<TipoDeAccion, string> = {
-  aprobar: 'Aprobar',
-  descartar: 'Descartar',
-  enviarEmpresa: 'Enviar a empresa',
+  aprobar: $localize`:Boton de accion sobre una candidatura@@accion.aprobar:Aprobar`,
+  descartar: $localize`:Boton de accion sobre una candidatura@@accion.descartar:Descartar`,
+  enviarEmpresa: $localize`:Boton de accion sobre una candidatura@@accion.enviarEmpresa:Enviar a empresa`,
 };
+
+/**
+ * Lo que anuncia el lector de pantalla en el boton de una accion: el boton
+ * solo dice "Aprobar", y en una tabla de filas iguales no dice a cual.
+ * Una frase entera por accion y no etiqueta + empresa pegadas: el orden de las
+ * palabras no es el mismo en todos los idiomas.
+ */
+export function descripcionDeAccion(tipo: TipoDeAccion, empresa: string): string {
+  switch (tipo) {
+    case 'aprobar':
+      return $localize`:Descripcion accesible del boton Aprobar@@accion.aprobar.descripcion:Aprobar la oferta de ${empresa}:empresa:`;
+    case 'descartar':
+      return $localize`:Descripcion accesible del boton Descartar@@accion.descartar.descripcion:Descartar la oferta de ${empresa}:empresa:`;
+    case 'enviarEmpresa':
+      return $localize`:Descripcion accesible del boton Enviar a empresa@@accion.enviarEmpresa.descripcion:Enviar a empresa la oferta de ${empresa}:empresa:`;
+  }
+}
 
 /** Las fichas creadas en local aun no existen en Notion: n8n no las encontraria. */
 const SOLO_LOCAL = /^local-/;

@@ -9,6 +9,7 @@
     "test": "ng test && vitest run --config vitest.tokens.config.ts"
   },
   "private": true,
+  "license": "PolyForm-Noncommercial-1.0.0",
   "packageManager": "npm@10.9.8",
   "dependencies": {
     "@angular/common": "^22.1.0",
@@ -24,6 +25,7 @@
     "@angular/build": "^22.1.7",
     "@angular/cli": "^22.1.7",
     "@angular/compiler-cli": "^22.1.0",
+    "@angular/localize": "^22.1.5",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",

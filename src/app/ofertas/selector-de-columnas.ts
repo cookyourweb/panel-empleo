@@ -2,6 +2,7 @@ import { Component, computed, ElementRef, inject, signal, viewChild, afterRender
 
 import { CandidaturasStore } from './candidaturas.store';
 import { COLUMNAS, conDato, GRUPOS_DE_COLUMNAS } from './columnas';
+import { TITULOS_DE_GRUPO } from './etiquetas';
 import { PreferenciasDeColumnas } from './preferencias-de-columnas';
 
 /** El boton "Columnas" y su desplegable, como en la maqueta aprobada. */
@@ -19,6 +20,7 @@ export class SelectorDeColumnas {
 
   protected readonly abierto = signal(false);
   protected readonly total = COLUMNAS.length;
+  protected readonly titulo = (grupo: (typeof GRUPOS_DE_COLUMNAS)[number]) => TITULOS_DE_GRUPO[grupo];
 
   /** Por grupos y con cuantas fichas tienen dato: una columna casi vacia no merece sitio. */
   protected readonly grupos = computed(() => {

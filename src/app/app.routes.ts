@@ -11,7 +11,7 @@ import { elegirGuardas } from './sesion/elegir-guardas';
 export const routes: Routes = [
   {
     path: 'entrar',
-    title: 'Entrar',
+    title: $localize`:Titulo de la pestana en la pantalla de entrada@@ruta.entrar:Entrar`,
     loadComponent: () => import('./entrada/entrada.page').then((m) => m.EntradaPage),
   },
   {
@@ -28,12 +28,12 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        title: 'Candidaturas',
+        title: $localize`:Titulo de la pestana en la tabla@@ruta.candidaturas:Candidaturas`,
         loadComponent: () => import('./ofertas/ofertas.page').then((m) => m.OfertasPage),
       },
       {
         path: 'candidatura/:id',
-        title: 'Candidatura',
+        title: $localize`:Titulo de la pestana en la ficha@@ruta.candidatura:Candidatura`,
         loadComponent: () => import('./ofertas/detalle.page').then((m) => m.DetallePage),
       },
     ],

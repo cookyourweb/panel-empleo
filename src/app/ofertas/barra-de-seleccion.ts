@@ -2,6 +2,7 @@ import { Component, ElementRef, input, output, signal, viewChild, afterRenderEff
 
 import { EstadoDeCandidatura, ESTADOS } from './dominio';
 import { EtiquetaEstado } from './etiqueta-estado';
+import { nombreDeEstado } from './nombre-de-estado';
 import { plural } from './plural';
 
 /** La barra que aparece al marcar filas, con las acciones en bloque de la maqueta. */
@@ -9,9 +10,9 @@ import { plural } from './plural';
   selector: 'app-barra-de-seleccion',
   imports: [EtiquetaEstado],
   template: `
-    <div class="barra" data-bloque role="region" aria-label="Acciones en bloque">
+    <div class="barra" data-bloque role="region" aria-label="Acciones en bloque" i18n-aria-label="Nombre de la barra de acciones sobre varias filas@@barra.etiqueta">
       <span class="cuantas" aria-live="polite">{{ texto() }}</span>
-      <button type="button" class="boton peligro" data-eliminar (click)="eliminar.emit()">Eliminar</button>
+      <button type="button" class="boton peligro" data-eliminar (click)="eliminar.emit()" i18n="Boton que elimina las filas marcadas@@barra.eliminar">Eliminar</button>
       <span class="menu-envoltorio">
         <button
           type="button"
@@ -21,20 +22,21 @@ import { plural } from './plural';
           [attr.aria-expanded]="menuAbierto()"
           aria-controls="menu-estados"
           (click)="menuAbierto.set(!menuAbierto())"
+          i18n="Boton que abre el menu de estados@@barra.cambiarEstado"
         >
           Cambiar estado
         </button>
         @if (menuAbierto()) {
-          <div #menu id="menu-estados" class="menu" role="menu" aria-label="Nuevo estado" (keydown)="teclaEnMenu($event)">
+          <div #menu id="menu-estados" class="menu" role="menu" aria-label="Nuevo estado" i18n-aria-label="Nombre del menu de estados@@barra.menuEstados" (keydown)="teclaEnMenu($event)">
             @for (estado of estados; track estado) {
               <button type="button" role="menuitem" (click)="elegir(estado)"><app-estado [estado]="estado" /></button>
             }
           </div>
         }
       </span>
-      <button type="button" class="boton" data-caducada (click)="caducar.emit()">Marcar caducada</button>
+      <button type="button" class="boton" data-caducada (click)="caducar.emit()" i18n="Boton que pasa las filas marcadas a Caducada@@barra.marcarCaducada">Marcar caducada</button>
       <span class="hueco"></span>
-      <button type="button" class="boton fantasma" (click)="limpiar.emit()">Quitar selección</button>
+      <button type="button" class="boton fantasma" (click)="limpiar.emit()" i18n="Boton que desmarca todas las filas@@barra.quitarSeleccion">Quitar selección</button>
     </div>
   `,
   styleUrl: './barra-de-seleccion.css',
@@ -55,7 +57,11 @@ export class BarraDeSeleccion {
   }
 
   protected texto(): string {
-    return plural(this.cuantas(), 'seleccionada', 'seleccionadas');
+    return plural(
+      this.cuantas(),
+      $localize`:Una fila marcada, detras del numero@@barra.seleccionada:seleccionada`,
+      $localize`:Varias filas marcadas, detras del numero@@barra.seleccionadas:seleccionadas`,
+    );
   }
 
   protected elegir(estado: EstadoDeCandidatura): void {

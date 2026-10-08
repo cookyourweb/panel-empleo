@@ -1,5 +1,6 @@
 import { Candidatura } from './dominio';
-import { fechaEspanola } from './fecha';
+import { ETIQUETAS, IDIOMAS_DE_OFERTA, SI, TEXTOS_DE_ENLACE } from './etiquetas';
+import { formatearFecha } from './fecha';
 
 export type TipoDeColumna = 'empresa' | 'estado' | 'texto' | 'fecha' | 'enlace' | 'largo' | 'casilla';
 
@@ -17,45 +18,43 @@ export interface Columna {
   textoEnlace?: string;
 }
 
-const IDIOMAS = { es: 'Español', en: 'Inglés' } as const;
-
 /**
  * Todas las columnas que puede tener la tabla, en el orden de la maqueta
  * aprobada. Las marcadas porDefecto son las que se ven al llegar; el resto se
  * añade desde el selector y aparece en su sitio, no al final.
  */
 export const COLUMNAS: readonly Columna[] = [
-  { clave: 'empresa', titulo: 'Empresa', grupo: 'Oferta', tipo: 'empresa', ancho: 190, porDefecto: true, fija: true, leer: (u) => u.oferta.empresa },
-  { clave: 'puesto', titulo: 'Puesto', grupo: 'Oferta', tipo: 'texto', ancho: 280, porDefecto: true, leer: (u) => u.oferta.puesto },
-  { clave: 'estado', titulo: 'Estado', grupo: 'Candidatura', tipo: 'estado', ancho: 170, porDefecto: true, leer: (u) => u.estado },
-  { clave: 'fase', titulo: 'Fase', grupo: 'Candidatura', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.fase },
-  { clave: 'modalidad', titulo: 'Modalidad', grupo: 'Oferta', tipo: 'texto', ancho: 110, porDefecto: true, leer: (u) => u.oferta.modalidad },
-  { clave: 'ubicacion', titulo: 'Ubicación', grupo: 'Oferta', tipo: 'texto', ancho: 180, porDefecto: true, leer: (u) => u.oferta.ubicacion },
-  { clave: 'salario', titulo: 'Salario', grupo: 'Oferta', tipo: 'texto', ancho: 170, porDefecto: true, leer: (u) => u.oferta.salario },
-  { clave: 'viaEnvio', titulo: 'Vía envío', grupo: 'Candidatura', tipo: 'texto', ancho: 140, porDefecto: true, leer: (u) => u.viaEnvio },
-  { clave: 'fechaEnvio', titulo: 'Fecha envío', grupo: 'Candidatura', tipo: 'fecha', ancho: 120, porDefecto: true, leer: (u) => u.fechaEnvio },
-  { clave: 'fechaPublicacion', titulo: 'Publicada', grupo: 'Oferta', tipo: 'fecha', ancho: 120, porDefecto: true, leer: (u) => u.oferta.fechaPublicacion },
-  { clave: 'enlace', titulo: 'Oferta', grupo: 'Oferta', tipo: 'enlace', ancho: 80, porDefecto: true, leer: (u) => u.oferta.enlace, textoEnlace: 'Abrir' },
-  { clave: 'seguimiento', titulo: 'Seguimiento', grupo: 'Candidatura', tipo: 'fecha', ancho: 120, porDefecto: false, leer: (u) => u.seguimiento },
-  { clave: 'descripcion', titulo: 'Descripción', grupo: 'Oferta', tipo: 'largo', ancho: 280, porDefecto: false, leer: (u) => u.oferta.descripcion },
-  { clave: 'tipoContrato', titulo: 'Tipo contrato', grupo: 'Oferta', tipo: 'texto', ancho: 140, porDefecto: false, leer: (u) => u.oferta.tipoContrato },
-  { clave: 'modoContratacion', titulo: 'Modo contratación', grupo: 'Oferta', tipo: 'texto', ancho: 150, porDefecto: false, leer: (u) => u.oferta.modoContratacion },
-  { clave: 'idioma', titulo: 'Idioma', grupo: 'Oferta', tipo: 'texto', ancho: 90, porDefecto: false, leer: (u) => IDIOMAS[u.oferta.idioma] },
-  { clave: 'palabrasClave', titulo: 'Palabras clave', grupo: 'Oferta', tipo: 'largo', ancho: 240, porDefecto: false, leer: (u) => u.oferta.palabrasClave },
-  { clave: 'verificada', titulo: 'Verificada', grupo: 'Oferta', tipo: 'casilla', ancho: 100, porDefecto: false, leer: (u) => u.oferta.verificada },
-  { clave: 'tags', titulo: 'Tags', grupo: 'Oferta', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.oferta.tags },
-  { clave: 'fechaEntrevista', titulo: 'Fecha entrevista', grupo: 'Candidatura', tipo: 'fecha', ancho: 130, porDefecto: false, leer: (u) => u.fechaEntrevista },
-  { clave: 'formatoTecnico', titulo: 'Formato técnico', grupo: 'Candidatura', tipo: 'texto', ancho: 140, porDefecto: false, leer: (u) => u.formatoTecnico },
-  { clave: 'nombreContacto', titulo: 'Nombre contacto', grupo: 'Candidatura', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.nombreContacto },
-  { clave: 'telefonoContacto', titulo: 'Teléfono contacto', grupo: 'Candidatura', tipo: 'texto', ancho: 150, porDefecto: false, leer: (u) => u.telefonoContacto },
-  { clave: 'emailEmpresa', titulo: 'Email empresa', grupo: 'Candidatura', tipo: 'texto', ancho: 200, porDefecto: false, leer: (u) => u.emailEmpresa },
-  { clave: 'emailEnviado', titulo: 'Email enviado', grupo: 'Candidatura', tipo: 'texto', ancho: 200, porDefecto: false, leer: (u) => u.emailEnviado },
-  { clave: 'notas', titulo: 'Notas', grupo: 'Candidatura', tipo: 'largo', ancho: 280, porDefecto: false, leer: (u) => u.notas },
-  { clave: 'cvUsado', titulo: 'CV usado', grupo: 'Documentos', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.cvUsado },
-  { clave: 'cv', titulo: 'CV', grupo: 'Documentos', tipo: 'enlace', ancho: 80, porDefecto: true, leer: (u) => u.cv, textoEnlace: 'Ver' },
-  { clave: 'carta', titulo: 'Carta', grupo: 'Documentos', tipo: 'largo', ancho: 260, porDefecto: false, leer: (u) => u.carta },
-  { clave: 'prep', titulo: 'Prep', grupo: 'Documentos', tipo: 'enlace', ancho: 80, porDefecto: false, leer: (u) => u.prep, textoEnlace: 'Abrir' },
-  { clave: 'avisoAutonoma', titulo: 'Aviso autónoma', grupo: 'Documentos', tipo: 'casilla', ancho: 130, porDefecto: false, leer: (u) => u.avisoAutonoma },
+  { clave: 'empresa', titulo: ETIQUETAS.empresa, grupo: 'Oferta', tipo: 'empresa', ancho: 190, porDefecto: true, fija: true, leer: (u) => u.oferta.empresa },
+  { clave: 'puesto', titulo: ETIQUETAS.puesto, grupo: 'Oferta', tipo: 'texto', ancho: 280, porDefecto: true, leer: (u) => u.oferta.puesto },
+  { clave: 'estado', titulo: ETIQUETAS.estado, grupo: 'Candidatura', tipo: 'estado', ancho: 170, porDefecto: true, leer: (u) => u.estado },
+  { clave: 'fase', titulo: ETIQUETAS.fase, grupo: 'Candidatura', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.fase },
+  { clave: 'modalidad', titulo: ETIQUETAS.modalidad, grupo: 'Oferta', tipo: 'texto', ancho: 110, porDefecto: true, leer: (u) => u.oferta.modalidad },
+  { clave: 'ubicacion', titulo: ETIQUETAS.ubicacion, grupo: 'Oferta', tipo: 'texto', ancho: 180, porDefecto: true, leer: (u) => u.oferta.ubicacion },
+  { clave: 'salario', titulo: ETIQUETAS.salario, grupo: 'Oferta', tipo: 'texto', ancho: 170, porDefecto: true, leer: (u) => u.oferta.salario },
+  { clave: 'viaEnvio', titulo: ETIQUETAS.viaEnvio, grupo: 'Candidatura', tipo: 'texto', ancho: 140, porDefecto: true, leer: (u) => u.viaEnvio },
+  { clave: 'fechaEnvio', titulo: ETIQUETAS.fechaEnvio, grupo: 'Candidatura', tipo: 'fecha', ancho: 120, porDefecto: true, leer: (u) => u.fechaEnvio },
+  { clave: 'fechaPublicacion', titulo: ETIQUETAS.fechaPublicacion, grupo: 'Oferta', tipo: 'fecha', ancho: 120, porDefecto: true, leer: (u) => u.oferta.fechaPublicacion },
+  { clave: 'enlace', titulo: ETIQUETAS.enlaceDeOferta, grupo: 'Oferta', tipo: 'enlace', ancho: 80, porDefecto: true, leer: (u) => u.oferta.enlace, textoEnlace: TEXTOS_DE_ENLACE.abrir },
+  { clave: 'seguimiento', titulo: ETIQUETAS.seguimiento, grupo: 'Candidatura', tipo: 'fecha', ancho: 120, porDefecto: false, leer: (u) => u.seguimiento },
+  { clave: 'descripcion', titulo: ETIQUETAS.descripcion, grupo: 'Oferta', tipo: 'largo', ancho: 280, porDefecto: false, leer: (u) => u.oferta.descripcion },
+  { clave: 'tipoContrato', titulo: ETIQUETAS.tipoContratoCorto, grupo: 'Oferta', tipo: 'texto', ancho: 140, porDefecto: false, leer: (u) => u.oferta.tipoContrato },
+  { clave: 'modoContratacion', titulo: ETIQUETAS.modoContratacionCorto, grupo: 'Oferta', tipo: 'texto', ancho: 150, porDefecto: false, leer: (u) => u.oferta.modoContratacion },
+  { clave: 'idioma', titulo: ETIQUETAS.idioma, grupo: 'Oferta', tipo: 'texto', ancho: 90, porDefecto: false, leer: (u) => IDIOMAS_DE_OFERTA[u.oferta.idioma] },
+  { clave: 'palabrasClave', titulo: ETIQUETAS.palabrasClave, grupo: 'Oferta', tipo: 'largo', ancho: 240, porDefecto: false, leer: (u) => u.oferta.palabrasClave },
+  { clave: 'verificada', titulo: ETIQUETAS.verificada, grupo: 'Oferta', tipo: 'casilla', ancho: 100, porDefecto: false, leer: (u) => u.oferta.verificada },
+  { clave: 'tags', titulo: ETIQUETAS.tags, grupo: 'Oferta', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.oferta.tags },
+  { clave: 'fechaEntrevista', titulo: ETIQUETAS.fechaEntrevista, grupo: 'Candidatura', tipo: 'fecha', ancho: 130, porDefecto: false, leer: (u) => u.fechaEntrevista },
+  { clave: 'formatoTecnico', titulo: ETIQUETAS.formatoTecnico, grupo: 'Candidatura', tipo: 'texto', ancho: 140, porDefecto: false, leer: (u) => u.formatoTecnico },
+  { clave: 'nombreContacto', titulo: ETIQUETAS.nombreContacto, grupo: 'Candidatura', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.nombreContacto },
+  { clave: 'telefonoContacto', titulo: ETIQUETAS.telefonoContacto, grupo: 'Candidatura', tipo: 'texto', ancho: 150, porDefecto: false, leer: (u) => u.telefonoContacto },
+  { clave: 'emailEmpresa', titulo: ETIQUETAS.emailEmpresa, grupo: 'Candidatura', tipo: 'texto', ancho: 200, porDefecto: false, leer: (u) => u.emailEmpresa },
+  { clave: 'emailEnviado', titulo: ETIQUETAS.emailEnviado, grupo: 'Candidatura', tipo: 'texto', ancho: 200, porDefecto: false, leer: (u) => u.emailEnviado },
+  { clave: 'notas', titulo: ETIQUETAS.notas, grupo: 'Candidatura', tipo: 'largo', ancho: 280, porDefecto: false, leer: (u) => u.notas },
+  { clave: 'cvUsado', titulo: ETIQUETAS.cvUsado, grupo: 'Documentos', tipo: 'texto', ancho: 160, porDefecto: false, leer: (u) => u.cvUsado },
+  { clave: 'cv', titulo: ETIQUETAS.cv, grupo: 'Documentos', tipo: 'enlace', ancho: 80, porDefecto: true, leer: (u) => u.cv, textoEnlace: TEXTOS_DE_ENLACE.ver },
+  { clave: 'carta', titulo: ETIQUETAS.carta, grupo: 'Documentos', tipo: 'largo', ancho: 260, porDefecto: false, leer: (u) => u.carta },
+  { clave: 'prep', titulo: ETIQUETAS.prep, grupo: 'Documentos', tipo: 'enlace', ancho: 80, porDefecto: false, leer: (u) => u.prep, textoEnlace: TEXTOS_DE_ENLACE.abrir },
+  { clave: 'avisoAutonoma', titulo: ETIQUETAS.avisoAutonoma, grupo: 'Documentos', tipo: 'casilla', ancho: 130, porDefecto: false, leer: (u) => u.avisoAutonoma },
 ];
 
 export const GRUPOS_DE_COLUMNAS = ['Oferta', 'Candidatura', 'Documentos'] as const;
@@ -68,16 +67,19 @@ export function columnaPorClave(clave: string): Columna | undefined {
   return POR_CLAVE.get(clave);
 }
 
-/** El texto de la celda: fechas en DD/MM/AAAA, casillas como "Sí". */
-export function valorDeCelda(una: Candidatura, columna: Columna): string {
+/** El texto de la celda que no depende del idioma de la fecha: casillas como "Sí". */
+function textoDeCelda(una: Candidatura, columna: Columna): string {
   const valor = columna.leer(una);
   if (columna.tipo === 'casilla') {
-    return valor === true ? 'Sí' : '';
+    return valor === true ? SI : '';
   }
-  if (typeof valor !== 'string') {
-    return '';
-  }
-  return columna.tipo === 'fecha' ? fechaEspanola(valor) : valor;
+  return typeof valor === 'string' ? valor : '';
+}
+
+/** El texto de la celda: fechas en el formato del idioma activo, casillas como "Sí". */
+export function valorDeCelda(una: Candidatura, columna: Columna, locale: string): string {
+  const texto = textoDeCelda(una, columna);
+  return columna.tipo === 'fecha' ? formatearFecha(texto, locale) : texto;
 }
 
 /**
@@ -85,8 +87,7 @@ export function valorDeCelda(una: Candidatura, columna: Columna): string {
  * texto; el resto, lo mismo que se lee en la celda.
  */
 export function valorParaOrdenar(una: Candidatura, columna: Columna): string {
-  const valor = columna.leer(una);
-  return columna.tipo === 'fecha' && typeof valor === 'string' ? valor : valorDeCelda(una, columna);
+  return textoDeCelda(una, columna);
 }
 
 /** Cuantas fichas tienen algo en esa columna. Ayuda a decidir si merece la pena verla. */

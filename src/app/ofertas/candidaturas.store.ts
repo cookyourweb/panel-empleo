@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, PendingTasks, signal } from '@angular/core';
+import { computed, inject, Injectable, LOCALE_ID, PendingTasks, signal } from '@angular/core';
 
 import { columnaPorClave, valorParaOrdenar } from './columnas';
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
@@ -43,11 +43,13 @@ function masRecientePrimero(a: Candidatura, b: Candidatura): number {
   return b.creada.localeCompare(a.creada);
 }
 
-const COMPARADOR = new Intl.Collator('es', { sensitivity: 'base', numeric: true });
+const SIN_EDICION = $localize`:Error al editar sin puente disponible@@store.error.sinEdicion:No se puede editar desde aquí`;
 
 @Injectable()
 export class CandidaturasStore {
   private readonly repositorio = inject(RepositorioDeCandidaturas);
+  /** El alfabeto es el del idioma activo: en sueco la Ä va detras de la Z. */
+  private readonly comparador = new Intl.Collator(inject(LOCALE_ID), { sensitivity: 'base', numeric: true });
   /** Opcional: sin editor (tests, o una pantalla que solo lee) todo sigue igual. */
   private readonly editor = inject(EditorDeCandidaturas, { optional: true });
   private readonly opciones = signal<OpcionesDeEdicion | null>(null);
@@ -215,7 +217,7 @@ export class CandidaturasStore {
 
   private editorObligatorio(): EditorDeCandidaturas {
     if (!this.editor) {
-      throw new Error('No se puede editar desde aqui');
+      throw new Error(SIN_EDICION);
     }
     return this.editor;
   }
@@ -273,7 +275,7 @@ export class CandidaturasStore {
    */
   async guardarCambios(id: string, cambios: CambiosDeCandidatura): Promise<void> {
     if (!this.editor) {
-      throw new Error('No se puede editar desde aqui');
+      throw new Error(SIN_EDICION);
     }
     await this.editor.guardar(id, cambios);
     this.todas.update((todas) => todas.map((una) => (una.id === id ? aplicarCambios(una, cambios) : una)));
@@ -294,6 +296,6 @@ export class CandidaturasStore {
     if (!va || !vb) {
       return va ? -1 : vb ? 1 : 0;
     }
-    return signo * COMPARADOR.compare(va, vb);
+    return signo * this.comparador.compare(va, vb);
   }
 }
