@@ -337,8 +337,9 @@ Entrega por rebanadas verticales completas, no por capas. La primera vale por s�
 ver las ofertas, abrir una, generar currículum y carta, descargar. La segunda cierra el
 seguimiento, que es el problema de arriba.
 
-Los mensajes de commit y los documentos de diseño van en español. Son el razonamiento de
-la autora, y se leen mejor en el idioma en que se pensaron.
+Desde el 8 de octubre de 2026 los mensajes de commit y los comentarios del código van en inglés
+(ver [CONTRIBUTING](CONTRIBUTING.md)). El historial anterior y los documentos de diseño están
+en español, el idioma en que se pensó el razonamiento.
 
 ## Desarrollo
 
@@ -390,3 +391,7 @@ proveedor:
   Las cuatro rampas de marca, su contraste medido y la regla de uso.
 - [Plan de arranque](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-06-plan-arranque-panel-angular.md).
   Cómo encajan las piezas y las reglas que las mantienen separadas.
+
+## Licencia
+
+[PolyForm Noncommercial 1.0.0](LICENSE). Puedes leer, estudiar y usar este código para fines personales, de aprendizaje u otros no comerciales. El uso comercial, como venderlo, ofrecerlo como servicio o usarlo en una empresa con ánimo de lucro, necesita permiso: escribe a través de [cookyourwebai.es](https://cookyourwebai.es).

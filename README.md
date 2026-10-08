@@ -334,8 +334,9 @@ Delivery goes in complete vertical slices, not in layers. The first one stands o
 own: see the jobs, open one, generate CV and cover letter, download. The second closes
 the tracking loop, which is the problem described above.
 
-Commit messages and design documents are written in Spanish. They are the author's
-reasoning, and they read better in the language they were thought in.
+Since 8 Oct 2026 commit messages and code comments are written in English (see
+[CONTRIBUTING](CONTRIBUTING.md)). Earlier history and the design documents are in Spanish,
+the language the reasoning was done in.
 
 ## Development
 
@@ -385,3 +386,7 @@ They are written in Spanish:
   The four brand ramps, their measured contrast, and the usage rule.
 - [Startup plan](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-06-plan-arranque-panel-angular.md).
   How the pieces fit together and the rules that keep them apart.
+
+## License
+
+[PolyForm Noncommercial 1.0.0](LICENSE). You can read, study and use this code for personal, learning or other noncommercial purposes. Commercial use, such as selling it, offering it as a service or using it in a for-profit company, needs permission: get in touch through [cookyourwebai.es](https://cookyourwebai.es).
