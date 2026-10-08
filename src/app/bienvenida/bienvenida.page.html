@@ -1,0 +1,47 @@
+<article class="bienvenida">
+  <header class="portada">
+    <p class="etiqueta" data-etiqueta i18n="Etiqueta que avisa de que el producto aun no esta abierto@@bienvenida.proximamente">Próximamente</p>
+    <h2 i18n="Titular de la pagina de bienvenida@@bienvenida.titulo">Tu próximo trabajo, buscado mientras programas.</h2>
+    <p class="explicacion" data-explicacion i18n="Subtitulo que explica el producto@@bienvenida.explicacion">
+      Sin tiempo para revisar portales ni reescribir el CV para cada oferta. Cada mañana te traemos las que encajan contigo y, si te gustan, preparamos tu CV y tu carta.
+    </p>
+
+    <p class="acciones">
+      <a class="principal" data-lista-espera [href]="listaDeEspera" target="_blank" rel="noopener noreferrer"
+        ><ng-container i18n="Enlace al formulario de la lista de espera@@bienvenida.listaDeEspera">Únete a la lista de espera</ng-container>
+        <span class="solo-lectores" i18n="Aviso de que el enlace abre una pestana nueva@@bienvenida.pestanaNueva"> (se abre en una pestaña nueva)</span></a
+      >
+      <a class="secundaria" data-entrar routerLink="/entrar" i18n="Enlace a la pantalla de entrada para quien ya tiene acceso@@bienvenida.yaTienesAcceso">¿Ya tienes acceso? Entra</a>
+    </p>
+  </header>
+
+  <div class="rejilla">
+    <section class="tarjeta" data-beneficio>
+      <h3 i18n="Titulo del primer beneficio@@bienvenida.beneficio1.titulo">Busca por ti cada mañana</h3>
+      <p i18n="Texto del primer beneficio@@bienvenida.beneficio1.texto">Revisa Tecnoempleo, Adzuna, Remotive, Indeed y LinkedIn, quita duplicados y ordena las ofertas por encaje. Con salario y modalidad cuando se publican.</p>
+    </section>
+    <section class="tarjeta" data-beneficio>
+      <h3 i18n="Titulo del segundo beneficio@@bienvenida.beneficio2.titulo">CV y carta, sin inventar</h3>
+      <p i18n="Texto del segundo beneficio@@bienvenida.beneficio2.texto">Para cada oferta que apruebas, un CV adaptado y una carta. Los escribe la IA, con controles en código que le impiden inventar experiencia o tecnologías.</p>
+    </section>
+    <section class="tarjeta" data-beneficio>
+      <h3 i18n="Titulo del tercer beneficio@@bienvenida.beneficio3.titulo">Tú decides siempre</h3>
+      <p i18n="Texto del tercer beneficio@@bienvenida.beneficio3.texto">Apruebas las ofertas que te interesan y nada se envía sin ti. Todo en un solo panel, en español e inglés.</p>
+    </section>
+  </div>
+
+  <div class="rejilla proximas">
+    <section class="tarjeta apagada" data-proximamente>
+      <p class="etiqueta" data-etiqueta-tarjeta i18n="Etiqueta de una tarjeta que aun no esta disponible@@bienvenida.proximamenteTarjeta">Próximamente</p>
+      <h3 i18n="Titulo de la preparacion de entrevistas@@bienvenida.entrevistas.titulo">Preparación de entrevistas</h3>
+      <p i18n="Texto de la preparacion de entrevistas@@bienvenida.entrevistas.texto">Te ayudará a preparar cada proceso a partir de la oferta concreta.</p>
+    </section>
+    <section class="tarjeta apagada" data-proximamente>
+      <p class="etiqueta" data-etiqueta-tarjeta i18n="Etiqueta de una tarjeta que aun no esta disponible@@bienvenida.proximamenteTarjeta">Próximamente</p>
+      <h3 i18n="Titulo de la formacion@@bienvenida.formacion.titulo">¿Necesitas ponerte al día?</h3>
+      <p i18n="Texto de la formacion@@bienvenida.formacion.texto">Aprende a programar como se hace hoy, con la IA como compañera de trabajo, en la formación para desarrolladores de CookYourWebAI.</p>
+    </section>
+  </div>
+
+  <p class="invitacion" data-invitacion i18n="Aviso de acceso por invitacion y de la empresa detras@@bienvenida.invitacion">Por ahora el acceso es por invitación y forma parte de CookYourWebAI.</p>
+</article>

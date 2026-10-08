@@ -1751,5 +1751,196 @@
         <target>Offers with data</target>
       </segment>
     </unit>
+    <unit id="ruta.bienvenida">
+      <notes>
+        <note category="location">src/app/app.routes.ts:15</note>
+        <note category="description">Titulo de la pestana en la pagina de bienvenida</note>
+      </notes>
+      <segment>
+        <source>Empleo | CookYourWebAI</source>
+        <target>Job search | CookYourWebAI</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.proximamente">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:3,4</note>
+        <note category="description">Etiqueta que avisa de que el producto aun no esta abierto</note>
+      </notes>
+      <segment>
+        <source>Próximamente</source>
+        <target>Coming soon</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.titulo">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:4,5</note>
+        <note category="description">Titular de la pagina de bienvenida</note>
+      </notes>
+      <segment>
+        <source>Tu próximo trabajo, buscado mientras programas.</source>
+        <target>Your next job, found while you code.</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.explicacion">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:6,10</note>
+        <note category="description">Subtitulo que explica el producto</note>
+      </notes>
+      <segment>
+        <source> Sin tiempo para revisar portales ni reescribir el CV para cada oferta. Cada mañana te traemos las que encajan contigo y, si te gustan, preparamos tu CV y tu carta. </source>
+        <target>No time to scroll job boards or rewrite your CV for every offer. Every morning, the offers that fit you, plus a tailored CV and letter when you approve.</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.listaDeEspera">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:11,12</note>
+        <note category="description">Enlace al formulario de la lista de espera</note>
+      </notes>
+      <segment>
+        <source>Únete a la lista de espera</source>
+        <target>Join the waiting list</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.pestanaNueva">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:12,14</note>
+        <note category="description">Aviso de que el enlace abre una pestana nueva</note>
+      </notes>
+      <segment>
+        <source> (se abre en una pestaña nueva)</source>
+        <target> (opens in a new tab)</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.yaTienesAcceso">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,20</note>
+        <note category="description">Enlace a la pantalla de entrada para quien ya tiene acceso</note>
+      </notes>
+      <segment>
+        <source>¿Ya tienes acceso? Entra</source>
+        <target>Already have access? Sign in</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.beneficio1.titulo">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:20,21</note>
+        <note category="description">Titulo del primer beneficio</note>
+      </notes>
+      <segment>
+        <source>Busca por ti cada mañana</source>
+        <target>It searches every morning</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.beneficio1.texto">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:21,24</note>
+        <note category="description">Texto del primer beneficio</note>
+      </notes>
+      <segment>
+        <source>Revisa Tecnoempleo, Adzuna, Remotive, Indeed y LinkedIn, quita duplicados y ordena las ofertas por encaje. Con salario y modalidad cuando se publican.</source>
+        <target>Checks Tecnoempleo, Adzuna, Remotive, Indeed and LinkedIn, removes duplicates and ranks offers by fit. Salary and work mode shown when published.</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.beneficio2.titulo">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:24,25</note>
+        <note category="description">Titulo del segundo beneficio</note>
+      </notes>
+      <segment>
+        <source>CV y carta, sin inventar</source>
+        <target>Tailored, never made up</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.beneficio2.texto">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:25,28</note>
+        <note category="description">Texto del segundo beneficio</note>
+      </notes>
+      <segment>
+        <source>Para cada oferta que apruebas, un CV adaptado y una carta. Los escribe la IA, con controles en código que le impiden inventar experiencia o tecnologías.</source>
+        <target>For each offer you approve, an adapted CV and cover letter. Written by AI, with code checks that block invented experience or technologies.</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.beneficio3.titulo">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:28,29</note>
+        <note category="description">Titulo del tercer beneficio</note>
+      </notes>
+      <segment>
+        <source>Tú decides siempre</source>
+        <target>You stay in control</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.beneficio3.texto">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:29,34</note>
+        <note category="description">Texto del tercer beneficio</note>
+      </notes>
+      <segment>
+        <source>Apruebas las ofertas que te interesan y nada se envía sin ti. Todo en un solo panel, en español e inglés.</source>
+        <target>You approve the offers you like and nothing goes out without you. Everything in one panel, in Spanish and English.</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.proximamenteTarjeta">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:35,36</note>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:40,41</note>
+        <note category="description">Etiqueta de una tarjeta que aun no esta disponible</note>
+      </notes>
+      <segment>
+        <source>Próximamente</source>
+        <target>Coming soon</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.entrevistas.titulo">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:36,37</note>
+        <note category="description">Titulo de la preparacion de entrevistas</note>
+      </notes>
+      <segment>
+        <source>Preparación de entrevistas</source>
+        <target>Interview preparation</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.entrevistas.texto">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:37,40</note>
+        <note category="description">Texto de la preparacion de entrevistas</note>
+      </notes>
+      <segment>
+        <source>Te ayudará a preparar cada proceso a partir de la oferta concreta.</source>
+        <target>It will help you prepare for each process, built around the specific offer.</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.formacion.titulo">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:41,42</note>
+        <note category="description">Titulo de la formacion</note>
+      </notes>
+      <segment>
+        <source>¿Necesitas ponerte al día?</source>
+        <target>Need to catch up?</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.formacion.texto">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:42,46</note>
+        <note category="description">Texto de la formacion</note>
+      </notes>
+      <segment>
+        <source>Aprende a programar como se hace hoy, con la IA como compañera de trabajo, en la formación para desarrolladores de CookYourWebAI.</source>
+        <target>Learn to code the way it is done today, with AI as your work partner, in the CookYourWebAI developer training.</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.invitacion">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:46,48</note>
+        <note category="description">Aviso de acceso por invitacion y de la empresa detras</note>
+      </notes>
+      <segment>
+        <source>Por ahora el acceso es por invitación y forma parte de CookYourWebAI.</source>
+        <target>Access is by invitation for now, as part of CookYourWebAI.</target>
+      </segment>
+    </unit>
   </file>
 </xliff>

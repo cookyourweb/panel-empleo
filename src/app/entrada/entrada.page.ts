@@ -30,7 +30,7 @@ const RENDICION_TRAS_MS = 90_000;
 function rutaInterna(volver: string | null): string {
   const esInterna =
     volver !== null && volver.startsWith('/') && !volver.startsWith('//') && !volver.includes('\\');
-  return esInterna ? volver : '/';
+  return esInterna ? volver : '/panel';
 }
 
 @Component({

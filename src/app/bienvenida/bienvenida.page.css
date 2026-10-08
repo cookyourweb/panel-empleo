@@ -1,0 +1,134 @@
+.bienvenida {
+  max-width: 60rem;
+  margin: 2rem auto 3rem;
+  padding-inline: 1rem;
+}
+
+.portada {
+  max-width: 40rem;
+  margin-bottom: 2.5rem;
+}
+
+.portada h2 {
+  margin: 0 0 1rem;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  line-height: 1.15;
+}
+
+.explicacion {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.etiqueta {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.15rem 0.75rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 999px;
+  color: hsl(var(--primary));
+  font-size: 0.875rem;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  margin-top: 2rem;
+}
+
+.principal {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: var(--radius);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.secundaria {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: hsl(var(--foreground));
+}
+
+/* Mobile first: one column, then two and three as the width allows. */
+.rejilla {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 40rem) {
+  .proximas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 52rem) {
+  .rejilla:not(.proximas) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tarjeta {
+  padding: 1.25rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+}
+
+.tarjeta h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+}
+
+.tarjeta p:last-child {
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* Not available yet: dashed and muted so it never reads as a live feature. */
+.apagada {
+  border-style: dashed;
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+}
+
+.apagada h3 {
+  color: hsl(var(--foreground));
+}
+
+.apagada .etiqueta {
+  margin-bottom: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.invitacion {
+  margin: 2rem 0 0;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Visually hidden but still read by screen readers. */
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+a:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}

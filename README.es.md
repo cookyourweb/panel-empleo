@@ -16,19 +16,19 @@ quien busca revisa y decide.
 |---|---|
 | Estado en signals, componentes standalone, `OnPush`, sin `zone.js` | [Decisiones de ingeniería](#decisiones-de-ingeniería) |
 | Puertos hexagonales: las pantallas no saben de dónde salen los datos | [Por dentro](#por-dentro) |
-| TDD con Vitest: 297 pruebas de componentes y 53 de tokens de diseño | [Desarrollo](#desarrollo) |
+| TDD con Vitest: 305 pruebas de componentes y 53 de tokens de diseño | [Desarrollo](#desarrollo) |
 | Entrada por invitación: el token solo vive en memoria y un interceptor acotado lo envía a un único origen | [Inicio de sesión](#inicio-de-sesión) |
-| Demo pública abierta a quien visita, con datos de ejemplo y sin inicio de sesión | [Pruébalo](#pruébalo) |
+| Solo la bienvenida es pública; el panel va tras el inicio de sesión en todos los entornos | [Rutas y acceso](#rutas-y-acceso) |
 | Pruebas de contraste que leen la hoja de estilos del disco | [Las pruebas de contraste](#las-pruebas-de-contraste) |
 
 ## Pruébalo
 
 | Modo | Comando | Datos | Inicio de sesión |
 |---|---|---|---|
-| Demo (lo que ve quien visita) | `npx ng serve --configuration production` | Datos de ejemplo incluidos en el proyecto | No |
+| Datos de demo | `npx ng serve --configuration production` | Datos de ejemplo incluidos en el proyecto | Sí |
 | Desarrollo con datos reales | `npm start` | Ficheros locales y un puente local que no están en este repositorio | Sí |
 
-La demo funciona nada más clonar. El modo de desarrollo necesita ficheros y un puente que
+Los datos de demo funcionan nada más clonar (el panel sigue pidiendo una cuenta de Google invitada). El modo de desarrollo necesita ficheros y un puente que
 viven fuera de este repositorio público (mira [Desarrollo](#desarrollo)).
 
 Buscar trabajo es, casi siempre, una colección de herramientas desconectadas. Las
@@ -153,7 +153,7 @@ el criterio que decide qué se construye a continuación.
 ### Qué está construido y qué no
 
 El panel ya tiene las pantallas que se usan cada día. La tabla, el panel lateral y la
-ficha funcionan con datos de ejemplo en la demo pública. Las acciones, la edición y el
+ficha funcionan con datos de ejemplo en la build de demo. Las acciones, la edición y el
 borrado solo funcionan con datos reales en desarrollo: la demo no los tiene activados.
 
 | Pantalla | Qué se puede hacer |
@@ -172,12 +172,12 @@ Todavía sin construir:
 - Almacenamiento propio del panel. Postgres (Neon) está **planificado** (ADR-002 del
   [repositorio del sistema](https://github.com/cookyourweb/buscartrabajo)), no
   implementado.
-- Un despliegue público con datos reales. Los datos reales solo aparecen en desarrollo,
-  detrás del inicio de sesión.
+- Datos por usuaria en producción. El sitio público muestra datos de demo solo a cuentas
+  invitadas hasta que cada una tenga los suyos.
 
 ## Inicio de sesión
 
-Añadido el 7 de octubre de 2026. Protege los datos reales y deja la demo abierta.
+Añadido el 7 de octubre de 2026. Desde el 8 de octubre de 2026 protege el panel en todos los entornos, también con datos de demo.
 
 | Pieza | Qué hace |
 |---|---|
@@ -193,8 +193,21 @@ invitadas. El id de cliente de Google de `src/app/sesion/configuracion.ts` es p�
 propósito: no es un secreto, y Google lo protege con los orígenes autorizados de su
 consola.
 
-La guarda solo se aplica con datos reales (`elegirGuardas(isDevMode())`). La build de la
-demo no tiene guarda, porque no hay nada que proteger.
+### Rutas y acceso
+
+La guarda protege todo el panel, en desarrollo y en producción. Solo son públicas la
+bienvenida y la página de entrada. El sitio público muestra una bienvenida que dice que el
+producto llega próximamente y que se accede por invitación, con un enlace a la lista de
+espera de CookYourWebAI (un formulario externo de Tally; el panel no guarda ningún dato). Mientras no existan datos por usuaria, una
+cuenta invitada ve en producción los datos de demo.
+
+| Ruta | Acceso | Qué muestra |
+|---|---|---|
+| `/` | Pública | Bienvenida: qué es el producto, "próximamente", enlace a la lista de espera y enlace para entrar |
+| `/entrar` | Pública | Inicio de sesión con Google; al entrar va a `/panel` (o a la ruta segura de `volver`) |
+| `/panel` | Requiere sesión | Tabla de candidaturas con el panel lateral |
+| `/panel/candidatura/:id` | Requiere sesión | Ficha de una candidatura |
+| cualquier otra | Pública | Redirige a `/` |
 
 ---
 
@@ -348,10 +361,10 @@ Requiere Node 22, fijado en `.nvmrc`.
 ```bash
 nvm use
 npm ci
-npx ng serve --configuration production   # demo: datos de ejemplo, sin inicio de sesión
+npx ng serve --configuration production   # datos de demo, requiere inicio de sesión
 npm start                                 # desarrollo: datos reales, con inicio de sesión
-npx ng test --watch=false                 # 297 pruebas de componentes
-npm test                                  # esas 297 más 53 de tokens de diseño
+npx ng test --watch=false                 # 305 pruebas de componentes
+npm test                                  # esas 305 más 53 de tokens de diseño
 ```
 
 ### Datos reales en desarrollo

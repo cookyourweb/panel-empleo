@@ -108,7 +108,7 @@ describe('Panel lateral de la tabla', () => {
   it('ofrece abrir la ficha a pantalla completa', async () => {
     const pagina = await abrir('/?ficha=c1');
 
-    const completa = pagina.querySelector('[data-panel] a[href="/candidatura/c1"]');
+    const completa = pagina.querySelector('[data-panel] a[href="/panel/candidatura/c1"]');
 
     expect(completa).not.toBeNull();
   });
