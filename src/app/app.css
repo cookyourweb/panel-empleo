@@ -4,4 +4,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem 1rem;
+  /* Same side gutter as the page content, so the title is not flush with the edge. */
+  padding: 0.75rem 1rem;
 }

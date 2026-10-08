@@ -12,7 +12,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    title: $localize`:Titulo de la pestana en la pagina de bienvenida@@ruta.bienvenida:Bienvenida`,
+    title: $localize`:Titulo de la pestana en la pagina de bienvenida@@ruta.bienvenida:Empleo | CookYourWebAI`,
     loadComponent: () => import('./bienvenida/bienvenida.page').then((m) => m.BienvenidaPage),
   },
   {

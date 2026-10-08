@@ -16,7 +16,7 @@ candidate reviews and decides.
 |---|---|
 | State in signals, standalone components, `OnPush`, no `zone.js` | [Engineering decisions](#engineering-decisions) |
 | Hexagonal ports: the screens never know where data comes from | [Inside the app](#inside-the-app) |
-| TDD with Vitest: 300 component tests and 53 design token tests | [Development](#development) |
+| TDD with Vitest: 305 component tests and 53 design token tests | [Development](#development) |
 | Sign-in by invitation: the token lives in memory only and a scoped interceptor sends it to one origin | [Sign-in](#sign-in) |
 | Public welcome page only; the panel sits behind sign-in in every environment | [Routes and access](#routes-and-access) |
 | Contrast tests that read the stylesheet from disk | [The contrast tests](#the-contrast-tests) |
@@ -193,13 +193,13 @@ its console.
 
 The guard applies to the whole panel in development and in production. Only the welcome
 page and the sign-in page are public. The public site shows a welcome page, says the
-product is coming soon and that access is by invitation, and offers a `mailto:` link to
-request it (no form, no data stored). Until per-user data exists, an invited account sees
+product is coming soon and that access is by invitation, and links to the CookYourWebAI
+waiting list (an external Tally form; the panel itself stores no data). Until per-user data exists, an invited account sees
 the demo data in production.
 
 | Route | Access | What it shows |
 |---|---|---|
-| `/` | Public | Welcome page: what the product is, "coming soon", request access by email, link to sign in |
+| `/` | Public | Welcome page: what the product is, "coming soon", waiting-list link, link to sign in |
 | `/entrar` | Public | Google sign-in; on success it goes to `/panel` (or to the safe `volver` route) |
 | `/panel` | Session required | Applications table with the side panel |
 | `/panel/candidatura/:id` | Session required | Detail page of one application |
@@ -360,8 +360,8 @@ nvm use
 npm ci
 npx ng serve --configuration production   # demo data, sign-in required
 npm start                                 # development: real data, sign-in
-npx ng test --watch=false                 # 300 component tests
-npm test                                  # those 300 plus 53 design token tests
+npx ng test --watch=false                 # 305 component tests
+npm test                                  # those 305 plus 53 design token tests
 ```
 
 ### Real data in development

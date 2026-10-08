@@ -16,7 +16,7 @@ quien busca revisa y decide.
 |---|---|
 | Estado en signals, componentes standalone, `OnPush`, sin `zone.js` | [Decisiones de ingeniería](#decisiones-de-ingeniería) |
 | Puertos hexagonales: las pantallas no saben de dónde salen los datos | [Por dentro](#por-dentro) |
-| TDD con Vitest: 300 pruebas de componentes y 53 de tokens de diseño | [Desarrollo](#desarrollo) |
+| TDD con Vitest: 305 pruebas de componentes y 53 de tokens de diseño | [Desarrollo](#desarrollo) |
 | Entrada por invitación: el token solo vive en memoria y un interceptor acotado lo envía a un único origen | [Inicio de sesión](#inicio-de-sesión) |
 | Solo la bienvenida es pública; el panel va tras el inicio de sesión en todos los entornos | [Rutas y acceso](#rutas-y-acceso) |
 | Pruebas de contraste que leen la hoja de estilos del disco | [Las pruebas de contraste](#las-pruebas-de-contraste) |
@@ -197,13 +197,13 @@ consola.
 
 La guarda protege todo el panel, en desarrollo y en producción. Solo son públicas la
 bienvenida y la página de entrada. El sitio público muestra una bienvenida que dice que el
-producto llega próximamente y que se accede por invitación, con un enlace `mailto:` para
-pedirlo (sin formulario ni datos guardados). Mientras no existan datos por usuaria, una
+producto llega próximamente y que se accede por invitación, con un enlace a la lista de
+espera de CookYourWebAI (un formulario externo de Tally; el panel no guarda ningún dato). Mientras no existan datos por usuaria, una
 cuenta invitada ve en producción los datos de demo.
 
 | Ruta | Acceso | Qué muestra |
 |---|---|---|
-| `/` | Pública | Bienvenida: qué es el producto, "próximamente", pedir acceso por correo y enlace para entrar |
+| `/` | Pública | Bienvenida: qué es el producto, "próximamente", enlace a la lista de espera y enlace para entrar |
 | `/entrar` | Pública | Inicio de sesión con Google; al entrar va a `/panel` (o a la ruta segura de `volver`) |
 | `/panel` | Requiere sesión | Tabla de candidaturas con el panel lateral |
 | `/panel/candidatura/:id` | Requiere sesión | Ficha de una candidatura |
@@ -363,8 +363,8 @@ nvm use
 npm ci
 npx ng serve --configuration production   # datos de demo, requiere inicio de sesión
 npm start                                 # desarrollo: datos reales, con inicio de sesión
-npx ng test --watch=false                 # 300 pruebas de componentes
-npm test                                  # esas 300 más 53 de tokens de diseño
+npx ng test --watch=false                 # 305 pruebas de componentes
+npm test                                  # esas 305 más 53 de tokens de diseño
 ```
 
 ### Datos reales en desarrollo

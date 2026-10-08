@@ -19,7 +19,7 @@ describe('routes', () => {
   });
 
   it('la raiz es la bienvenida publica, cargada de forma diferida', async () => {
-    expect(bienvenida?.title).toBe('Bienvenida');
+    expect(bienvenida?.title).toBe('Empleo | CookYourWebAI');
     expect(bienvenida?.pathMatch).toBe('full');
     expect(bienvenida?.canActivate).toBeUndefined();
     expect(await (bienvenida?.loadComponent as () => Promise<unknown>)()).toBe(BienvenidaPage);
