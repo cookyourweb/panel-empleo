@@ -6,7 +6,7 @@
   "redirects": [
     {
       "source": "/",
-      "has": [{ "type": "header", "key": "accept-language", "value": "^es($|[-,;])" }],
+      "has": [{ "type": "header", "key": "accept-language", "value": "^es(?:[-,;].*)?$" }],
       "destination": "/es/",
       "permanent": false
     },

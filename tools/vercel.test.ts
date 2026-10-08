@@ -60,13 +60,16 @@ describe("vercel.json", () => {
   describe("redireccion de la raiz", () => {
     const deLaRaiz = () => config.redirects.filter((r) => r.source === "/");
     const cabeceraDeIdioma = (r: Redireccion) => r.has?.find((c) => c.type === "header" && c.key.toLowerCase() === "accept-language");
+    // Vercel compares the header against the whole value, not a substring. Seen in production
+    // on 8 Oct 2026: "es-ES,es;q=0.9" was sent to /en/ with the unanchored pattern "^es($|[-,;])".
+    const comoVercel = (patron: string) => new RegExp(`^(?:${patron})$`);
 
     it("quien pide en español va a /es/", () => {
       const regla = deLaRaiz().find((r) => r.destination === "/es/");
       const condicion = regla && cabeceraDeIdioma(regla);
 
       expect(condicion).toBeDefined();
-      const patron = new RegExp(condicion!.value!);
+      const patron = comoVercel(condicion!.value!);
       expect(patron.test("es")).toBe(true);
       expect(patron.test("es-ES,es;q=0.9,en;q=0.8")).toBe(true);
       expect(patron.test("es-MX")).toBe(true);
@@ -88,7 +91,7 @@ describe("vercel.json", () => {
 
     it("no distingue el español de otro idioma que solo empiece parecido", () => {
       const condicion = cabeceraDeIdioma(deLaRaiz().find((r) => r.destination === "/es/")!);
-      const patron = new RegExp(condicion!.value!);
+      const patron = comoVercel(condicion!.value!);
 
       expect(patron.test("en-US,en;q=0.9,es;q=0.8")).toBe(false);
       expect(patron.test("eso")).toBe(false);
