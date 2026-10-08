@@ -64,21 +64,21 @@ describe('EntradaPage', () => {
     );
   });
 
-  it('al entrar va a la pagina de inicio', async () => {
+  it('al entrar va al panel', async () => {
     await abrir();
 
     await recibir(RESULTADO_DE_ENTRADA.dentro);
 
     expect(entrar).toHaveBeenCalledWith('jwt-de-prueba');
-    expect(navegar).toHaveBeenCalledWith('/');
+    expect(navegar).toHaveBeenCalledWith('/panel');
   });
 
   it('al entrar vuelve a la ruta pedida si es interna', async () => {
-    await abrir('/entrar?volver=/candidatura/c1');
+    await abrir('/entrar?volver=/panel/candidatura/c1');
 
     await recibir(RESULTADO_DE_ENTRADA.dentro);
 
-    expect(navegar).toHaveBeenCalledWith('/candidatura/c1');
+    expect(navegar).toHaveBeenCalledWith('/panel/candidatura/c1');
   });
 
   it.each(['https://malo.test/x', '//malo.test/x', 'candidatura/c1', '/\\malo.test'])(
@@ -88,7 +88,7 @@ describe('EntradaPage', () => {
 
       await recibir(RESULTADO_DE_ENTRADA.dentro);
 
-      expect(navegar).toHaveBeenCalledWith('/');
+      expect(navegar).toHaveBeenCalledWith('/panel');
     },
   );
 

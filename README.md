@@ -16,19 +16,19 @@ candidate reviews and decides.
 |---|---|
 | State in signals, standalone components, `OnPush`, no `zone.js` | [Engineering decisions](#engineering-decisions) |
 | Hexagonal ports: the screens never know where data comes from | [Inside the app](#inside-the-app) |
-| TDD with Vitest: 297 component tests and 53 design token tests | [Development](#development) |
+| TDD with Vitest: 300 component tests and 53 design token tests | [Development](#development) |
 | Sign-in by invitation: the token lives in memory only and a scoped interceptor sends it to one origin | [Sign-in](#sign-in) |
-| Public demo that stays open to visitors, with sample data and no sign-in | [Try it](#try-it) |
+| Public welcome page only; the panel sits behind sign-in in every environment | [Routes and access](#routes-and-access) |
 | Contrast tests that read the stylesheet from disk | [The contrast tests](#the-contrast-tests) |
 
 ## Try it
 
 | Mode | Command | Data | Sign-in |
 |---|---|---|---|
-| Demo (what visitors see) | `npx ng serve --configuration production` | Sample data bundled with the project | No |
+| Demo data | `npx ng serve --configuration production` | Sample data bundled with the project | Yes |
 | Development with real data | `npm start` | Local files and a local bridge that are not in this repository | Yes |
 
-You can run the demo right after cloning. The development mode needs files and a bridge
+You can run the demo data right after cloning (the panel still asks for an invited Google account). The development mode needs files and a bridge
 that live outside this public repository (see [Development](#development)).
 
 Looking for work is usually a collection of disconnected tools. Jobs are discovered on
@@ -150,7 +150,7 @@ That is the criterion that decides what gets built next.
 ### What is built, and what is not
 
 The panel already has the screens a candidate uses every day. The table, the side panel
-and the detail page run on sample data in the public demo. Actions, editing and deleting
+and the detail page run on sample data in the demo build. Actions, editing and deleting
 only work with real data in development: the demo has none of them switched on.
 
 | Screen | What you can do |
@@ -168,12 +168,12 @@ Not built yet:
 - Interview preparation view.
 - Panel-owned storage. Postgres (Neon) is **planned** (ADR-002 in the
   [system repository](https://github.com/cookyourweb/buscartrabajo)), not implemented.
-- A public deployment with real data. Real data only appears in development, behind
-  sign-in.
+- Per-user data in production. The public site shows demo data to invited accounts only
+  until each user has their own.
 
 ## Sign-in
 
-Added on 7 October 2026. It protects real data and leaves the demo open.
+Added on 7 October 2026. Since 8 October 2026 it protects the panel in every environment, demo data included.
 
 | Piece | What it does |
 |---|---|
@@ -189,8 +189,21 @@ invitation allowlist. The Google client id in `src/app/sesion/configuracion.ts` 
 on purpose: it is not a secret, and Google protects it with the authorised origins set in
 its console.
 
-The guard applies only with real data (`elegirGuardas(isDevMode())`). The demo build has
-no guard, because it has nothing to protect.
+### Routes and access
+
+The guard applies to the whole panel in development and in production. Only the welcome
+page and the sign-in page are public. The public site shows a welcome page, says the
+product is coming soon and that access is by invitation, and offers a `mailto:` link to
+request it (no form, no data stored). Until per-user data exists, an invited account sees
+the demo data in production.
+
+| Route | Access | What it shows |
+|---|---|---|
+| `/` | Public | Welcome page: what the product is, "coming soon", request access by email, link to sign in |
+| `/entrar` | Public | Google sign-in; on success it goes to `/panel` (or to the safe `volver` route) |
+| `/panel` | Session required | Applications table with the side panel |
+| `/panel/candidatura/:id` | Session required | Detail page of one application |
+| anything else | Public | Redirects to `/` |
 
 ---
 
@@ -345,10 +358,10 @@ Requires Node 22, pinned in `.nvmrc`.
 ```bash
 nvm use
 npm ci
-npx ng serve --configuration production   # demo: sample data, no sign-in
+npx ng serve --configuration production   # demo data, sign-in required
 npm start                                 # development: real data, sign-in
-npx ng test --watch=false                 # 297 component tests
-npm test                                  # those 297 plus 53 design token tests
+npx ng test --watch=false                 # 300 component tests
+npm test                                  # those 300 plus 53 design token tests
 ```
 
 ### Real data in development

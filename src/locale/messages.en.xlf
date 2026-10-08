@@ -1751,5 +1751,85 @@
         <target>Offers with data</target>
       </segment>
     </unit>
+    <unit id="ruta.bienvenida">
+      <notes>
+        <note category="location">src/app/app.routes.ts:15</note>
+        <note category="description">Titulo de la pestana en la pagina de bienvenida</note>
+      </notes>
+      <segment>
+        <source>Bienvenida</source>
+        <target>Welcome</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.asunto">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.ts:5</note>
+        <note category="description">Asunto del correo con el que se pide acceso</note>
+      </notes>
+      <segment>
+        <source>Acceso al panel de empleo</source>
+        <target>Access to the job search panel</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.proximamente">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:2,3</note>
+        <note category="description">Etiqueta que avisa de que el producto aun no esta abierto</note>
+      </notes>
+      <segment>
+        <source>Próximamente</source>
+        <target>Coming soon</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.titulo">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:3,4</note>
+        <note category="description">Titulo de la pagina de bienvenida</note>
+      </notes>
+      <segment>
+        <source>Tu compañero para buscar empleo</source>
+        <target>Your companion for job hunting</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.explicacion">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:5,7</note>
+        <note category="description">Explicacion del producto</note>
+      </notes>
+      <segment>
+        <source> Cada día te propone ofertas ordenadas según tu perfil y prepara un CV y una carta adaptados a cada una, sin inventar nunca experiencia que no tengas. </source>
+        <target>Every day it suggests offers ranked for your profile and prepares a CV and cover letter adapted to each one, never inventing experience you do not have.</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.invitacion">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:8,12</note>
+        <note category="description">Aviso de acceso por invitacion y de la empresa detras</note>
+      </notes>
+      <segment>
+        <source> Todavía no está abierto: por ahora se entra solo por invitación. Forma parte de CookYourWebAI. </source>
+        <target>It is not open yet: for now, access is by invitation only. Part of CookYourWebAI.</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.pedirAcceso">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:12,13</note>
+        <note category="description">Enlace que abre un correo para pedir acceso</note>
+      </notes>
+      <segment>
+        <source>Pedir acceso</source>
+        <target>Request access</target>
+      </segment>
+    </unit>
+    <unit id="bienvenida.yaTengoAcceso">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:13,16</note>
+        <note category="description">Enlace a la pantalla de entrada para quien ya tiene acceso</note>
+      </notes>
+      <segment>
+        <source>Ya tengo acceso, entrar</source>
+        <target>I already have access, sign in</target>
+      </segment>
+    </unit>
   </file>
 </xliff>

@@ -10,9 +10,18 @@
         <source>Saltar al contenido principal</source>
       </segment>
     </unit>
+    <unit id="ruta.bienvenida">
+      <notes>
+        <note category="location">src/app/app.routes.ts:15</note>
+        <note category="description">Titulo de la pestana en la pagina de bienvenida</note>
+      </notes>
+      <segment>
+        <source>Bienvenida</source>
+      </segment>
+    </unit>
     <unit id="ruta.entrar">
       <notes>
-        <note category="location">src/app/app.routes.ts:14</note>
+        <note category="location">src/app/app.routes.ts:20</note>
         <note category="description">Titulo de la pestana en la pantalla de entrada</note>
       </notes>
       <segment>
@@ -21,7 +30,7 @@
     </unit>
     <unit id="ruta.candidaturas">
       <notes>
-        <note category="location">src/app/app.routes.ts:31</note>
+        <note category="location">src/app/app.routes.ts:38</note>
         <note category="description">Titulo de la pestana en la tabla</note>
       </notes>
       <segment>
@@ -30,7 +39,7 @@
     </unit>
     <unit id="ruta.candidatura">
       <notes>
-        <note category="location">src/app/app.routes.ts:36</note>
+        <note category="location">src/app/app.routes.ts:43</note>
         <note category="description">Titulo de la pestana en la ficha</note>
       </notes>
       <segment>
@@ -44,6 +53,69 @@
       </notes>
       <segment>
         <source>Panel de empleo</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.proximamente">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:2,3</note>
+        <note category="description">Etiqueta que avisa de que el producto aun no esta abierto</note>
+      </notes>
+      <segment>
+        <source>Próximamente</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.titulo">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:3,4</note>
+        <note category="description">Titulo de la pagina de bienvenida</note>
+      </notes>
+      <segment>
+        <source>Tu compañero para buscar empleo</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.explicacion">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:5,7</note>
+        <note category="description">Explicacion del producto</note>
+      </notes>
+      <segment>
+        <source> Cada día te propone ofertas ordenadas según tu perfil y prepara un CV y una carta adaptados a cada una, sin inventar nunca experiencia que no tengas. </source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.invitacion">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:8,12</note>
+        <note category="description">Aviso de acceso por invitacion y de la empresa detras</note>
+      </notes>
+      <segment>
+        <source> Todavía no está abierto: por ahora se entra solo por invitación. Forma parte de CookYourWebAI. </source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.pedirAcceso">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:12,13</note>
+        <note category="description">Enlace que abre un correo para pedir acceso</note>
+      </notes>
+      <segment>
+        <source>Pedir acceso</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.yaTengoAcceso">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:13,16</note>
+        <note category="description">Enlace a la pantalla de entrada para quien ya tiene acceso</note>
+      </notes>
+      <segment>
+        <source>Ya tengo acceso, entrar</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.asunto">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.ts:5</note>
+        <note category="description">Asunto del correo con el que se pide acceso</note>
+      </notes>
+      <segment>
+        <source>Acceso al panel de empleo</source>
       </segment>
     </unit>
     <unit id="entrada.titulo">

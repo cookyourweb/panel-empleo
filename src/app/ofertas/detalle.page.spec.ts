@@ -53,7 +53,7 @@ describe('DetallePage', () => {
     const pagina = await abrir('/candidatura/no-existe');
 
     expect(pagina.textContent).toContain('no está');
-    expect(pagina.querySelector('a[href="/"]')).not.toBeNull();
+    expect(pagina.querySelector('a[href="/panel"]')).not.toBeNull();
   });
 
   it('el CV que se genero se abre fuera, como en Notion', async () => {

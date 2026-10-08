@@ -6,17 +6,24 @@ import { EditorDeCandidaturas, elegirEditor } from './ofertas/editor-de-candidat
 import { elegirRepositorio } from './ofertas/elegir-repositorio';
 import { elegirFuenteDeAcciones, FuenteDeAcciones } from './ofertas/fuente-de-acciones';
 import { RepositorioDeCandidaturas } from './ofertas/repositorio-de-candidaturas';
-import { elegirGuardas } from './sesion/elegir-guardas';
+import { soloConSesion } from './sesion/solo-con-sesion';
 
 export const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    title: $localize`:Titulo de la pestana en la pagina de bienvenida@@ruta.bienvenida:Bienvenida`,
+    loadComponent: () => import('./bienvenida/bienvenida.page').then((m) => m.BienvenidaPage),
+  },
   {
     path: 'entrar',
     title: $localize`:Titulo de la pestana en la pantalla de entrada@@ruta.entrar:Entrar`,
     loadComponent: () => import('./entrada/entrada.page').then((m) => m.EntradaPage),
   },
   {
-    path: '',
-    canActivate: elegirGuardas(isDevMode()),
+    path: 'panel',
+    // Session required in every environment: even the demo is for invited users only.
+    canActivate: [soloConSesion],
     // El store vive en la ruta y no en cada pantalla: la lista y el detalle
     // comparten las mismas candidaturas, y abrir una no vuelve a pedirlas.
     providers: [
@@ -38,4 +45,6 @@ export const routes: Routes = [
       },
     ],
   },
+  // Unknown routes go to the public welcome page, never to the panel.
+  { path: '**', redirectTo: '' },
 ];

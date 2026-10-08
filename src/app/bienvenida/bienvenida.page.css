@@ -1,0 +1,46 @@
+.bienvenida {
+  max-width: 36rem;
+  margin: 3rem auto;
+}
+
+.etiqueta {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.15rem 0.75rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 999px;
+  color: hsl(var(--primary));
+  font-size: 0.875rem;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  margin-top: 2rem;
+}
+
+.principal {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: var(--radius);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.secundaria {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: hsl(var(--foreground));
+}
+
+a:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}

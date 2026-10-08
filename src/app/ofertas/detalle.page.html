@@ -1,6 +1,6 @@
 @if (candidatura(); as una) {
   <article>
-    <p class="volver"><a routerLink="/" i18n="Enlace de la ficha a la tabla@@detalle.volver">Volver a las candidaturas</a></p>
+    <p class="volver"><a routerLink="/panel" i18n="Enlace de la ficha a la tabla@@detalle.volver">Volver a las candidaturas</a></p>
 
     <app-ficha-candidatura
       [candidatura]="una"
@@ -15,6 +15,6 @@
     <p i18n="Explicacion cuando la candidatura no existe@@detalle.noEsta.explicacion">
       Puede que se haya borrado, o que el enlace no sea correcto.
     </p>
-    <p><a routerLink="/" i18n="Enlace de la pantalla de error a la tabla@@detalle.noEsta.volver">Volver a las candidaturas</a></p>
+    <p><a routerLink="/panel" i18n="Enlace de la pantalla de error a la tabla@@detalle.noEsta.volver">Volver a las candidaturas</a></p>
   </article>
 }
