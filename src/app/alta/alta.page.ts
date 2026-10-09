@@ -11,7 +11,7 @@ const MENSAJES_DE_MOTIVO: Readonly<Record<MotivoManual, string>> = {
   desactivada: $localize`:Motivo manual, lectura apagada@@alta.manual.motivo.desactivada:La lectura automática del CV no está disponible por ahora. Rellena tu perfil a mano.`,
   ya_usada: $localize`:Motivo manual, lectura ya usada@@alta.manual.motivo.yaUsada:Ya has usado tu lectura automática del CV. Rellena tu perfil a mano.`,
   tope: $localize`:Motivo manual, tope mensual@@alta.manual.motivo.tope:Hemos llegado al límite de lecturas automáticas de este mes. Rellena tu perfil a mano.`,
-  proveedor: $localize`:Motivo manual, fallo del proveedor@@alta.manual.motivo.proveedor:El servicio que lee el CV no ha respondido. Rellena tu perfil a mano.`,
+  proveedor: $localize`:Motivo manual, fallo del proveedor@@alta.manual.motivo.proveedor:El servicio que lee el CV no ha respondido. No has perdido tu intento: puedes volver a probar más tarde. Mientras tanto, rellena tu perfil a mano.`,
   indisponible: $localize`:Motivo manual, servicio no disponible@@alta.manual.motivo.indisponible:Ahora mismo no podemos leer tu CV. Rellena tu perfil a mano.`,
 };
 

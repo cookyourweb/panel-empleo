@@ -134,6 +134,16 @@ describe('AltaPage', () => {
       expect(textos.size).toBe(MOTIVOS_MANUAL.length);
     });
 
+    it('si falla el proveedor, dice que no ha perdido su intento y que puede reintentar', async () => {
+      const p = await hastaLaSubida();
+
+      await subir(p, { estado: 'manual', motivo: 'proveedor' });
+
+      const texto = p.raiz.querySelector('[data-motivo="proveedor"]')!.textContent!;
+      expect(texto).toContain('No has perdido tu intento');
+      expect(texto).toContain('más tarde');
+    });
+
     it('rellenar a mano por eleccion no dice que algo haya fallado', async () => {
       const p = await pintar();
 

@@ -2408,8 +2408,8 @@
         <note category="description">Motivo manual, fallo del proveedor</note>
       </notes>
       <segment>
-        <source>El servicio que lee el CV no ha respondido. Rellena tu perfil a mano.</source>
-        <target>The service that reads CVs did not respond. Fill in your profile by hand.</target>
+        <source>El servicio que lee el CV no ha respondido. No has perdido tu intento: puedes volver a probar más tarde. Mientras tanto, rellena tu perfil a mano.</source>
+        <target>The service that reads CVs did not respond. You have not lost your attempt: you can try again later. In the meantime, fill in your profile by hand.</target>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.indisponible">
