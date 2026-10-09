@@ -2045,5 +2045,95 @@
         <source>Guardar mi perfil</source>
       </segment>
     </unit>
+    <unit id="alta.revision.estado.propuesto">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:21</note>
+        <note category="description">Estado de un valor propuesto</note>
+      </notes>
+      <segment>
+        <source>Propuesto desde tu CV</source>
+      </segment>
+    </unit>
+    <unit id="alta.revision.estado.aceptado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:22</note>
+        <note category="description">Estado de un valor aceptado</note>
+      </notes>
+      <segment>
+        <source>Aceptado</source>
+      </segment>
+    </unit>
+    <unit id="alta.revision.estado.editado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:23</note>
+        <note category="description">Estado de un valor editado</note>
+      </notes>
+      <segment>
+        <source>Editado por ti</source>
+      </segment>
+    </unit>
+    <unit id="alta.revision.estado.descartado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:24</note>
+        <note category="description">Estado de un valor descartado</note>
+      </notes>
+      <segment>
+        <source>Descartado</source>
+      </segment>
+    </unit>
+    <unit id="alta.revision.cita">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:84</note>
+        <note category="description">Encabezado de la frase del CV</note>
+      </notes>
+      <segment>
+        <source>Frase de tu CV:</source>
+      </segment>
+    </unit>
+    <unit id="alta.revision.aceptar">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:88</note>
+        <note category="description">Boton que acepta un valor propuesto</note>
+      </notes>
+      <segment>
+        <source>Aceptar</source>
+      </segment>
+    </unit>
+    <unit id="alta.revision.descartar">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:89</note>
+        <note category="description">Boton que descarta un valor propuesto</note>
+      </notes>
+      <segment>
+        <source>Descartar</source>
+      </segment>
+    </unit>
+    <unit id="alta.revision.noEncontrado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:93</note>
+        <note category="description">Aviso de campo que el CV no aporta</note>
+      </notes>
+      <segment>
+        <source>Campo no encontrado en tu CV. Escríbelo tú si quieres.</source>
+      </segment>
+    </unit>
+    <unit id="alta.revision.titulo">
+      <notes>
+        <note category="location">src/app/alta/revision-de-campos.ts:17</note>
+        <note category="description">Titulo del paso de revision</note>
+      </notes>
+      <segment>
+        <source>Revisa lo que hemos leído</source>
+      </segment>
+    </unit>
+    <unit id="alta.revision.texto">
+      <notes>
+        <note category="location">src/app/alta/revision-de-campos.ts:20</note>
+        <note category="description">Explicacion del paso de revision</note>
+      </notes>
+      <segment>
+        <source>Te proponemos estos datos junto a la frase de tu CV que los respalda. Acepta, corrige o descarta cada uno, y responde a las preguntas de salario y modalidad, que nunca rellenamos por ti.</source>
+      </segment>
+    </unit>
   </file>
 </xliff>

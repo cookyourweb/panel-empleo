@@ -2272,5 +2272,105 @@
         <target>Save my profile</target>
       </segment>
     </unit>
+    <unit id="alta.revision.estado.propuesto">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:21</note>
+        <note category="description">Estado de un valor propuesto</note>
+      </notes>
+      <segment>
+        <source>Propuesto desde tu CV</source>
+        <target>Suggested from your CV</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.estado.aceptado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:22</note>
+        <note category="description">Estado de un valor aceptado</note>
+      </notes>
+      <segment>
+        <source>Aceptado</source>
+        <target>Accepted</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.estado.editado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:23</note>
+        <note category="description">Estado de un valor editado</note>
+      </notes>
+      <segment>
+        <source>Editado por ti</source>
+        <target>Edited by you</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.estado.descartado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:24</note>
+        <note category="description">Estado de un valor descartado</note>
+      </notes>
+      <segment>
+        <source>Descartado</source>
+        <target>Discarded</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.cita">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:84</note>
+        <note category="description">Encabezado de la frase del CV</note>
+      </notes>
+      <segment>
+        <source>Frase de tu CV:</source>
+        <target>Sentence from your CV:</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.aceptar">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:88</note>
+        <note category="description">Boton que acepta un valor propuesto</note>
+      </notes>
+      <segment>
+        <source>Aceptar</source>
+        <target>Accept</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.descartar">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:89</note>
+        <note category="description">Boton que descarta un valor propuesto</note>
+      </notes>
+      <segment>
+        <source>Descartar</source>
+        <target>Discard</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.noEncontrado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:93</note>
+        <note category="description">Aviso de campo que el CV no aporta</note>
+      </notes>
+      <segment>
+        <source>Campo no encontrado en tu CV. Escríbelo tú si quieres.</source>
+        <target>Field not found in your CV. Type it yourself if you wish.</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.titulo">
+      <notes>
+        <note category="location">src/app/alta/revision-de-campos.ts:17</note>
+        <note category="description">Titulo del paso de revision</note>
+      </notes>
+      <segment>
+        <source>Revisa lo que hemos leído</source>
+        <target>Review what we read</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.texto">
+      <notes>
+        <note category="location">src/app/alta/revision-de-campos.ts:20</note>
+        <note category="description">Explicacion del paso de revision</note>
+      </notes>
+      <segment>
+        <source>Te proponemos estos datos junto a la frase de tu CV que los respalda. Acepta, corrige o descarta cada uno, y responde a las preguntas de salario y modalidad, que nunca rellenamos por ti.</source>
+        <target>We suggest these values next to the sentence from your CV that supports them. Accept, correct or discard each one, and answer the salary and work arrangement questions, which we never fill in for you.</target>
+      </segment>
+    </unit>
   </file>
 </xliff>

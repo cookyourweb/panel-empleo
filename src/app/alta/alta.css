@@ -84,3 +84,14 @@ button:disabled {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }
+
+.revision {
+  margin: 0.5rem 0 0;
+}
+
+.cita {
+  margin: 0.25rem 0 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-left: 3px solid hsl(var(--border));
+  font-style: italic;
+}

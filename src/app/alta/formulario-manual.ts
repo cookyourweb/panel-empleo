@@ -17,6 +17,15 @@ const ETIQUETAS_DE_MODALIDAD: Readonly<Record<ModalidadDePerfil, string>> = {
   presencial: $localize`:Modalidad presencial@@alta.formulario.modalidad.presencial:Presencial`,
 };
 
+const ESTADOS = {
+  propuesto: $localize`:Estado de un valor propuesto@@alta.revision.estado.propuesto:Propuesto desde tu CV`,
+  aceptado: $localize`:Estado de un valor aceptado@@alta.revision.estado.aceptado:Aceptado`,
+  editado: $localize`:Estado de un valor editado@@alta.revision.estado.editado:Editado por ti`,
+  descartado: $localize`:Estado de un valor descartado@@alta.revision.estado.descartado:Descartado`,
+} as const;
+
+type Estado = keyof typeof ESTADOS;
+
 const MONEDAS = ['EUR', 'USD', 'GBP'] as const;
 
 const ERRORES = {
@@ -55,7 +64,7 @@ function aLista(texto: string): string[] {
   template: `
     <form [formGroup]="formulario" (ngSubmit)="confirmar()" novalidate>
       @for (campo of camposDeTexto; track campo) {
-        <label class="campo" [for]="'campo-' + campo">{{ etiquetas[campo] }}</label>
+        <label class="campo" [id]="'etiqueta-' + campo" [for]="'campo-' + campo">{{ etiquetas[campo] }}</label>
         <input
           type="text"
           [id]="'campo-' + campo"
@@ -63,10 +72,27 @@ function aLista(texto: string): string[] {
           [formControlName]="campo"
           [attr.inputmode]="campo === 'aniosExperiencia' ? 'numeric' : null"
           [attr.aria-invalid]="invalido(campo)"
-          [attr.aria-describedby]="invalido(campo) ? 'error-' + campo : null"
+          [attr.aria-describedby]="descripcion(campo)"
+          (input)="editar(campo)"
         />
         @if (invalido(campo)) {
           <p class="error" role="alert" [id]="'error-' + campo">{{ mensajeDeError(campo) }}</p>
+        }
+        @if (enRevision()) {
+          <div class="revision">
+            @if (propuestaDe(campo); as propuesta) {
+              <p class="pista" i18n="Encabezado de la frase del CV@@alta.revision.cita">Frase de tu CV:</p>
+              <!-- Interpolation, never innerHTML: the quote is text from the CV, not markup. -->
+              <blockquote class="cita" [id]="'cita-' + campo" [attr.data-cita]="campo">{{ propuesta.cita }}</blockquote>
+              <div class="acciones">
+                <button type="button" [attr.data-aceptar]="campo" [attr.aria-describedby]="'etiqueta-' + campo" (click)="aceptar(campo)" i18n="Boton que acepta un valor propuesto@@alta.revision.aceptar">Aceptar</button>
+                <button type="button" [attr.data-descartar]="campo" [attr.aria-describedby]="'etiqueta-' + campo" (click)="descartar(campo)" i18n="Boton que descarta un valor propuesto@@alta.revision.descartar">Descartar</button>
+              </div>
+              <p class="pista" aria-live="polite" [id]="'estado-' + campo" [attr.data-estado]="campo" [attr.data-valor]="estados()[campo] ?? 'propuesto'">{{ textoDeEstado(campo) }}</p>
+            } @else {
+              <p class="pista" [id]="'no-encontrado-' + campo" [attr.data-no-encontrado]="campo" i18n="Aviso de campo que el CV no aporta@@alta.revision.noEncontrado">Campo no encontrado en tu CV. Escríbelo tú si quieres.</p>
+            }
+          </div>
         }
       }
 
@@ -140,6 +166,8 @@ function aLista(texto: string): string[] {
 })
 export class FormularioManual {
   readonly propuestas = input<Propuesta[]>([]);
+  /** Con propuestas del CV: cada campo muestra su cita y se puede aceptar, editar o descartar. */
+  readonly enRevision = input(false);
   readonly errorDeGuardado = input(false);
   readonly guardar = output<Perfil>();
 
@@ -152,6 +180,7 @@ export class FormularioManual {
 
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly enviado = signal(false);
+  protected readonly estados = signal<Partial<Record<Campo, Estado>>>({});
 
   protected readonly formulario = this.fb.group({
     rol: ['', Validators.required],
@@ -175,6 +204,39 @@ export class FormularioManual {
         }
       });
     });
+  }
+
+  protected propuestaDe(campo: Campo): Propuesta | undefined {
+    return this.propuestas().find((p) => p.campo === campo);
+  }
+
+  protected textoDeEstado(campo: Campo): string {
+    return ESTADOS[this.estados()[campo] ?? 'propuesto'];
+  }
+
+  protected descripcion(campo: Campo): string | null {
+    const ids = [
+      this.invalido(campo) ? `error-${campo}` : null,
+      this.enRevision() ? (this.propuestaDe(campo) ? `cita-${campo}` : `no-encontrado-${campo}`) : null,
+    ].filter((id) => id !== null);
+    return ids.length > 0 ? ids.join(' ') : null;
+  }
+
+  private marcar(campo: Campo, estado: Estado): void {
+    this.estados.update((actuales) => ({ ...actuales, [campo]: estado }));
+  }
+
+  protected aceptar(campo: Campo): void {
+    this.marcar(campo, 'aceptado');
+  }
+
+  protected descartar(campo: Campo): void {
+    this.formulario.controls[campo].setValue('');
+    this.marcar(campo, 'descartado');
+  }
+
+  protected editar(campo: Campo): void {
+    if (this.propuestaDe(campo)) this.marcar(campo, 'editado');
   }
 
   protected invalido(nombre: keyof typeof this.formulario.controls): boolean {
