@@ -2112,5 +2112,165 @@
         <target>I prefer to fill in my profile by hand</target>
       </segment>
     </unit>
+    <unit id="alta.formulario.rol">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:7</note>
+        <note category="description">Etiqueta del rol en el formulario de perfil</note>
+      </notes>
+      <segment>
+        <source>Rol</source>
+        <target>Role</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.anios">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:8</note>
+        <note category="description">Etiqueta de los anos de experiencia</note>
+      </notes>
+      <segment>
+        <source>Años de experiencia</source>
+        <target>Years of experience</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.stack">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:9</note>
+        <note category="description">Etiqueta de las tecnologias</note>
+      </notes>
+      <segment>
+        <source>Tecnologías (separadas por comas)</source>
+        <target>Technologies (comma separated)</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.idiomas">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:10</note>
+        <note category="description">Etiqueta de los idiomas</note>
+      </notes>
+      <segment>
+        <source>Idiomas (separados por comas)</source>
+        <target>Languages (comma separated)</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.ubicacion">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:11</note>
+        <note category="description">Etiqueta de la ubicacion</note>
+      </notes>
+      <segment>
+        <source>Ubicación</source>
+        <target>Location</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.remoto">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:15</note>
+        <note category="description">Modalidad remoto</note>
+      </notes>
+      <segment>
+        <source>Remoto</source>
+        <target>Remote</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.hibrido">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:16</note>
+        <note category="description">Modalidad hibrido</note>
+      </notes>
+      <segment>
+        <source>Híbrido</source>
+        <target>Hybrid</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.presencial">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:17</note>
+        <note category="description">Modalidad presencial</note>
+      </notes>
+      <segment>
+        <source>Presencial</source>
+        <target>On site</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.error.obligatorio">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:23</note>
+        <note category="description">Error de campo vacio</note>
+      </notes>
+      <segment>
+        <source>Este campo es obligatorio.</source>
+        <target>This field is required.</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.error.invalido">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:24</note>
+        <note category="description">Error de valor no valido</note>
+      </notes>
+      <segment>
+        <source>El valor no es válido.</source>
+        <target>The value is not valid.</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.pregunta">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:74</note>
+        <note category="description">Pregunta por la modalidad</note>
+      </notes>
+      <segment>
+        <source>¿Qué modalidades de trabajo te encajan?</source>
+        <target>Which work arrangements suit you?</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.salario.pregunta">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:94</note>
+        <note category="description">Pregunta por el salario minimo</note>
+      </notes>
+      <segment>
+        <source>¿Cuál es tu salario mínimo anual?</source>
+        <target>What is your minimum yearly salary?</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.moneda">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:110</note>
+        <note category="description">Etiqueta de la moneda del salario</note>
+      </notes>
+      <segment>
+        <source>Moneda</source>
+        <target>Currency</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.moneda.elegir">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:120</note>
+        <note category="description">Opcion vacia de la moneda</note>
+      </notes>
+      <segment>
+        <source>Elige una moneda</source>
+        <target>Choose a currency</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.errorDeGuardado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:130</note>
+        <note category="description">Error al guardar el perfil</note>
+      </notes>
+      <segment>
+        <source>No hemos podido guardar tu perfil. Lo que has escrito sigue aquí: prueba de nuevo.</source>
+        <target>We could not save your profile. What you wrote is still here: please try again.</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.guardar">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:136</note>
+        <note category="description">Boton que guarda el perfil</note>
+      </notes>
+      <segment>
+        <source>Guardar mi perfil</source>
+        <target>Save my profile</target>
+      </segment>
+    </unit>
   </file>
 </xliff>

@@ -1901,5 +1901,149 @@
         <source>Prefiero rellenar el perfil a mano</source>
       </segment>
     </unit>
+    <unit id="alta.formulario.rol">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:7</note>
+        <note category="description">Etiqueta del rol en el formulario de perfil</note>
+      </notes>
+      <segment>
+        <source>Rol</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.anios">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:8</note>
+        <note category="description">Etiqueta de los anos de experiencia</note>
+      </notes>
+      <segment>
+        <source>Años de experiencia</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.stack">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:9</note>
+        <note category="description">Etiqueta de las tecnologias</note>
+      </notes>
+      <segment>
+        <source>Tecnologías (separadas por comas)</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.idiomas">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:10</note>
+        <note category="description">Etiqueta de los idiomas</note>
+      </notes>
+      <segment>
+        <source>Idiomas (separados por comas)</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.ubicacion">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:11</note>
+        <note category="description">Etiqueta de la ubicacion</note>
+      </notes>
+      <segment>
+        <source>Ubicación</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.remoto">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:15</note>
+        <note category="description">Modalidad remoto</note>
+      </notes>
+      <segment>
+        <source>Remoto</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.hibrido">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:16</note>
+        <note category="description">Modalidad hibrido</note>
+      </notes>
+      <segment>
+        <source>Híbrido</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.presencial">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:17</note>
+        <note category="description">Modalidad presencial</note>
+      </notes>
+      <segment>
+        <source>Presencial</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.error.obligatorio">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:23</note>
+        <note category="description">Error de campo vacio</note>
+      </notes>
+      <segment>
+        <source>Este campo es obligatorio.</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.error.invalido">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:24</note>
+        <note category="description">Error de valor no valido</note>
+      </notes>
+      <segment>
+        <source>El valor no es válido.</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.pregunta">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:74</note>
+        <note category="description">Pregunta por la modalidad</note>
+      </notes>
+      <segment>
+        <source>¿Qué modalidades de trabajo te encajan?</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.salario.pregunta">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:94</note>
+        <note category="description">Pregunta por el salario minimo</note>
+      </notes>
+      <segment>
+        <source>¿Cuál es tu salario mínimo anual?</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.moneda">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:110</note>
+        <note category="description">Etiqueta de la moneda del salario</note>
+      </notes>
+      <segment>
+        <source>Moneda</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.moneda.elegir">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:120</note>
+        <note category="description">Opcion vacia de la moneda</note>
+      </notes>
+      <segment>
+        <source>Elige una moneda</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.errorDeGuardado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:130</note>
+        <note category="description">Error al guardar el perfil</note>
+      </notes>
+      <segment>
+        <source>No hemos podido guardar tu perfil. Lo que has escrito sigue aquí: prueba de nuevo.</source>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.guardar">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:136</note>
+        <note category="description">Boton que guarda el perfil</note>
+      </notes>
+      <segment>
+        <source>Guardar mi perfil</source>
+      </segment>
+    </unit>
   </file>
 </xliff>
