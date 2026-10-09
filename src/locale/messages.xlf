@@ -1748,5 +1748,158 @@
         <source>Fichas con dato</source>
       </segment>
     </unit>
+    <unit id="alta.titulo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:19</note>
+        <note category="description">Titulo de la pantalla de alta</note>
+      </notes>
+      <segment>
+        <source>Tu perfil</source>
+      </segment>
+    </unit>
+    <unit id="alta.extrayendo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:25</note>
+        <note category="description">Aviso de que se esta leyendo el CV</note>
+      </notes>
+      <segment>
+        <source>Leyendo tu CV, un momento</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.titulo">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:14</note>
+        <note category="description">Titulo del paso de consentimiento</note>
+      </notes>
+      <segment>
+        <source>Antes de empezar</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.texto">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:17</note>
+        <note category="description">Explicacion de que pasa con el CV</note>
+      </notes>
+      <segment>
+        <source>Guardamos tu CV cifrado. Para proponerte los datos de tu perfil, el texto de tu CV puede enviarse una sola vez a proveedores externos de inteligencia artificial (Anthropic y Groq). Puedes borrar tu CV y tu cuenta cuando quieras.</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.casilla">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:33</note>
+        <note category="description">Casilla de consentimiento</note>
+      </notes>
+      <segment>
+        <source>Entiendo y acepto que mi CV se guarde cifrado y que pueda enviarse a Anthropic y Groq para extraer mi perfil.</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.error">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:40</note>
+        <note category="description">Error al registrar el consentimiento</note>
+      </notes>
+      <segment>
+        <source>No hemos podido registrar tu consentimiento. Prueba de nuevo.</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.continuar">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:51</note>
+        <note category="description">Boton que acepta el consentimiento</note>
+      </notes>
+      <segment>
+        <source>Continuar</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.aMano">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:59</note>
+        <note category="description">Boton para rellenar el perfil sin subir CV</note>
+      </notes>
+      <segment>
+        <source>Prefiero rellenar el perfil a mano</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.rechazo.tamano">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:6</note>
+        <note category="description">Rechazo de la subida, archivo grande</note>
+      </notes>
+      <segment>
+        <source>El archivo es demasiado grande. El máximo son 2 MB.</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.rechazo.tipo">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:7</note>
+        <note category="description">Rechazo de la subida, tipo de archivo</note>
+      </notes>
+      <segment>
+        <source>Solo se aceptan archivos PDF o DOCX.</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.rechazo.ilegible">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:8</note>
+        <note category="description">Rechazo de la subida, sin texto legible</note>
+      </notes>
+      <segment>
+        <source>No hemos podido leer texto en el archivo. Prueba con otro o rellena el perfil a mano.</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.rechazo.sinConsentimiento">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:9</note>
+        <note category="description">Rechazo de la subida, falta consentimiento</note>
+      </notes>
+      <segment>
+        <source>Falta tu consentimiento. Vuelve a empezar para darlo.</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.rechazo.servidor">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:10</note>
+        <note category="description">Rechazo de la subida, fallo del servidor</note>
+      </notes>
+      <segment>
+        <source>El servidor no ha podido recibir el archivo ahora. Prueba de nuevo o rellena el perfil a mano.</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.titulo">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:23</note>
+        <note category="description">Titulo del paso de subida</note>
+      </notes>
+      <segment>
+        <source>Sube tu CV</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.etiqueta">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:25</note>
+        <note category="description">Etiqueta del campo de archivo</note>
+      </notes>
+      <segment>
+        <source>Tu CV</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.pista">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:35</note>
+        <note category="description">Pista del formato aceptado</note>
+      </notes>
+      <segment>
+        <source>PDF o DOCX, hasta 2 MB.</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.aMano">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:48</note>
+        <note category="description">Boton para rellenar el perfil sin subir CV</note>
+      </notes>
+      <segment>
+        <source>Prefiero rellenar el perfil a mano</source>
+      </segment>
+    </unit>
   </file>
 </xliff>
