@@ -20,7 +20,7 @@ const RECHAZOS: Readonly<Record<MotivoDeSubida, string>> = {
   styleUrl: './alta.css',
   template: `
     <section class="paso" aria-labelledby="subida-titulo">
-      <h2 id="subida-titulo" i18n="Titulo del paso de subida@@alta.subida.titulo">Sube tu CV</h2>
+      <h2 id="subida-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de subida@@alta.subida.titulo">Sube tu CV</h2>
 
       <label class="campo" for="subida-archivo" i18n="Etiqueta del campo de archivo@@alta.subida.etiqueta">
         Tu CV

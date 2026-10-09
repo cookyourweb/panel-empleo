@@ -2135,5 +2135,86 @@
         <source>Te proponemos estos datos junto a la frase de tu CV que los respalda. Acepta, corrige o descarta cada uno, y responde a las preguntas de salario y modalidad, que nunca rellenamos por ti.</source>
       </segment>
     </unit>
+    <unit id="alta.manual.motivo.desactivada">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:11</note>
+        <note category="description">Motivo manual, lectura apagada</note>
+      </notes>
+      <segment>
+        <source>La lectura automática del CV no está disponible por ahora. Rellena tu perfil a mano.</source>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.yaUsada">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:12</note>
+        <note category="description">Motivo manual, lectura ya usada</note>
+      </notes>
+      <segment>
+        <source>Ya has usado tu lectura automática del CV. Rellena tu perfil a mano.</source>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.tope">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:13</note>
+        <note category="description">Motivo manual, tope mensual</note>
+      </notes>
+      <segment>
+        <source>Hemos llegado al límite de lecturas automáticas de este mes. Rellena tu perfil a mano.</source>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.proveedor">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:14</note>
+        <note category="description">Motivo manual, fallo del proveedor</note>
+      </notes>
+      <segment>
+        <source>El servicio que lee el CV no ha respondido. Rellena tu perfil a mano.</source>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.indisponible">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:15</note>
+        <note category="description">Motivo manual, servicio no disponible</note>
+      </notes>
+      <segment>
+        <source>Ahora mismo no podemos leer tu CV. Rellena tu perfil a mano.</source>
+      </segment>
+    </unit>
+    <unit id="alta.manual.titulo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:64</note>
+        <note category="description">Titulo del paso manual</note>
+      </notes>
+      <segment>
+        <source>Cuéntanos tu perfil</source>
+      </segment>
+    </unit>
+    <unit id="alta.manual.elegido">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:70</note>
+        <note category="description">Texto del formulario manual elegido</note>
+      </notes>
+      <segment>
+        <source>Rellena tu perfil a mano. No se guarda nada hasta que lo confirmes.</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.titulo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:79</note>
+        <note category="description">Titulo del paso final</note>
+      </notes>
+      <segment>
+        <source>Perfil guardado</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.texto">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:82</note>
+        <note category="description">Texto del paso final</note>
+      </notes>
+      <segment>
+        <source>Ya tenemos tu perfil. Puedes borrar tus datos y tu cuenta cuando quieras.</source>
+      </segment>
+    </unit>
   </file>
 </xliff>

@@ -11,7 +11,7 @@ import { ChangeDetectionStrategy, Component, input, output, signal } from '@angu
   styleUrl: './alta.css',
   template: `
     <section class="paso" aria-labelledby="consentimiento-titulo">
-      <h2 id="consentimiento-titulo" i18n="Titulo del paso de consentimiento@@alta.consentimiento.titulo">
+      <h2 id="consentimiento-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de consentimiento@@alta.consentimiento.titulo">
         Antes de empezar
       </h2>
       <p id="consentimiento-texto" i18n="Explicacion de que pasa con el CV@@alta.consentimiento.texto">

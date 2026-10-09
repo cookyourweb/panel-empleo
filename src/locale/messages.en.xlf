@@ -2372,5 +2372,95 @@
         <target>We suggest these values next to the sentence from your CV that supports them. Accept, correct or discard each one, and answer the salary and work arrangement questions, which we never fill in for you.</target>
       </segment>
     </unit>
+    <unit id="alta.manual.motivo.desactivada">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:11</note>
+        <note category="description">Motivo manual, lectura apagada</note>
+      </notes>
+      <segment>
+        <source>La lectura automática del CV no está disponible por ahora. Rellena tu perfil a mano.</source>
+        <target>Automatic CV reading is not available at the moment. Fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.yaUsada">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:12</note>
+        <note category="description">Motivo manual, lectura ya usada</note>
+      </notes>
+      <segment>
+        <source>Ya has usado tu lectura automática del CV. Rellena tu perfil a mano.</source>
+        <target>You have already used your automatic CV reading. Fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.tope">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:13</note>
+        <note category="description">Motivo manual, tope mensual</note>
+      </notes>
+      <segment>
+        <source>Hemos llegado al límite de lecturas automáticas de este mes. Rellena tu perfil a mano.</source>
+        <target>We have reached this month's limit of automatic readings. Fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.proveedor">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:14</note>
+        <note category="description">Motivo manual, fallo del proveedor</note>
+      </notes>
+      <segment>
+        <source>El servicio que lee el CV no ha respondido. Rellena tu perfil a mano.</source>
+        <target>The service that reads CVs did not respond. Fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.indisponible">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:15</note>
+        <note category="description">Motivo manual, servicio no disponible</note>
+      </notes>
+      <segment>
+        <source>Ahora mismo no podemos leer tu CV. Rellena tu perfil a mano.</source>
+        <target>We cannot read your CV right now. Fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.titulo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:64</note>
+        <note category="description">Titulo del paso manual</note>
+      </notes>
+      <segment>
+        <source>Cuéntanos tu perfil</source>
+        <target>Tell us about your profile</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.elegido">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:70</note>
+        <note category="description">Texto del formulario manual elegido</note>
+      </notes>
+      <segment>
+        <source>Rellena tu perfil a mano. No se guarda nada hasta que lo confirmes.</source>
+        <target>Fill in your profile by hand. Nothing is saved until you confirm.</target>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.titulo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:79</note>
+        <note category="description">Titulo del paso final</note>
+      </notes>
+      <segment>
+        <source>Perfil guardado</source>
+        <target>Profile saved</target>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.texto">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:82</note>
+        <note category="description">Texto del paso final</note>
+      </notes>
+      <segment>
+        <source>Ya tenemos tu perfil. Puedes borrar tus datos y tu cuenta cuando quieras.</source>
+        <target>We now have your profile. You can delete your data and your account whenever you like.</target>
+      </segment>
+    </unit>
   </file>
 </xliff>
