@@ -1,17 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
 import { App } from './app';
+import { Sesion } from './sesion/sesion';
 
 @Component({ template: 'pagina' })
 class PaginaFalsa {}
 
 describe('App', () => {
+  const activa = signal(false);
+
   beforeEach(async () => {
+    activa.set(false);
     await TestBed.configureTestingModule({
       imports: [App],
       providers: [
+        { provide: Sesion, useValue: { activa } },
         provideRouter([
           { path: 'a', component: PaginaFalsa },
           { path: 'b', component: PaginaFalsa },
@@ -67,5 +72,23 @@ describe('App', () => {
     expect(document.activeElement).toBe(main);
 
     (fixture.nativeElement as HTMLElement).remove();
+  });
+
+  it('con sesion, la cabecera enlaza a la cuenta', async () => {
+    activa.set(true);
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const cabecera = (fixture.nativeElement as HTMLElement).querySelector('header');
+
+    const enlace = cabecera?.querySelector('a[href="/cuenta"]');
+
+    expect(enlace?.textContent?.trim()).toBe('Tu cuenta');
+  });
+
+  it('sin sesion, la cabecera no ofrece la cuenta', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+
+    expect((fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
   });
 });

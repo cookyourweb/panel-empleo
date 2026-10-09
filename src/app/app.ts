@@ -1,18 +1,20 @@
 import { Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter, skip } from 'rxjs';
 
 import { SelectorDeIdioma } from './idioma/selector-de-idioma';
+import { Sesion } from './sesion/sesion';
 
 @Component({
-  imports: [RouterOutlet, SelectorDeIdioma],
+  imports: [RouterLink, RouterOutlet, SelectorDeIdioma],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
 export class App {
   protected readonly titulo = signal($localize`:Nombre de la aplicacion, titulo de la cabecera@@app.titulo:Panel de empleo`);
+  protected readonly sesion = inject(Sesion);
   private readonly principal = viewChild.required<ElementRef<HTMLElement>>('principal');
 
   constructor() {

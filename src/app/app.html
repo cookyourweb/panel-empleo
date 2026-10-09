@@ -4,6 +4,9 @@
 
 <header class="cabecera">
   <h1>{{ titulo() }}</h1>
+  @if (sesion.activa()) {
+    <a routerLink="/cuenta" i18n="Enlace de la cabecera a la cuenta@@app.cuenta">Tu cuenta</a>
+  }
   <app-selector-de-idioma />
 </header>
 
