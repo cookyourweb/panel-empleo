@@ -59,6 +59,23 @@
   }
 </div>
 
+<!-- Un filtro con su etiqueta, no un boton mas: marcar o no es lo que dice. La
+     ayuda es una region viva para que el lector de pantalla oiga el resultado. -->
+<div class="alcanzables">
+  <label>
+    <input
+      type="checkbox"
+      data-filtro-alcanzables
+      aria-describedby="ayuda-alcanzables"
+      [checked]="soloAlcanzables()"
+      [disabled]="estadoDeEncajes() === 'error'"
+      (change)="alternarAlcanzables($event)"
+    />
+    <ng-container i18n="Etiqueta del filtro de ofertas alcanzables@@ofertas.alcanzables.etiqueta">Solo alcanzables</ng-container>
+  </label>
+  <p id="ayuda-alcanzables" data-ayuda-alcanzables aria-live="polite">{{ ayudaDeAlcanzables() }}</p>
+</div>
+
 @if (store.seleccionadas().size) {
   <app-barra-de-seleccion
     [cuantas]="store.seleccionadas().size"
@@ -211,7 +228,9 @@
       } @empty {
         <tr>
           <td class="vacio" [attr.colspan]="columnas().length + (conAcciones() ? 1 : 0) + (conSeleccion() ? 1 : 0)">
-            @if (store.busqueda().trim()) {
+            @if (soloAlcanzables() && estadoDeEncajes() === 'listo') {
+              <ng-container i18n="Tabla vacia por el filtro de alcanzables@@ofertas.vacia.alcanzables">Ninguna de estas ofertas es alcanzable ahora mismo.</ng-container>
+            } @else if (store.busqueda().trim()) {
               <ng-container i18n="Tabla vacia por la busqueda@@ofertas.vacia.busqueda">Ninguna oferta coincide con la búsqueda.</ng-container>
             } @else {
               <ng-container i18n="Tabla vacia por el filtro de estado@@ofertas.vacia.estado">No hay candidaturas en este estado.</ng-container>

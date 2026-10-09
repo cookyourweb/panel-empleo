@@ -3,18 +3,22 @@ import {
   afterRenderEffect,
   Component,
   computed,
+  effect,
   ElementRef,
   inject,
   input,
   LOCALE_ID,
   OnInit,
+  PendingTasks,
   signal,
+  untracked,
   viewChild,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 import { Accion, accionesPara, descripcionDeAccion, EnlacesDeAccion } from './acciones';
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
+import { FuenteDeEncaje, ResumenDeEncaje } from './encaje';
 import { CandidaturasStore, ColumnaOrdenable } from './candidaturas.store';
 import { CambiosDeCandidatura } from './edicion';
 import { Columna, COLUMNAS, valorDeCelda } from './columnas';
@@ -38,6 +42,16 @@ const ANCHO_CHECK = 40;
 /** Lo que dura un aviso: mas si se puede deshacer, para que de tiempo. */
 const DURACION_AVISO = 4500;
 const DURACION_AVISO_CON_DESHACER = 10000;
+
+/** El filtro de alcanzables: apagado, esperando al servidor, listo, o roto (y entonces no se ofrece). */
+const ENCAJES = {
+  inactivo: 'inactivo',
+  cargando: 'cargando',
+  listo: 'listo',
+  error: 'error',
+} as const;
+
+type EstadoDeEncajes = (typeof ENCAJES)[keyof typeof ENCAJES];
 
 interface Aviso {
   texto: string;
@@ -82,6 +96,33 @@ export class OfertasPage implements OnInit {
     return id ? this.store.vecinosDe(id) : {};
   });
   private readonly fuenteDeAcciones = inject(FuenteDeAcciones);
+  private readonly fuenteDeEncaje = inject(FuenteDeEncaje);
+  private readonly tareas = inject(PendingTasks);
+
+  protected readonly soloAlcanzables = signal(false);
+  protected readonly estadoDeEncajes = signal<EstadoDeEncajes>(ENCAJES.inactivo);
+  /** Lo que ya se sabe de cada oferta: no se vuelve a preguntar por ella. */
+  private readonly resumenes = signal<Readonly<Record<string, ResumenDeEncaje>>>({});
+
+  protected readonly ayudaDeAlcanzables = computed(() => {
+    const estado = this.estadoDeEncajes();
+    if (estado === ENCAJES.error) {
+      return $localize`:Explicacion de por que el filtro de alcanzables no esta disponible@@ofertas.alcanzables.error:No hemos podido consultar tu encaje, así que este filtro no está disponible. La tabla sigue completa; recarga la página para volver a intentarlo.`;
+    }
+    if (estado === ENCAJES.cargando) {
+      return $localize`:Aviso mientras se consulta el encaje de la lista@@ofertas.alcanzables.cargando:Consultando tu encaje…`;
+    }
+    if (estado !== ENCAJES.listo) {
+      return '';
+    }
+    const ids = this.store.idsDeOfertasFiltradas();
+    const alcanzables = ids.filter((id) => this.resumenes()[id]?.alcanzable).length;
+    if (alcanzables === 0) {
+      return $localize`:Aviso de que ninguna de las ofertas que se ven es alcanzable@@ofertas.alcanzables.ninguna:Ninguna de las ofertas que ves es alcanzable ahora mismo. Las que no mencionan tecnologías que comparar tampoco aparecen: no hay nada que medir.`;
+    }
+    const total = ids.length;
+    return $localize`:Cuantas de las ofertas que se ven son alcanzables@@ofertas.alcanzables.cuantas:Alcanzables entre las que ves: ${alcanzables}:alcanzables: de ${total}:total:. Las que no mencionan tecnologías que comparar no aparecen.`;
+  });
   /** null mientras no hay enlaces, y siempre en la demo publica. */
   protected readonly enlaces = signal<EnlacesDeAccion | null>(null);
   protected readonly anchoAcciones = ANCHO_ACCIONES;
@@ -113,6 +154,32 @@ export class OfertasPage implements OnInit {
   protected readonly hayEstado = computed(() => this.columnas().some((c) => c.clave === 'estado'));
 
   constructor() {
+    // Pregunta por lo que falta de la lista visible, en una sola llamada (la
+    // fuente la parte en lotes). Apagar el filtro no tira lo ya sabido.
+    effect(() => {
+      if (!this.soloAlcanzables()) {
+        return;
+      }
+      const ids = this.store.idsDeOfertasFiltradas();
+      untracked(() => {
+        const faltan = ids.filter((id) => !(id in this.resumenes()));
+        if (faltan.length) {
+          void this.consultarEncajes(faltan);
+        } else if (this.estadoDeEncajes() !== ENCAJES.error) {
+          this.estadoDeEncajes.set(ENCAJES.listo);
+        }
+      });
+    });
+
+    // Con el filtro en marcha y datos, la tabla se queda con las alcanzables.
+    effect(() => {
+      const conRestriccion = this.soloAlcanzables() && this.estadoDeEncajes() === ENCAJES.listo;
+      const resumenes = this.resumenes();
+      this.store.restringirAOfertas(
+        conRestriccion ? new Set(Object.keys(resumenes).filter((id) => resumenes[id].alcanzable)) : null,
+      );
+    });
+
     // Al abrirse, el foco entra en el panel para que el teclado siga ahi. Solo
     // al abrirse: al pasar a la siguiente, el foco se queda en el boton.
     let estabaAbierto = false;
@@ -160,6 +227,37 @@ export class OfertasPage implements OnInit {
 
   /** Lo que la ficha llama al guardar. Funcion flecha para no perder el this. */
   protected readonly guardar = (id: string, cambios: CambiosDeCandidatura) => this.store.guardarCambios(id, cambios);
+
+  protected alternarAlcanzables(evento: Event): void {
+    const marcada = (evento.target as HTMLInputElement).checked;
+    this.soloAlcanzables.set(marcada);
+    if (!marcada) {
+      this.estadoDeEncajes.update((estado) => (estado === ENCAJES.error ? estado : ENCAJES.inactivo));
+    }
+  }
+
+  /**
+   * Una sola peticion para lo que falta. Si falla, el filtro se apaga y se
+   * explica: nunca una tabla vacia sin motivo. Lo que el servidor no devuelve
+   * (ofertas que no son de quien mira) cuenta como no alcanzable, y asi no se
+   * vuelve a preguntar por ello en bucle.
+   */
+  private async consultarEncajes(ids: string[]): Promise<void> {
+    this.estadoDeEncajes.set(ENCAJES.cargando);
+    await this.tareas.run(async () => {
+      try {
+        const recibidos = await this.fuenteDeEncaje.resumen(ids);
+        const nuevos = Object.fromEntries(
+          ids.map((id): [string, ResumenDeEncaje] => [id, recibidos[id] ?? { alcanzable: false, cobertura: 0 }]),
+        );
+        this.resumenes.update((antes) => ({ ...antes, ...nuevos }));
+        this.estadoDeEncajes.set(this.soloAlcanzables() ? ENCAJES.listo : ENCAJES.inactivo);
+      } catch {
+        this.soloAlcanzables.set(false);
+        this.estadoDeEncajes.set(ENCAJES.error);
+      }
+    });
+  }
 
   protected filtrarPor(estado: EstadoDeCandidatura | null): void {
     this.store.filtrarPor(estado);

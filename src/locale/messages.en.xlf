@@ -2702,5 +2702,65 @@
         <target>You cover <ph id="0" equiv="cubiertos" disp="cubiertos"/> of <ph id="1" equiv="total" disp="total"/> requirements</target>
       </segment>
     </unit>
+    <unit id="ofertas.alcanzables.error">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:96</note>
+        <note category="description">Explicacion de por que el filtro de alcanzables no esta disponible</note>
+      </notes>
+      <segment>
+        <source>No hemos podido consultar tu encaje, así que este filtro no está disponible. La tabla sigue completa; recarga la página para volver a intentarlo.</source>
+        <target>We could not check your fit, so this filter is not available. The table is still complete; reload the page to try again.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.alcanzables.cargando">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:99</note>
+        <note category="description">Aviso mientras se consulta el encaje de la lista</note>
+      </notes>
+      <segment>
+        <source>Consultando tu encaje…</source>
+        <target>Checking your fit…</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.alcanzables.ninguna">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:107</note>
+        <note category="description">Aviso de que ninguna de las ofertas que se ven es alcanzable</note>
+      </notes>
+      <segment>
+        <source>Ninguna de las ofertas que ves es alcanzable ahora mismo. Las que no mencionan tecnologías que comparar tampoco aparecen: no hay nada que medir.</source>
+        <target>None of the offers you see is reachable right now. Offers that mention no technologies to compare do not appear either: there is nothing to measure.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.alcanzables.cuantas">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:110</note>
+        <note category="description">Cuantas de las ofertas que se ven son alcanzables</note>
+      </notes>
+      <segment>
+        <source>Alcanzables entre las que ves: <ph id="0" equiv="alcanzables" disp="alcanzables"/> de <ph id="1" equiv="total" disp="total"/>. Las que no mencionan tecnologías que comparar no aparecen.</source>
+        <target>Reachable among the ones you see: <ph id="0" equiv="alcanzables" disp="alcanzables"/> of <ph id="1" equiv="total" disp="total"/>. Offers that mention no technologies to compare do not appear.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.alcanzables.etiqueta">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:62</note>
+        <note category="description">Etiqueta del filtro de ofertas alcanzables</note>
+      </notes>
+      <segment>
+        <source>Solo alcanzables</source>
+        <target>Reachable only</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.vacia.alcanzables">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:262</note>
+        <note category="description">Tabla vacia por el filtro de alcanzables</note>
+      </notes>
+      <segment>
+        <source>Ninguna de estas ofertas es alcanzable ahora mismo.</source>
+        <target>None of these offers is reachable right now.</target>
+      </segment>
+    </unit>
   </file>
 </xliff>
