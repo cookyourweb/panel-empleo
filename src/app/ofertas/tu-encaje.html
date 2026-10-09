@@ -1,0 +1,78 @@
+<section class="encaje" aria-labelledby="titulo-encaje">
+  <h3 id="titulo-encaje" i18n="Titulo de la seccion de encaje@@encaje.titulo">Tu encaje</h3>
+
+  <!-- Una sola region viva: el lector de pantalla anuncia el paso de
+       "calculando" a su resultado sin que haya que buscarlo. -->
+  <div aria-live="polite">
+    @switch (vista().estado) {
+      @case ('cargando') {
+        <p i18n="Aviso mientras se calcula el encaje@@encaje.cargando">Calculando tu encaje…</p>
+      }
+      @case ('error') {
+        <p data-encaje-error i18n="Aviso de que el encaje fallo y la ficha sigue funcionando@@encaje.error">
+          No hemos podido calcular tu encaje ahora. El resto de la ficha funciona igual; prueba de nuevo en un rato.
+        </p>
+      }
+      @case ('sin-perfil') {
+        <p i18n="Explicacion de que el encaje necesita perfil@@encaje.sinPerfil">
+          Para calcular tu encaje necesitamos tu perfil.
+        </p>
+        <p>
+          <a routerLink="/alta" i18n="Enlace al alta desde el encaje@@encaje.sinPerfil.enlace">Completar mi perfil</a>
+        </p>
+      }
+      @case ('listo') {
+        @if (encaje(); as e) {
+          @if (sinDatos()) {
+            <p data-encaje-sin-datos i18n="Aviso de que la oferta no tiene requisitos comparables@@encaje.sinDatos">
+              Sin datos para evaluar: la oferta no menciona tecnologías que podamos comparar con tu CV. No es una mala
+              nota, es que no hay nada que medir.
+            </p>
+          } @else {
+            <p class="cobertura" data-encaje-cobertura>{{ cobertura() }}</p>
+            @if (e.alcanzable) {
+              <p class="veredicto" data-encaje-veredicto i18n="Veredicto cuando la oferta es alcanzable@@encaje.alcanzable">
+                Esta te la puedes pedir.
+              </p>
+            }
+          }
+
+          @if (e.cubiertos.length) {
+            <h4 i18n="Titulo de la lista de requisitos cubiertos@@encaje.cubiertos">Lo que ya demuestras</h4>
+            <ul>
+              @for (c of e.cubiertos; track c.requisito) {
+                <li data-encaje-cubierto>
+                  <strong>{{ c.requisito }}</strong>
+                  <blockquote>{{ c.evidencia }}</blockquote>
+                </li>
+              }
+            </ul>
+          }
+
+          @if (e.huecos.length) {
+            <h4 i18n="Titulo de la lista de huecos@@encaje.huecos">Lo que te falta</h4>
+            <ul>
+              @for (h of e.huecos; track h.requisito) {
+                <li data-encaje-hueco>
+                  {{ h.requisito }}
+                  @if (h.eliminatorio) {
+                    <strong class="eliminatorio" i18n="Marca de un hueco que la oferta pide como imprescindible@@encaje.eliminatorio">(imprescindible)</strong>
+                  }
+                </li>
+              }
+            </ul>
+          }
+
+          @if (e.noEvaluables.length) {
+            <h4 i18n="Titulo de la lista de lo que no se puede evaluar@@encaje.noEvaluables">Lo que no podemos medir</h4>
+            <ul>
+              @for (n of e.noEvaluables; track n) {
+                <li data-encaje-no-evaluable>{{ n }}</li>
+              }
+            </ul>
+          }
+        }
+      }
+    }
+  </div>
+</section>

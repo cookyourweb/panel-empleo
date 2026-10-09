@@ -2315,5 +2315,122 @@
         <source>Cancelar</source>
       </segment>
     </unit>
+    <unit id="encaje.titulo">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:2</note>
+        <note category="description">Titulo de la seccion de encaje</note>
+      </notes>
+      <segment>
+        <source>Tu encaje</source>
+      </segment>
+    </unit>
+    <unit id="encaje.cargando">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:9</note>
+        <note category="description">Aviso mientras se calcula el encaje</note>
+      </notes>
+      <segment>
+        <source>Calculando tu encaje…</source>
+      </segment>
+    </unit>
+    <unit id="encaje.error">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:12</note>
+        <note category="description">Aviso de que el encaje fallo y la ficha sigue funcionando</note>
+      </notes>
+      <segment>
+        <source>No hemos podido calcular tu encaje ahora. El resto de la ficha funciona igual; prueba de nuevo en un rato.</source>
+      </segment>
+    </unit>
+    <unit id="encaje.sinPerfil">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:18</note>
+        <note category="description">Explicacion de que el encaje necesita perfil</note>
+      </notes>
+      <segment>
+        <source>Para calcular tu encaje necesitamos tu perfil.</source>
+      </segment>
+    </unit>
+    <unit id="encaje.sinPerfil.enlace">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:22</note>
+        <note category="description">Enlace al alta desde el encaje</note>
+      </notes>
+      <segment>
+        <source>Completar mi perfil</source>
+      </segment>
+    </unit>
+    <unit id="encaje.sinDatos">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:30</note>
+        <note category="description">Aviso de que la oferta no tiene requisitos comparables</note>
+      </notes>
+      <segment>
+        <source>Sin datos para evaluar: la oferta no menciona tecnologías que podamos comparar con tu CV. No es una mala nota, es que no hay nada que medir.</source>
+      </segment>
+    </unit>
+    <unit id="encaje.alcanzable">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:38</note>
+        <note category="description">Veredicto cuando la oferta es alcanzable</note>
+      </notes>
+      <segment>
+        <source>Esta te la puedes pedir.</source>
+      </segment>
+    </unit>
+    <unit id="encaje.cubiertos">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:45</note>
+        <note category="description">Titulo de la lista de requisitos cubiertos</note>
+      </notes>
+      <segment>
+        <source>Lo que ya demuestras</source>
+      </segment>
+    </unit>
+    <unit id="encaje.huecos">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:57</note>
+        <note category="description">Titulo de la lista de huecos</note>
+      </notes>
+      <segment>
+        <source>Lo que te falta</source>
+      </segment>
+    </unit>
+    <unit id="encaje.eliminatorio">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:64</note>
+        <note category="description">Marca de un hueco que la oferta pide como imprescindible</note>
+      </notes>
+      <segment>
+        <source>(imprescindible)</source>
+      </segment>
+    </unit>
+    <unit id="encaje.noEvaluables">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:73</note>
+        <note category="description">Titulo de la lista de lo que no se puede evaluar</note>
+      </notes>
+      <segment>
+        <source>Lo que no podemos medir</source>
+      </segment>
+    </unit>
+    <unit id="encaje.cobertura.uno">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.ts:55</note>
+        <note category="description">Cuantos requisitos cubre el CV, cuando solo hay uno</note>
+      </notes>
+      <segment>
+        <source>Cubres <ph id="0" equiv="cubiertos" disp="cubiertos"/> de <ph id="1" equiv="total" disp="total"/> requisito</source>
+      </segment>
+    </unit>
+    <unit id="encaje.cobertura.varios">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.ts:56</note>
+        <note category="description">Cuantos requisitos cubre el CV</note>
+      </notes>
+      <segment>
+        <source>Cubres <ph id="0" equiv="cubiertos" disp="cubiertos"/> de <ph id="1" equiv="total" disp="total"/> requisitos</source>
+      </segment>
+    </unit>
   </file>
 </xliff>

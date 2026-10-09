@@ -6,6 +6,7 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { EnlacesDeAccion } from './acciones';
 import { CandidaturasStore } from './candidaturas.store';
 import { DetallePage } from './detalle.page';
+import { Encaje, FuenteDeEncaje, ResultadoDeEncaje } from './encaje';
 import { FuenteDeAcciones } from './fuente-de-acciones';
 import { RepositorioDemo } from './repositorio-demo';
 import { RepositorioDeCandidaturas } from './repositorio-de-candidaturas';
@@ -17,7 +18,22 @@ describe('DetallePage', () => {
     enviarEmpresa: 'https://n8n.test/enviar?id=',
   };
 
-  async function abrir(ruta: string, enlaces: EnlacesDeAccion | null = null): Promise<HTMLElement> {
+  const ENCAJE: Encaje = {
+    cubiertos: [{ requisito: 'Angular', evidencia: 'Angular 17 en Acme' }],
+    huecos: [],
+    noEvaluables: [],
+    alcanzable: true,
+    cobertura: 1,
+  };
+  const CON_ENCAJE: Pick<FuenteDeEncaje, 'obtener'> = {
+    obtener: async (): Promise<ResultadoDeEncaje> => ({ estado: 'listo', encaje: ENCAJE }),
+  };
+
+  async function abrir(
+    ruta: string,
+    enlaces: EnlacesDeAccion | null = null,
+    encaje: Pick<FuenteDeEncaje, 'obtener'> = CON_ENCAJE,
+  ): Promise<HTMLElement> {
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
@@ -25,6 +41,7 @@ describe('DetallePage', () => {
         CandidaturasStore,
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useValue: { enlaces: async () => enlaces } },
+        { provide: FuenteDeEncaje, useValue: encaje },
       ],
     });
     const harness = await RouterTestingHarness.create();
@@ -140,5 +157,46 @@ describe('DetallePage', () => {
     const pagina = await abrir('/candidatura/c2');
 
     expect(pagina.querySelector('details summary')?.textContent).toMatch(/\d+ campos sin dato/);
+  });
+  describe('Tu encaje', () => {
+    it('enseña el encaje de la oferta abierta con su evidencia', async () => {
+      const pagina = await abrir('/candidatura/c1');
+
+      expect(pagina.querySelector('app-tu-encaje')?.textContent).toContain('Cubres 1 de 1 requisito');
+      expect(pagina.querySelector('[data-encaje-cubierto]')?.textContent).toContain('Angular 17 en Acme');
+    });
+
+    it('pide el encaje por el id de la oferta, no por el de la candidatura', async () => {
+      const obtener = vi.fn(CON_ENCAJE.obtener);
+
+      await abrir('/candidatura/c1', null, { obtener });
+
+      expect(obtener).toHaveBeenCalledWith('o1');
+    });
+
+    it('si el encaje falla, la ficha sigue entera y se dice', async () => {
+      const pagina = await abrir('/candidatura/c1', null, {
+        obtener: async () => {
+          throw new Error('caido');
+        },
+      });
+
+      expect(pagina.querySelector('[data-encaje-error]')).not.toBeNull();
+      expect(pagina.textContent).toContain('Northwind Labs');
+    });
+
+    it('sin perfil enlaza al alta', async () => {
+      const pagina = await abrir('/candidatura/c1', null, { obtener: async () => ({ estado: 'sin-perfil' }) });
+
+      expect(pagina.querySelector('app-tu-encaje a[href="/alta"]')).not.toBeNull();
+    });
+
+    it('una candidatura que no existe no pide encaje', async () => {
+      const obtener = vi.fn(CON_ENCAJE.obtener);
+
+      await abrir('/candidatura/no-existe', null, { obtener });
+
+      expect(obtener).not.toHaveBeenCalled();
+    });
   });
 });

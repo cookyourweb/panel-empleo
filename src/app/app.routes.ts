@@ -9,6 +9,8 @@ import { elegirRepositorioDeCuenta } from './cuenta/elegir-repositorio-de-cuenta
 import { RepositorioDeCuenta } from './cuenta/repositorio-de-cuenta';
 import { CandidaturasStore } from './ofertas/candidaturas.store';
 import { EditorDeCandidaturas, elegirEditor } from './ofertas/editor-de-candidaturas';
+import { elegirFuenteDeEncaje } from './ofertas/elegir-fuente-de-encaje';
+import { FuenteDeEncaje } from './ofertas/encaje';
 import { elegirRepositorio } from './ofertas/elegir-repositorio';
 import { elegirFuenteDeAcciones, FuenteDeAcciones } from './ofertas/fuente-de-acciones';
 import { RepositorioDeCandidaturas } from './ofertas/repositorio-de-candidaturas';
@@ -21,6 +23,12 @@ import { soloConSesion } from './sesion/solo-con-sesion';
  */
 const ALTA_CON_BACKEND = false;
 const ADAPTADORES_DE_ALTA = elegirAdaptadoresDeAlta(ALTA_CON_BACKEND);
+
+/**
+ * El encaje (GET /ofertas/{id}/encaje, POST /encajes) tiene su propio
+ * interruptor: llega con el cv-server C13, que no es el mismo dia que el alta.
+ */
+const ENCAJE_CON_BACKEND = false;
 
 export const routes: Routes = [
   {
@@ -64,6 +72,7 @@ export const routes: Routes = [
       { provide: RepositorioDeCandidaturas, useClass: elegirRepositorio(isDevMode()) },
       { provide: FuenteDeAcciones, useClass: elegirFuenteDeAcciones(isDevMode()) },
       { provide: EditorDeCandidaturas, useClass: elegirEditor(isDevMode()) },
+      { provide: FuenteDeEncaje, useClass: elegirFuenteDeEncaje(ENCAJE_CON_BACKEND) },
     ],
     children: [
       {
