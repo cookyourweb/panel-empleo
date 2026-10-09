@@ -46,6 +46,24 @@
         <source>Candidatura</source>
       </segment>
     </unit>
+    <unit id="ruta.alta">
+      <notes>
+        <note category="location">src/app/app.routes.ts:44</note>
+        <note category="description">Titulo de la pestana en el alta</note>
+      </notes>
+      <segment>
+        <source>Tu perfil</source>
+      </segment>
+    </unit>
+    <unit id="ruta.cuenta">
+      <notes>
+        <note category="location">src/app/app.routes.ts:53</note>
+        <note category="description">Titulo de la pestana en la cuenta</note>
+      </notes>
+      <segment>
+        <source>Tu cuenta</source>
+      </segment>
+    </unit>
     <unit id="app.titulo">
       <notes>
         <note category="location">src/app/app.ts:15</note>
