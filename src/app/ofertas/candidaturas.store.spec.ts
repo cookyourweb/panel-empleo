@@ -503,3 +503,52 @@ describe('CandidaturasStore · ordenar por seguimiento', () => {
     });
   });
 });
+
+describe('CandidaturasStore · restringir a ofertas', () => {
+  it('sin restriccion se ven todas', async () => {
+    const s = store(TRES);
+    await s.cargar();
+
+    expect(s.visibles()).toHaveLength(3);
+  });
+
+  it('con una restriccion solo quedan las candidaturas de esas ofertas', async () => {
+    const s = store(TRES);
+    await s.cargar();
+
+    s.restringirAOfertas(new Set(['o1', 'o3']));
+
+    expect(s.visibles().map((una) => una.id).sort()).toEqual(['c1', 'c3']);
+  });
+
+  it('quitar la restriccion las devuelve todas', async () => {
+    const s = store(TRES);
+    await s.cargar();
+    s.restringirAOfertas(new Set(['o1']));
+
+    s.restringirAOfertas(null);
+
+    expect(s.visibles()).toHaveLength(3);
+  });
+
+  it('convive con el filtro de estado y la busqueda', async () => {
+    const s = store(TRES);
+    await s.cargar();
+
+    s.restringirAOfertas(new Set(['o1', 'o2', 'o3']));
+    s.filtrarPor('Pendiente');
+    s.buscar('beta');
+
+    expect(s.visibles().map((una) => una.id)).toEqual(['c2']);
+  });
+
+  it('las ofertas por las que se pregunta no dependen de la restriccion, para no pedir en bucle', async () => {
+    const s = store(TRES);
+    await s.cargar();
+
+    s.restringirAOfertas(new Set(['o1']));
+    s.filtrarPor('Pendiente');
+
+    expect(s.idsDeOfertasFiltradas().sort()).toEqual(['o1', 'o2']);
+  });
+});

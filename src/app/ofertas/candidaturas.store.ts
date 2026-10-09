@@ -62,6 +62,8 @@ export class CandidaturasStore {
   private readonly filtro = signal<EstadoDeCandidatura | null>(null);
   private readonly texto = signal('');
   private readonly ordenActual = signal<Orden | null>(null);
+  /** Los ids de oferta que pueden verse, o null si no hay restriccion. Lo pone quien sabe por que (el encaje). */
+  private readonly ofertasPermitidas = signal<ReadonlySet<string> | null>(null);
 
   readonly candidaturas = this.todas.asReadonly();
   readonly filtroActivo = this.filtro.asReadonly();
@@ -71,17 +73,10 @@ export class CandidaturasStore {
   readonly opcionesDeEdicion = this.opciones.asReadonly();
   readonly eliminadas = this.papelera.asReadonly();
 
-  /**
-   * Las que se estan viendo ahora mismo: filtradas por estado, por texto y en
-   * el orden elegido.
-   *
-   * Filtrar no descarta nada: las caducadas dejan de estorbar sin borrarse, y
-   * siguen contando en el recuento.
-   */
-  readonly visibles = computed(() => {
+  /** Por estado y por texto, antes de cualquier restriccion externa. */
+  private readonly filtradas = computed(() => {
     const estado = this.filtro();
     const texto = normalizar(this.texto().trim());
-    const orden = this.ordenActual();
 
     let lista = estado === null ? this.todas() : this.todas().filter((una) => una.estado === estado);
 
@@ -92,6 +87,27 @@ export class CandidaturasStore {
         ),
       );
     }
+    return lista;
+  });
+
+  /**
+   * Las ofertas de la lista antes de restringirla. Es por las que hay que
+   * preguntar: si dependiera de la restriccion, preguntar por ellas la
+   * cambiaria y volveria a preguntar.
+   */
+  readonly idsDeOfertasFiltradas = computed(() => this.filtradas().map((una) => una.oferta.id));
+
+  /**
+   * Las que se estan viendo ahora mismo: filtradas por estado, por texto, por la restriccion de ofertas y en
+   * el orden elegido.
+   *
+   * Filtrar no descarta nada: las caducadas dejan de estorbar sin borrarse, y
+   * siguen contando en el recuento.
+   */
+  readonly visibles = computed(() => {
+    const orden = this.ordenActual();
+    const permitidas = this.ofertasPermitidas();
+    const lista = permitidas ? this.filtradas().filter((una) => permitidas.has(una.oferta.id)) : this.filtradas();
 
     return [...lista].sort((a, b) => (orden === null ? masRecientePrimero(a, b) : this.comparar(a, b, orden)));
   });
@@ -225,6 +241,11 @@ export class CandidaturasStore {
   /** Pasar null quita el filtro y vuelve a enseñarlas todas. */
   filtrarPor(estado: EstadoDeCandidatura | null): void {
     this.filtro.set(estado);
+  }
+
+  /** Pasar null quita la restriccion. Se suma al estado y a la busqueda, no los sustituye. */
+  restringirAOfertas(ids: ReadonlySet<string> | null): void {
+    this.ofertasPermitidas.set(ids);
   }
 
   buscar(texto: string): void {
