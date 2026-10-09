@@ -2216,5 +2216,77 @@
         <source>Ya tenemos tu perfil. Puedes borrar tus datos y tu cuenta cuando quieras.</source>
       </segment>
     </unit>
+    <unit id="cuenta.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:18</note>
+        <note category="description">Titulo de la pagina de cuenta</note>
+      </notes>
+      <segment>
+        <source>Tu cuenta</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.explicacion">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:21</note>
+        <note category="description">Que se borra al eliminar la cuenta</note>
+      </notes>
+      <segment>
+        <source>Si borras tu cuenta eliminamos tu perfil, tu CV cifrado y tus consentimientos. Es inmediato y no se puede deshacer.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:26</note>
+        <note category="description">Boton que inicia el borrado</note>
+      </notes>
+      <segment>
+        <source>Borrar mi cuenta</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.confirmar.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:37</note>
+        <note category="description">Titulo de la confirmacion del borrado</note>
+      </notes>
+      <segment>
+        <source>¿Seguro que quieres borrar tu cuenta?</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.confirmar.texto">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:41</note>
+        <note category="description">Aviso final antes de borrar</note>
+      </notes>
+      <segment>
+        <source>Se borrarán tu perfil, tu CV cifrado y tus consentimientos, y se cerrará tu sesión. Para volver a usar el panel necesitarías una nueva invitación.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.error">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:47</note>
+        <note category="description">Error al borrar la cuenta</note>
+      </notes>
+      <segment>
+        <source>No hemos podido borrar tu cuenta. No se ha borrado nada: prueba de nuevo.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.confirmar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:53</note>
+        <note category="description">Boton que confirma el borrado</note>
+      </notes>
+      <segment>
+        <source>Sí, borrar todo</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cancelar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:56</note>
+        <note category="description">Boton que cancela el borrado</note>
+      </notes>
+      <segment>
+        <source>Cancelar</source>
+      </segment>
+    </unit>
   </file>
 </xliff>
