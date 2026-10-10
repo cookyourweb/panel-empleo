@@ -110,8 +110,8 @@ describe('CandidaturasStore', () => {
 
 describe('CandidaturasStore · buscar', () => {
   const VARIAS: Candidatura[] = [
-    { id: 'a', estado: 'Pendiente', oferta: { id: 'a', empresa: 'Heymondo', puesto: 'Senior Frontend', idioma: 'en', ubicacion: 'España' } },
-    { id: 'b', estado: 'Enviado', oferta: { id: 'b', empresa: 'Factorial', puesto: 'Product Engineer', idioma: 'en', ubicacion: 'Madrid' } },
+    { id: 'a', estado: 'Pendiente', oferta: { id: 'a', empresa: 'Acme Travel', puesto: 'Senior Frontend', idioma: 'en', ubicacion: 'España' } },
+    { id: 'b', estado: 'Enviado', oferta: { id: 'b', empresa: 'Acme HR', puesto: 'Product Engineer', idioma: 'en', ubicacion: 'Madrid' } },
     { id: 'c', estado: 'Pendiente', oferta: { id: 'c', empresa: 'Axpo', puesto: 'AI Engineer', idioma: 'en', ubicacion: 'Málaga' } },
   ];
 
@@ -119,7 +119,7 @@ describe('CandidaturasStore · buscar', () => {
     const s = store(VARIAS);
     await s.cargar();
 
-    s.buscar('factorial');
+    s.buscar('acme hr');
     expect(s.visibles().map((u) => u.id)).toEqual(['b']);
 
     s.buscar('frontend');
