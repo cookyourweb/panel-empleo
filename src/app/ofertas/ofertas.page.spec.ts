@@ -7,7 +7,10 @@ import { provideRouter } from '@angular/router';
 import { EnlacesDeAccion } from './acciones';
 import { CandidaturasStore } from './candidaturas.store';
 import { Candidatura } from './dominio';
+import { FuenteDeEncaje } from './encaje';
 import { FuenteDeAcciones, FuenteDeAccionesDemo } from './fuente-de-acciones';
+import { ENCAJE_ACTIVO } from '../configuracion';
+import { FuenteDeEncajeDemo } from './fuente-de-encaje-demo';
 import { OfertasPage } from './ofertas.page';
 import { RepositorioDemo } from './repositorio-demo';
 import { RepositorioDeCandidaturas } from './repositorio-de-candidaturas';
@@ -24,6 +27,7 @@ describe('OfertasPage', () => {
         CandidaturasStore,
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
+        { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
       ],
     }).compileComponents();
   });
@@ -255,6 +259,7 @@ describe('OfertasPage · números según el idioma activo', () => {
         CandidaturasStore,
         { provide: RepositorioDeCandidaturas, useValue: { listar: async () => MUCHAS } },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
+        { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
       ],
     }).compileComponents();
     const fixture = TestBed.createComponent(OfertasPage);
@@ -266,5 +271,140 @@ describe('OfertasPage · números según el idioma activo', () => {
     registerLocaleData(localeDe);
 
     expect(await recuentoEn('de')).toBe('1.100 de 1.100');
+  });
+});
+
+describe('OfertasPage · con el encaje apagado', () => {
+  it('no ofrece el filtro de alcanzables ni pide encajes', async () => {
+    localStorage.clear();
+    const resumen = vi.fn();
+    await TestBed.configureTestingModule({
+      imports: [OfertasPage],
+      providers: [
+        provideRouter([]),
+        CandidaturasStore,
+        { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
+        { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
+        { provide: FuenteDeEncaje, useValue: { resumen } },
+        { provide: ENCAJE_ACTIVO, useValue: false },
+      ],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(OfertasPage);
+    await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+
+    expect(pagina.querySelector('[data-filtro-alcanzables]')).toBeNull();
+    expect(pagina.querySelector('.alcanzables')).toBeNull();
+    expect(resumen).not.toHaveBeenCalled();
+  });
+});
+
+describe('OfertasPage · filtro de alcanzables', () => {
+  let resumen: ReturnType<typeof vi.fn>;
+
+  async function montar(fuente?: Partial<FuenteDeEncaje>) {
+    localStorage.clear();
+    const demo = new FuenteDeEncajeDemo();
+    resumen = vi.fn((ids: string[]) => demo.resumen(ids));
+    await TestBed.configureTestingModule({
+      imports: [OfertasPage],
+      providers: [
+        provideRouter([]),
+        CandidaturasStore,
+        { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
+        { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
+        { provide: FuenteDeEncaje, useValue: fuente ?? { resumen } },
+        { provide: ENCAJE_ACTIVO, useValue: true },
+      ],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(OfertasPage);
+    await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+    const casilla = () => pagina.querySelector<HTMLInputElement>('[data-filtro-alcanzables]');
+    const filas = () => pagina.querySelectorAll('table tbody tr').length;
+    const marcar = async () => {
+      casilla()?.click();
+      await fixture.whenStable();
+    };
+    return { fixture, pagina, casilla, filas, marcar };
+  }
+
+  it('es una casilla con su etiqueta, apagada al empezar', async () => {
+    const { pagina, casilla } = await montar();
+
+    expect(casilla()?.checked).toBe(false);
+    expect(casilla()?.closest('label')?.textContent).toContain('Solo alcanzables');
+    expect(pagina.querySelector('[data-ayuda-alcanzables]')?.getAttribute('aria-live')).toBe('polite');
+  });
+
+  it('sin activarla no pregunta nada al servidor', async () => {
+    await montar();
+
+    expect(resumen).not.toHaveBeenCalled();
+  });
+
+  it('al activarla solo quedan las ofertas alcanzables, con una sola peticion para toda la lista', async () => {
+    const { filas, marcar } = await montar();
+    expect(filas()).toBe(13);
+
+    await marcar();
+
+    expect(resumen).toHaveBeenCalledTimes(1);
+    expect(resumen.mock.calls[0][0]).toHaveLength(13);
+    expect(filas()).toBe(3);
+  });
+
+  it('al apagarla vuelven todas', async () => {
+    const { filas, marcar } = await montar();
+    await marcar();
+
+    await marcar();
+
+    expect(filas()).toBe(13);
+  });
+
+  it('convive con el filtro de estado y no vuelve a preguntar por lo que ya sabe', async () => {
+    const { fixture, pagina, filas, marcar } = await montar();
+    await marcar();
+
+    pagina.querySelector<HTMLButtonElement>('[data-filtro="Entrevista"]')?.click();
+    await fixture.whenStable();
+
+    expect(filas()).toBe(1);
+    expect(resumen).toHaveBeenCalledTimes(1);
+  });
+
+  it('si ninguna de las que ves es alcanzable, lo dice en vez de dejar la tabla vacia sin motivo', async () => {
+    const { fixture, pagina, marcar } = await montar();
+    pagina.querySelector<HTMLButtonElement>('[data-filtro="Caducada"]')?.click();
+    await fixture.whenStable();
+
+    await marcar();
+
+    expect(pagina.querySelector('td.vacio')?.textContent).toContain('alcanzable');
+    expect(pagina.querySelector('[data-ayuda-alcanzables]')?.textContent).toContain('Ninguna');
+  });
+
+  it('cuenta cuantas son alcanzables entre las que se ven', async () => {
+    const { pagina, marcar } = await montar();
+
+    await marcar();
+
+    expect(pagina.querySelector('[data-ayuda-alcanzables]')?.textContent).toContain('3 de 13');
+  });
+
+  it('si el encaje falla, el filtro se desactiva con una explicacion y la tabla sigue entera', async () => {
+    const { pagina, casilla, filas, marcar } = await montar({
+      resumen: async () => {
+        throw new Error('caido');
+      },
+    });
+
+    await marcar();
+
+    expect(casilla()?.disabled).toBe(true);
+    expect(casilla()?.checked).toBe(false);
+    expect(filas()).toBe(13);
+    expect(pagina.querySelector('[data-ayuda-alcanzables]')?.textContent).toContain('No hemos podido');
   });
 });

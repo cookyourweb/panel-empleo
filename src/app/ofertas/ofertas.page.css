@@ -454,3 +454,27 @@ tbody tr[aria-selected='true'] td {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }
+
+.alcanzables {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.alcanzables label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.alcanzables input:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.alcanzables p {
+  margin: 0;
+  color: hsl(var(--muted-foreground));
+}

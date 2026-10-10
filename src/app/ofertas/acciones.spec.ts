@@ -8,7 +8,7 @@ const ENLACES: EnlacesDeAccion = {
 };
 
 function una(estado: Candidatura['estado'], id = '3e611515-f4b2-8189-abb1-efee59dbeaaa', cv?: string): Candidatura {
-  return { id, estado, ...(cv ? { cv } : {}), oferta: { id, empresa: 'bunch', puesto: 'Staff', idioma: 'en' } };
+  return { id, estado, ...(cv ? { cv } : {}), oferta: { id, empresa: 'Nordlicht Logistics', puesto: 'Staff', idioma: 'en' } };
 }
 
 const CV = 'https://docs.google.com/document/d/x';

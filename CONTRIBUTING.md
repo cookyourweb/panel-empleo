@@ -1,23 +1,23 @@
-# Cómo se trabaja en este repositorio
+# How we work in this repository
 
-Las reglas del panel. Valen igual para una persona y para un agente.
-Las convenciones de Angular, los tests y la internacionalización están
-explicadas en el [README](README.es.md).
+The rules of the panel. They apply equally to a person and to an agent.
+The Angular conventions, the tests and internationalization are
+explained in the [README](README.md).
 
-## Idioma: commits y comentarios en inglés
+## Language: commits and comments in English
 
-Desde el 8 de octubre de 2026. El repositorio es público y lo leen empresas de
-fuera, así que lo que se escribe a partir de ahora va en inglés:
+Since 8 October 2026. The repository is public and read by companies from
+abroad, so what is written from now on goes in English:
 
-- **Mensajes de commit y descripciones de PR, en inglés.** Son lo primero que se
-  lee del historial. Se mantiene el formato convencional (`fix:`, `feat:`...) y
-  la regla de explicar el porqué.
-- **Comentarios del código nuevo o del que se toque, en inglés.**
-- **Los nombres del dominio se quedan en español** (`Oferta`, `Candidatura`,
-  `autenticacion`, `ClavesPublicas`...). Son el lenguaje del negocio, una
-  búsqueda de empleo en España, y el código usa las mismas palabras (lenguaje
-  ubicuo). No se renombran.
-- **Los comentarios antiguos no se traducen de golpe:** pasan a inglés cuando se
-  toca ese fichero. Traducirlo todo de una vez llena el historial de ruido.
-- **La documentación sigue bilingüe:** `README.md` en inglés y `README.es.md` en
-  español, con los mismos datos.
+- **Commit messages and PR descriptions, in English.** They are the first thing read
+  in the history. The conventional format is kept (`fix:`, `feat:`...) and so is
+  the rule of explaining the why.
+- **Comments in new code, or in code you touch, in English.**
+- **Domain names stay in Spanish** (`Oferta`, `Candidatura`,
+  `autenticacion`, `ClavesPublicas`...). They are the language of the business, a
+  job search in Spain, and the code uses the same words (ubiquitous
+  language). They are not renamed.
+- **Old comments are not translated all at once:** they move to English when that file
+  is touched. Translating everything at once fills the history with noise.
+- **Documentation stays bilingual:** `README.md` in English and `README.es.md` in
+  Spanish, with the same facts.

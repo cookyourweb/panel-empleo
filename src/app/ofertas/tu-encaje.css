@@ -1,0 +1,48 @@
+.encaje {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+}
+
+h3,
+h4 {
+  margin: 0 0 0.5rem;
+}
+
+h4 {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.cobertura {
+  margin: 0 0 0.5rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.veredicto {
+  margin: 0 0 0.5rem;
+}
+
+ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+li + li {
+  margin-top: 0.5rem;
+}
+
+blockquote {
+  margin: 0.15rem 0 0;
+  padding-left: 0.75rem;
+  border-left: 3px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  overflow-wrap: anywhere;
+}
+
+/* La marca no depende del color: lleva texto. */
+.eliminatorio {
+  margin-left: 0.25rem;
+}

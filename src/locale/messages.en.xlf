@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="es" trgLang="en">
   <file id="ngi18n" original="ng.template">
+    <unit id="app.cuenta">
+      <notes>
+        <note category="location">src/app/app.html:8</note>
+        <note category="description">Enlace de la cabecera a la cuenta</note>
+      </notes>
+      <segment>
+        <source>Tu cuenta</source>
+        <target>Your account</target>
+      </segment>
+    </unit>
     <unit id="app.saltarAlContenido">
       <notes>
         <note category="location">src/app/app.html:2,8</note>
@@ -39,6 +49,26 @@
       <segment>
         <source>Candidatura</source>
         <target>Application</target>
+      </segment>
+    </unit>
+    <unit id="ruta.alta">
+      <notes>
+        <note category="location">src/app/app.routes.ts:44</note>
+        <note category="description">Titulo de la pestana en el alta</note>
+      </notes>
+      <segment>
+        <source>Tu perfil</source>
+        <target>Your profile</target>
+      </segment>
+    </unit>
+    <unit id="ruta.cuenta">
+      <notes>
+        <note category="location">src/app/app.routes.ts:53</note>
+        <note category="description">Titulo de la pestana en la cuenta</note>
+      </notes>
+      <segment>
+        <source>Tu cuenta</source>
+        <target>Your account</target>
       </segment>
     </unit>
     <unit id="app.titulo">
@@ -1940,6 +1970,796 @@
       <segment>
         <source>Por ahora el acceso es por invitación y forma parte de CookYourWebAI.</source>
         <target>Access is by invitation for now, as part of CookYourWebAI.</target>
+      </segment>
+    </unit>
+    <unit id="alta.titulo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:19</note>
+        <note category="description">Titulo de la pantalla de alta</note>
+      </notes>
+      <segment>
+        <source>Tu perfil</source>
+        <target>Your profile</target>
+      </segment>
+    </unit>
+    <unit id="alta.extrayendo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:25</note>
+        <note category="description">Aviso de que se esta leyendo el CV</note>
+      </notes>
+      <segment>
+        <source>Leyendo tu CV, un momento</source>
+        <target>Reading your CV, one moment</target>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.titulo">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:14</note>
+        <note category="description">Titulo del paso de consentimiento</note>
+      </notes>
+      <segment>
+        <source>Antes de empezar</source>
+        <target>Before you start</target>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.texto">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:17</note>
+        <note category="description">Explicacion de que pasa con el CV</note>
+      </notes>
+      <segment>
+        <source>Guardamos tu CV cifrado. Para proponerte los datos de tu perfil, el texto de tu CV puede enviarse una sola vez a proveedores externos de inteligencia artificial (Anthropic y Groq). Puedes borrar tu CV y tu cuenta cuando quieras.</source>
+        <target>We store your CV encrypted. To suggest your profile details, the text of your CV may be sent once to external artificial intelligence providers (Anthropic and Groq). You can delete your CV and your account whenever you want.</target>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.casilla">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:33</note>
+        <note category="description">Casilla de consentimiento</note>
+      </notes>
+      <segment>
+        <source>Entiendo y acepto que mi CV se guarde cifrado y que pueda enviarse a Anthropic y Groq para extraer mi perfil.</source>
+        <target>I understand and agree that my CV is stored encrypted and may be sent to Anthropic and Groq to extract my profile.</target>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.error">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:40</note>
+        <note category="description">Error al registrar el consentimiento</note>
+      </notes>
+      <segment>
+        <source>No hemos podido registrar tu consentimiento. Prueba de nuevo.</source>
+        <target>We could not record your consent. Please try again.</target>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.continuar">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:51</note>
+        <note category="description">Boton que acepta el consentimiento</note>
+      </notes>
+      <segment>
+        <source>Continuar</source>
+        <target>Continue</target>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.aMano">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:59</note>
+        <note category="description">Boton para rellenar el perfil sin subir CV</note>
+      </notes>
+      <segment>
+        <source>Prefiero rellenar el perfil a mano</source>
+        <target>I prefer to fill in my profile by hand</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.rechazo.tamano">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:6</note>
+        <note category="description">Rechazo de la subida, archivo grande</note>
+      </notes>
+      <segment>
+        <source>El archivo es demasiado grande. El máximo son 2 MB.</source>
+        <target>The file is too large. The maximum is 2 MB.</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.rechazo.tipo">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:7</note>
+        <note category="description">Rechazo de la subida, tipo de archivo</note>
+      </notes>
+      <segment>
+        <source>Solo se aceptan archivos PDF o DOCX.</source>
+        <target>Only PDF or DOCX files are accepted.</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.rechazo.ilegible">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:8</note>
+        <note category="description">Rechazo de la subida, sin texto legible</note>
+      </notes>
+      <segment>
+        <source>No hemos podido leer texto en el archivo. Prueba con otro o rellena el perfil a mano.</source>
+        <target>We could not read any text in the file. Try another one or fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.rechazo.sinConsentimiento">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:9</note>
+        <note category="description">Rechazo de la subida, falta consentimiento</note>
+      </notes>
+      <segment>
+        <source>Falta tu consentimiento. Vuelve a empezar para darlo.</source>
+        <target>Your consent is missing. Start again to give it.</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.rechazo.servidor">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:10</note>
+        <note category="description">Rechazo de la subida, fallo del servidor</note>
+      </notes>
+      <segment>
+        <source>El servidor no ha podido recibir el archivo ahora. Prueba de nuevo o rellena el perfil a mano.</source>
+        <target>The server could not receive the file right now. Try again or fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.titulo">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:23</note>
+        <note category="description">Titulo del paso de subida</note>
+      </notes>
+      <segment>
+        <source>Sube tu CV</source>
+        <target>Upload your CV</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.etiqueta">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:25</note>
+        <note category="description">Etiqueta del campo de archivo</note>
+      </notes>
+      <segment>
+        <source>Tu CV</source>
+        <target>Your CV</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.pista">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:35</note>
+        <note category="description">Pista del formato aceptado</note>
+      </notes>
+      <segment>
+        <source>PDF o DOCX, hasta 2 MB.</source>
+        <target>PDF or DOCX, up to 2 MB.</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.aMano">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:48</note>
+        <note category="description">Boton para rellenar el perfil sin subir CV</note>
+      </notes>
+      <segment>
+        <source>Prefiero rellenar el perfil a mano</source>
+        <target>I prefer to fill in my profile by hand</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.rol">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:7</note>
+        <note category="description">Etiqueta del rol en el formulario de perfil</note>
+      </notes>
+      <segment>
+        <source>Rol</source>
+        <target>Role</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.anios">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:8</note>
+        <note category="description">Etiqueta de los anos de experiencia</note>
+      </notes>
+      <segment>
+        <source>Años de experiencia</source>
+        <target>Years of experience</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.stack">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:9</note>
+        <note category="description">Etiqueta de las tecnologias</note>
+      </notes>
+      <segment>
+        <source>Tecnologías (separadas por comas)</source>
+        <target>Technologies (comma separated)</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.idiomas">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:10</note>
+        <note category="description">Etiqueta de los idiomas</note>
+      </notes>
+      <segment>
+        <source>Idiomas (separados por comas)</source>
+        <target>Languages (comma separated)</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.ubicacion">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:11</note>
+        <note category="description">Etiqueta de la ubicacion</note>
+      </notes>
+      <segment>
+        <source>Ubicación</source>
+        <target>Location</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.remoto">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:15</note>
+        <note category="description">Modalidad remoto</note>
+      </notes>
+      <segment>
+        <source>Remoto</source>
+        <target>Remote</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.hibrido">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:16</note>
+        <note category="description">Modalidad hibrido</note>
+      </notes>
+      <segment>
+        <source>Híbrido</source>
+        <target>Hybrid</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.presencial">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:17</note>
+        <note category="description">Modalidad presencial</note>
+      </notes>
+      <segment>
+        <source>Presencial</source>
+        <target>On site</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.error.obligatorio">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:23</note>
+        <note category="description">Error de campo vacio</note>
+      </notes>
+      <segment>
+        <source>Este campo es obligatorio.</source>
+        <target>This field is required.</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.error.invalido">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:24</note>
+        <note category="description">Error de valor no valido</note>
+      </notes>
+      <segment>
+        <source>El valor no es válido.</source>
+        <target>The value is not valid.</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.modalidad.pregunta">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:74</note>
+        <note category="description">Pregunta por la modalidad</note>
+      </notes>
+      <segment>
+        <source>¿Qué modalidades de trabajo te encajan?</source>
+        <target>Which work arrangements suit you?</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.salario.pregunta">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:94</note>
+        <note category="description">Pregunta por el salario minimo</note>
+      </notes>
+      <segment>
+        <source>¿Cuál es tu salario mínimo anual?</source>
+        <target>What is your minimum yearly salary?</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.moneda">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:110</note>
+        <note category="description">Etiqueta de la moneda del salario</note>
+      </notes>
+      <segment>
+        <source>Moneda</source>
+        <target>Currency</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.moneda.elegir">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:120</note>
+        <note category="description">Opcion vacia de la moneda</note>
+      </notes>
+      <segment>
+        <source>Elige una moneda</source>
+        <target>Choose a currency</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.errorDeGuardado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:130</note>
+        <note category="description">Error al guardar el perfil</note>
+      </notes>
+      <segment>
+        <source>No hemos podido guardar tu perfil. Lo que has escrito sigue aquí: prueba de nuevo.</source>
+        <target>We could not save your profile. What you wrote is still here: please try again.</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.guardar">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:136</note>
+        <note category="description">Boton que guarda el perfil</note>
+      </notes>
+      <segment>
+        <source>Guardar mi perfil</source>
+        <target>Save my profile</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.estado.propuesto">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:21</note>
+        <note category="description">Estado de un valor propuesto</note>
+      </notes>
+      <segment>
+        <source>Propuesto desde tu CV</source>
+        <target>Suggested from your CV</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.estado.aceptado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:22</note>
+        <note category="description">Estado de un valor aceptado</note>
+      </notes>
+      <segment>
+        <source>Aceptado</source>
+        <target>Accepted</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.estado.editado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:23</note>
+        <note category="description">Estado de un valor editado</note>
+      </notes>
+      <segment>
+        <source>Editado por ti</source>
+        <target>Edited by you</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.estado.descartado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:24</note>
+        <note category="description">Estado de un valor descartado</note>
+      </notes>
+      <segment>
+        <source>Descartado</source>
+        <target>Discarded</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.cita">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:84</note>
+        <note category="description">Encabezado de la frase del CV</note>
+      </notes>
+      <segment>
+        <source>Frase de tu CV:</source>
+        <target>Sentence from your CV:</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.aceptar">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:88</note>
+        <note category="description">Boton que acepta un valor propuesto</note>
+      </notes>
+      <segment>
+        <source>Aceptar</source>
+        <target>Accept</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.descartar">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:89</note>
+        <note category="description">Boton que descarta un valor propuesto</note>
+      </notes>
+      <segment>
+        <source>Descartar</source>
+        <target>Discard</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.noEncontrado">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:93</note>
+        <note category="description">Aviso de campo que el CV no aporta</note>
+      </notes>
+      <segment>
+        <source>Campo no encontrado en tu CV. Escríbelo tú si quieres.</source>
+        <target>Field not found in your CV. Type it yourself if you wish.</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.titulo">
+      <notes>
+        <note category="location">src/app/alta/revision-de-campos.ts:17</note>
+        <note category="description">Titulo del paso de revision</note>
+      </notes>
+      <segment>
+        <source>Revisa lo que hemos leído</source>
+        <target>Review what we read</target>
+      </segment>
+    </unit>
+    <unit id="alta.revision.texto">
+      <notes>
+        <note category="location">src/app/alta/revision-de-campos.ts:20</note>
+        <note category="description">Explicacion del paso de revision</note>
+      </notes>
+      <segment>
+        <source>Te proponemos estos datos junto a la frase de tu CV que los respalda. Acepta, corrige o descarta cada uno, y responde a las preguntas de salario y modalidad, que nunca rellenamos por ti.</source>
+        <target>We suggest these values next to the sentence from your CV that supports them. Accept, correct or discard each one, and answer the salary and work arrangement questions, which we never fill in for you.</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.desactivada">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:11</note>
+        <note category="description">Motivo manual, lectura apagada</note>
+      </notes>
+      <segment>
+        <source>La lectura automática del CV no está disponible por ahora. Rellena tu perfil a mano.</source>
+        <target>Automatic CV reading is not available at the moment. Fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.yaUsada">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:12</note>
+        <note category="description">Motivo manual, lectura ya usada</note>
+      </notes>
+      <segment>
+        <source>Ya has usado tu lectura automática del CV. Rellena tu perfil a mano.</source>
+        <target>You have already used your automatic CV reading. Fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.tope">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:13</note>
+        <note category="description">Motivo manual, tope mensual</note>
+      </notes>
+      <segment>
+        <source>Hemos llegado al límite de lecturas automáticas de este mes. Rellena tu perfil a mano.</source>
+        <target>We have reached this month's limit of automatic readings. Fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.proveedor">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:14</note>
+        <note category="description">Motivo manual, fallo del proveedor</note>
+      </notes>
+      <segment>
+        <source>El servicio que lee el CV no ha respondido. No has perdido tu intento: puedes volver a probar más tarde. Mientras tanto, rellena tu perfil a mano.</source>
+        <target>The service that reads CVs did not respond. You have not lost your attempt: you can try again later. In the meantime, fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.motivo.indisponible">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:15</note>
+        <note category="description">Motivo manual, servicio no disponible</note>
+      </notes>
+      <segment>
+        <source>Ahora mismo no podemos leer tu CV. Rellena tu perfil a mano.</source>
+        <target>We cannot read your CV right now. Fill in your profile by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.titulo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:64</note>
+        <note category="description">Titulo del paso manual</note>
+      </notes>
+      <segment>
+        <source>Cuéntanos tu perfil</source>
+        <target>Tell us about your profile</target>
+      </segment>
+    </unit>
+    <unit id="alta.manual.elegido">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:70</note>
+        <note category="description">Texto del formulario manual elegido</note>
+      </notes>
+      <segment>
+        <source>Rellena tu perfil a mano. No se guarda nada hasta que lo confirmes.</source>
+        <target>Fill in your profile by hand. Nothing is saved until you confirm.</target>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.titulo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:79</note>
+        <note category="description">Titulo del paso final</note>
+      </notes>
+      <segment>
+        <source>Perfil guardado</source>
+        <target>Profile saved</target>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.texto">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:82</note>
+        <note category="description">Texto del paso final</note>
+      </notes>
+      <segment>
+        <source>Ya tenemos tu perfil. Puedes borrar tus datos y tu cuenta cuando quieras.</source>
+        <target>We now have your profile. You can delete your data and your account whenever you like.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:18</note>
+        <note category="description">Titulo de la pagina de cuenta</note>
+      </notes>
+      <segment>
+        <source>Tu cuenta</source>
+        <target>Your account</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.explicacion">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:21</note>
+        <note category="description">Que se borra al eliminar la cuenta</note>
+      </notes>
+      <segment>
+        <source>Si borras tu cuenta eliminamos tu perfil, tu CV cifrado y tus consentimientos. Es inmediato y no se puede deshacer.</source>
+        <target>If you delete your account we remove your profile, your encrypted CV and your consents. It is immediate and cannot be undone.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:26</note>
+        <note category="description">Boton que inicia el borrado</note>
+      </notes>
+      <segment>
+        <source>Borrar mi cuenta</source>
+        <target>Delete my account</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.confirmar.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:37</note>
+        <note category="description">Titulo de la confirmacion del borrado</note>
+      </notes>
+      <segment>
+        <source>¿Seguro que quieres borrar tu cuenta?</source>
+        <target>Are you sure you want to delete your account?</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.confirmar.texto">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:41</note>
+        <note category="description">Aviso final antes de borrar</note>
+      </notes>
+      <segment>
+        <source>Se borrarán tu perfil, tu CV cifrado y tus consentimientos, y se cerrará tu sesión. Para volver a usar el panel necesitarías una nueva invitación.</source>
+        <target>Your profile, your encrypted CV and your consents will be deleted and you will be signed out. To use the panel again you would need a new invitation.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.error">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:47</note>
+        <note category="description">Error al borrar la cuenta</note>
+      </notes>
+      <segment>
+        <source>No hemos podido borrar tu cuenta. No se ha borrado nada: prueba de nuevo.</source>
+        <target>We could not delete your account. Nothing has been deleted: please try again.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.confirmar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:53</note>
+        <note category="description">Boton que confirma el borrado</note>
+      </notes>
+      <segment>
+        <source>Sí, borrar todo</source>
+        <target>Yes, delete everything</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.cancelar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:56</note>
+        <note category="description">Boton que cancela el borrado</note>
+      </notes>
+      <segment>
+        <source>Cancelar</source>
+        <target>Cancel</target>
+      </segment>
+    </unit>
+    <unit id="encaje.titulo">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:2</note>
+        <note category="description">Titulo de la seccion de encaje</note>
+      </notes>
+      <segment>
+        <source>Tu encaje</source>
+        <target>Your fit</target>
+      </segment>
+    </unit>
+    <unit id="encaje.cargando">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:9</note>
+        <note category="description">Aviso mientras se calcula el encaje</note>
+      </notes>
+      <segment>
+        <source>Calculando tu encaje…</source>
+        <target>Working out your fit…</target>
+      </segment>
+    </unit>
+    <unit id="encaje.error">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:12</note>
+        <note category="description">Aviso de que el encaje fallo y la ficha sigue funcionando</note>
+      </notes>
+      <segment>
+        <source>No hemos podido calcular tu encaje ahora. El resto de la ficha funciona igual; prueba de nuevo en un rato.</source>
+        <target>We could not work out your fit right now. The rest of the page works as usual; try again in a while.</target>
+      </segment>
+    </unit>
+    <unit id="encaje.sinPerfil">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:18</note>
+        <note category="description">Explicacion de que el encaje necesita perfil</note>
+      </notes>
+      <segment>
+        <source>Para calcular tu encaje necesitamos tu perfil.</source>
+        <target>To work out your fit we need your profile.</target>
+      </segment>
+    </unit>
+    <unit id="encaje.sinPerfil.enlace">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:22</note>
+        <note category="description">Enlace al alta desde el encaje</note>
+      </notes>
+      <segment>
+        <source>Completar mi perfil</source>
+        <target>Complete my profile</target>
+      </segment>
+    </unit>
+    <unit id="encaje.sinDatos">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:30</note>
+        <note category="description">Aviso de que la oferta no tiene requisitos comparables</note>
+      </notes>
+      <segment>
+        <source>Sin datos para evaluar: la oferta no menciona tecnologías que podamos comparar con tu CV. No es una mala nota, es que no hay nada que medir.</source>
+        <target>No data to assess: the offer does not mention technologies we can compare with your CV. It is not a bad score, there is simply nothing to measure.</target>
+      </segment>
+    </unit>
+    <unit id="encaje.alcanzable">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:38</note>
+        <note category="description">Veredicto cuando la oferta es alcanzable</note>
+      </notes>
+      <segment>
+        <source>Esta te la puedes pedir.</source>
+        <target>You can go for this one.</target>
+      </segment>
+    </unit>
+    <unit id="encaje.cubiertos">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:45</note>
+        <note category="description">Titulo de la lista de requisitos cubiertos</note>
+      </notes>
+      <segment>
+        <source>Lo que ya demuestras</source>
+        <target>What you already show</target>
+      </segment>
+    </unit>
+    <unit id="encaje.huecos">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:57</note>
+        <note category="description">Titulo de la lista de huecos</note>
+      </notes>
+      <segment>
+        <source>Lo que te falta</source>
+        <target>What is missing</target>
+      </segment>
+    </unit>
+    <unit id="encaje.eliminatorio">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:64</note>
+        <note category="description">Marca de un hueco que la oferta pide como imprescindible</note>
+      </notes>
+      <segment>
+        <source>(imprescindible)</source>
+        <target>(essential)</target>
+      </segment>
+    </unit>
+    <unit id="encaje.noEvaluables">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.html:73</note>
+        <note category="description">Titulo de la lista de lo que no se puede evaluar</note>
+      </notes>
+      <segment>
+        <source>Lo que no podemos medir</source>
+        <target>What we cannot measure</target>
+      </segment>
+    </unit>
+    <unit id="encaje.cobertura.uno">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.ts:55</note>
+        <note category="description">Cuantos requisitos cubre el CV, cuando solo hay uno</note>
+      </notes>
+      <segment>
+        <source>Cubres <ph id="0" equiv="cubiertos" disp="cubiertos"/> de <ph id="1" equiv="total" disp="total"/> requisito</source>
+        <target>You cover <ph id="0" equiv="cubiertos" disp="cubiertos"/> of <ph id="1" equiv="total" disp="total"/> requirement</target>
+      </segment>
+    </unit>
+    <unit id="encaje.cobertura.varios">
+      <notes>
+        <note category="location">src/app/ofertas/tu-encaje.ts:56</note>
+        <note category="description">Cuantos requisitos cubre el CV</note>
+      </notes>
+      <segment>
+        <source>Cubres <ph id="0" equiv="cubiertos" disp="cubiertos"/> de <ph id="1" equiv="total" disp="total"/> requisitos</source>
+        <target>You cover <ph id="0" equiv="cubiertos" disp="cubiertos"/> of <ph id="1" equiv="total" disp="total"/> requirements</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.alcanzables.error">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:96</note>
+        <note category="description">Explicacion de por que el filtro de alcanzables no esta disponible</note>
+      </notes>
+      <segment>
+        <source>No hemos podido consultar tu encaje, así que este filtro no está disponible. La tabla sigue completa; recarga la página para volver a intentarlo.</source>
+        <target>We could not check your fit, so this filter is not available. The table is still complete; reload the page to try again.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.alcanzables.cargando">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:99</note>
+        <note category="description">Aviso mientras se consulta el encaje de la lista</note>
+      </notes>
+      <segment>
+        <source>Consultando tu encaje…</source>
+        <target>Checking your fit…</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.alcanzables.ninguna">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:107</note>
+        <note category="description">Aviso de que ninguna de las ofertas que se ven es alcanzable</note>
+      </notes>
+      <segment>
+        <source>Ninguna de las ofertas que ves es alcanzable ahora mismo. Las que no mencionan tecnologías que comparar tampoco aparecen: no hay nada que medir.</source>
+        <target>None of the offers you see is reachable right now. Offers that mention no technologies to compare do not appear either: there is nothing to measure.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.alcanzables.cuantas">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.ts:110</note>
+        <note category="description">Cuantas de las ofertas que se ven son alcanzables</note>
+      </notes>
+      <segment>
+        <source>Alcanzables entre las que ves: <ph id="0" equiv="alcanzables" disp="alcanzables"/> de <ph id="1" equiv="total" disp="total"/>. Las que no mencionan tecnologías que comparar no aparecen.</source>
+        <target>Reachable among the ones you see: <ph id="0" equiv="alcanzables" disp="alcanzables"/> of <ph id="1" equiv="total" disp="total"/>. Offers that mention no technologies to compare do not appear.</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.alcanzables.etiqueta">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:62</note>
+        <note category="description">Etiqueta del filtro de ofertas alcanzables</note>
+      </notes>
+      <segment>
+        <source>Solo alcanzables</source>
+        <target>Reachable only</target>
+      </segment>
+    </unit>
+    <unit id="ofertas.vacia.alcanzables">
+      <notes>
+        <note category="location">src/app/ofertas/ofertas.page.html:262</note>
+        <note category="description">Tabla vacia por el filtro de alcanzables</note>
+      </notes>
+      <segment>
+        <source>Ninguna de estas ofertas es alcanzable ahora mismo.</source>
+        <target>None of these offers is reachable right now.</target>
       </segment>
     </unit>
   </file>

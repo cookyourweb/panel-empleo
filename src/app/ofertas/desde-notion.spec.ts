@@ -28,7 +28,7 @@ describe('estadoDesdeNotion', () => {
 describe('candidaturaDesdeRegistro', () => {
   const base: RegistroLocal = {
     id: 'n1',
-    empresa: 'bunch',
+    empresa: 'Nordlicht Logistics',
     puesto: 'Staff Frontend Engineer',
     estado: 'Enviado a empresa',
   };
@@ -39,7 +39,7 @@ describe('candidaturaDesdeRegistro', () => {
     expect(una).toEqual({
       id: 'n1',
       estado: 'Enviado',
-      oferta: { id: 'n1', empresa: 'bunch', puesto: 'Staff Frontend Engineer', idioma: 'es' },
+      oferta: { id: 'n1', empresa: 'Nordlicht Logistics', puesto: 'Staff Frontend Engineer', idioma: 'es' },
     });
   });
 

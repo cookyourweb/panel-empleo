@@ -354,6 +354,24 @@ Desde el 8 de octubre de 2026 los mensajes de commit y los comentarios del códi
 (ver [CONTRIBUTING](CONTRIBUTING.md)). El historial anterior y los documentos de diseño están
 en español, el idioma en que se pensó el razonamiento.
 
+## Lista de comprobación para el go-live
+
+El alta, la cuenta y el encaje se publican apagados. Dos constantes en
+`src/app/configuracion.ts` los mantienen fuera de producción, porque sus adaptadores de
+demostración funcionan en memoria y nunca deben presentar datos inventados como reales:
+
+| Interruptor | Con `false` | Backend que necesita |
+| --- | --- | --- |
+| `ALTA_CON_BACKEND` | `/alta` y `/cuenta` no se registran, la cabecera no muestra "Tu cuenta" y `/panel` no comprueba el perfil | `GET /yo` devolviendo `tiene_perfil`, `/perfil`, `/consentimientos`, `/cv`, `/extraccion`, `DELETE /cuenta` |
+| `ENCAJE_CON_BACKEND` | No se pinta la sección "Tu encaje" ni el filtro "Solo alcanzables", y no se hace ninguna petición de encaje | `GET /ofertas/{id}/encaje`, `POST /encajes` |
+
+Antes de activarlos:
+
+1. Desplegar en `cv-server` los endpoints anteriores.
+2. En `cv-server`, permitir en CORS el origen del panel con los métodos `GET, POST, PUT, DELETE, OPTIONS` y las cabeceras `Authorization, Content-Type`.
+3. Activar `ALTA_CON_BACKEND` a la vez que `cv-server` empiece a devolver `tiene_perfil` en `/yo`, o antes. Si no, quien no tenga perfil llegará a un panel que lo da por hecho.
+4. Activar `ENCAJE_CON_BACKEND` solo cuando los endpoints de encaje respondan con cuentas reales.
+
 ## Desarrollo
 
 Requiere Node 22, fijado en `.nvmrc`.
@@ -394,15 +412,15 @@ vive.
 Las decisiones y su porqué viven en el repositorio del sistema, no en una herramienta de
 proveedor:
 
-- [Decisiones de arquitectura](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-decisiones-arquitectura.md).
+- [Decisiones de arquitectura](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/design/2026-09-05-architecture-decisions.md).
   Lo que está cerrado, lo que se decide por defecto y lo que hay que discutir de verdad.
   Cada entrada dice por qué, y qué costaría cambiarla después.
-- [Diseño del panel](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-panel-empleo-angular-design.md).
+- [Diseño del panel](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/design/2026-09-05-panel-empleo-angular-design.md).
   Alcance, modelo de datos, rebanadas de entrega y una lista explícita de lo que queda
   fuera.
-- [Tokens del design system](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-tokens-design-system.md).
+- [Tokens del design system](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/design/2026-09-05-design-system-tokens.md).
   Las cuatro rampas de marca, su contraste medido y la regla de uso.
-- [Plan de arranque](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-06-plan-arranque-panel-angular.md).
+- [Plan de arranque](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/design/2026-09-06-angular-panel-kickoff-plan.md).
   Cómo encajan las piezas y las reglas que las mantienen separadas.
 
 ## Licencia

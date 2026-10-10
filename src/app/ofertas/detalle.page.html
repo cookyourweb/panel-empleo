@@ -8,6 +8,10 @@
       [opciones]="store.opcionesDeEdicion()"
       [alGuardar]="guardar"
     />
+
+    @if (encajeActivo) {
+      <app-tu-encaje [vista]="vistaDeEncaje()" />
+    }
   </article>
 } @else {
   <article>

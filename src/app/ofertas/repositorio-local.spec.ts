@@ -10,8 +10,8 @@ describe('RepositorioLocal', () => {
   it('lee el fichero local y lo traduce al dominio', async () => {
     const fetchFalso = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       respuesta([
-        { id: 'n1', empresa: 'bunch', puesto: 'Staff Frontend Engineer', estado: 'Enviado a empresa' },
-        { id: 'n2', empresa: 'Heymondo', puesto: 'Senior Frontend Developer', estado: 'Pendiente', idioma: 'en' },
+        { id: 'n1', empresa: 'Nordlicht Logistics', puesto: 'Staff Frontend Engineer', estado: 'Enviado a empresa' },
+        { id: 'n2', empresa: 'Acme Travel', puesto: 'Senior Frontend Developer', estado: 'Pendiente', idioma: 'en' },
       ]),
     );
 
@@ -19,15 +19,15 @@ describe('RepositorioLocal', () => {
 
     expect(fetchFalso).toHaveBeenCalledWith(RUTA_DATOS_LOCALES);
     expect(candidaturas.map((una) => [una.oferta.empresa, una.estado])).toEqual([
-      ['bunch', 'Enviado'],
-      ['Heymondo', 'Pendiente'],
+      ['Nordlicht Logistics', 'Enviado'],
+      ['Acme Travel', 'Pendiente'],
     ]);
   });
 
   it('se salta las fichas que no se pueden traducir, sin romper la lista', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       respuesta([
-        { id: 'n1', empresa: 'bunch', puesto: 'Staff', estado: 'Enviado' },
+        { id: 'n1', empresa: 'Nordlicht Logistics', puesto: 'Staff', estado: 'Enviado' },
         { id: 'n2', empresa: 'ZZZ BORRAR', puesto: 'x', estado: 'Caducada' },
         { id: 'n3', empresa: 'Rara', puesto: 'x', estado: 'Estado nuevo' },
       ]),

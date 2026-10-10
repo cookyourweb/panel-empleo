@@ -4,7 +4,9 @@ import { provideRouter } from '@angular/router';
 import { CandidaturasStore } from './candidaturas.store';
 import { CambiosDeCandidatura } from './edicion';
 import { EditorDeCandidaturas } from './editor-de-candidaturas';
+import { FuenteDeEncaje } from './encaje';
 import { FuenteDeAcciones, FuenteDeAccionesDemo } from './fuente-de-acciones';
+import { FuenteDeEncajeDemo } from './fuente-de-encaje-demo';
 import { OfertasPage } from './ofertas.page';
 import { RepositorioDemo } from './repositorio-demo';
 import { RepositorioDeCandidaturas } from './repositorio-de-candidaturas';
@@ -38,6 +40,7 @@ describe('Seleccion y acciones en bloque', () => {
         CandidaturasStore,
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
+        { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
         { provide: EditorDeCandidaturas, useValue: editor },
       ],
     });
