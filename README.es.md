@@ -394,15 +394,15 @@ vive.
 Las decisiones y su porqué viven en el repositorio del sistema, no en una herramienta de
 proveedor:
 
-- [Decisiones de arquitectura](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-decisiones-arquitectura.md).
+- [Decisiones de arquitectura](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/design/2026-09-05-architecture-decisions.md).
   Lo que está cerrado, lo que se decide por defecto y lo que hay que discutir de verdad.
   Cada entrada dice por qué, y qué costaría cambiarla después.
-- [Diseño del panel](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-panel-empleo-angular-design.md).
+- [Diseño del panel](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/design/2026-09-05-panel-empleo-angular-design.md).
   Alcance, modelo de datos, rebanadas de entrega y una lista explícita de lo que queda
   fuera.
-- [Tokens del design system](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-05-tokens-design-system.md).
+- [Tokens del design system](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/design/2026-09-05-design-system-tokens.md).
   Las cuatro rampas de marca, su contraste medido y la regla de uso.
-- [Plan de arranque](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/diseno/2026-09-06-plan-arranque-panel-angular.md).
+- [Plan de arranque](https://github.com/cookyourweb/buscartrabajo/blob/develop/docs/design/2026-09-06-angular-panel-kickoff-plan.md).
   Cómo encajan las piezas y las reglas que las mantienen separadas.
 
 ## Licencia
