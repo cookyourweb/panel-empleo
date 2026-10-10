@@ -2,14 +2,33 @@ import { AltaPage } from './alta/alta.page';
 import { conPerfil, sinPerfil } from './alta/con-perfil';
 import { ExtractorDeCv } from './alta/extractor-de-cv';
 import { RepositorioDePerfil } from './alta/repositorio-de-perfil';
-import { routes } from './app.routes';
+import { crearRutas } from './app.routes';
 import { BienvenidaPage } from './bienvenida/bienvenida.page';
 import { CuentaPage } from './cuenta/cuenta.page';
 import { RepositorioDeCuenta } from './cuenta/repositorio-de-cuenta';
 import { EntradaPage } from './entrada/entrada.page';
 import { soloConSesion } from './sesion/solo-con-sesion';
 
+describe('routes con el backend de alta apagado', () => {
+  const rutas = crearRutas({ alta: false, encaje: false });
+  const panel = rutas.find((ruta) => ruta.path === 'panel');
+
+  it('no registra /alta ni /cuenta', () => {
+    expect(rutas.map((ruta) => ruta.path)).not.toContain('alta');
+    expect(rutas.map((ruta) => ruta.path)).not.toContain('cuenta');
+  });
+
+  it('el panel solo exige sesion, sin la comprobacion de perfil', () => {
+    expect(panel?.canActivate).toEqual([soloConSesion]);
+  });
+
+  it('las rutas desconocidas, /alta incluida, caen en el comodin', () => {
+    expect(rutas.at(-1)).toMatchObject({ path: '**', redirectTo: '' });
+  });
+});
+
 describe('routes', () => {
+  const routes = crearRutas({ alta: true, encaje: true });
   const entrar = routes.find((ruta) => ruta.path === 'entrar');
   const bienvenida = routes.find((ruta) => ruta.path === '');
   const panel = routes.find((ruta) => ruta.path === 'panel');

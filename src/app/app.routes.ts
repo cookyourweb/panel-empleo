@@ -14,79 +14,86 @@ import { FuenteDeEncaje } from './ofertas/encaje';
 import { elegirRepositorio } from './ofertas/elegir-repositorio';
 import { elegirFuenteDeAcciones, FuenteDeAcciones } from './ofertas/fuente-de-acciones';
 import { RepositorioDeCandidaturas } from './ofertas/repositorio-de-candidaturas';
+import { ALTA_CON_BACKEND, ENCAJE_CON_BACKEND } from './configuracion';
 import { soloConSesion } from './sesion/solo-con-sesion';
 
-/**
- * Alta y cuenta hablan con el backend real cuando el cv-server publique
- * /perfil, /consentimientos, /extraccion y /cuenta. Hasta ese dia, la demo en
- * memoria. Es el unico interruptor: cambiarlo a true es el go-live del alta.
- */
-const ALTA_CON_BACKEND = false;
-const ADAPTADORES_DE_ALTA = elegirAdaptadoresDeAlta(ALTA_CON_BACKEND);
+/** Which backend-dependent features are exposed. See configuracion.ts. */
+export interface InterruptoresDeRutas {
+  readonly alta: boolean;
+  readonly encaje: boolean;
+}
 
 /**
- * El encaje (GET /ofertas/{id}/encaje, POST /encajes) tiene su propio
- * interruptor: llega con el cv-server C13, que no es el mismo dia que el alta.
+ * Builds the route table. With `alta` off, /alta and /cuenta do not exist (the
+ * wildcard sends stray URLs to the welcome page) and /panel skips the profile
+ * check, which would only add a /yo round trip that cannot change anything.
  */
-const ENCAJE_CON_BACKEND = false;
+export function crearRutas({ alta, encaje }: InterruptoresDeRutas): Routes {
+  const adaptadoresDeAlta = elegirAdaptadoresDeAlta(alta);
+  const altaYCuenta: Routes = [
+    {
+      path: 'alta',
+      // Con perfil no se repite el alta: sinPerfil manda al panel.
+      canActivate: [soloConSesion, sinPerfil],
+      title: $localize`:Titulo de la pestana en el alta@@ruta.alta:Tu perfil`,
+      providers: [
+        { provide: RepositorioDePerfil, useClass: adaptadoresDeAlta.repositorio },
+        { provide: ExtractorDeCv, useClass: adaptadoresDeAlta.extractor },
+      ],
+      loadComponent: () => import('./alta/alta.page').then((m) => m.AltaPage),
+    },
+    {
+      path: 'cuenta',
+      canActivate: [soloConSesion],
+      title: $localize`:Titulo de la pestana en la cuenta@@ruta.cuenta:Tu cuenta`,
+      providers: [{ provide: RepositorioDeCuenta, useClass: elegirRepositorioDeCuenta(alta) }],
+      loadComponent: () => import('./cuenta/cuenta.page').then((m) => m.CuentaPage),
+    },
+  ];
+  return [
+    {
+      path: '',
+      pathMatch: 'full',
+      title: $localize`:Titulo de la pestana en la pagina de bienvenida@@ruta.bienvenida:Empleo | CookYourWebAI`,
+      loadComponent: () => import('./bienvenida/bienvenida.page').then((m) => m.BienvenidaPage),
+    },
+    {
+      path: 'entrar',
+      title: $localize`:Titulo de la pestana en la pantalla de entrada@@ruta.entrar:Entrar`,
+      loadComponent: () => import('./entrada/entrada.page').then((m) => m.EntradaPage),
+    },
+    ...(alta ? altaYCuenta : []),
+    {
+      path: 'panel',
+      // Session required in every environment: even the demo is for invited users only.
+      // conPerfil va despues: necesita el token y solo redirige ante un "no" claro.
+      // Sin backend de alta no se comprueba: no hay perfil que exigir.
+      canActivate: alta ? [soloConSesion, conPerfil] : [soloConSesion],
+      // El store vive en la ruta y no en cada pantalla: la lista y el detalle
+      // comparten las mismas candidaturas, y abrir una no vuelve a pedirlas.
+      providers: [
+        CandidaturasStore,
+        { provide: RepositorioDeCandidaturas, useClass: elegirRepositorio(isDevMode()) },
+        { provide: FuenteDeAcciones, useClass: elegirFuenteDeAcciones(isDevMode()) },
+        { provide: EditorDeCandidaturas, useClass: elegirEditor(isDevMode()) },
+        { provide: FuenteDeEncaje, useClass: elegirFuenteDeEncaje(encaje) },
+      ],
+      children: [
+        {
+          path: '',
+          title: $localize`:Titulo de la pestana en la tabla@@ruta.candidaturas:Candidaturas`,
+          loadComponent: () => import('./ofertas/ofertas.page').then((m) => m.OfertasPage),
+        },
+        {
+          path: 'candidatura/:id',
+          title: $localize`:Titulo de la pestana en la ficha@@ruta.candidatura:Candidatura`,
+          loadComponent: () => import('./ofertas/detalle.page').then((m) => m.DetallePage),
+        },
+      ],
+    },
+    // Unknown routes go to the public welcome page, never to the panel.
+    { path: '**', redirectTo: '' },
+  ];
+}
 
-export const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    title: $localize`:Titulo de la pestana en la pagina de bienvenida@@ruta.bienvenida:Empleo | CookYourWebAI`,
-    loadComponent: () => import('./bienvenida/bienvenida.page').then((m) => m.BienvenidaPage),
-  },
-  {
-    path: 'entrar',
-    title: $localize`:Titulo de la pestana en la pantalla de entrada@@ruta.entrar:Entrar`,
-    loadComponent: () => import('./entrada/entrada.page').then((m) => m.EntradaPage),
-  },
-  {
-    path: 'alta',
-    // Con perfil no se repite el alta: sinPerfil manda al panel.
-    canActivate: [soloConSesion, sinPerfil],
-    title: $localize`:Titulo de la pestana en el alta@@ruta.alta:Tu perfil`,
-    providers: [
-      { provide: RepositorioDePerfil, useClass: ADAPTADORES_DE_ALTA.repositorio },
-      { provide: ExtractorDeCv, useClass: ADAPTADORES_DE_ALTA.extractor },
-    ],
-    loadComponent: () => import('./alta/alta.page').then((m) => m.AltaPage),
-  },
-  {
-    path: 'cuenta',
-    canActivate: [soloConSesion],
-    title: $localize`:Titulo de la pestana en la cuenta@@ruta.cuenta:Tu cuenta`,
-    providers: [{ provide: RepositorioDeCuenta, useClass: elegirRepositorioDeCuenta(ALTA_CON_BACKEND) }],
-    loadComponent: () => import('./cuenta/cuenta.page').then((m) => m.CuentaPage),
-  },
-  {
-    path: 'panel',
-    // Session required in every environment: even the demo is for invited users only.
-    // conPerfil va despues: necesita el token y solo redirige ante un "no" claro.
-    canActivate: [soloConSesion, conPerfil],
-    // El store vive en la ruta y no en cada pantalla: la lista y el detalle
-    // comparten las mismas candidaturas, y abrir una no vuelve a pedirlas.
-    providers: [
-      CandidaturasStore,
-      { provide: RepositorioDeCandidaturas, useClass: elegirRepositorio(isDevMode()) },
-      { provide: FuenteDeAcciones, useClass: elegirFuenteDeAcciones(isDevMode()) },
-      { provide: EditorDeCandidaturas, useClass: elegirEditor(isDevMode()) },
-      { provide: FuenteDeEncaje, useClass: elegirFuenteDeEncaje(ENCAJE_CON_BACKEND) },
-    ],
-    children: [
-      {
-        path: '',
-        title: $localize`:Titulo de la pestana en la tabla@@ruta.candidaturas:Candidaturas`,
-        loadComponent: () => import('./ofertas/ofertas.page').then((m) => m.OfertasPage),
-      },
-      {
-        path: 'candidatura/:id',
-        title: $localize`:Titulo de la pestana en la ficha@@ruta.candidatura:Candidatura`,
-        loadComponent: () => import('./ofertas/detalle.page').then((m) => m.DetallePage),
-      },
-    ],
-  },
-  // Unknown routes go to the public welcome page, never to the panel.
-  { path: '**', redirectTo: '' },
-];
+export const routes: Routes = crearRutas({ alta: ALTA_CON_BACKEND, encaje: ENCAJE_CON_BACKEND });

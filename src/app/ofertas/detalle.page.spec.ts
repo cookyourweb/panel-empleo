@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
+import { ENCAJE_ACTIVO } from '../configuracion';
 import { EnlacesDeAccion } from './acciones';
 import { CandidaturasStore } from './candidaturas.store';
 import { DetallePage } from './detalle.page';
@@ -33,6 +34,7 @@ describe('DetallePage', () => {
     ruta: string,
     enlaces: EnlacesDeAccion | null = null,
     encaje: Pick<FuenteDeEncaje, 'obtener'> = CON_ENCAJE,
+    encajeActivo = true,
   ): Promise<HTMLElement> {
     TestBed.configureTestingModule({
       providers: [
@@ -42,6 +44,7 @@ describe('DetallePage', () => {
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useValue: { enlaces: async () => enlaces } },
         { provide: FuenteDeEncaje, useValue: encaje },
+        { provide: ENCAJE_ACTIVO, useValue: encajeActivo },
       ],
     });
     const harness = await RouterTestingHarness.create();
@@ -198,5 +201,14 @@ describe('DetallePage', () => {
 
       expect(obtener).not.toHaveBeenCalled();
     });
+  });
+
+  it('con el encaje apagado no pinta la seccion ni pide nada a la fuente', async () => {
+    const obtener = vi.fn(CON_ENCAJE.obtener);
+
+    const pagina = await abrir('/candidatura/c1', null, { obtener }, false);
+
+    expect(pagina.querySelector('app-tu-encaje')).toBeNull();
+    expect(obtener).not.toHaveBeenCalled();
   });
 });

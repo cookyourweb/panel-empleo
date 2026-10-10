@@ -59,22 +59,24 @@
   }
 </div>
 
-<!-- Un filtro con su etiqueta, no un boton mas: marcar o no es lo que dice. La
-     ayuda es una region viva para que el lector de pantalla oiga el resultado. -->
-<div class="alcanzables">
-  <label>
-    <input
-      type="checkbox"
-      data-filtro-alcanzables
-      aria-describedby="ayuda-alcanzables"
-      [checked]="soloAlcanzables()"
-      [disabled]="estadoDeEncajes() === 'error'"
-      (change)="alternarAlcanzables($event)"
-    />
-    <ng-container i18n="Etiqueta del filtro de ofertas alcanzables@@ofertas.alcanzables.etiqueta">Solo alcanzables</ng-container>
-  </label>
-  <p id="ayuda-alcanzables" data-ayuda-alcanzables aria-live="polite">{{ ayudaDeAlcanzables() }}</p>
-</div>
+@if (encajeActivo) {
+  <!-- Un filtro con su etiqueta, no un boton mas: marcar o no es lo que dice. La
+       ayuda es una region viva para que el lector de pantalla oiga el resultado. -->
+  <div class="alcanzables">
+    <label>
+      <input
+        type="checkbox"
+        data-filtro-alcanzables
+        aria-describedby="ayuda-alcanzables"
+        [checked]="soloAlcanzables()"
+        [disabled]="estadoDeEncajes() === 'error'"
+        (change)="alternarAlcanzables($event)"
+      />
+      <ng-container i18n="Etiqueta del filtro de ofertas alcanzables@@ofertas.alcanzables.etiqueta">Solo alcanzables</ng-container>
+    </label>
+    <p id="ayuda-alcanzables" data-ayuda-alcanzables aria-live="polite">{{ ayudaDeAlcanzables() }}</p>
+  </div>
+}
 
 @if (store.seleccionadas().size) {
   <app-barra-de-seleccion

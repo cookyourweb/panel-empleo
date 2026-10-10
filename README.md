@@ -351,6 +351,24 @@ Since 8 Oct 2026 commit messages and code comments are written in English (see
 [CONTRIBUTING](CONTRIBUTING.md)). Earlier history and the design documents are in Spanish,
 the language the reasoning was done in.
 
+## Go-live checklist
+
+Sign-up, account and fit analysis ship dark. Two constants in
+`src/app/configuracion.ts` keep them off in production, because their demo adapters
+run in memory and must never present invented data as real:
+
+| Flag | When `false` | Backend it needs |
+| --- | --- | --- |
+| `ALTA_CON_BACKEND` | `/alta` and `/cuenta` are not registered, the header has no "Your account" link, and `/panel` skips the profile check | `GET /yo` returning `tiene_perfil`, `/perfil`, `/consentimientos`, `/cv`, `/extraccion`, `DELETE /cuenta` |
+| `ENCAJE_CON_BACKEND` | The "Your fit" section and the "Reachable only" filter are not rendered, and no fit request is made | `GET /ofertas/{id}/encaje`, `POST /encajes` |
+
+Before flipping them:
+
+1. Deploy the endpoints above in `cv-server`.
+2. In `cv-server`, allow the panel origin in CORS with the methods `GET, POST, PUT, DELETE, OPTIONS` and the headers `Authorization, Content-Type`.
+3. Flip `ALTA_CON_BACKEND` with or before `cv-server` starts returning `tiene_perfil` from `/yo`. Otherwise users without a profile reach a panel that expects one.
+4. Flip `ENCAJE_CON_BACKEND` only once the fit endpoints answer for real accounts.
+
 ## Development
 
 Requires Node 22, pinned in `.nvmrc`.

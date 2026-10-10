@@ -18,6 +18,7 @@ import { Router, RouterLink } from '@angular/router';
 
 import { Accion, accionesPara, descripcionDeAccion, EnlacesDeAccion } from './acciones';
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
+import { ENCAJE_ACTIVO } from '../configuracion';
 import { FuenteDeEncaje, ResumenDeEncaje } from './encaje';
 import { CandidaturasStore, ColumnaOrdenable } from './candidaturas.store';
 import { CambiosDeCandidatura } from './edicion';
@@ -96,6 +97,7 @@ export class OfertasPage implements OnInit {
     return id ? this.store.vecinosDe(id) : {};
   });
   private readonly fuenteDeAcciones = inject(FuenteDeAcciones);
+  protected readonly encajeActivo = inject(ENCAJE_ACTIVO);
   private readonly fuenteDeEncaje = inject(FuenteDeEncaje);
   private readonly tareas = inject(PendingTasks);
 

@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
 import { App } from './app';
+import { ALTA_ACTIVA } from './configuracion';
 import { Sesion } from './sesion/sesion';
 
 @Component({ template: 'pagina' })
@@ -17,6 +18,7 @@ describe('App', () => {
       imports: [App],
       providers: [
         { provide: Sesion, useValue: { activa } },
+        { provide: ALTA_ACTIVA, useValue: false },
         provideRouter([
           { path: 'a', component: PaginaFalsa },
           { path: 'b', component: PaginaFalsa },
@@ -74,7 +76,16 @@ describe('App', () => {
     (fixture.nativeElement as HTMLElement).remove();
   });
 
-  it('con sesion, la cabecera enlaza a la cuenta', async () => {
+  it('con sesion pero sin backend de alta, la cabecera no ofrece la cuenta', async () => {
+    activa.set(true);
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+
+    expect((fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
+  });
+
+  it('con sesion y backend de alta, la cabecera enlaza a la cuenta', async () => {
+    TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
     activa.set(true);
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();

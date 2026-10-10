@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { accionesPara, EnlacesDeAccion } from './acciones';
 import { CandidaturasStore } from './candidaturas.store';
 import { CambiosDeCandidatura } from './edicion';
+import { ENCAJE_ACTIVO } from '../configuracion';
 import { ESTADO_DE_ENCAJE, FuenteDeEncaje } from './encaje';
 import { FichaCandidatura } from './ficha-candidatura';
 import { FuenteDeAcciones } from './fuente-de-acciones';
@@ -31,6 +32,7 @@ export class DetallePage implements OnInit {
     return una ? accionesPara(una, this.enlaces()) : [];
   });
 
+  protected readonly encajeActivo = inject(ENCAJE_ACTIVO);
   private readonly fuenteDeEncaje = inject(FuenteDeEncaje);
 
   /**
@@ -39,7 +41,7 @@ export class DetallePage implements OnInit {
    * resto de la ficha: solo cambia lo que dice esta seccion.
    */
   private readonly encaje = resource({
-    params: () => this.candidatura()?.oferta.id,
+    params: () => (this.encajeActivo ? this.candidatura()?.oferta.id : undefined),
     loader: ({ params }) => this.fuenteDeEncaje.obtener(params),
   });
 

@@ -9,6 +9,7 @@ import { CandidaturasStore } from './candidaturas.store';
 import { Candidatura } from './dominio';
 import { FuenteDeEncaje } from './encaje';
 import { FuenteDeAcciones, FuenteDeAccionesDemo } from './fuente-de-acciones';
+import { ENCAJE_ACTIVO } from '../configuracion';
 import { FuenteDeEncajeDemo } from './fuente-de-encaje-demo';
 import { OfertasPage } from './ofertas.page';
 import { RepositorioDemo } from './repositorio-demo';
@@ -273,6 +274,31 @@ describe('OfertasPage · números según el idioma activo', () => {
   });
 });
 
+describe('OfertasPage · con el encaje apagado', () => {
+  it('no ofrece el filtro de alcanzables ni pide encajes', async () => {
+    localStorage.clear();
+    const resumen = vi.fn();
+    await TestBed.configureTestingModule({
+      imports: [OfertasPage],
+      providers: [
+        provideRouter([]),
+        CandidaturasStore,
+        { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
+        { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
+        { provide: FuenteDeEncaje, useValue: { resumen } },
+        { provide: ENCAJE_ACTIVO, useValue: false },
+      ],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(OfertasPage);
+    await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+
+    expect(pagina.querySelector('[data-filtro-alcanzables]')).toBeNull();
+    expect(pagina.querySelector('.alcanzables')).toBeNull();
+    expect(resumen).not.toHaveBeenCalled();
+  });
+});
+
 describe('OfertasPage · filtro de alcanzables', () => {
   let resumen: ReturnType<typeof vi.fn>;
 
@@ -288,6 +314,7 @@ describe('OfertasPage · filtro de alcanzables', () => {
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useValue: fuente ?? { resumen } },
+        { provide: ENCAJE_ACTIVO, useValue: true },
       ],
     }).compileComponents();
     const fixture = TestBed.createComponent(OfertasPage);

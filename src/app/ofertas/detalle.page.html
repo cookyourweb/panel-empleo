@@ -9,7 +9,9 @@
       [alGuardar]="guardar"
     />
 
-    <app-tu-encaje [vista]="vistaDeEncaje()" />
+    @if (encajeActivo) {
+      <app-tu-encaje [vista]="vistaDeEncaje()" />
+    }
   </article>
 } @else {
   <article>
