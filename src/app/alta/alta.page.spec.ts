@@ -27,6 +27,14 @@ describe('AltaPage', () => {
     return { fixture, raiz: fixture.nativeElement as HTMLElement };
   }
 
+  it('tiene exactamente un h1, Tu perfil, y los pasos cuelgan como h2', async () => {
+    const { raiz } = await pintar();
+
+    expect(raiz.querySelectorAll('h1')).toHaveLength(1);
+    expect(raiz.querySelector('h1')?.textContent?.trim()).toBe('Tu perfil');
+    expect(raiz.querySelectorAll('h2').length).toBeGreaterThan(0);
+  });
+
   it('abre en el consentimiento', async () => {
     const { raiz } = await pintar();
 

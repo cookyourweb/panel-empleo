@@ -2,7 +2,11 @@
 
 <header class="cabecera">
   <div class="arriba">
-    <h2 [id]="idTitulo()">{{ una.oferta.empresa }}</h2>
+    @if (nivel() === 1) {
+      <h1 class="titulo-ficha" [id]="idTitulo()">{{ una.oferta.empresa }}</h1>
+    } @else {
+      <h2 class="titulo-ficha" [id]="idTitulo()">{{ una.oferta.empresa }}</h2>
+    }
     <!-- Quien la contiene pone aqui su navegacion (el panel: anterior,
          siguiente y cerrar). La pagina completa no pone nada. -->
     <ng-content select="[navegacion]" />
@@ -142,7 +146,11 @@
 <div class="contenido">
   @for (seccion of ficha().secciones; track seccion.titulo) {
     <section [attr.aria-label]="seccion.titulo">
-      <h3>{{ seccion.titulo }}</h3>
+      @if (nivel() === 1) {
+        <h2 class="titulo-seccion-ficha">{{ seccion.titulo }}</h2>
+      } @else {
+        <h3 class="titulo-seccion-ficha">{{ seccion.titulo }}</h3>
+      }
       @if (seccion.campos.length) {
         <dl>
           @for (campo of seccion.campos; track campo.clave) {
@@ -211,7 +219,11 @@
 
   <section aria-label="Contenido de la ficha" i18n-aria-label="Nombre de la seccion con el cuerpo de la pagina de Notion@@ficha.contenido.etiqueta">
     @if (grupos().length) {
-      <h3 i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.conCuerpo">Contenido de la ficha (historial y encaje)</h3>
+      @if (nivel() === 1) {
+        <h2 class="titulo-seccion-ficha" i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.conCuerpo">Contenido de la ficha (historial y encaje)</h2>
+      } @else {
+        <h3 class="titulo-seccion-ficha" i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.conCuerpo">Contenido de la ficha (historial y encaje)</h3>
+      }
       <div class="cuerpo" data-cuerpo>
         @for (grupo of grupos(); track $index) {
           @if (grupo.tipo === 'lista') {
@@ -232,10 +244,18 @@
             @let bloque = comoBloque(grupo);
             @switch (bloque.tipo) {
               @case ('titulo') {
-                <h4>{{ bloque.texto }}</h4>
+                @if (nivel() === 1) {
+                  <h3 class="bloque-titulo">{{ bloque.texto }}</h3>
+                } @else {
+                  <h4 class="bloque-titulo">{{ bloque.texto }}</h4>
+                }
               }
               @case ('subtitulo') {
-                <h5>{{ bloque.texto }}</h5>
+                @if (nivel() === 1) {
+                  <h4 class="bloque-subtitulo">{{ bloque.texto }}</h4>
+                } @else {
+                  <h5 class="bloque-subtitulo">{{ bloque.texto }}</h5>
+                }
               }
               @case ('cita') {
                 <blockquote>{{ bloque.texto }}</blockquote>
@@ -260,7 +280,11 @@
         }
       </div>
     } @else {
-      <h3 i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.sinCuerpo">Contenido de la ficha</h3>
+      @if (nivel() === 1) {
+        <h2 class="titulo-seccion-ficha" i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.sinCuerpo">Contenido de la ficha</h2>
+      } @else {
+        <h3 class="titulo-seccion-ficha" i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.sinCuerpo">Contenido de la ficha</h3>
+      }
       <p class="apagado" i18n="Aviso de que la pagina de Notion esta vacia@@ficha.contenido.vacio">
         La ficha no tiene contenido en el cuerpo de la página.
       </p>

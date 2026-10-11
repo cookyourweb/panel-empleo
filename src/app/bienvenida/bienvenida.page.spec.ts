@@ -30,7 +30,7 @@ describe('BienvenidaPage', () => {
     const pagina = await abrir();
 
     expect(pagina.querySelector('[data-etiqueta]')?.textContent?.trim()).toBe('Próximamente');
-    expect(pagina.querySelector('h2')?.textContent?.trim()).toBe(
+    expect(pagina.querySelector('h1')?.textContent?.trim()).toBe(
       'Tu próximo trabajo, buscado mientras programas.',
     );
     expect(pagina.querySelector('[data-explicacion]')?.textContent).toContain(
@@ -38,12 +38,12 @@ describe('BienvenidaPage', () => {
     );
   });
 
-  it('no repite el h1 del shell y los titulos de tarjeta son h3 bajo el h2', async () => {
+  it('tiene exactamente un h1, el titular, y los titulos de tarjeta son h2 sin saltar niveles', async () => {
     const pagina = await abrir();
 
-    expect(pagina.querySelector('h1')).toBeNull();
-    expect(pagina.querySelectorAll('h2')).toHaveLength(1);
-    const titulos = [...pagina.querySelectorAll('h3')].map((h) => h.textContent?.trim());
+    expect(pagina.querySelectorAll('h1')).toHaveLength(1);
+    expect(pagina.querySelector('h3')).toBeNull();
+    const titulos = [...pagina.querySelectorAll('h2')].map((h) => h.textContent?.trim());
     expect(titulos).toEqual([
       'Busca por ti cada mañana',
       'CV y carta, sin inventar',

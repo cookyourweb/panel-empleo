@@ -67,7 +67,7 @@
   background: hsl(var(--card));
 }
 
-.tarjeta h3 {
+.tarjeta h2 {
   margin: 0 0 0.5rem;
   font-size: 1.125rem;
 }
@@ -84,7 +84,7 @@
   color: hsl(var(--muted-foreground));
 }
 
-.apagada h3 {
+.apagada h2 {
   color: hsl(var(--foreground));
 }
 

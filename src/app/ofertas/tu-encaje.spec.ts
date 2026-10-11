@@ -32,7 +32,7 @@ describe('TuEncaje', () => {
   it('tiene un titulo de seccion y un hueco aria-live para los estados asincronos', async () => {
     const pagina = await pintar({ estado: VISTA_DE_ENCAJE.cargando });
 
-    expect(pagina.querySelector('section h3')?.textContent).toContain('Tu encaje');
+    expect(pagina.querySelector('section h2')?.textContent).toContain('Tu encaje');
     expect(pagina.querySelector('[aria-live="polite"]')?.textContent).toContain('Calculando');
   });
 

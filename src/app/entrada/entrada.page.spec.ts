@@ -55,6 +55,14 @@ describe('EntradaPage', () => {
 
   beforeEach(() => entrar.mockReset());
 
+  it('tiene exactamente un h1, y es el titular de la pantalla', async () => {
+    const pagina = await abrir();
+
+    expect(pagina.querySelectorAll('h1')).toHaveLength(1);
+    expect(pagina.querySelector('h1')?.textContent?.trim()).toBe('Entrar');
+    expect(pagina.querySelector('h2')).toBeNull();
+  });
+
   it('prepara el acceso en el contenedor con el proveedor de identidad', async () => {
     const pagina = await abrir();
 

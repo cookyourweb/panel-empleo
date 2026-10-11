@@ -54,6 +54,14 @@ describe('CuentaPage', () => {
     return { fixture, raiz, pulsar, teclear };
   }
 
+  it('tiene exactamente un h1, Tu cuenta, y sus secciones cuelgan como h2', async () => {
+    const { raiz } = await pintar();
+
+    expect(raiz.querySelectorAll('h1')).toHaveLength(1);
+    expect(raiz.querySelector('h1')?.textContent?.trim()).toBe('Tu cuenta');
+    expect(raiz.querySelectorAll('h2').length).toBeGreaterThan(0);
+  });
+
   it('explica que se borra: perfil, CV cifrados, consentimientos, avisos de interes e invitacion', async () => {
     const { raiz } = await pintar();
 

@@ -53,6 +53,23 @@ describe('DetallePage', () => {
     return harness.routeNativeElement as HTMLElement;
   }
 
+  it('tiene exactamente un h1, la empresa, y de ahi cuelgan h2 y h3 sin saltar niveles', async () => {
+    const pagina = await abrir('/candidatura/c1');
+
+    expect(pagina.querySelectorAll('h1')).toHaveLength(1);
+    expect(pagina.querySelector('h1')?.textContent?.trim()).toBe('Northwind Labs');
+    expect(pagina.querySelector('h2')).not.toBeNull();
+    expect(pagina.querySelector('h5, h6')).toBeNull();
+    expect(pagina.querySelector('app-tu-encaje h2')?.textContent).toContain('Tu encaje');
+  });
+
+  it('si la candidatura no existe, el unico h1 es el aviso', async () => {
+    const pagina = await abrir('/candidatura/no-existe');
+
+    expect(pagina.querySelectorAll('h1')).toHaveLength(1);
+    expect(pagina.querySelector('h1')?.textContent).toContain('Esa candidatura no está');
+  });
+
   it('enseña la empresa y el puesto de la candidatura abierta', async () => {
     const pagina = await abrir('/candidatura/c1');
 
@@ -133,7 +150,7 @@ describe('DetallePage', () => {
   it('agrupa los campos en Oferta, Candidatura y Documentos, como la maqueta', async () => {
     const pagina = await abrir('/candidatura/c13');
 
-    const titulos = [...pagina.querySelectorAll('section h3')].map((h) => h.textContent?.trim());
+    const titulos = [...pagina.querySelectorAll('section h2')].map((h) => h.textContent?.trim());
 
     expect(titulos).toContain('Oferta');
     expect(titulos).toContain('Documentos');
@@ -144,7 +161,7 @@ describe('DetallePage', () => {
 
     const cuerpo = pagina.querySelector('[data-cuerpo]');
 
-    expect(cuerpo?.querySelector('h4')?.textContent).toContain('Historial');
+    expect(cuerpo?.querySelector('h3')?.textContent).toContain('Historial');
     expect(cuerpo?.querySelectorAll('li').length).toBeGreaterThan(0);
   });
 

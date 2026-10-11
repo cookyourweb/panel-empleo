@@ -18,7 +18,7 @@
   align-items: flex-start;
 }
 
-h2 {
+.titulo-ficha {
   flex: 1;
   margin: 0;
   font-size: 1.125rem;
@@ -70,7 +70,7 @@ section {
   padding-top: 0.9rem;
 }
 
-h3 {
+.titulo-seccion-ficha {
   margin: 0 0 0.5rem;
   padding-bottom: 0.25rem;
   border-bottom: 1px solid hsl(var(--border));
@@ -129,12 +129,12 @@ dd {
   white-space: pre-wrap;
 }
 
-.cuerpo h4 {
+.cuerpo .bloque-titulo {
   margin: 0.9rem 0 0.25rem;
   font-size: 0.875rem;
 }
 
-.cuerpo h5 {
+.cuerpo .bloque-subtitulo {
   margin: 0.75rem 0 0.15rem;
   color: hsl(var(--muted-foreground));
   font-size: 0.8rem;

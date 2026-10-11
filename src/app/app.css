@@ -4,77 +4,10 @@
   padding-top: var(--cabecera-espacio);
 }
 
-/* Subcabecera de la aplicacion: el titulo a la izquierda y, agrupados a la derecha,
-   la cuenta y el idioma. Es una barra normal, no un banner: el banner de la pagina
-   es la cabecera de marca, que va fija encima. El ancho y los laterales los da
-   .contenedor-pagina, asi el titulo cae justo bajo el logo y los controles bajo los
-   de la cabecera. */
-.barra-app {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.25rem 1rem;
-  padding-block: 1rem;
-}
-
-/* El filete va dentro del relleno lateral, para que acabe donde acaba el texto. */
-.barra-app::after {
-  content: '';
-  position: absolute;
-  inset: auto var(--contenedor-relleno) 0;
-  height: 1px;
-  background-color: var(--color-cyw-zinc-800);
-}
-
-.barra-app h1 {
-  margin: 0;
-  color: var(--color-cyw-blanco);
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-.barra-app__acciones {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.25rem 0.5rem;
-  margin-left: auto;
-}
-
-.barra-app__cuenta {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.25rem;
-  padding: 0 0.75rem;
-  border-radius: 0.75rem;
-  color: var(--color-cyw-zinc-300);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background-color 150ms ease, color 150ms ease;
-}
-
-.barra-app__cuenta:hover {
-  background-color: rgb(var(--color-cyw-zinc-800-rgb) / 0.5);
-  color: var(--color-cyw-blanco);
-}
-
-.barra-app__cuenta:focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
-}
-
-@media (min-width: 768px) {
-  .barra-app h1 {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
+/* Sin barra de titulo propia, el contenido arranca justo bajo el hueco de la cabecera:
+   un respiro para que el titular de cada pantalla no quede pegado a ella. */
+main {
+  padding-block-start: 1rem;
 }
 
 .aviso-consentimiento {

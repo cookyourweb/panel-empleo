@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
+import { SelectorDeIdioma } from '../idioma/selector-de-idioma';
 import { ClaveLegal, ENLACES_LEGALES, URL_DE_LA_AGENCIA } from './enlaces-de-marca';
 
 /** Marca el sitio del corazon dentro del mensaje, para pintarlo con su propio color. */
@@ -9,11 +10,13 @@ const CORAZON = '❤';
  * Pie de CookYourWeb AI, igual que el de www.cookyourwebai.es mas la linea
  * "Un proyecto de CookYourWeb AI".
  *
- * Los enlaces legales salen de ENLACES_LEGALES (ver enlaces-de-marca.ts): con la
+ * El cambio de idioma vive junto a los derechos, con el aspecto de los enlaces
+ * pequeños del pie. Los enlaces legales salen de ENLACES_LEGALES (ver enlaces-de-marca.ts): con la
  * lista vacia, que es hoy, la fila no se pinta.
  */
 @Component({
   selector: 'app-pie-de-marca',
+  imports: [SelectorDeIdioma],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './pie-de-marca.css',
   templateUrl: './pie-de-marca.html',

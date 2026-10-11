@@ -34,6 +34,12 @@ export class FichaCandidatura {
   readonly acciones = input<Accion[]>([]);
   /** Para que quien la contiene pueda nombrarse con el titulo (aria-labelledby). */
   readonly idTitulo = input('titulo-ficha');
+  /**
+   * Nivel del titular de la ficha. En su propia pantalla es el h1 de la pagina (1) y
+   * sus secciones cuelgan como h2; dentro del panel de la tabla, que ya tiene su
+   * h1, el titular es un h2 (2) y las secciones h3. Asi nunca se salta un nivel.
+   */
+  readonly nivel = input<1 | 2>(2);
 
   /** Sin opciones no hay puente, y sin puente no se ofrece editar. */
   readonly opciones = input<OpcionesDeEdicion | null>(null);

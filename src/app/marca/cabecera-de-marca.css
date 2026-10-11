@@ -152,6 +152,7 @@ button:focus-visible {
 }
 
 .whatsapp,
+.cuenta,
 .alternar {
   position: relative;
   display: inline-flex;
@@ -168,6 +169,24 @@ button:focus-visible {
 .whatsapp:focus-visible {
   background-color: rgb(var(--color-cyw-verde-500-rgb) / 0.1);
   color: var(--color-cyw-verde-400);
+}
+
+.cuenta {
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cuenta:hover {
+  background-color: rgb(var(--color-cyw-zinc-800-rgb) / 0.5);
+  color: var(--color-cyw-blanco);
+}
+
+/* En movil solo el icono: el nombre lo da el aria-label. */
+.cuenta__texto {
+  display: none;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
 }
 
 .alternar:hover {
@@ -336,6 +355,10 @@ button:focus-visible {
   .icono--grande {
     width: 1.5rem;
     height: 1.5rem;
+  }
+
+  .cuenta__texto {
+    display: inline;
   }
 }
 

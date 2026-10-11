@@ -28,6 +28,7 @@ describe('App', () => {
         { provide: ALTA_ACTIVA, useValue: false },
         provideRouter([
           { path: 'a', component: PaginaFalsa },
+          { path: 'cuenta', component: PaginaFalsa },
           { path: 'b', component: PaginaFalsa },
           { path: 'lenta', component: PaginaFalsa, canActivate: [guardaLenta] },
         ]),
@@ -45,15 +46,28 @@ describe('App', () => {
     expect(salto?.textContent).toContain('Saltar al contenido principal');
   });
 
-  it('ofrece en la barra de la app el cambio de idioma, con el idioma actual marcado', async () => {
+  it('ya no tiene barra de titulo propia: la cabecera de marca es lo unico que hay encima del contenido', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
-    const cabecera = (fixture.nativeElement as HTMLElement).querySelector('.barra-app');
+    const pagina = fixture.nativeElement as HTMLElement;
 
-    const enlaces = [...(cabecera?.querySelectorAll('nav a[hreflang]') ?? [])];
+    expect(pagina.querySelector('.barra-app')).toBeNull();
+    expect(pagina.textContent).not.toContain('Panel de empleo');
+    // El h1 lo pone cada pantalla; el shell no pone ninguno.
+    expect(pagina.querySelectorAll('h1')).toHaveLength(0);
+  });
+
+  it('ofrece el cambio de idioma en el pie, con los dos idiomas y el actual marcado', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const pie = (fixture.nativeElement as HTMLElement).querySelector('footer');
+
+    const nav = pie?.querySelector('nav[aria-label="Idioma"]');
+    const enlaces = [...(nav?.querySelectorAll('a[hreflang]') ?? [])];
 
     expect(enlaces.map((a) => a.getAttribute('hreflang'))).toEqual(['es', 'en']);
-    expect(cabecera?.querySelectorAll('a[aria-current="true"]')).toHaveLength(1);
+    expect(enlaces.map((a) => a.textContent?.trim())).toEqual(['Español', 'English']);
+    expect(nav?.querySelectorAll('a[aria-current="true"]')).toHaveLength(1);
   });
 
   it('tiene un unico landmark main, y es el que alcanza el enlace de salto', async () => {
@@ -104,61 +118,68 @@ describe('App', () => {
     (fixture.nativeElement as HTMLElement).remove();
   });
 
-  it('con sesion pero sin backend de alta, la barra de la app no ofrece la cuenta', async () => {
-    activa.set(true);
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
+  describe('Tu cuenta en la cabecera de marca', () => {
+    const enCabecera = (pagina: HTMLElement) => pagina.querySelector('app-cabecera-de-marca')!;
 
-    expect((fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
-  });
-
-  it('con sesion y backend de alta, la barra de la app enlaza a la cuenta', async () => {
-    TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
-    activa.set(true);
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const cabecera = (fixture.nativeElement as HTMLElement).querySelector('.barra-app');
-
-    const enlace = cabecera?.querySelector('a[href="/cuenta"]');
-
-    expect(enlace?.textContent?.trim()).toBe('Tu cuenta');
-  });
-
-  describe('anchos y barra de la app', () => {
-    it('la barra de la app, el contenido principal y la cabecera de marca comparten el contenedor de la pagina', async () => {
+    it('con sesion pero sin backend de alta no ofrece la cuenta', async () => {
+      activa.set(true);
       const fixture = TestBed.createComponent(App);
       await fixture.whenStable();
-      const pagina = fixture.nativeElement as HTMLElement;
 
-      expect(pagina.querySelector('.barra-app')?.classList.contains('contenedor-pagina')).toBe(true);
-      expect(pagina.querySelector('main')?.classList.contains('contenedor-pagina')).toBe(true);
-      expect(pagina.querySelector('app-cabecera-de-marca .contenedor')?.classList.contains('contenedor-pagina')).toBe(true);
+      expect((fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
     });
 
-    it('la barra tiene un unico h1 con el titulo, y a su lado un grupo con la cuenta y el idioma', async () => {
+    it('sin sesion no ofrece la cuenta, ni en la cabecera ni en el menu movil', async () => {
+      TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+
+      expect(enCabecera(fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
+    });
+
+    it('con sesion y backend de alta la ofrece junto a WhatsApp y dentro del menu movil', async () => {
       TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
       activa.set(true);
       const fixture = TestBed.createComponent(App);
       await fixture.whenStable();
-      const pagina = fixture.nativeElement as HTMLElement;
-      const barra = pagina.querySelector('.barra-app')!;
+      const cabecera = enCabecera(fixture.nativeElement as HTMLElement);
 
-      expect(pagina.querySelectorAll('h1')).toHaveLength(1);
-      expect(barra.firstElementChild?.tagName).toBe('H1');
-      expect(barra.firstElementChild?.textContent?.trim()).toBe('Panel de empleo');
-      const acciones = barra.querySelector('.barra-app__acciones');
-      expect(acciones?.querySelector('a[href="/cuenta"]')).not.toBeNull();
-      expect(acciones?.querySelector('app-selector-de-idioma')).not.toBeNull();
-      expect(acciones?.parentElement).toBe(barra);
+      const enControles = cabecera.querySelector('.controles a[href="/cuenta"]');
+      const enMenu = cabecera.querySelector('#menu-movil a[href="/cuenta"]');
+
+      expect(enControles?.getAttribute('aria-label')).toBe('Tu cuenta');
+      expect(enControles?.textContent).toContain('Tu cuenta');
+      expect(enControles?.previousElementSibling).toBeNull();
+      expect(enControles?.nextElementSibling?.classList.contains('whatsapp')).toBe(true);
+      expect(enMenu?.textContent?.trim()).toBe('Tu cuenta');
+      expect(fixture.nativeElement.querySelector('main a[href="/cuenta"]')).toBeNull();
     });
 
-    it('sin cuenta, el grupo de la derecha solo lleva el idioma', async () => {
+    it('marca aria-current="page" mientras se esta en /cuenta, y solo entonces', async () => {
+      TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
+      activa.set(true);
       const fixture = TestBed.createComponent(App);
       await fixture.whenStable();
-      const acciones = (fixture.nativeElement as HTMLElement).querySelector('.barra-app__acciones')!;
+      const cabecera = enCabecera(fixture.nativeElement as HTMLElement);
+      const enlaces = () => [...cabecera.querySelectorAll('a[href="/cuenta"]')];
 
-      expect(acciones.querySelector('a[href="/cuenta"]')).toBeNull();
-      expect(acciones.querySelector('app-selector-de-idioma')).not.toBeNull();
+      expect(enlaces().map((a) => a.getAttribute('aria-current'))).toEqual([null, null]);
+
+      await TestBed.inject(Router).navigateByUrl('/cuenta');
+      await fixture.whenStable();
+
+      expect(enlaces().map((a) => a.getAttribute('aria-current'))).toEqual(['page', 'page']);
+    });
+  });
+
+  describe('anchos', () => {
+    it('el contenido principal y la cabecera de marca comparten el contenedor de la pagina', async () => {
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+      const pagina = fixture.nativeElement as HTMLElement;
+
+      expect(pagina.querySelector('main')?.classList.contains('contenedor-pagina')).toBe(true);
+      expect(pagina.querySelector('app-cabecera-de-marca .contenedor')?.classList.contains('contenedor-pagina')).toBe(true);
     });
   });
 
@@ -180,6 +201,8 @@ describe('App', () => {
       expect(aviso.textContent).toContain('consentimiento');
       expect(aviso.querySelector('a')?.getAttribute('href')).toBe('/cuenta');
       expect(aviso.textContent).not.toMatch(/[—–→]/);
+      expect(aviso.closest('.contenedor-pagina')).not.toBeNull();
+      expect(aviso.compareDocumentPosition(pagina.querySelector('main')!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     });
 
     it('si el estado es desconocido nunca avisa', async () => {
@@ -214,13 +237,6 @@ describe('App', () => {
 
       expect((fixture.nativeElement as HTMLElement).querySelector('[data-aviso-consentimiento]')).toBeNull();
     });
-  });
-
-  it('sin sesion, la barra de la app no ofrece la cuenta', async () => {
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-
-    expect((fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
   });
 
   it('muestra el aviso de preparar la zona mientras una guarda espera y lo quita al decidir', async () => {

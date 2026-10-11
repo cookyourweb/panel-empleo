@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="es" trgLang="en">
   <file id="ngi18n" original="ng.template">
-    <unit id="app.cuenta">
-      <notes>
-        <note category="location">src/app/app.html:8</note>
-        <note category="description">Enlace de la cabecera a la cuenta</note>
-      </notes>
-      <segment>
-        <source>Tu cuenta</source>
-        <target>Your account</target>
-      </segment>
-    </unit>
     <unit id="app.avisoConsentimiento.texto">
       <notes>
         <note category="location">src/app/app.html:1</note>
@@ -89,16 +79,6 @@
       <segment>
         <source>Tu cuenta</source>
         <target>Your account</target>
-      </segment>
-    </unit>
-    <unit id="app.titulo">
-      <notes>
-        <note category="location">src/app/app.ts:15</note>
-        <note category="description">Nombre de la aplicacion, titulo de la cabecera</note>
-      </notes>
-      <segment>
-        <source>Panel de empleo</source>
-        <target>Job search dashboard</target>
       </segment>
     </unit>
     <unit id="entrada.titulo">
@@ -1839,6 +1819,16 @@
       <segment>
         <source>Empleo | CookYourWebAI</source>
         <target>Job search | CookYourWebAI</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.cuenta">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.ts:38</note>
+        <note category="description">Enlace de la cabecera a la cuenta</note>
+      </notes>
+      <segment>
+        <source>Tu cuenta</source>
+        <target>Your account</target>
       </segment>
     </unit>
     <unit id="cabecera.agencia">

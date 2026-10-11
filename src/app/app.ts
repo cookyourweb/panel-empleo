@@ -1,23 +1,21 @@
-import { Component, computed, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter, skip } from 'rxjs';
 
 import { ALTA_ACTIVA } from './configuracion';
-import { SelectorDeIdioma } from './idioma/selector-de-idioma';
 import { CabeceraDeMarca } from './marca/cabecera-de-marca';
 import { PieDeMarca } from './marca/pie-de-marca';
 import { PreparandoZona } from './preparacion/preparando-zona';
 import { Sesion } from './sesion/sesion';
 
 @Component({
-  imports: [CabeceraDeMarca, PieDeMarca, PreparandoZona, RouterLink, RouterOutlet, SelectorDeIdioma],
+  imports: [CabeceraDeMarca, PieDeMarca, PreparandoZona, RouterLink, RouterOutlet],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly titulo = signal($localize`:Nombre de la aplicacion, titulo de la cabecera@@app.titulo:Panel de empleo`);
   protected readonly sesion = inject(Sesion);
   protected readonly altaActiva = inject(ALTA_ACTIVA);
   /**

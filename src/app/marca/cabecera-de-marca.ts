@@ -1,5 +1,9 @@
 import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, LOCALE_ID, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, ElementRef, inject, LOCALE_ID, signal, viewChild } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
+import { ALTA_ACTIVA } from '../configuracion';
+import { Sesion } from '../sesion/sesion';
 
 import { EnlaceDelMenu, enlacesDeLaAgencia, raizDeLaPlataforma, URL_DE_LA_AGENCIA, URL_DE_WHATSAPP } from './enlaces-de-marca';
 
@@ -9,13 +13,15 @@ const SCROLL_PARA_COMPACTAR = 50;
 /**
  * Cabecera de CookYourWeb AI, igual que la de www.cookyourwebai.es.
  *
- * Es presentacional: no conoce sesion ni rutas de la app. Los enlaces de la
+ * Lo unico que sabe de la app es "Tu cuenta": aparece solo con sesion (y con el
+ * backend de alta, que es quien tiene cuenta que enseñar). Los enlaces de la
  * agencia son absolutos (es otro dominio) y "Empleo Tech", la propia
  * plataforma, es la pagina actual. Debajo de 1024 px el menu es un panel que
  * se opera entero con teclado: Escape lo cierra y devuelve el foco al boton.
  */
 @Component({
   selector: 'app-cabecera-de-marca',
+  imports: [RouterLink, RouterLinkActive],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './cabecera-de-marca.css',
   templateUrl: './cabecera-de-marca.html',
@@ -28,6 +34,11 @@ export class CabeceraDeMarca {
   protected readonly etiquetaDeWhatsapp = $localize`:Nombre accesible del enlace a WhatsApp@@cabecera.whatsapp.etiqueta:Contactar por WhatsApp`;
   protected readonly etiquetaDeAbrir = $localize`:Nombre accesible del boton que abre el menu movil@@cabecera.menu.abrir:Abrir menú de navegación`;
   protected readonly etiquetaDeCerrar = $localize`:Nombre accesible del boton que cierra el menu movil@@cabecera.menu.cerrar:Cerrar menú de navegación`;
+
+  protected readonly etiquetaDeCuenta = $localize`:Enlace de la cabecera a la cuenta@@cabecera.cuenta:Tu cuenta`;
+  private readonly sesion = inject(Sesion);
+  private readonly altaActiva = inject(ALTA_ACTIVA);
+  protected readonly conCuenta = computed(() => this.altaActiva && this.sesion.activa());
 
   protected readonly enlaces: readonly EnlaceDelMenu[] = [
     ...enlacesDeLaAgencia().map((enlace) => ({ ...enlace, actual: false })),

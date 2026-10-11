@@ -40,6 +40,20 @@ describe('PieDeMarca', () => {
     expect(pie.querySelector('h2')?.textContent).toBe('Contacto');
   });
 
+  it('lleva el cambio de idioma junto a los derechos, con los dos idiomas y el actual marcado', async () => {
+    const pie = await crear();
+
+    const nav = pie.querySelector('.pie__derechos nav[aria-label="Idioma"]');
+    const enlaces = [...(nav?.querySelectorAll('a[hreflang]') ?? [])];
+
+    expect(enlaces.map((a) => [a.getAttribute('hreflang'), a.textContent?.trim()])).toEqual([
+      ['es', 'Español'],
+      ['en', 'English'],
+    ]);
+    expect(nav?.querySelectorAll('a[aria-current="true"]')).toHaveLength(1);
+    expect(nav?.querySelector('a[aria-current="true"]')?.getAttribute('hreflang')).toBe('es');
+  });
+
   it('enlaza el telefono y el email con tel: y mailto:', async () => {
     const pie = await crear();
 
@@ -111,7 +125,7 @@ describe('PieDeMarca', () => {
       expect(pie.querySelector('.pie__legales')).toBeNull();
       expect(pie.textContent).not.toContain('Política de Privacidad');
       expect(pie.textContent).not.toContain('Darme de baja');
-      const hacia = [...pie.querySelectorAll('a')].map((a) => a.getAttribute('href'));
+      const hacia = [...pie.querySelectorAll('a:not([hreflang])')].map((a) => a.getAttribute('href'));
       expect(hacia).toEqual(['tel:+34688757782', 'mailto:veronica@cookyourwebai.es', 'https://www.cookyourwebai.es/']);
     });
 

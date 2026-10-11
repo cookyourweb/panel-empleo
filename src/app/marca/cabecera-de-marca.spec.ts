@@ -1,6 +1,10 @@
-import { LOCALE_ID } from '@angular/core';
+import { LOCALE_ID, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { provideRouter } from '@angular/router';
+
+import { ALTA_ACTIVA } from '../configuracion';
+import { Sesion } from '../sesion/sesion';
 import { CabeceraDeMarca } from './cabecera-de-marca';
 import { raizDeLaPlataforma } from './enlaces-de-marca';
 
@@ -25,15 +29,28 @@ describe('CabeceraDeMarca', () => {
   const alternar = () => raiz.querySelector('button.alternar') as HTMLButtonElement;
   const panel = () => raiz.querySelector('#menu-movil') as HTMLElement;
 
-  async function crear(localeId = 'es'): Promise<void> {
-    TestBed.configureTestingModule({ imports: [CabeceraDeMarca], providers: [{ provide: LOCALE_ID, useValue: localeId }] });
+  const sesionActiva = signal(false);
+
+  async function crear(localeId = 'es', conAlta = true): Promise<void> {
+    TestBed.configureTestingModule({
+      imports: [CabeceraDeMarca],
+      providers: [
+        { provide: LOCALE_ID, useValue: localeId },
+        { provide: Sesion, useValue: { activa: sesionActiva } },
+        { provide: ALTA_ACTIVA, useValue: conAlta },
+        provideRouter([{ path: 'cuenta', children: [] }]),
+      ],
+    });
     fixture = TestBed.createComponent(CabeceraDeMarca);
     raiz = fixture.nativeElement as HTMLElement;
     document.body.appendChild(raiz);
     await fixture.whenStable();
   }
 
-  beforeEach(() => desplazarA(0));
+  beforeEach(() => {
+    sesionActiva.set(false);
+    desplazarA(0);
+  });
 
   afterEach(() => {
     raiz?.remove();
@@ -254,6 +271,60 @@ describe('CabeceraDeMarca', () => {
       for (const icono of iconos) expect(icono.getAttribute('aria-hidden')).toBe('true');
       expect(alternar().textContent?.trim()).toBe('');
       expect(alternar().getAttribute('aria-label')).toBeTruthy();
+    });
+  });
+
+  describe('Tu cuenta', () => {
+    const enlaces = () => [...raiz.querySelectorAll<HTMLAnchorElement>('a[href="/cuenta"]')];
+
+    it('sin sesion no hay enlace a la cuenta', async () => {
+      await crear();
+
+      expect(enlaces()).toHaveLength(0);
+    });
+
+    it('con sesion pero sin backend de alta tampoco: no hay cuenta que enseñar', async () => {
+      sesionActiva.set(true);
+      await crear('es', false);
+
+      expect(enlaces()).toHaveLength(0);
+    });
+
+    it('con sesion es un enlace con nombre accesible, un icono decorativo y el texto visible', async () => {
+      sesionActiva.set(true);
+      await crear();
+
+      const enlace = raiz.querySelector('.controles a.cuenta') as HTMLAnchorElement;
+
+      expect(enlace.getAttribute('aria-label')).toBe('Tu cuenta');
+      expect(enlace.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
+      expect(enlace.querySelector('.cuenta__texto')?.textContent?.trim()).toBe('Tu cuenta');
+    });
+
+    it('va antes del boton de WhatsApp, en los controles de la derecha', async () => {
+      sesionActiva.set(true);
+      await crear();
+
+      const controles = [...raiz.querySelector('.controles')!.children].map((h) => h.className.split(' ')[0]);
+
+      expect(controles).toEqual(['cuenta', 'whatsapp', 'alternar']);
+    });
+
+    it('el menu movil la trae tras los seis enlaces y antes del Chatbot, y al pulsarla cierra el menu', async () => {
+      sesionActiva.set(true);
+      await crear();
+      alternar().click();
+      await fixture.whenStable();
+
+      const hijos = [...raiz.querySelector('.menu-movil__nav')!.children];
+      const cuenta = hijos.findIndex((h) => h.getAttribute('href') === '/cuenta');
+
+      expect(cuenta).toBe(6);
+      expect(hijos[7].classList.contains('menu-movil__cta')).toBe(true);
+      (hijos[cuenta] as HTMLAnchorElement).addEventListener('click', (e) => e.preventDefault());
+      (hijos[cuenta] as HTMLAnchorElement).click();
+      await fixture.whenStable();
+      expect(panel().hidden).toBe(true);
     });
   });
 });

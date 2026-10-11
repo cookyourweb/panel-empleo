@@ -15,6 +15,7 @@
   
       <div class="pie__derechos">
         <p>{{ derechos }}</p>
+        <app-selector-de-idioma />
         @if (legales.length > 0) {
           <nav class="pie__legales" [attr.aria-label]="etiquetaLegales">
             @for (enlace of legales; track enlace.clave; let primero = $first) {

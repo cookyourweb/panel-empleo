@@ -41,6 +41,13 @@ describe('OfertasPage', () => {
     return fixture.nativeElement as HTMLElement;
   }
 
+  it('tiene exactamente un h1, el titular Ofertas, y sin saltar niveles', async () => {
+    const pagina = await pintar();
+
+    expect(pagina.querySelectorAll('h1')).toHaveLength(1);
+    expect(pagina.querySelector('h1')?.textContent?.trim()).toBe('Ofertas');
+  });
+
   it('con la demo no pinta ningun medidor de cuota', async () => {
     const pagina = await pintar();
 
