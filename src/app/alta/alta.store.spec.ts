@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AltaStore } from './alta.store';
 import { Perfil, ResultadoExtraccion, SubidaRechazada, TIPOS_DE_CONSENTIMIENTO, VERSION_DE_CONSENTIMIENTO } from './dominio';
 import { ExtractorDeCv } from './extractor-de-cv';
+import { Sesion } from '../sesion/sesion';
 import { RepositorioDePerfil } from './repositorio-de-perfil';
 
 const PERFIL: Perfil = {
@@ -32,14 +33,17 @@ function aplazada<T>(): { promesa: Promise<T>; resolver: (valor: T) => void } {
 describe('AltaStore', () => {
   let repositorio: { obtener: ReturnType<typeof vi.fn>; guardar: ReturnType<typeof vi.fn>; consentir: ReturnType<typeof vi.fn> };
   let extractor: { subir: ReturnType<typeof vi.fn>; extraer: ReturnType<typeof vi.fn> };
+  let sesion: { perfilGuardado: ReturnType<typeof vi.fn> };
   let store: AltaStore;
 
   beforeEach(() => {
     repositorio = { obtener: vi.fn(), guardar: vi.fn().mockResolvedValue(undefined), consentir: vi.fn().mockResolvedValue(undefined) };
     extractor = { subir: vi.fn().mockResolvedValue(undefined), extraer: vi.fn().mockResolvedValue(PROPUESTA) };
+    sesion = { perfilGuardado: vi.fn() };
     TestBed.configureTestingModule({
       providers: [
         AltaStore,
+        { provide: Sesion, useValue: sesion },
         { provide: RepositorioDePerfil, useValue: repositorio },
         { provide: ExtractorDeCv, useValue: extractor },
       ],
@@ -187,6 +191,23 @@ describe('AltaStore', () => {
 
       expect(repositorio.guardar).toHaveBeenCalledWith(PERFIL);
       expect(store.paso()).toBe('hecho');
+    });
+
+    it('avisa a la sesion de que ya hay perfil, para que las guardas no la devuelvan al alta', async () => {
+      store.irAManual();
+
+      await store.guardar(PERFIL);
+
+      expect(sesion.perfilGuardado).toHaveBeenCalledTimes(1);
+    });
+
+    it('si falla el guardado no toca el estado de la sesion', async () => {
+      store.irAManual();
+      repositorio.guardar.mockRejectedValue(new Error('422'));
+
+      await store.guardar(PERFIL);
+
+      expect(sesion.perfilGuardado).not.toHaveBeenCalled();
     });
 
     it('si falla se queda donde estaba y lo dice', async () => {

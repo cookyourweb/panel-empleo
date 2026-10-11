@@ -3,7 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 
 import { CONFIGURACION_DE_SESION } from './configuracion';
-import { RESULTADO_DE_ENTRADA, Sesion } from './sesion';
+import { RESULTADO_DE_ENTRADA, Sesion, VIGENCIA_DE_PERFIL_MS } from './sesion';
 
 const URL_API = 'http://api.prueba';
 const USUARIA = { sub: 'sub-1', email: 'invitada@ejemplo.test', nombre: 'Invitada' };
@@ -110,6 +110,78 @@ describe('Sesion', () => {
 
       expect(localStorage.length).toBe(0);
       expect(sessionStorage.length).toBe(0);
+    });
+  });
+
+  describe('estado del perfil (la ultima respuesta de /yo)', () => {
+    afterEach(() => vi.useRealTimers());
+
+    it('empieza sin saber nada', () => {
+      expect(sesion.perfil()).toBeNull();
+      expect(sesion.perfilReciente()).toBeNull();
+    });
+
+    it('guarda tiene_perfil y origen_master de la respuesta de entrar', async () => {
+      await entrarRespondiendo(
+        { ...USUARIA, tiene_perfil: true, origen_master: 'drive' },
+        { status: 200, statusText: 'OK' },
+      );
+
+      expect(sesion.perfil()).toMatchObject({ tienePerfil: true, origenMaster: 'drive' });
+      expect(sesion.perfilReciente()).not.toBeNull();
+    });
+
+    it('un origen_master desconocido se guarda como null', async () => {
+      await entrarRespondiendo({ ...USUARIA, tiene_perfil: false, origen_master: 'otro' }, { status: 200, statusText: 'OK' });
+
+      expect(sesion.perfil()).toMatchObject({ tienePerfil: false, origenMaster: null });
+    });
+
+    it.each([[undefined], ['no'], [null]])('si tiene_perfil es %s no hay nada que recordar', async (valor) => {
+      await entrarRespondiendo({ ...USUARIA, tiene_perfil: valor }, { status: 200, statusText: 'OK' });
+
+      expect(sesion.perfil()).toBeNull();
+    });
+
+    it('deja de ser reciente pasado el plazo de vigencia', async () => {
+      vi.useFakeTimers();
+      await entrarRespondiendo({ ...USUARIA, tiene_perfil: true }, { status: 200, statusText: 'OK' });
+
+      vi.advanceTimersByTime(VIGENCIA_DE_PERFIL_MS - 1);
+      expect(sesion.perfilReciente()).not.toBeNull();
+
+      vi.advanceTimersByTime(2);
+      expect(sesion.perfilReciente()).toBeNull();
+    });
+
+    it('recordarPerfil sustituye lo anterior', async () => {
+      await entrarRespondiendo({ ...USUARIA, tiene_perfil: false }, { status: 200, statusText: 'OK' });
+
+      sesion.recordarPerfil({ tienePerfil: true, origenMaster: 'neon' });
+
+      expect(sesion.perfilReciente()).toMatchObject({ tienePerfil: true, origenMaster: 'neon' });
+    });
+
+    it('perfilGuardado marca que ya hay perfil', async () => {
+      await entrarRespondiendo({ ...USUARIA, tiene_perfil: false }, { status: 200, statusText: 'OK' });
+
+      sesion.perfilGuardado();
+
+      expect(sesion.perfilReciente()?.tienePerfil).toBe(true);
+    });
+
+    it('cerrar lo olvida', async () => {
+      await entrarRespondiendo({ ...USUARIA, tiene_perfil: true }, { status: 200, statusText: 'OK' });
+
+      sesion.cerrar();
+
+      expect(sesion.perfil()).toBeNull();
+    });
+
+    it('una entrada rechazada no deja rastro del perfil', async () => {
+      await entrarRespondiendo(null, { status: 403, statusText: 'Forbidden' });
+
+      expect(sesion.perfil()).toBeNull();
     });
   });
 

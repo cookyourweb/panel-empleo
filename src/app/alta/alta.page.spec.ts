@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AltaPage } from './alta.page';
 import { MotivoManual, MOTIVOS_MANUAL, ResultadoExtraccion } from './dominio';
 import { ExtractorDeCv } from './extractor-de-cv';
+import { Sesion } from '../sesion/sesion';
 import { RepositorioDePerfil } from './repositorio-de-perfil';
 
 describe('AltaPage', () => {
@@ -16,6 +17,7 @@ describe('AltaPage', () => {
       providers: [
         { provide: RepositorioDePerfil, useValue: repositorio },
         { provide: ExtractorDeCv, useValue: extractor },
+        { provide: Sesion, useValue: { perfilGuardado: vi.fn() } },
       ],
     });
     const fixture = TestBed.createComponent(AltaPage);

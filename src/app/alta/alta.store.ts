@@ -1,5 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 
+import { Sesion } from '../sesion/sesion';
 import {
   MotivoDeSubida,
   MotivoManual,
@@ -34,6 +35,7 @@ export type Paso = (typeof PASOS)[keyof typeof PASOS];
 export class AltaStore {
   private readonly repositorio = inject(RepositorioDePerfil);
   private readonly extractor = inject(ExtractorDeCv);
+  private readonly sesion = inject(Sesion);
 
   private readonly _paso = signal<Paso>(PASOS.consentimiento);
   private readonly _propuestas = signal<Propuesta[]>([]);
@@ -103,6 +105,8 @@ export class AltaStore {
       this._errorDeGuardado.set(true);
       return;
     }
+    // The cached /yo answer may still say "no profile": correct it before any guard runs.
+    this.sesion.perfilGuardado();
     this._paso.set(PASOS.hecho);
   }
 }
