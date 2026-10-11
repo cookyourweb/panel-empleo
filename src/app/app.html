@@ -1,17 +1,21 @@
-<a class="salto-al-contenido" href="#contenido" i18n="Enlace para saltar la cabecera y llegar al contenido@@app.saltarAlContenido"
+<a class="salto-al-contenido" href="#main-content" i18n="Enlace para saltar la cabecera y llegar al contenido@@app.saltarAlContenido"
   >Saltar al contenido principal</a
 >
 
-<header class="cabecera">
+<app-cabecera-de-marca />
+
+<div class="barra-app">
   <h1>{{ titulo() }}</h1>
   @if (sesion.activa() && altaActiva) {
     <a routerLink="/cuenta" i18n="Enlace de la cabecera a la cuenta@@app.cuenta">Tu cuenta</a>
   }
   <app-selector-de-idioma />
-</header>
+</div>
 
 <app-preparando-zona />
 
-<main #principal id="contenido" tabindex="-1">
+<main #principal id="main-content" tabindex="-1">
   <router-outlet />
 </main>
+
+<app-pie-de-marca />

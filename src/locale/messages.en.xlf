@@ -1791,6 +1791,236 @@
         <target>Job search | CookYourWebAI</target>
       </segment>
     </unit>
+    <unit id="cabecera.agencia">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.html:4</note>
+        <note category="description">Etiqueta bajo el logo de la agencia</note>
+      </notes>
+      <segment>
+        <source>Agencia AI</source>
+        <target>AI Agency</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.whatsapp.ayuda">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.html:26</note>
+        <note category="description">Ayuda emergente del boton de WhatsApp</note>
+      </notes>
+      <segment>
+        <source>¡Chatbot AI en vivo!</source>
+        <target>Live AI chatbot!</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.chatbot">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.html:68</note>
+        <note category="description">Boton del menu movil que abre el chat de WhatsApp</note>
+      </notes>
+      <segment>
+        <source>Chatbot AI en Vivo</source>
+        <target>Live AI Chatbot</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.principal">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.ts:30</note>
+        <note category="description">Nombre accesible del menu de navegacion principal</note>
+      </notes>
+      <segment>
+        <source>Principal</source>
+        <target>Main</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.whatsapp.etiqueta">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.ts:31</note>
+        <note category="description">Nombre accesible del enlace a WhatsApp</note>
+      </notes>
+      <segment>
+        <source>Contactar por WhatsApp</source>
+        <target>Contact us on WhatsApp</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.abrir">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.ts:32</note>
+        <note category="description">Nombre accesible del boton que abre el menu movil</note>
+      </notes>
+      <segment>
+        <source>Abrir menú de navegación</source>
+        <target>Open navigation menu</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.cerrar">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.ts:33</note>
+        <note category="description">Nombre accesible del boton que cierra el menu movil</note>
+      </notes>
+      <segment>
+        <source>Cerrar menú de navegación</source>
+        <target>Close navigation menu</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.automatizacion">
+      <notes>
+        <note category="location">src/app/marca/enlaces-de-marca.ts:25</note>
+        <note category="description">Enlace del menu a la seccion de automatizacion de la agencia</note>
+      </notes>
+      <segment>
+        <source>Automatización</source>
+        <target>Automation</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.funnels">
+      <notes>
+        <note category="location">src/app/marca/enlaces-de-marca.ts:30</note>
+        <note category="description">Enlace del menu a la seccion de funnels de la agencia</note>
+      </notes>
+      <segment>
+        <source>Funnels AI</source>
+        <target>AI Funnels</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.avatares">
+      <notes>
+        <note category="location">src/app/marca/enlaces-de-marca.ts:35</note>
+        <note category="description">Enlace del menu a la seccion de avatares de la agencia</note>
+      </notes>
+      <segment>
+        <source>Avatares AI</source>
+        <target>AI Avatars</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.auditoria">
+      <notes>
+        <note category="location">src/app/marca/enlaces-de-marca.ts:40</note>
+        <note category="description">Enlace del menu a la seccion de auditoria gratuita de la agencia</note>
+      </notes>
+      <segment>
+        <source>Auditoría Gratis</source>
+        <target>Free Audit</target>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.desarrolladores">
+      <notes>
+        <note category="location">src/app/marca/enlaces-de-marca.ts:45</note>
+        <note category="description">Enlace del menu a la seccion de desarrolladores de la agencia</note>
+      </notes>
+      <segment>
+        <source>Desarrolladores</source>
+        <target>Developers</target>
+      </segment>
+    </unit>
+    <unit id="pie.contacto">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.html:4</note>
+        <note category="description">Titulo del bloque de contacto del pie</note>
+      </notes>
+      <segment>
+        <source>Contacto</source>
+        <target>Contact</target>
+      </segment>
+    </unit>
+    <unit id="pie.telefono">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.html:6</note>
+        <note category="description">Etiqueta del telefono de contacto</note>
+      </notes>
+      <segment>
+        <source>Teléfono:</source>
+        <target>Phone:</target>
+      </segment>
+    </unit>
+    <unit id="pie.email">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.html:10</note>
+        <note category="description">Etiqueta del email de contacto</note>
+      </notes>
+      <segment>
+        <source>Email:</source>
+        <target>Email:</target>
+      </segment>
+    </unit>
+    <unit id="pie.proyecto">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.html:36</note>
+        <note category="description">Enlace del pie a la web de la agencia</note>
+      </notes>
+      <segment>
+        <source>Un proyecto de CookYourWeb AI</source>
+        <target>A CookYourWeb AI project</target>
+      </segment>
+    </unit>
+    <unit id="pie.legal.etiqueta">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:28</note>
+        <note category="description">Nombre accesible de la fila de enlaces legales del pie</note>
+      </notes>
+      <segment>
+        <source>Información legal</source>
+        <target>Legal information</target>
+      </segment>
+    </unit>
+    <unit id="pie.derechos">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:31</note>
+        <note category="description">Aviso de derechos reservados del pie</note>
+      </notes>
+      <segment>
+        <source>© <ph id="0" equiv="anio" disp="this.anio"/> CookYourWeb. Todos los derechos reservados.</source>
+        <target>© <ph id="0" equiv="anio" disp="this.anio"/> CookYourWeb. All rights reserved.</target>
+      </segment>
+    </unit>
+    <unit id="pie.hechoCon">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:33</note>
+        <note category="description">Frase de cierre del pie, con un corazon en medio</note>
+      </notes>
+      <segment>
+        <source>Hecho con <ph id="0" equiv="corazon" disp="CORAZON"/> y mucha AI</source>
+        <target>Made with <ph id="0" equiv="corazon" disp="CORAZON"/> and lots of AI</target>
+      </segment>
+    </unit>
+    <unit id="pie.legal.privacidad">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:41</note>
+        <note category="description">Enlace del pie a la politica de privacidad</note>
+      </notes>
+      <segment>
+        <source>Política de Privacidad</source>
+        <target>Privacy Policy</target>
+      </segment>
+    </unit>
+    <unit id="pie.legal.cookies">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:43</note>
+        <note category="description">Enlace del pie a la politica de cookies</note>
+      </notes>
+      <segment>
+        <source>Política de Cookies</source>
+        <target>Cookie Policy</target>
+      </segment>
+    </unit>
+    <unit id="pie.legal.avisoLegal">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:45</note>
+        <note category="description">Enlace del pie al aviso legal</note>
+      </notes>
+      <segment>
+        <source>Aviso Legal</source>
+        <target>Legal Notice</target>
+      </segment>
+    </unit>
+    <unit id="pie.legal.baja">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:47</note>
+        <note category="description">Enlace del pie a la pagina de baja</note>
+      </notes>
+      <segment>
+        <source>Darme de baja</source>
+        <target>Unsubscribe</target>
+      </segment>
+    </unit>
     <unit id="bienvenida.proximamente">
       <notes>
         <note category="location">src/app/bienvenida/bienvenida.page.html:3,4</note>
