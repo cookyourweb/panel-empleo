@@ -124,6 +124,39 @@ describe('AltaStore', () => {
       expect(store.motivoManual()).toBe('tope');
     });
 
+    it('cvGuardado empieza en falso y pasa a verdadero en cuanto el servidor acepta el archivo', async () => {
+      await hastaSubida();
+      expect(store.cvGuardado()).toBe(false);
+      const espera = aplazada<ResultadoExtraccion>();
+      extractor.extraer.mockReturnValue(espera.promesa);
+
+      const subida = store.subirCv(ARCHIVO);
+      await vi.waitFor(() => expect(store.cvGuardado()).toBe(true));
+      expect(store.paso()).toBe('extrayendo');
+
+      espera.resolver(PROPUESTA);
+      await subida;
+    });
+
+    it('cvGuardado sigue verdadero aunque la lectura no este disponible', async () => {
+      await hastaSubida();
+      extractor.extraer.mockResolvedValue({ estado: 'manual', motivo: 'indisponible' });
+
+      await store.subirCv(ARCHIVO);
+
+      expect(store.paso()).toBe('manual');
+      expect(store.cvGuardado()).toBe(true);
+    });
+
+    it('un archivo rechazado no marca el CV como guardado', async () => {
+      await hastaSubida();
+      extractor.subir.mockRejectedValue(new SubidaRechazada('tamano'));
+
+      await store.subirCv(ARCHIVO);
+
+      expect(store.cvGuardado()).toBe(false);
+    });
+
     it('un archivo rechazado vuelve a la subida con el motivo y sin extraer (S5.7)', async () => {
       await hastaSubida();
       extractor.subir.mockRejectedValue(new SubidaRechazada('tipo'));

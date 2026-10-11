@@ -1982,14 +1982,34 @@
         <target>Your profile</target>
       </segment>
     </unit>
-    <unit id="alta.extrayendo">
+    <unit id="alta.extrayendo.subiendo">
       <notes>
-        <note category="location">src/app/alta/alta.page.ts:25</note>
-        <note category="description">Aviso de que se esta leyendo el CV</note>
+        <note category="location">src/app/alta/alta.page.ts:24</note>
+        <note category="description">Aviso de que se esta subiendo el CV</note>
       </notes>
       <segment>
-        <source>Leyendo tu CV, un momento</source>
-        <target>Reading your CV, one moment</target>
+        <source>Subiendo tu CV…</source>
+        <target>Uploading your CV…</target>
+      </segment>
+    </unit>
+    <unit id="alta.extrayendo.leyendo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:25</note>
+        <note category="description">Titulo mientras se lee el CV ya guardado</note>
+      </notes>
+      <segment>
+        <source>Leyendo tu CV…</source>
+        <target>Reading your CV…</target>
+      </segment>
+    </unit>
+    <unit id="alta.extrayendo.guardado">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:26</note>
+        <note category="description">Aviso de que el CV esta guardado y se esta leyendo</note>
+      </notes>
+      <segment>
+        <source>Tu CV está guardado (cifrado). Ahora lo estamos leyendo, un momento.</source>
+        <target>Your CV is saved (encrypted). We are reading it now, one moment.</target>
       </segment>
     </unit>
     <unit id="alta.consentimiento.titulo">
@@ -2392,6 +2412,16 @@
         <target>Review what we read</target>
       </segment>
     </unit>
+    <unit id="alta.revision.cvGuardado">
+      <notes>
+        <note category="location">src/app/alta/revision-de-campos.ts:17</note>
+        <note category="description">Confirmacion de que el CV esta guardado</note>
+      </notes>
+      <segment>
+        <source>Tu CV está guardado (cifrado).</source>
+        <target>Your CV is saved (encrypted).</target>
+      </segment>
+    </unit>
     <unit id="alta.revision.texto">
       <notes>
         <note category="location">src/app/alta/revision-de-campos.ts:20</note>
@@ -2408,8 +2438,8 @@
         <note category="description">Motivo manual, lectura apagada</note>
       </notes>
       <segment>
-        <source>La lectura automática del CV no está disponible por ahora. Rellena tu perfil a mano.</source>
-        <target>Automatic CV reading is not available at the moment. Fill in your profile by hand.</target>
+        <source>Tu CV está guardado (cifrado). La lectura automática no está disponible por ahora, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
+        <target>Your CV is saved (encrypted). Automatic reading is not available for now, so please fill in your profile by hand; it will only take a few minutes.</target>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.yaUsada">
@@ -2418,8 +2448,8 @@
         <note category="description">Motivo manual, lectura ya usada</note>
       </notes>
       <segment>
-        <source>Ya has usado tu lectura automática del CV. Rellena tu perfil a mano.</source>
-        <target>You have already used your automatic CV reading. Fill in your profile by hand.</target>
+        <source>Tu CV está guardado (cifrado). Ya has usado tu lectura automática, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
+        <target>Your CV is saved (encrypted). You have already used your automatic reading, so please fill in your profile by hand; it will only take a few minutes.</target>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.tope">
@@ -2428,8 +2458,8 @@
         <note category="description">Motivo manual, tope mensual</note>
       </notes>
       <segment>
-        <source>Hemos llegado al límite de lecturas automáticas de este mes. Rellena tu perfil a mano.</source>
-        <target>We have reached this month's limit of automatic readings. Fill in your profile by hand.</target>
+        <source>Tu CV está guardado (cifrado). Hemos llegado al límite de lecturas automáticas de este mes, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
+        <target>Your CV is saved (encrypted). We have reached this month's limit of automatic readings, so please fill in your profile by hand; it will only take a few minutes.</target>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.proveedor">
@@ -2438,8 +2468,8 @@
         <note category="description">Motivo manual, fallo del proveedor</note>
       </notes>
       <segment>
-        <source>El servicio que lee el CV no ha respondido. No has perdido tu intento: puedes volver a probar más tarde. Mientras tanto, rellena tu perfil a mano.</source>
-        <target>The service that reads CVs did not respond. You have not lost your attempt: you can try again later. In the meantime, fill in your profile by hand.</target>
+        <source>Tu CV está guardado y no has perdido tu intento: el servicio que lo lee no ha respondido y puedes volver a probar más tarde. Mientras tanto, rellena tu perfil a mano; solo te llevará unos minutos.</source>
+        <target>Your CV is saved and you have not lost your attempt: the service that reads it did not respond and you can try again later. In the meantime, please fill in your profile by hand; it will only take a few minutes.</target>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.indisponible">
@@ -2448,8 +2478,8 @@
         <note category="description">Motivo manual, servicio no disponible</note>
       </notes>
       <segment>
-        <source>Ahora mismo no podemos leer tu CV. Rellena tu perfil a mano.</source>
-        <target>We cannot read your CV right now. Fill in your profile by hand.</target>
+        <source>Tu CV está guardado. Ahora mismo no podemos leerlo automáticamente, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
+        <target>Your CV is saved. We cannot read it automatically right now, so please fill in your profile by hand; it will only take a few minutes.</target>
       </segment>
     </unit>
     <unit id="alta.manual.titulo">

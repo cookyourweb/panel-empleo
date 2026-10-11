@@ -1784,13 +1784,31 @@
         <source>Tu perfil</source>
       </segment>
     </unit>
-    <unit id="alta.extrayendo">
+    <unit id="alta.extrayendo.subiendo">
       <notes>
-        <note category="location">src/app/alta/alta.page.ts:25</note>
-        <note category="description">Aviso de que se esta leyendo el CV</note>
+        <note category="location">src/app/alta/alta.page.ts:24</note>
+        <note category="description">Aviso de que se esta subiendo el CV</note>
       </notes>
       <segment>
-        <source>Leyendo tu CV, un momento</source>
+        <source>Subiendo tu CV…</source>
+      </segment>
+    </unit>
+    <unit id="alta.extrayendo.leyendo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:25</note>
+        <note category="description">Titulo mientras se lee el CV ya guardado</note>
+      </notes>
+      <segment>
+        <source>Leyendo tu CV…</source>
+      </segment>
+    </unit>
+    <unit id="alta.extrayendo.guardado">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:26</note>
+        <note category="description">Aviso de que el CV esta guardado y se esta leyendo</note>
+      </notes>
+      <segment>
+        <source>Tu CV está guardado (cifrado). Ahora lo estamos leyendo, un momento.</source>
       </segment>
     </unit>
     <unit id="alta.consentimiento.titulo">
@@ -2153,6 +2171,15 @@
         <source>Revisa lo que hemos leído</source>
       </segment>
     </unit>
+    <unit id="alta.revision.cvGuardado">
+      <notes>
+        <note category="location">src/app/alta/revision-de-campos.ts:17</note>
+        <note category="description">Confirmacion de que el CV esta guardado</note>
+      </notes>
+      <segment>
+        <source>Tu CV está guardado (cifrado).</source>
+      </segment>
+    </unit>
     <unit id="alta.revision.texto">
       <notes>
         <note category="location">src/app/alta/revision-de-campos.ts:20</note>
@@ -2168,7 +2195,7 @@
         <note category="description">Motivo manual, lectura apagada</note>
       </notes>
       <segment>
-        <source>La lectura automática del CV no está disponible por ahora. Rellena tu perfil a mano.</source>
+        <source>Tu CV está guardado (cifrado). La lectura automática no está disponible por ahora, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.yaUsada">
@@ -2177,7 +2204,7 @@
         <note category="description">Motivo manual, lectura ya usada</note>
       </notes>
       <segment>
-        <source>Ya has usado tu lectura automática del CV. Rellena tu perfil a mano.</source>
+        <source>Tu CV está guardado (cifrado). Ya has usado tu lectura automática, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.tope">
@@ -2186,7 +2213,7 @@
         <note category="description">Motivo manual, tope mensual</note>
       </notes>
       <segment>
-        <source>Hemos llegado al límite de lecturas automáticas de este mes. Rellena tu perfil a mano.</source>
+        <source>Tu CV está guardado (cifrado). Hemos llegado al límite de lecturas automáticas de este mes, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.proveedor">
@@ -2195,7 +2222,7 @@
         <note category="description">Motivo manual, fallo del proveedor</note>
       </notes>
       <segment>
-        <source>El servicio que lee el CV no ha respondido. No has perdido tu intento: puedes volver a probar más tarde. Mientras tanto, rellena tu perfil a mano.</source>
+        <source>Tu CV está guardado y no has perdido tu intento: el servicio que lo lee no ha respondido y puedes volver a probar más tarde. Mientras tanto, rellena tu perfil a mano; solo te llevará unos minutos.</source>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.indisponible">
@@ -2204,7 +2231,7 @@
         <note category="description">Motivo manual, servicio no disponible</note>
       </notes>
       <segment>
-        <source>Ahora mismo no podemos leer tu CV. Rellena tu perfil a mano.</source>
+        <source>Tu CV está guardado. Ahora mismo no podemos leerlo automáticamente, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
       </segment>
     </unit>
     <unit id="alta.manual.titulo">

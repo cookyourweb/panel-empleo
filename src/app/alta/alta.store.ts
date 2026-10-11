@@ -43,6 +43,7 @@ export class AltaStore {
   private readonly _rechazoDeSubida = signal<MotivoDeSubida | null>(null);
   private readonly _errorDeConsentimiento = signal(false);
   private readonly _errorDeGuardado = signal(false);
+  private readonly _cvGuardado = signal(false);
 
   readonly paso = this._paso.asReadonly();
   readonly propuestas = this._propuestas.asReadonly();
@@ -51,6 +52,11 @@ export class AltaStore {
   readonly rechazoDeSubida = this._rechazoDeSubida.asReadonly();
   readonly errorDeConsentimiento = this._errorDeConsentimiento.asReadonly();
   readonly errorDeGuardado = this._errorDeGuardado.asReadonly();
+  /**
+   * True once the server accepted the CV. Storing it and reading it are two
+   * separate facts: reading may fail or be unavailable while the CV stays safe.
+   */
+  readonly cvGuardado = this._cvGuardado.asReadonly();
 
   /** Registra los dos consentimientos de la version vigente y abre la subida. */
   async consentir(): Promise<void> {
@@ -78,6 +84,7 @@ export class AltaStore {
       this._paso.set(PASOS.subida);
       return;
     }
+    this._cvGuardado.set(true);
     const resultado = await this.extractor.extraer();
     if (resultado.estado === 'propuesta') {
       this._propuestas.set(resultado.propuestas);

@@ -95,3 +95,11 @@ button:disabled {
   border-left: 3px solid hsl(var(--border));
   font-style: italic;
 }
+
+.confirmacion {
+  margin: 1rem 0 0;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid hsl(var(--border));
+  border-left-width: 4px;
+  border-radius: 6px;
+}

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AltaPage } from './alta.page';
-import { MotivoManual, MOTIVOS_MANUAL, ResultadoExtraccion } from './dominio';
+import { MotivoManual, MOTIVOS_MANUAL, ResultadoExtraccion, SubidaRechazada } from './dominio';
 import { ExtractorDeCv } from './extractor-de-cv';
 import { Sesion } from '../sesion/sesion';
 import { RepositorioDePerfil } from './repositorio-de-perfil';
@@ -70,13 +70,19 @@ describe('AltaPage', () => {
       return p;
     }
 
-    async function subir(p: Awaited<ReturnType<typeof pintar>>, resultado: ResultadoExtraccion) {
-      extractor.extraer.mockResolvedValue(resultado);
+    async function elegirArchivo(p: Awaited<ReturnType<typeof pintar>>) {
       const entrada = p.raiz.querySelector<HTMLInputElement>('input[type="file"]')!;
       Object.defineProperty(entrada, 'files', { value: [new File(['x'], 'cv.pdf')], configurable: true });
       entrada.dispatchEvent(new Event('change'));
       await p.fixture.whenStable();
     }
+
+    async function subir(p: Awaited<ReturnType<typeof pintar>>, resultado: ResultadoExtraccion) {
+      extractor.extraer.mockResolvedValue(resultado);
+      await elegirArchivo(p);
+    }
+
+    const estado = (p: Awaited<ReturnType<typeof pintar>>) => p.raiz.querySelector('[role="status"]')!.textContent!.trim();
 
     async function rellenarYGuardar(p: Awaited<ReturnType<typeof pintar>>) {
       const escribir = async (nombre: string, valor: string) => {
@@ -142,8 +148,82 @@ describe('AltaPage', () => {
       await subir(p, { estado: 'manual', motivo: 'proveedor' });
 
       const texto = p.raiz.querySelector('[data-motivo="proveedor"]')!.textContent!;
-      expect(texto).toContain('No has perdido tu intento');
+      expect(texto).toContain('no has perdido tu intento');
       expect(texto).toContain('más tarde');
+    });
+
+    describe('subir el CV y leerlo son dos hechos distintos', () => {
+      it.each(MOTIVOS_MANUAL.map((motivo) => [motivo]))(
+        'motivo %s: el mensaje empieza diciendo que el CV esta guardado y nunca sugiere que se perdio',
+        async (motivo: MotivoManual) => {
+          const p = await hastaLaSubida();
+
+          await subir(p, { estado: 'manual', motivo });
+
+          const texto = p.raiz.querySelector(`[data-motivo="${motivo}"]`)!.textContent!.trim();
+          expect(texto.startsWith('Tu CV está guardado')).toBe(true);
+          expect(texto).not.toMatch(/no hemos podido (guardar|subir)|has perdido tu CV|no se ha guardado/i);
+          expect(texto).toContain('a mano');
+        },
+      );
+
+      it('indisponible: dice que no se puede leer automaticamente, que se rellene a mano y que son unos minutos', async () => {
+        const p = await hastaLaSubida();
+
+        await subir(p, { estado: 'manual', motivo: 'indisponible' });
+
+        expect(p.raiz.querySelector('[data-motivo="indisponible"]')!.textContent!.trim()).toBe(
+          'Tu CV está guardado. Ahora mismo no podemos leerlo automáticamente, así que rellena tu perfil a mano; solo te llevará unos minutos.',
+        );
+      });
+
+      it('rellenar a mano por eleccion (sin subir nada) no dice que haya un CV guardado', async () => {
+        const p = await pintar();
+
+        p.raiz.querySelector<HTMLButtonElement>('[data-a-mano]')!.click();
+        await p.fixture.whenStable();
+
+        expect(p.raiz.textContent).not.toContain('Tu CV está guardado');
+      });
+
+      it('mientras sube, lo dice y todavia no afirma que este guardado', async () => {
+        const p = await hastaLaSubida();
+        extractor.subir.mockReturnValueOnce(new Promise<void>(() => undefined));
+
+        await elegirArchivo(p);
+
+        expect(estado(p)).toBe('Subiendo tu CV…');
+      });
+
+      it('al terminar la subida confirma que esta guardado (cifrado) mientras lo lee', async () => {
+        const p = await hastaLaSubida();
+        extractor.extraer.mockReturnValueOnce(new Promise<ResultadoExtraccion>(() => undefined));
+
+        await elegirArchivo(p);
+
+        expect(estado(p)).toContain('Tu CV está guardado (cifrado).');
+        expect(estado(p)).toContain('lo estamos leyendo');
+      });
+
+      it('con propuestas, la revision confirma que el CV esta guardado', async () => {
+        const p = await hastaLaSubida();
+
+        await subir(p, PROPUESTA);
+
+        expect(p.raiz.querySelector('app-revision-de-campos [data-cv-guardado]')?.textContent?.trim()).toBe(
+          'Tu CV está guardado (cifrado).',
+        );
+      });
+
+      it('si la subida se rechaza no dice que este guardado', async () => {
+        const p = await hastaLaSubida();
+        extractor.subir.mockRejectedValueOnce(new SubidaRechazada('tipo'));
+
+        await elegirArchivo(p);
+
+        expect(p.raiz.textContent).not.toContain('Tu CV está guardado');
+        expect(p.raiz.querySelector('app-subida-de-cv')).not.toBeNull();
+      });
     });
 
     it('rellenar a mano por eleccion no dice que algo haya fallado', async () => {
