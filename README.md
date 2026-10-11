@@ -194,7 +194,7 @@ its console.
 The guard applies to the whole panel in development and in production. Only the welcome
 page and the sign-in page are public. The public site shows a welcome page, says the
 product is coming soon and that access is by invitation, and links to the CookYourWebAI
-waiting list (an external Tally form; the panel itself stores no data). Until per-user data exists, an invited account sees
+waiting list (our own form, sent to the CookYourWeb AI leads workflow in n8n and stored in Notion; the panel itself stores no data). Until per-user data exists, an invited account sees
 the demo data in production.
 
 | Route | Access | What it shows |
