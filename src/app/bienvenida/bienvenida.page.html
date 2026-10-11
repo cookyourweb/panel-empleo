@@ -1,8 +1,8 @@
 <article class="bienvenida">
-  <header class="portada">
+  <header class="portada hero">
     <p class="etiqueta" data-etiqueta i18n="Etiqueta que avisa de que el producto aun no esta abierto@@bienvenida.proximamente">Próximamente</p>
-    <h2 i18n="Titular de la pagina de bienvenida@@bienvenida.titulo">Tu próximo trabajo, buscado mientras programas.</h2>
-    <p class="explicacion" data-explicacion i18n="Subtitulo que explica el producto@@bienvenida.explicacion">
+    <h2 class="hero__titulo" i18n="Titular de la pagina de bienvenida@@bienvenida.titulo">Tu próximo trabajo, buscado mientras programas.</h2>
+    <p class="hero__lead columna-texto" data-explicacion i18n="Subtitulo que explica el producto@@bienvenida.explicacion">
       Sin tiempo para revisar portales ni reescribir el CV para cada oferta. Cada mañana te traemos las que encajan contigo y, si te gustan, preparamos tu CV y tu carta.
     </p>
 
@@ -10,7 +10,7 @@
       <a class="secundaria" data-entrar routerLink="/entrar" i18n="Enlace a la pantalla de entrada para quien ya tiene acceso@@bienvenida.yaTienesAcceso">¿Ya tienes acceso? Entra</a>
     </p>
 
-    <section class="espera" aria-labelledby="espera-titulo">
+    <section class="espera tarjeta-destacada columna-texto" aria-labelledby="espera-titulo">
       <p id="espera-titulo" class="espera-titulo" i18n="Titulo del formulario de la lista de espera@@bienvenida.listaDeEspera">Únete a la lista de espera</p>
 
       <div aria-live="polite">
@@ -20,7 +20,7 @@
       </div>
 
       @if (!apuntada()) {
-        <form data-lista-espera (submit)="$event.preventDefault(); enviar()">
+        <form class="columna-compacta" data-lista-espera (submit)="$event.preventDefault(); enviar()">
           <p class="campo">
             <label for="espera-nombre" i18n="Etiqueta del campo nombre de la lista de espera@@bienvenida.espera.nombre">Nombre</label>
             <input id="espera-nombre" name="nombre" type="text" autocomplete="name" required [value]="nombre()" (input)="nombre.set($any($event.target).value)" />
@@ -57,7 +57,7 @@
     </section>
   </header>
 
-  <div class="rejilla">
+  <div class="rejilla rejilla-tarjetas">
     <section class="tarjeta" data-beneficio>
       <h3 i18n="Titulo del primer beneficio@@bienvenida.beneficio1.titulo">Busca por ti cada mañana</h3>
       <p i18n="Texto del primer beneficio@@bienvenida.beneficio1.texto">Revisa Tecnoempleo, Adzuna, Remotive, Indeed y LinkedIn, quita duplicados y ordena las ofertas por encaje. Con salario y modalidad cuando se publican.</p>
@@ -72,7 +72,7 @@
     </section>
   </div>
 
-  <div class="rejilla proximas">
+  <div class="rejilla rejilla-tarjetas proximas">
     <section class="tarjeta apagada" data-proximamente>
       <p class="etiqueta" data-etiqueta-tarjeta i18n="Etiqueta de una tarjeta que aun no esta disponible@@bienvenida.proximamenteTarjeta">Próximamente</p>
       <h3 i18n="Titulo de la preparacion de entrevistas@@bienvenida.entrevistas.titulo">Preparación de entrevistas</h3>
@@ -85,5 +85,5 @@
     </section>
   </div>
 
-  <p class="invitacion" data-invitacion i18n="Aviso de acceso por invitacion y de la empresa detras@@bienvenida.invitacion">Por ahora el acceso es por invitación y forma parte de CookYourWebAI.</p>
+  <p class="invitacion columna-estrecha" data-invitacion i18n="Aviso de acceso por invitacion y de la empresa detras@@bienvenida.invitacion">Por ahora el acceso es por invitación y forma parte de CookYourWebAI.</p>
 </article>

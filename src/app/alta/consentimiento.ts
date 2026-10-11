@@ -14,8 +14,8 @@ import { TextoDeConsentimiento } from '../compartido/texto-de-consentimiento';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './alta.css',
   template: `
-    <section class="paso" aria-labelledby="consentimiento-titulo">
-      <h2 id="consentimiento-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de consentimiento@@alta.consentimiento.titulo">
+    <section class="paso columna-formulario" aria-labelledby="consentimiento-titulo">
+      <h2 class="titulo-seccion" id="consentimiento-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de consentimiento@@alta.consentimiento.titulo">
         Antes de empezar
       </h2>
       <app-texto-de-consentimiento />

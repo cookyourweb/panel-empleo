@@ -21,9 +21,9 @@ const RECHAZOS: Readonly<Record<MotivoDeSubida, string>> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: '../alta/alta.css',
   template: `
-    <section [class.paso]="!incrustada()" [attr.aria-labelledby]="incrustada() ? null : 'subida-titulo'">
+    <section [class.paso]="!incrustada()" [class.columna-formulario]="!incrustada()" [attr.aria-labelledby]="incrustada() ? null : 'subida-titulo'">
       @if (!incrustada()) {
-        <h2 id="subida-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de subida@@alta.subida.titulo">Sube tu CV</h2>
+        <h2 class="titulo-seccion" id="subida-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de subida@@alta.subida.titulo">Sube tu CV</h2>
       }
 
       <div class="subida">

@@ -65,14 +65,14 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './alta.css',
   template: `
-    <h1 i18n="Titulo de la pantalla de alta@@alta.titulo">Tu perfil</h1>
+    <h1 class="titulo-seccion" i18n="Titulo de la pantalla de alta@@alta.titulo">Tu perfil</h1>
 
     <app-indicador-de-pasos [etiquetas]="etiquetas" [actual]="numeroDePaso()" />
-    <p class="siguiente" data-siguiente>{{ siguiente() }}</p>
+    <p class="siguiente columna-formulario" data-siguiente>{{ siguiente() }}</p>
 
     <!-- La region existe siempre: un role="status" que nace ya con texto no se
          anuncia de forma fiable. Solo cambia el texto de dentro. -->
-    <div role="status" class="paso">
+    <div role="status" class="paso columna-formulario">
       @if (anuncio(); as texto) {
         <p>{{ texto }}</p>
       }
@@ -95,8 +95,8 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
         />
       }
       @case (pasos.extrayendo) {
-        <section class="paso" aria-labelledby="extrayendo-titulo" aria-busy="true">
-          <h2 id="extrayendo-titulo" tabindex="-1" data-titulo-de-paso>
+        <section class="paso columna-formulario" aria-labelledby="extrayendo-titulo" aria-busy="true">
+          <h2 class="titulo-seccion" id="extrayendo-titulo" tabindex="-1" data-titulo-de-paso>
             {{ store.cvGuardado() ? textos.leyendo : textos.subiendo }}
           </h2>
           @if (store.archivoElegido(); as archivo) {
@@ -116,8 +116,8 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
         />
       }
       @case (pasos.manual) {
-        <section class="paso" aria-labelledby="manual-titulo">
-          <h2 id="manual-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso manual@@alta.manual.titulo">
+        <section class="paso columna-formulario" aria-labelledby="manual-titulo">
+          <h2 class="titulo-seccion" id="manual-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso manual@@alta.manual.titulo">
             Cuéntanos tu perfil
           </h2>
           @if (store.motivoManual(); as motivo) {
@@ -135,8 +135,8 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
         </section>
       }
       @case (pasos.hecho) {
-        <section class="paso" data-hecho aria-labelledby="hecho-titulo">
-          <h2 id="hecho-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso final@@alta.hecho.titulo">
+        <section class="paso columna-formulario" data-hecho aria-labelledby="hecho-titulo">
+          <h2 class="titulo-seccion" id="hecho-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso final@@alta.hecho.titulo">
             Perfil guardado
           </h2>
           <p i18n="Introduccion del resumen final@@alta.hecho.introduccion">Esto es lo que hemos guardado:</p>

@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './alta.css',
   template: `
-    <nav class="indicador" [attr.aria-label]="nombre">
+    <nav class="indicador columna-formulario" [attr.aria-label]="nombre">
       <p class="indicador__actual" data-paso-actual>{{ frase() }}</p>
       <ol class="indicador__lista">
         @for (etiqueta of etiquetas(); track $index) {

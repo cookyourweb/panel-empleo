@@ -1,22 +1,9 @@
 .bienvenida {
-  margin: 2rem 0 3rem;
+  margin-block: 2rem 3rem;
 }
 
 .portada {
-  max-width: 40rem;
   margin-bottom: 2.5rem;
-}
-
-.portada h2 {
-  margin: 0 0 1rem;
-  font-size: clamp(1.75rem, 5vw, 2.5rem);
-  line-height: 1.15;
-}
-
-.explicacion {
-  margin: 0;
-  font-size: 1.125rem;
-  line-height: 1.6;
 }
 
 .etiqueta {
@@ -56,12 +43,9 @@
   color: hsl(var(--foreground));
 }
 
-/* Mobile first: one column, then two and three as the width allows. */
+/* Mobile first: one column (rejilla-tarjetas), then two and three as the width allows. */
 .rejilla {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: var(--rejilla-hueco);
 }
 
 @media (min-width: 40rem) {
@@ -110,8 +94,9 @@
 }
 
 .invitacion {
-  margin: 2rem 0 0;
+  margin-block: 2rem 0;
   color: hsl(var(--muted-foreground));
+  text-align: center;
 }
 
 /* Visually hidden but still read by screen readers. */
@@ -131,16 +116,18 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
+/* El bloque destacado lo da .tarjeta-destacada; el formulario se lee a la izquierda. */
 .espera {
   margin-top: 2rem;
-  padding: 1.25rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
-  background: hsl(var(--card));
+}
+
+.espera form {
+  text-align: left;
 }
 
 .espera-titulo {
   margin: 0 0 1rem;
+  color: var(--color-cyw-blanco);
   font-size: 1.125rem;
   font-weight: 600;
 }

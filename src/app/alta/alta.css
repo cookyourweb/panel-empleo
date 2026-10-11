@@ -1,6 +1,5 @@
 .paso {
-  max-width: 36rem;
-  margin: 2rem 0;
+  margin-block: 2rem;
 }
 
 .casilla {
@@ -105,8 +104,8 @@ button:disabled {
 }
 
 .indicador {
-  max-width: 36rem;
-  margin: 1rem 0 0;
+  margin-block: 1rem 0;
+  text-align: center;
 }
 
 .indicador__actual {
@@ -117,6 +116,7 @@ button:disabled {
 .indicador__lista {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.5rem 1rem;
   margin: 0.5rem 0 0;
   padding: 0;
@@ -141,8 +141,8 @@ button:disabled {
 }
 
 .siguiente {
-  max-width: 36rem;
-  margin: 0.75rem 0 0;
+  margin-block: 0.75rem 0;
+  text-align: center;
 }
 
 button[aria-busy='true'] {

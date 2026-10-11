@@ -13,8 +13,8 @@ import { FormularioManual } from './formulario-manual';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './alta.css',
   template: `
-    <section class="paso" aria-labelledby="revision-titulo">
-      <h2 id="revision-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de revision@@alta.revision.titulo">
+    <section class="paso columna-formulario" aria-labelledby="revision-titulo">
+      <h2 class="titulo-seccion" id="revision-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de revision@@alta.revision.titulo">
         Revisa lo que hemos leído
       </h2>
       @if (cvGuardado()) {

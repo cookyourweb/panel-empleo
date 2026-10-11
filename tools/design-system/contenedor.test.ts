@@ -1,20 +1,13 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
+import { readTokenAt } from "./tokens.js";
+
 
 const leer = (ruta: string) => readFileSync(ruta, "utf8");
 const css = leer("src/styles.css");
 
-/** Valor de un token dentro del bloque :root de un punto de corte (o del base si no hay). */
-function tokenEn(token: string, minWidth?: number): string | undefined {
-  const bloques = [...css.matchAll(/(@media \(min-width: (\d+)px\) \{\s*)?:root \{([^}]*)\}/g)]
-    .filter(([, , corte]) => (minWidth === undefined ? corte === undefined : Number(corte) === minWidth));
-  for (const [, , , cuerpo] of bloques) {
-    const valor = cuerpo.match(new RegExp(`${token}:\\s*([^;]+);`))?.[1].trim();
-    if (valor !== undefined) return valor;
-  }
-  return undefined;
-}
+const tokenEn = readTokenAt;
 
 describe("contenedor unico de la plataforma", () => {
   it("por defecto ocupa todo el ancho con 1rem de relleno, como el container de Tailwind de la cabecera", () => {
@@ -54,11 +47,27 @@ describe("contenedor unico de la plataforma", () => {
     "src/app/bienvenida/bienvenida.page.css",
     "src/app/entrada/entrada.page.css",
     "src/app/alta/alta.css",
-  ])("%s no se centra ni pone su propio relleno lateral: lo da el contenedor", (ruta) => {
+  ])("%s no fija columnas ni se centra a mano: usa las clases compartidas de styles.css", (ruta) => {
     const hoja = leer(ruta);
 
-    expect(hoja).not.toMatch(/margin:[^;]*\bauto\b/);
+    expect(hoja).not.toMatch(/margin[^:]*:[^;]*\bauto\b/);
+    expect(hoja).not.toMatch(/^\s+max-width:\s*[\d.]+rem/m);
     expect(hoja).not.toMatch(/padding-inline:\s*1rem/);
+  });
+
+  it.each([
+    ["src/app/bienvenida/bienvenida.page.html", ["rejilla-tarjetas", "tarjeta-destacada", "columna-texto", "columna-compacta"]],
+    ["src/app/entrada/entrada.page.html", ["columna-compacta", "titulo-seccion"]],
+    ["src/app/cuenta/cuenta.page.html", ["columna-formulario", "titulo-seccion"]],
+    ["src/app/alta/alta.page.ts", ["columna-formulario", "titulo-seccion"]],
+    ["src/app/alta/consentimiento.ts", ["columna-formulario", "titulo-seccion"]],
+    ["src/app/alta/revision-de-campos.ts", ["columna-formulario", "titulo-seccion"]],
+    ["src/app/alta/indicador-de-pasos.ts", ["columna-formulario"]],
+    ["src/app/compartido/subida-de-cv.ts", ["columna-formulario", "titulo-seccion"]],
+  ])("%s coloca su contenido con las clases compartidas", (ruta, clases) => {
+    const plantilla = leer(ruta);
+
+    for (const clase of clases) expect(plantilla).toContain(clase);
   });
 
   it("la barra de la app usa el relleno compartido y no el suyo", () => {

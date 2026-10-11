@@ -1,6 +1,10 @@
 .entrada {
-  max-width: 28rem;
-  margin: 3rem 0;
+  margin-block: 3rem;
+}
+
+/* La invitacion es una frase corta bajo el titular: va centrada con el. */
+.entrada .titulo-seccion + p {
+  text-align: center;
 }
 
 .error {

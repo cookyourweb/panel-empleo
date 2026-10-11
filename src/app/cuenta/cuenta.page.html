@@ -20,8 +20,8 @@
 </ng-template>
 
 @if (borrada()) {
-  <section class="paso" data-borrada aria-labelledby="cuenta-borrada-titulo">
-    <h1
+  <section class="paso columna-formulario" data-borrada aria-labelledby="cuenta-borrada-titulo">
+    <h1 class="titulo-seccion"
       id="cuenta-borrada-titulo"
       tabindex="-1"
       data-titulo-de-paso
@@ -49,8 +49,8 @@
     </div>
   </section>
 } @else if (!confirmando()) {
-  <section class="paso" aria-labelledby="cuenta-titulo">
-    <h1 id="cuenta-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo de la pagina de cuenta@@cuenta.titulo">
+  <section class="paso columna-formulario" aria-labelledby="cuenta-titulo">
+    <h1 class="titulo-seccion" id="cuenta-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo de la pagina de cuenta@@cuenta.titulo">
       Tu cuenta
     </h1>
 
@@ -58,7 +58,7 @@
     <div class="resultado" role="status" aria-live="polite" data-resultado>{{ resultado() }}</div>
 
     <section class="seccion" aria-labelledby="cuenta-cv-titulo" data-seccion-cv>
-      <h2 id="cuenta-cv-titulo" tabindex="-1" data-titulo-seccion="cv" i18n="Titulo de la seccion de CV@@cuenta.cv.titulo">Tu CV</h2>
+      <h2 class="titulo-seccion" id="cuenta-cv-titulo" tabindex="-1" data-titulo-seccion="cv" i18n="Titulo de la seccion de CV@@cuenta.cv.titulo">Tu CV</h2>
       <p i18n="Explicacion de la seccion de CV@@cuenta.cv.explicacion">
         Guardamos tu CV cifrado, uno por idioma. Puedes borrar el que quieras sin borrar tu cuenta.
       </p>
@@ -207,7 +207,7 @@
     </section>
 
     <section class="seccion" aria-labelledby="cuenta-consentimientos-titulo" data-consentimientos>
-      <h2
+      <h2 class="titulo-seccion"
         id="cuenta-consentimientos-titulo"
         tabindex="-1"
         data-titulo-seccion="consentimientos"
@@ -298,7 +298,7 @@
     </section>
 
     <section class="seccion" aria-labelledby="cuenta-borrar-titulo" data-borrado-cuenta>
-      <h2 id="cuenta-borrar-titulo" i18n="Titulo de la seccion de borrar la cuenta@@cuenta.borrarCuenta.titulo">Borrar mi cuenta</h2>
+      <h2 class="titulo-seccion" id="cuenta-borrar-titulo" i18n="Titulo de la seccion de borrar la cuenta@@cuenta.borrarCuenta.titulo">Borrar mi cuenta</h2>
       <p i18n="Que se borra al eliminar la cuenta@@cuenta.explicacion">
         Si borras tu cuenta eliminamos al momento tu perfil, tus CV cifrados, tus consentimientos, tus avisos de interés y tu invitación.
         No se puede deshacer.
@@ -313,8 +313,8 @@
     </section>
   </section>
 } @else {
-  <section class="paso" aria-labelledby="cuenta-confirmar-titulo">
-    <h1
+  <section class="paso columna-formulario" aria-labelledby="cuenta-confirmar-titulo">
+    <h1 class="titulo-seccion"
       id="cuenta-confirmar-titulo"
       tabindex="-1"
       data-titulo-de-paso
