@@ -39,8 +39,9 @@
     </ul>
     <ng-container [ngTemplateOutlet]="queda" />
     <p i18n="Que pasa ahora que la cuenta esta borrada@@cuenta.borrada.despues">
-      Al continuar cerraremos tu sesión. Para volver a usar el panel necesitarías una nueva invitación.
+      Al continuar cerraremos tu sesión.
     </p>
+    <p data-volver i18n="Como volver tras borrar la cuenta@@cuenta.volver">Si más adelante quieres volver, pídenos una invitación nueva.</p>
     <div class="acciones">
       <button type="button" data-salir (click)="salir()" i18n="Boton que cierra la sesion tras borrar la cuenta@@cuenta.borrada.salir">
         Cerrar sesión y volver al inicio
@@ -203,6 +204,7 @@
         Si borras tu cuenta eliminamos al momento tu perfil, tus CV cifrados, tus consentimientos, tus avisos de interés y tu invitación.
         No se puede deshacer.
       </p>
+      <p data-volver i18n="Como volver tras borrar la cuenta@@cuenta.volver">Si más adelante quieres volver, pídenos una invitación nueva.</p>
       <ng-container [ngTemplateOutlet]="queda" />
       <div class="acciones">
         <button type="button" data-borrar (click)="pedirConfirmacion()" i18n="Boton que inicia el borrado@@cuenta.borrar">

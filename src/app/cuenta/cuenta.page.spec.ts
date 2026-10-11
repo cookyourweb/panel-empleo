@@ -68,6 +68,24 @@ describe('CuentaPage', () => {
     expect(queda.querySelector('a')?.textContent).toBe('veronica@cookyourwebai.es');
   });
 
+  it('la pagina dice que para volver hace falta pedir una invitacion nueva', async () => {
+    const { raiz } = await pintar();
+
+    const volver = raiz.querySelector('[data-borrado-cuenta] [data-volver]');
+    expect(volver?.textContent?.trim()).toBe('Si más adelante quieres volver, pídenos una invitación nueva.');
+  });
+
+  it('la pantalla de despues de borrar lo repite una sola vez', async () => {
+    const { raiz, pulsar } = await pintar();
+    await pulsar('[data-borrar]');
+    await pulsar('[data-confirmar]');
+
+    const volver = raiz.querySelectorAll('[data-borrada] [data-volver]');
+    expect(volver.length).toBe(1);
+    expect(volver[0].textContent?.trim()).toBe('Si más adelante quieres volver, pídenos una invitación nueva.');
+    expect(raiz.querySelector('[data-borrada]')!.textContent).not.toMatch(/[—–→]/);
+  });
+
   it('ningun texto de la cuenta usa guiones largos ni flechas', async () => {
     const { raiz } = await pintar();
 

@@ -3167,7 +3167,16 @@
         <note category="description">Que pasa ahora que la cuenta esta borrada</note>
       </notes>
       <segment>
-        <source>Al continuar cerraremos tu sesión. Para volver a usar el panel necesitarías una nueva invitación.</source>
+        <source>Al continuar cerraremos tu sesión.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.volver">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Como volver tras borrar la cuenta</note>
+      </notes>
+      <segment>
+        <source>Si más adelante quieres volver, pídenos una invitación nueva.</source>
       </segment>
     </unit>
     <unit id="cuenta.borrada.salir">
