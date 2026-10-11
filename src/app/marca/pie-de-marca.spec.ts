@@ -1,12 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EnlaceLegal, ENLACES_LEGALES, ENLACES_LEGALES_DE_LA_PLATAFORMA } from './enlaces-de-marca';
+import {
+  EnlaceLegal,
+  ENLACES_LEGALES,
+  ENLACES_LEGALES_DE_LA_PLATAFORMA,
+  enlacesLegalesDe,
+  URL_DE_PRIVACIDAD,
+  URL_DE_PRIVACIDAD_DE_EMPLEO,
+  UrlDePrivacidad,
+} from './enlaces-de-marca';
 import { PieDeMarca } from './pie-de-marca';
 
-async function crear(legales?: readonly EnlaceLegal[]): Promise<HTMLElement> {
+async function crear(legales?: readonly EnlaceLegal[], privacidad?: UrlDePrivacidad): Promise<HTMLElement> {
   TestBed.configureTestingModule({
     imports: [PieDeMarca],
-    providers: legales ? [{ provide: ENLACES_LEGALES, useValue: legales }] : [],
+    providers: [
+      ...(legales ? [{ provide: ENLACES_LEGALES, useValue: legales }] : []),
+      ...(privacidad !== undefined ? [{ provide: URL_DE_PRIVACIDAD, useValue: privacidad }] : []),
+    ],
   });
   const fixture = TestBed.createComponent(PieDeMarca);
   await fixture.whenStable();
@@ -61,6 +72,29 @@ describe('PieDeMarca', () => {
   describe('enlaces legales', () => {
     it('hoy no hay paginas legales propias, asi que la configuracion esta vacia', () => {
       expect(ENLACES_LEGALES_DE_LA_PLATAFORMA).toEqual([]);
+    });
+
+    it('la URL de la politica de privacidad esta vacia hasta que exista la seccion Empleo Tech', () => {
+      expect(URL_DE_PRIVACIDAD_DE_EMPLEO).toBe('');
+    });
+
+    it('sin URL de privacidad no hay enlaces legales', () => {
+      expect(enlacesLegalesDe('')).toEqual([]);
+    });
+
+    it('con URL de privacidad el unico enlace legal es la politica', () => {
+      expect(enlacesLegalesDe('https://www.cookyourwebai.es/empleo-tech/privacidad')).toEqual([
+        { clave: 'privacidad', url: 'https://www.cookyourwebai.es/empleo-tech/privacidad' },
+      ]);
+    });
+
+    it('con URL de privacidad configurada el pie enlaza la politica', async () => {
+      const pie = await crear(undefined, 'https://www.cookyourwebai.es/empleo-tech/privacidad');
+
+      const enlaces = [...pie.querySelectorAll('.pie__legales a')];
+      expect(enlaces.map((a) => [a.textContent, a.getAttribute('href')])).toEqual([
+        ['Política de Privacidad', 'https://www.cookyourwebai.es/empleo-tech/privacidad'],
+      ]);
     });
 
     it('con la configuracion vacia no se pinta la fila ni ningun enlace a la agencia que la sustituya', async () => {
