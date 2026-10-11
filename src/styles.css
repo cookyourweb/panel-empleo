@@ -160,6 +160,27 @@
   --color-cyw-rojo-400: #f87171;
   --color-cyw-rosa-500: #ec4899;
   --color-cyw-rosa-500-rgb: 236 72 153;
+
+  /* Botones y tarjetas (misma paleta Tailwind v3 de la web madre).
+     Las paradas -600 son las de los botones: el texto blanco sobre las -500 de
+     la web madre da entre 3,6:1 y 4,0:1 y no llega a AA. Las -500 se quedan para
+     los marcos de las tarjetas, que son decoracion y llevan el texto dentro de un
+     interior negro. */
+  --color-cyw-azul-600: #2563eb;
+  --color-cyw-purpura-600: #9333ea;
+  --color-cyw-rosa-600: #db2777;
+  --color-cyw-rojo-500: #ef4444;
+  --color-cyw-rojo-600: #dc2626;
+  --color-cyw-rojo-700: #b91c1c;
+  --color-cyw-naranja-500: #f97316;
+  --color-cyw-esmeralda-500: #10b981;
+  --color-cyw-esmeralda-500-rgb: 16 185 129;
+  --color-cyw-turquesa-500: #14b8a6;
+  --color-cyw-celeste-500: #06b6d4;
+  --color-cyw-zinc-600: #52525b;
+  --color-cyw-zinc-700: #3f3f46;
+  --color-cyw-zinc-900: #18181b;
+  --color-cyw-zinc-900-rgb: 24 24 27;
 }
 
 .light {
@@ -433,4 +454,281 @@ body {
   background-color: hsl(var(--primary));
   color: hsl(var(--primary-foreground));
   outline: 2px solid hsl(var(--ring));
+}
+
+/* ============================================================
+   SISTEMA DE BOTONES
+   Una accion es un <button> y se ve como un boton, no como un enlace.
+   Un enlace de navegacion solo se viste de boton cuando es una llamada a la
+   accion (.boton en un <a>). Los enlaces dentro de una frase siguen siendo enlaces.
+   Colores: paradas -600 (texto blanco en negrita, 4,5:1 o mas). Ver botones.test.ts.
+   ============================================================ */
+.boton {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: 0.75rem 1.5rem;
+  border: 0;
+  border-radius: 0.75rem;
+  color: var(--color-cyw-blanco);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+  transition: transform 150ms var(--suave), box-shadow 150ms var(--suave), background-color 150ms var(--suave);
+}
+
+.boton--primario {
+  background-image: linear-gradient(to right, var(--color-cyw-azul-600), var(--color-cyw-purpura-600), var(--color-cyw-rosa-600));
+}
+
+.boton--secundario {
+  background-image: linear-gradient(to right, var(--color-cyw-azul-600), var(--color-cyw-purpura-600));
+}
+
+/* Sobre fondos con degradado o claros: blanco con el morado de la marca. */
+.boton--claro {
+  background-color: var(--color-cyw-blanco);
+  color: var(--color-cyw-purpura-600);
+}
+
+/* Accion neutra (cancelar, cerrar, volver a ver): zinc, sin color de marca. */
+.boton--neutro {
+  border: 1px solid var(--color-cyw-zinc-600);
+  background-color: var(--color-cyw-zinc-800);
+}
+
+.boton--neutro:hover:not(:disabled) {
+  border-color: var(--color-cyw-azul-500);
+  background-color: var(--color-cyw-zinc-700);
+}
+
+/* Opcion de una lista: ancho completo y texto a la izquierda. */
+.boton--opcion {
+  justify-content: flex-start;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--color-cyw-zinc-600);
+  background-color: var(--color-cyw-zinc-800);
+  font-weight: 500;
+  text-align: left;
+  box-shadow: none;
+}
+
+.boton--opcion:hover:not(:disabled) {
+  border-color: var(--color-cyw-azul-500);
+  background-color: var(--color-cyw-zinc-700);
+}
+
+/* Acciones destructivas (borrar cuenta, borrar CV, eliminar ofertas): rojo solido,
+   no el degradado de marca, para que no se confundan con las acciones normales.
+   Blanco sobre rojo-600 da 4,83:1 y sobre rojo-700 (al pasar el raton) 6,47:1. */
+.boton--peligro {
+  background-color: var(--color-cyw-rojo-600);
+}
+
+.boton--peligro:hover:not(:disabled) {
+  background-color: var(--color-cyw-rojo-700);
+}
+
+.boton--grande {
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  font-size: 1.125rem;
+}
+
+@media (min-width: 768px) {
+  .boton--grande {
+    padding: 1rem 2rem;
+  }
+}
+
+.boton:focus-visible {
+  outline: 2px solid var(--color-cyw-blanco);
+  outline-offset: 2px;
+}
+
+.boton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.boton[aria-busy='true'] {
+  cursor: progress;
+}
+
+/* Boton que ocupa todo el ancho en movil y se ajusta al contenido desde 640 px. */
+.boton--bloque {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .boton--bloque {
+    width: auto;
+  }
+}
+
+/* Grupo de botones: se reparten el espacio y bajan de linea. */
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+/* ============================================================
+   SISTEMA DE TARJETAS (misma geometria que cookyourwebai.es)
+   .tarjeta = marco de degradado de 4 px; .tarjeta__interior = negro al 90 %.
+   ============================================================ */
+.tarjeta {
+  --tarjeta-a: var(--color-cyw-azul-500);
+  --tarjeta-b: var(--color-cyw-purpura-500);
+  --tarjeta-c: var(--color-cyw-rosa-500);
+  position: relative;
+  box-sizing: border-box;
+  padding: 0.25rem;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background-image: linear-gradient(to bottom right, var(--tarjeta-a), var(--tarjeta-b), var(--tarjeta-c));
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+  color: var(--color-cyw-zinc-300);
+  transition: transform 300ms var(--suave);
+}
+
+.tarjeta__interior {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--tarjeta-relleno);
+  border-radius: 1.5rem;
+  background-color: rgb(var(--color-cyw-negro-rgb) / 0.9);
+}
+
+.tarjeta__interior > :last-child {
+  margin-bottom: 0;
+}
+
+.tarjeta--azul-rosa {
+  --tarjeta-a: var(--color-cyw-azul-500);
+  --tarjeta-b: var(--color-cyw-purpura-500);
+  --tarjeta-c: var(--color-cyw-rosa-500);
+}
+
+.tarjeta--esmeralda-celeste {
+  --tarjeta-a: var(--color-cyw-esmeralda-500);
+  --tarjeta-b: var(--color-cyw-turquesa-500);
+  --tarjeta-c: var(--color-cyw-celeste-500);
+}
+
+.tarjeta--verde-purpura {
+  --tarjeta-a: var(--color-cyw-verde-500);
+  --tarjeta-b: var(--color-cyw-azul-500);
+  --tarjeta-c: var(--color-cyw-purpura-500);
+}
+
+.tarjeta--esmeralda-azul {
+  --tarjeta-a: var(--color-cyw-esmeralda-500);
+  --tarjeta-b: var(--color-cyw-turquesa-500);
+  --tarjeta-c: var(--color-cyw-azul-500);
+}
+
+.tarjeta--rosa-naranja {
+  --tarjeta-a: var(--color-cyw-rosa-500);
+  --tarjeta-b: var(--color-cyw-rojo-500);
+  --tarjeta-c: var(--color-cyw-naranja-500);
+}
+
+/* text-2xl md:text-3xl font-bold text-white mb-4 leading-tight */
+.tarjeta__titulo {
+  margin: 0 0 1rem;
+  color: var(--color-cyw-blanco);
+  font-size: var(--titulo-seccion-tamano);
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.tarjeta__titulo--acento {
+  color: var(--color-cyw-azul-400);
+}
+
+.tarjeta__texto {
+  margin: 0 0 1rem;
+  line-height: 1.625;
+}
+
+/* Tarjeta de plan: zinc-900/90 con desenfoque y borde de 2 px. */
+.tarjeta-plan {
+  position: relative;
+  box-sizing: border-box;
+  padding: 1.5rem;
+  border: 2px solid var(--color-cyw-zinc-800);
+  border-radius: 1.5rem;
+  background-color: rgb(var(--color-cyw-zinc-900-rgb) / 0.9);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+  transition: transform 150ms var(--suave), border-color 150ms var(--suave);
+}
+
+.tarjeta-plan:hover {
+  border-color: var(--color-cyw-azul-500);
+}
+
+/* Caja de llamada a la accion: el mismo fondo con el borde esmeralda. */
+.tarjeta-cta {
+  box-sizing: border-box;
+  padding: var(--tarjeta-relleno);
+  border: 2px solid var(--color-cyw-esmeralda-500);
+  border-radius: 1.5rem;
+  background-color: rgb(var(--color-cyw-zinc-900-rgb) / 0.9);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Panel interior discreto para agrupar un bloque dentro de otra tarjeta o pagina. */
+.panel-suave {
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: rgb(var(--color-cyw-zinc-800-rgb) / 0.5);
+}
+
+/* Etiqueta redondeada. Texto negro: el blanco sobre esmeralda/azul-500 no llega a AA. */
+.pildora {
+  display: inline-block;
+  padding: 0.25rem 1rem;
+  border-radius: 9999px;
+  background-image: linear-gradient(to right, var(--color-cyw-esmeralda-500), var(--color-cyw-azul-500));
+  color: var(--color-cyw-negro);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1rem;
+}
+
+/* hover:scale-105 solo para quien no ha pedido menos movimiento. */
+@media (prefers-reduced-motion: no-preference) {
+  .boton:hover:not(:disabled) {
+    transform: scale(1.05);
+  }
+
+  .tarjeta:hover,
+  .tarjeta-plan:hover {
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boton,
+  .tarjeta,
+  .tarjeta-plan {
+    transition: none;
+  }
 }
