@@ -1460,6 +1460,33 @@
         <source>CV generado para <ph id="0" equiv="empresa" disp="empresa"/></source>
       </segment>
     </unit>
+    <unit id="ficha.visor.ver">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:170</note>
+        <note category="description">Boton que carga la vista previa del CV</note>
+      </notes>
+      <segment>
+        <source>Ver vista previa</source>
+      </segment>
+    </unit>
+    <unit id="ficha.visor.ocultar">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:168</note>
+        <note category="description">Boton que oculta la vista previa del CV</note>
+      </notes>
+      <segment>
+        <source>Ocultar vista previa</source>
+      </segment>
+    </unit>
+    <unit id="ficha.visor.aviso">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:173</note>
+        <note category="description">Aviso de que la vista previa la sirve Google</note>
+      </notes>
+      <segment>
+        <source>La vista previa la sirve Google y puede usar sus propias cookies. Solo se carga si la pides.</source>
+      </segment>
+    </unit>
     <unit id="ficha.errorDesconocido">
       <notes>
         <note category="location">src/app/ofertas/ficha-candidatura.ts:140</note>

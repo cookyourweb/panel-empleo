@@ -44,6 +44,8 @@ export class FichaCandidatura {
     () => !!this.opciones() && !!this.alGuardar() && !this.candidatura().id.startsWith('local-'),
   );
   protected readonly editando = signal(false);
+  /** La vista previa de Drive solo se carga tras pedirla: sin clic no hay peticion a Google. */
+  protected readonly vistaPreviaAbierta = signal(false);
   /** Solo el id: que la misma ficha se refresque al guardar no cuenta como cambiar de ficha. */
   private readonly idActual = computed(() => this.candidatura().id);
   protected readonly guardando = signal(false);
@@ -62,6 +64,7 @@ export class FichaCandidatura {
     // de una oferta no puede acabar guardado en otra.
     effect(() => {
       this.idActual();
+      this.vistaPreviaAbierta.set(false);
       this.editando.set(false);
       this.error.set(null);
     });
@@ -93,6 +96,10 @@ export class FichaCandidatura {
 
   protected tituloDelVisor(empresa: string): string {
     return $localize`:Titulo del visor incrustado con el CV@@ficha.visor.titulo:CV generado para ${empresa}:empresa:`;
+  }
+
+  protected alternarVistaPrevia(): void {
+    this.vistaPreviaAbierta.update((abierta) => !abierta);
   }
 
   protected editar(): void {

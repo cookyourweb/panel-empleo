@@ -315,3 +315,8 @@ legend {
   border-radius: 6px;
   color: hsl(var(--foreground));
 }
+
+.vista-previa {
+  display: block;
+  margin-top: 0.4rem;
+}

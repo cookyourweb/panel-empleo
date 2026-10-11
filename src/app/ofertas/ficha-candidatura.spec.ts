@@ -38,23 +38,73 @@ function escribir(ficha: HTMLElement, clave: string, valor: string): void {
 }
 
 describe('FichaCandidatura', () => {
-  it('enseña el CV generado dentro de la ficha, para revisarlo sin salir', async () => {
+  it('no carga nada de Google hasta que se pide la vista previa: ni iframe ni peticion', async () => {
     const ficha = await pintar({ ...BASE, cv: 'https://docs.google.com/document/d/abc/edit' });
 
-    const visor = ficha.querySelector<HTMLIFrameElement>('[data-campo="cv"] iframe');
-
-    expect(visor?.src).toBe('https://docs.google.com/document/d/abc/preview');
-    expect(visor?.title).toContain('CV');
-    // Y el enlace sigue, para abrirlo en grande o editarlo.
+    expect(ficha.querySelector('iframe')).toBeNull();
+    const boton = ficha.querySelector<HTMLButtonElement>('[data-campo="cv"] [data-ver-vista-previa]')!;
+    expect(boton.textContent?.trim()).toBe('Ver vista previa');
+    expect(boton.type).toBe('button');
+    expect(boton.getAttribute('aria-expanded')).toBe('false');
+    // El enlace plano sigue, para abrirlo en grande o editarlo.
     expect(ficha.querySelector('[data-campo="cv"] a')?.getAttribute('href')).toBe(
       'https://docs.google.com/document/d/abc/edit',
     );
+  });
+
+  it('con un clic en "Ver vista previa" enseña el CV dentro de la ficha, para revisarlo sin salir', async () => {
+    const ficha = await pintar({ ...BASE, cv: 'https://docs.google.com/document/d/abc/edit' });
+
+    ficha.querySelector<HTMLButtonElement>('[data-ver-vista-previa]')!.click();
+    await estable();
+
+    const visor = ficha.querySelector<HTMLIFrameElement>('[data-campo="cv"] iframe');
+    expect(visor?.src).toBe('https://docs.google.com/document/d/abc/preview');
+    expect(visor?.title).toContain('CV');
+    const boton = ficha.querySelector<HTMLButtonElement>('[data-ver-vista-previa]')!;
+    expect(boton.textContent?.trim()).toBe('Ocultar vista previa');
+    expect(boton.getAttribute('aria-expanded')).toBe('true');
+    expect(ficha.querySelector('[data-campo="cv"] a')?.getAttribute('href')).toBe(
+      'https://docs.google.com/document/d/abc/edit',
+    );
+  });
+
+  it('el boton avisa de que Google pondra su contenido, con el aviso asociado al boton', async () => {
+    const ficha = await pintar({ ...BASE, cv: 'https://docs.google.com/document/d/abc/edit' });
+
+    const boton = ficha.querySelector<HTMLButtonElement>('[data-ver-vista-previa]')!;
+    const aviso = ficha.querySelector(`#${boton.getAttribute('aria-describedby')}`);
+
+    expect(aviso?.textContent).toContain('Google');
+  });
+
+  it('pulsar otra vez oculta la vista previa y descarga el iframe', async () => {
+    const ficha = await pintar({ ...BASE, cv: 'https://docs.google.com/document/d/abc/edit' });
+    ficha.querySelector<HTMLButtonElement>('[data-ver-vista-previa]')!.click();
+    await estable();
+
+    ficha.querySelector<HTMLButtonElement>('[data-ver-vista-previa]')!.click();
+    await estable();
+
+    expect(ficha.querySelector('iframe')).toBeNull();
+  });
+
+  it('al pasar a otra ficha la vista previa vuelve a estar cerrada', async () => {
+    const ficha = await pintar({ ...BASE, cv: 'https://docs.google.com/document/d/abc/edit' });
+    ficha.querySelector<HTMLButtonElement>('[data-ver-vista-previa]')!.click();
+    await estable();
+
+    pintada.componentRef.setInput('candidatura', { ...BASE, id: 'n2', cv: 'https://docs.google.com/document/d/def/edit' });
+    await estable();
+
+    expect(ficha.querySelector('iframe')).toBeNull();
   });
 
   it('un CV fuera de Google se enlaza pero no se incrusta', async () => {
     const ficha = await pintar({ ...BASE, cv: 'https://ejemplo.test/cv' });
 
     expect(ficha.querySelector('[data-campo="cv"] iframe')).toBeNull();
+    expect(ficha.querySelector('[data-campo="cv"] [data-ver-vista-previa]')).toBeNull();
     expect(ficha.querySelector('[data-campo="cv"] a')).not.toBeNull();
   });
 
