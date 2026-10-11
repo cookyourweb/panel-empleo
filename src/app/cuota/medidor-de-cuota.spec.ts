@@ -4,8 +4,8 @@ import { TestBed } from '@angular/core/testing';
 import { MedidorDeCuota } from './medidor-de-cuota';
 import { Cuota, Interes } from './cuota';
 
-const CUOTA: Cuota = { usadas: 2.7, limite: 8, seRenueva: '2026-11-01' };
-const AGOTADA: Cuota = { usadas: 8, limite: 8, seRenueva: '2026-11-01' };
+const CUOTA: Cuota = { usadas: 2.7, limite: 8, seRenueva: '2026-11-01', topeAgotado: false };
+const AGOTADA: Cuota = { usadas: 8, limite: 8, seRenueva: '2026-11-01', topeAgotado: false };
 
 describe('MedidorDeCuota', () => {
   async function pintar(entradas: Partial<Record<string, unknown>> = {}) {
@@ -48,8 +48,25 @@ describe('MedidorDeCuota', () => {
     expect(raiz.querySelector('[data-cuota-restantes]')).toBeNull();
   });
 
+  it('con saldo para una carta pero no para un CV, lo dice y sigue ofreciendo el aviso', async () => {
+    const { raiz } = await pintar({ cuota: { ...CUOTA, usadas: 7.5 } });
+
+    expect(raiz.querySelector('[data-cuota-agotada]')?.textContent?.trim()).toBe(
+      'Te queda para una carta, pero no para otro CV este mes. Se renueva el 1 de noviembre.',
+    );
+    expect(raiz.querySelector('[data-cuota-restantes]')).toBeNull();
+    expect(raiz.querySelector('[data-abrir-interes]')).not.toBeNull();
+  });
+
+  it('con tope global agotado y saldo personal, gana el mensaje del tope', async () => {
+    const { raiz } = await pintar({ cuota: { ...CUOTA, topeAgotado: true } });
+
+    expect(raiz.querySelector('[data-cuota-agotada]')?.textContent?.trim()).toContain('para todo el mundo');
+    expect(raiz.querySelector('[data-abrir-interes]')).not.toBeNull();
+  });
+
   it('agotada por tope, dice que es de todo el mundo', async () => {
-    const { raiz } = await pintar({ cuota: AGOTADA, motivo: 'tope' });
+    const { raiz } = await pintar({ cuota: { ...AGOTADA, topeAgotado: true } });
 
     expect(raiz.querySelector('[data-cuota-agotada]')?.textContent?.trim()).toBe(
       'Este mes se ha agotado el cupo gratuito para todo el mundo. Se renueva el 1 de noviembre.',

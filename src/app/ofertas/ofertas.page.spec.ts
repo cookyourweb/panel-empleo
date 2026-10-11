@@ -51,7 +51,7 @@ describe('OfertasPage', () => {
   it('muestra cuantas candidaturas le quedan si la fuente tiene cuota', async () => {
     TestBed.overrideProvider(FuenteDeCuota, {
       useValue: {
-        actual: async () => ({ usadas: 2.7, limite: 8, seRenueva: '2026-11-01' }),
+        actual: async () => ({ usadas: 2.7, limite: 8, seRenueva: '2026-11-01', topeAgotado: false }),
         refrescar: async () => null,
         registrarInteres: async () => undefined,
       },

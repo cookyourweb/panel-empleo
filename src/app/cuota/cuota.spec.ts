@@ -1,5 +1,8 @@
 import {
   agotada,
+  COSTE_DE_UN_CV,
+  COSTE_DE_UNA_CARTA,
+  motivoDeAgotada,
   candidaturasRestantes,
   cuotaDeCuerpo,
   esInteresValido,
@@ -9,7 +12,7 @@ import {
   textoDeRestantes,
 } from './cuota';
 
-const CUOTA = { usadas: 2.7, limite: 8, seRenueva: '2026-11-01' };
+const CUOTA = { usadas: 2.7, limite: 8, seRenueva: '2026-11-01', topeAgotado: false };
 
 describe('candidaturasRestantes', () => {
   it.each([
@@ -32,14 +35,43 @@ describe('agotada', () => {
     expect(agotada({ ...CUOTA, usadas: 8.4 })).toBe(true);
   });
 
-  it('no lo esta mientras quede algo, aunque no llegue a una candidatura entera', () => {
-    expect(agotada({ ...CUOTA, usadas: 7.7 })).toBe(false);
+  it('el CV cuesta 0,7 y la carta 0,3: una candidatura entera es 1', () => {
+    expect(COSTE_DE_UN_CV).toBe(0.7);
+    expect(COSTE_DE_UNA_CARTA).toBe(0.3);
+  });
+
+  it('lo esta cuando lo que queda no paga un CV, aunque aun de para una carta', () => {
+    expect(agotada({ ...CUOTA, usadas: 7.4 })).toBe(true);
+    expect(agotada({ ...CUOTA, usadas: 7.7 })).toBe(true);
+  });
+
+  it('no lo esta mientras quede para un CV, sin que el redondeo de decimales lo estropee', () => {
+    expect(agotada({ ...CUOTA, usadas: 7.3 })).toBe(false);
+    expect(agotada({ ...CUOTA, usadas: 7.1 })).toBe(false);
+  });
+
+  it('lo esta si el servidor dice que el tope global se ha agotado, aunque le sobre saldo', () => {
+    expect(agotada({ ...CUOTA, topeAgotado: true })).toBe(true);
+  });
+
+  it('el motivo es el tope si lo dice el servidor, y si no, su cuota', () => {
+    expect(motivoDeAgotada({ ...CUOTA, usadas: 8, topeAgotado: true })).toBe('tope');
+    expect(motivoDeAgotada({ ...CUOTA, usadas: 8 })).toBe('cuota');
   });
 });
 
 describe('cuotaDeCuerpo', () => {
   it('lee cuota de /yo y pasa a camelCase', () => {
     expect(cuotaDeCuerpo({ cuota: { usadas: 2.7, limite: 8, se_renueva: '2026-11-01' } })).toEqual(CUOTA);
+  });
+
+  it('lee tope_agotado, y si falta o no es booleano lo toma como falso', () => {
+    const cruda = { usadas: 2.7, limite: 8, se_renueva: '2026-11-01' };
+
+    expect(cuotaDeCuerpo({ cuota: { ...cruda, tope_agotado: true } })?.topeAgotado).toBe(true);
+    expect(cuotaDeCuerpo({ cuota: { ...cruda, tope_agotado: false } })?.topeAgotado).toBe(false);
+    expect(cuotaDeCuerpo({ cuota: cruda })?.topeAgotado).toBe(false);
+    expect(cuotaDeCuerpo({ cuota: { ...cruda, tope_agotado: 'si' } })?.topeAgotado).toBe(false);
   });
 
   it.each([
@@ -94,14 +126,34 @@ describe('textos', () => {
   });
 
   it('agotada por cuota: lo dice sin rodeos y sin guiones largos ni flechas', () => {
-    const texto = mensajeDeAgotada('cuota', '2026-11-01', 'es');
+    const texto = mensajeDeAgotada({ ...CUOTA, usadas: 8 }, 'es');
 
     expect(texto).toBe('Has usado tus candidaturas de este mes. Se renuevan el 1 de noviembre.');
     expect(texto).not.toMatch(/[—–→]/);
   });
 
+  it('agotada con saldo para una carta: lo dice con honestidad y ofrece renovarse', () => {
+    const texto = mensajeDeAgotada({ ...CUOTA, usadas: 7.5 }, 'es');
+
+    expect(texto).toBe(
+      'Te queda para una carta, pero no para otro CV este mes. Se renueva el 1 de noviembre.',
+    );
+    expect(texto).not.toMatch(/[—–→]/);
+  });
+
+  it('con 0,3 justos todavia da para una carta; con menos, no', () => {
+    expect(mensajeDeAgotada({ ...CUOTA, usadas: 7.7 }, 'es')).toContain('para una carta');
+    expect(mensajeDeAgotada({ ...CUOTA, usadas: 7.8 }, 'es')).toBe(
+      'Has usado tus candidaturas de este mes. Se renuevan el 1 de noviembre.',
+    );
+  });
+
+  it('el tope manda sobre la cuota personal, tenga o no saldo', () => {
+    expect(mensajeDeAgotada({ ...CUOTA, usadas: 7.5, topeAgotado: true }, 'es')).toContain('para todo el mundo');
+  });
+
   it('agotada por tope: explica que es de todo el mundo', () => {
-    const texto = mensajeDeAgotada('tope', '2026-11-01', 'es');
+    const texto = mensajeDeAgotada({ ...CUOTA, usadas: 8, topeAgotado: true }, 'es');
 
     expect(texto).toBe('Este mes se ha agotado el cupo gratuito para todo el mundo. Se renueva el 1 de noviembre.');
     expect(texto).not.toMatch(/[—–→]/);

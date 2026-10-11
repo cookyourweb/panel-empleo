@@ -18,7 +18,6 @@ import {
   Interes,
   MAXIMO_DE_ORGANIZACION,
   mensajeDeAgotada,
-  MotivoDeAgotada,
   textoDeRestantes,
   TipoDeInteres,
 } from './cuota';
@@ -125,8 +124,6 @@ import {
 })
 export class MedidorDeCuota {
   readonly cuota = input.required<Cuota>();
-  /** Por que se ha agotado. /yo solo conoce la cuota propia; el tope global solo llega en un 429. */
-  readonly motivo = input<MotivoDeAgotada>('cuota');
   readonly enviando = input(false);
   readonly enviado = input(false);
   readonly fallo = input(false);
@@ -142,7 +139,7 @@ export class MedidorDeCuota {
   protected readonly sinSaldo = computed(() => agotada(this.cuota()));
   protected readonly textoRestantes = computed(() => textoDeRestantes(this.cuota(), this.idioma()));
   protected readonly mensajeAgotada = computed(() =>
-    mensajeDeAgotada(this.motivo(), this.cuota().seRenueva, this.idioma()),
+    mensajeDeAgotada(this.cuota(), this.idioma()),
   );
 
   private readonly anfitrion = inject<ElementRef<HTMLElement>>(ElementRef);

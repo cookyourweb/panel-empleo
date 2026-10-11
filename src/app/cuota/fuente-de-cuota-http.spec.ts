@@ -35,7 +35,16 @@ describe('FuenteDeCuotaHttp', () => {
   afterEach(() => http.verify());
 
   it('actual reutiliza lo que /yo dijo al entrar: sin otra peticion', async () => {
-    expect(await fuente.actual()).toEqual({ usadas: 2.7, limite: 8, seRenueva: '2026-11-01' });
+    expect(await fuente.actual()).toEqual({ usadas: 2.7, limite: 8, seRenueva: '2026-11-01', topeAgotado: false });
+  });
+
+  it('refrescar lee tope_agotado de /yo y lo pasa a la cuota', async () => {
+    const resultado = fuente.refrescar();
+    http
+      .expectOne(`${URL_API}/yo`)
+      .flush({ ...USUARIA, cuota: { usadas: 3.4, limite: 8, se_renueva: '2026-11-01', tope_agotado: true } });
+
+    expect(await resultado).toEqual({ usadas: 3.4, limite: 8, seRenueva: '2026-11-01', topeAgotado: true });
   });
 
   it('actual vuelve a preguntar a /yo cuando lo sabido ya no es reciente', async () => {
@@ -45,7 +54,7 @@ describe('FuenteDeCuotaHttp', () => {
     const resultado = fuente.actual();
     http.expectOne(`${URL_API}/yo`).flush({ ...USUARIA, cuota: { usadas: 3.4, limite: 8, se_renueva: '2026-11-01' } });
 
-    expect(await resultado).toEqual({ usadas: 3.4, limite: 8, seRenueva: '2026-11-01' });
+    expect(await resultado).toEqual({ usadas: 3.4, limite: 8, seRenueva: '2026-11-01', topeAgotado: false });
     vi.useRealTimers();
   });
 
@@ -67,7 +76,7 @@ describe('FuenteDeCuotaHttp', () => {
     const resultado = fuente.refrescar();
     http.expectOne(`${URL_API}/yo`).flush(null, { status: 503, statusText: 'Service Unavailable' });
 
-    expect(await resultado).toEqual({ usadas: 2.7, limite: 8, seRenueva: '2026-11-01' });
+    expect(await resultado).toEqual({ usadas: 2.7, limite: 8, seRenueva: '2026-11-01', topeAgotado: false });
   });
 
   it('registrarInteres hace POST /interes con tipo y organizacion', async () => {

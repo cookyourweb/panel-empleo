@@ -4,8 +4,8 @@ import { ContenedorDeCuota } from './cuota.contenedor';
 import { Cuota } from './cuota';
 import { FuenteDeCuota } from './fuente-de-cuota';
 
-const SALDO: Cuota = { usadas: 2.7, limite: 8, seRenueva: '2026-11-01' };
-const AGOTADA: Cuota = { usadas: 8, limite: 8, seRenueva: '2026-11-01' };
+const SALDO: Cuota = { usadas: 2.7, limite: 8, seRenueva: '2026-11-01', topeAgotado: false };
+const AGOTADA: Cuota = { usadas: 8, limite: 8, seRenueva: '2026-11-01', topeAgotado: false };
 
 describe('ContenedorDeCuota', () => {
   const fuente = { actual: vi.fn(), refrescar: vi.fn(), registrarInteres: vi.fn() };
@@ -56,6 +56,14 @@ describe('ContenedorDeCuota', () => {
 
     const viva = raiz.querySelector('[aria-live=polite]')!;
     expect(viva.querySelector('[data-cuota-agotada]')).not.toBeNull();
+  });
+
+  it('con el tope global agotado muestra su mensaje aunque le quede saldo personal', async () => {
+    fuente.actual.mockResolvedValue({ ...SALDO, topeAgotado: true });
+
+    const { raiz } = await pintar();
+
+    expect(raiz.querySelector('[data-cuota-agotada]')?.textContent).toContain('para todo el mundo');
   });
 
   it('al volver a la pestaña (tras aprobar en n8n) refresca la cuota desde /yo', async () => {

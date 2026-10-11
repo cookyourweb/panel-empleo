@@ -8,10 +8,16 @@ export interface Cuota {
   readonly limite: number;
   /** Primer dia del mes que viene, AAAA-MM-DD en UTC. */
   readonly seRenueva: string;
+  /** El servidor dice que el tope global del mes no deja ni para la generacion mas barata. */
+  readonly topeAgotado: boolean;
 }
 
 /** Por que no se puede generar: su cuota o el tope global del mes. */
 export type MotivoDeAgotada = 'cuota' | 'tope';
+
+/** Unidades que cuesta cada cosa en el servidor. Con menos de un CV de saldo ya se da por agotada. */
+export const COSTE_DE_UN_CV = 0.7;
+export const COSTE_DE_UNA_CARTA = 0.3;
 
 export type TipoDeInteres = 'paquetes' | 'academia';
 
@@ -41,9 +47,22 @@ export function candidaturasRestantes(cuota: Cuota): number {
   return Math.max(0, Math.floor(aDecimas(cuota.limite - cuota.usadas)));
 }
 
-/** La regla es la del servidor: se rechaza cuando lo usado alcanza el limite. */
+/** Unidades que le quedan, a una decima. */
+function unidadesRestantes(cuota: Cuota): number {
+  return aDecimas(cuota.limite - cuota.usadas);
+}
+
+/**
+ * Agotada cuando lo que queda no paga un CV (la carta suelta no basta para
+ * seguir) o cuando el tope global del mes ya no deja generar nada.
+ */
 export function agotada(cuota: Cuota): boolean {
-  return cuota.usadas >= cuota.limite;
+  return cuota.topeAgotado || unidadesRestantes(cuota) < COSTE_DE_UN_CV;
+}
+
+/** El tope global manda sobre la cuota personal: es la razon que no depende de ella. */
+export function motivoDeAgotada(cuota: Cuota): MotivoDeAgotada {
+  return cuota.topeAgotado ? 'tope' : 'cuota';
 }
 
 /** Lee `cuota` de la respuesta de /yo. Cualquier cosa rara es "no hay cuota": el medidor se esconde. */
@@ -51,7 +70,7 @@ export function cuotaDeCuerpo(cuerpo: unknown): Cuota | null {
   if (typeof cuerpo !== 'object' || cuerpo === null) return null;
   const cruda = (cuerpo as Record<string, unknown>)['cuota'];
   if (typeof cruda !== 'object' || cruda === null) return null;
-  const { usadas, limite, se_renueva: seRenueva } = cruda as Record<string, unknown>;
+  const { usadas, limite, se_renueva: seRenueva, tope_agotado: tope } = cruda as Record<string, unknown>;
   if (
     typeof usadas !== 'number' ||
     typeof limite !== 'number' ||
@@ -64,7 +83,7 @@ export function cuotaDeCuerpo(cuerpo: unknown): Cuota | null {
   ) {
     return null;
   }
-  return { usadas, limite, seRenueva };
+  return { usadas, limite, seRenueva, topeAgotado: tope === true };
 }
 
 /**
@@ -87,10 +106,13 @@ export function textoDeRestantes(cuota: Cuota, locale: string): string {
     : $localize`:Cuantas candidaturas le quedan a quien genera, mas de una o ninguna entera@@cuota.restantes.varias:Te quedan ${restantes}:restantes: candidaturas este mes · se renueva el ${fecha}:fecha:`;
 }
 
-export function mensajeDeAgotada(motivo: MotivoDeAgotada, seRenueva: string, locale: string): string {
-  const fecha = fechaDeRenovacion(seRenueva, locale);
-  return motivo === 'tope'
-    ? $localize`:Aviso de que el cupo gratuito de todo el mundo se ha agotado@@cuota.agotada.tope:Este mes se ha agotado el cupo gratuito para todo el mundo. Se renueva el ${fecha}:fecha:.`
+export function mensajeDeAgotada(cuota: Cuota, locale: string): string {
+  const fecha = fechaDeRenovacion(cuota.seRenueva, locale);
+  if (motivoDeAgotada(cuota) === 'tope') {
+    return $localize`:Aviso de que el cupo gratuito de todo el mundo se ha agotado@@cuota.agotada.tope:Este mes se ha agotado el cupo gratuito para todo el mundo. Se renueva el ${fecha}:fecha:.`;
+  }
+  return unidadesRestantes(cuota) >= COSTE_DE_UNA_CARTA
+    ? $localize`:Aviso de que le queda saldo para una carta pero no para otro CV@@cuota.agotada.carta:Te queda para una carta, pero no para otro CV este mes. Se renueva el ${fecha}:fecha:.`
     : $localize`:Aviso de que ha gastado sus candidaturas del mes@@cuota.agotada.cuota:Has usado tus candidaturas de este mes. Se renuevan el ${fecha}:fecha:.`;
 }
 

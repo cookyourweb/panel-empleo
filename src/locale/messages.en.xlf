@@ -3192,6 +3192,16 @@
         <target>You have used your applications for this month. They renew on <ph id="0" equiv="fecha" disp="fecha"/>.</target>
       </segment>
     </unit>
+    <unit id="cuota.agotada.carta">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Aviso de que le queda saldo para una carta pero no para otro CV</note>
+      </notes>
+      <segment>
+        <source>Te queda para una carta, pero no para otro CV este mes. Se renueva el <ph id="0" equiv="fecha" disp="fecha"/>.</source>
+        <target>You have enough left for a cover letter, but not for another CV this month. It renews on <ph id="0" equiv="fecha" disp="fecha"/>.</target>
+      </segment>
+    </unit>
     <unit id="cuota.interes.gracias">
       <notes>
         <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>

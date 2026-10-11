@@ -44,7 +44,7 @@ describe('Sesion: cuota de generacion (lo que /yo dice)', () => {
   it('guarda la cuota que trae /yo al entrar', async () => {
     await entrar({ ...USUARIA, cuota: CUOTA_API });
 
-    expect(sesion.cuota()).toEqual({ usadas: 2.7, limite: 8, seRenueva: '2026-11-01' });
+    expect(sesion.cuota()).toEqual({ usadas: 2.7, limite: 8, seRenueva: '2026-11-01', topeAgotado: false });
     expect(sesion.cuotaReciente()).toEqual({ cuota: sesion.cuota() });
   });
 
