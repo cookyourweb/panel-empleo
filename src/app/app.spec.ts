@@ -36,15 +36,15 @@ describe('App', () => {
     await fixture.whenStable();
     const pagina = fixture.nativeElement as HTMLElement;
 
-    const salto = pagina.querySelector('a[href="#contenido"]');
+    const salto = pagina.querySelector('a[href="#main-content"]');
 
     expect(salto?.textContent).toContain('Saltar al contenido principal');
   });
 
-  it('ofrece en la cabecera el cambio de idioma, con el idioma actual marcado', async () => {
+  it('ofrece en la barra de la app el cambio de idioma, con el idioma actual marcado', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
-    const cabecera = (fixture.nativeElement as HTMLElement).querySelector('header');
+    const cabecera = (fixture.nativeElement as HTMLElement).querySelector('.barra-app');
 
     const enlaces = [...(cabecera?.querySelectorAll('nav a[hreflang]') ?? [])];
 
@@ -60,7 +60,27 @@ describe('App', () => {
     const mains = pagina.querySelectorAll('main');
 
     expect(mains).toHaveLength(1);
-    expect(mains[0].id).toBe('contenido');
+    expect(mains[0].id).toBe('main-content');
+  });
+
+  it('el enlace de salto es lo primero que enfoca el teclado, antes que la cabecera de marca', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+
+    const primero = pagina.querySelector('a, button');
+
+    expect(primero?.getAttribute('href')).toBe('#main-content');
+    expect(pagina.querySelectorAll('app-cabecera-de-marca, app-pie-de-marca')).toHaveLength(2);
+  });
+
+  it('solo la cabecera de marca es el banner de la pagina, y solo el pie de marca su contentinfo', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+
+    expect(pagina.querySelectorAll('header')).toHaveLength(1);
+    expect(pagina.querySelectorAll('footer')).toHaveLength(1);
   });
 
   it('tras navegar lleva el foco al main, pero no en la carga inicial', async () => {
@@ -80,7 +100,7 @@ describe('App', () => {
     (fixture.nativeElement as HTMLElement).remove();
   });
 
-  it('con sesion pero sin backend de alta, la cabecera no ofrece la cuenta', async () => {
+  it('con sesion pero sin backend de alta, la barra de la app no ofrece la cuenta', async () => {
     activa.set(true);
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
@@ -88,19 +108,19 @@ describe('App', () => {
     expect((fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
   });
 
-  it('con sesion y backend de alta, la cabecera enlaza a la cuenta', async () => {
+  it('con sesion y backend de alta, la barra de la app enlaza a la cuenta', async () => {
     TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
     activa.set(true);
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
-    const cabecera = (fixture.nativeElement as HTMLElement).querySelector('header');
+    const cabecera = (fixture.nativeElement as HTMLElement).querySelector('.barra-app');
 
     const enlace = cabecera?.querySelector('a[href="/cuenta"]');
 
     expect(enlace?.textContent?.trim()).toBe('Tu cuenta');
   });
 
-  it('sin sesion, la cabecera no ofrece la cuenta', async () => {
+  it('sin sesion, la barra de la app no ofrece la cuenta', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
 

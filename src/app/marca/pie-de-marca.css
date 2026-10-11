@@ -1,0 +1,114 @@
+/* Pie de CookYourWeb AI. Mismas medidas que el de www.cookyourwebai.es. */
+
+.pie {
+  margin-top: 6rem;
+  padding: 3rem 0 2rem;
+  border-top: 1px solid var(--color-cyw-zinc-800);
+}
+
+a:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.pie__contenedor {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 56rem;
+  margin-inline: auto;
+  /* La web de la agencia no lleva margen lateral aqui porque su pagina ya lo da. */
+  padding-inline: 1rem;
+  text-align: center;
+}
+
+.pie__titulo {
+  margin: 0 0 0.5rem;
+  color: var(--color-cyw-blanco);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+.pie__dato {
+  margin: 0;
+  color: var(--color-cyw-zinc-300);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.pie a {
+  color: var(--color-cyw-purpura-400);
+  text-decoration: none;
+}
+
+.pie a:hover {
+  text-decoration: underline;
+}
+
+.pie__derechos {
+  color: var(--color-cyw-zinc-400);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.pie__derechos p {
+  margin: 0;
+}
+
+.pie__legales {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.pie a.pie__legal {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.pie a.pie__legal:hover {
+  color: var(--color-cyw-purpura-400);
+}
+
+.pie a.pie__legal--baja:hover {
+  color: var(--color-cyw-rojo-400);
+}
+
+.pie__hecho,
+.pie__proyecto {
+  margin: 1rem 0 0;
+  color: var(--color-cyw-zinc-500);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+.pie__proyecto {
+  margin-top: 0.5rem;
+}
+
+.pie__corazon {
+  color: var(--color-cyw-purpura-400);
+}
+
+@media (min-width: 768px) {
+  .pie__contenedor {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .pie__derechos {
+    text-align: right;
+  }
+
+  .pie__legales {
+    justify-content: flex-end;
+  }
+}

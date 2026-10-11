@@ -5,11 +5,13 @@ import { filter, skip } from 'rxjs';
 
 import { ALTA_ACTIVA } from './configuracion';
 import { SelectorDeIdioma } from './idioma/selector-de-idioma';
+import { CabeceraDeMarca } from './marca/cabecera-de-marca';
+import { PieDeMarca } from './marca/pie-de-marca';
 import { PreparandoZona } from './preparacion/preparando-zona';
 import { Sesion } from './sesion/sesion';
 
 @Component({
-  imports: [PreparandoZona, RouterLink, RouterOutlet, SelectorDeIdioma],
+  imports: [CabeceraDeMarca, PieDeMarca, PreparandoZona, RouterLink, RouterOutlet, SelectorDeIdioma],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',

@@ -1,0 +1,69 @@
+<header class="cabecera" [class.cabecera--desplazada]="desplazada()">
+  <div class="contenedor">
+    <div class="logo">
+      <a class="logo__nombre" [href]="agencia">cookYourWebAI</a>
+      <span class="logo__etiqueta" i18n="Etiqueta bajo el logo de la agencia@@cabecera.agencia">Agencia AI</span>
+    </div>
+
+    <nav class="menu-escritorio" [attr.aria-label]="etiquetaDelMenu">
+      @for (enlace of enlaces; track enlace.clave) {
+        <a class="enlace" [href]="enlace.url" [attr.aria-current]="enlace.actual ? 'page' : null"
+          ><span class="enlace__texto">{{ enlace.etiqueta }}</span></a
+        >
+      }
+    </nav>
+
+    <div class="controles">
+      <a
+        class="whatsapp"
+        [href]="whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+        [attr.aria-label]="etiquetaDeWhatsapp"
+      >
+        <svg class="icono icono--grande" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+        </svg>
+        <span class="whatsapp__punto" aria-hidden="true"></span>
+        <span class="whatsapp__ayuda" aria-hidden="true" i18n="Ayuda emergente del boton de WhatsApp@@cabecera.whatsapp.ayuda"
+          >¡Chatbot AI en vivo!</span
+        >
+      </a>
+
+      <button
+        #alternar
+        type="button"
+        class="alternar"
+        [attr.aria-label]="menuAbierto() ? etiquetaDeCerrar : etiquetaDeAbrir"
+        [attr.aria-expanded]="menuAbierto()"
+        aria-controls="menu-movil"
+        (click)="alternarMenu()"
+      >
+        <span class="alternar__icono" [class.alternar__icono--abierto]="menuAbierto()">
+          <svg class="icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M4 12h16M4 6h16M4 18h16" />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div id="menu-movil" class="menu-movil" [hidden]="!menuAbierto()">
+    <nav class="menu-movil__nav" [attr.aria-label]="etiquetaDelMenu">
+      @for (enlace of enlaces; track enlace.clave) {
+        <a class="enlace-movil" [href]="enlace.url" [attr.aria-current]="enlace.actual ? 'page' : null" (click)="cerrarMenu()"
+          ><span class="enlace-movil__texto">{{ enlace.etiqueta }}</span
+          ><span class="enlace-movil__punto" aria-hidden="true"></span
+        ></a>
+      }
+      <div class="menu-movil__cta">
+        <a class="cta" [href]="whatsapp" target="_blank" rel="noopener noreferrer" (click)="cerrarMenu()">
+          <svg class="icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+          </svg>
+          <ng-container i18n="Boton del menu movil que abre el chat de WhatsApp@@cabecera.menu.chatbot">Chatbot AI en Vivo</ng-container>
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>

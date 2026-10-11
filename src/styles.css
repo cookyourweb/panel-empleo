@@ -129,6 +129,33 @@
   --sidebar-accent-foreground: 317.9 100% 86.9%;
   --sidebar-border: 182.9 98.1% 21%;
   --sidebar-ring: 182.8 91.3% 45.3%;
+
+  /* ============================================================
+     CABECERA Y PIE DE COOKYOURWEB AI
+     Valores de la paleta por defecto de Tailwind v3, que es lo que usa
+     www.cookyourwebai.es: aqui no hay Tailwind, y la cabecera tiene que
+     verse igual que la de la home. Son colores fijos sobre negro, no
+     cambian con el tema. Los -rgb sirven para rgb(... / alpha).
+     ============================================================ */
+  --color-cyw-negro: #000000;
+  --color-cyw-negro-rgb: 0 0 0;
+  --color-cyw-blanco: #ffffff;
+  --color-cyw-zinc-300: #d4d4d8;
+  --color-cyw-zinc-400: #a1a1aa;
+  --color-cyw-zinc-500: #71717a;
+  --color-cyw-zinc-800: #27272a;
+  --color-cyw-zinc-800-rgb: 39 39 42;
+  --color-cyw-azul-300: #93c5fd;
+  --color-cyw-azul-400: #60a5fa;
+  --color-cyw-azul-500: #3b82f6;
+  --color-cyw-azul-500-rgb: 59 130 246;
+  --color-cyw-purpura-400: #c084fc;
+  --color-cyw-purpura-500: #a855f7;
+  --color-cyw-purpura-500-rgb: 168 85 247;
+  --color-cyw-verde-400: #4ade80;
+  --color-cyw-verde-500: #22c55e;
+  --color-cyw-verde-500-rgb: 34 197 94;
+  --color-cyw-rojo-400: #f87171;
 }
 
 .light {
@@ -179,9 +206,31 @@
 }
 
 
+/* Medidas de la cabecera fija de CookYourWeb AI. Van en su propio bloque (y no
+   en el de arriba) porque cambian con el ancho de pantalla.
+   - espacio: lo que el contenido deja libre arriba (96 px, 128 desde 768 px).
+   - alto: la cabecera sin scroll, que es cuando mas mide.
+   - alto-compacta: la cabecera con scroll (menos relleno y un borde). Es lo que
+     hay que dejar libre al llevar el foco o un ancla a un punto de la pagina. */
+:root {
+  --cabecera-espacio: 6rem;
+  --cabecera-alto: 5.5rem;
+  --cabecera-alto-compacta: 5.125rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --cabecera-espacio: 8rem;
+    --cabecera-alto: 5.75rem;
+    --cabecera-alto-compacta: 5.3125rem;
+  }
+}
+
 /* El tema oscuro es el principal: es donde la marca funciona. */
 html {
   color-scheme: dark;
+  /* La cabecera fija no tapa lo que recibe el foco ni el destino de un enlace (WCAG 2.4.11). */
+  scroll-padding-top: var(--cabecera-alto-compacta);
 }
 
 body {

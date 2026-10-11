@@ -75,7 +75,7 @@ describe("traducciones", () => {
 
     it("el texto original no se ha quedado sin traducir: el destino no repite el origen", () => {
       // Mensajes que se escriben igual en los dos idiomas.
-      const IGUALES = new Set(["campo.tags", "campo.cv", "campo.prep", "estado.entrevista"]);
+      const IGUALES = new Set(["campo.tags", "campo.cv", "campo.prep", "estado.entrevista", "pie.email"]);
       const iguales = traducidas
         .filter((u) => u.destino !== null && u.destino.trim() === u.origen.trim() && !IGUALES.has(u.id) && !/^\{?\s*<ph/.test(u.origen.trim()))
         .map((u) => u.id);

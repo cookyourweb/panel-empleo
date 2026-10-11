@@ -1,4 +1,12 @@
-.cabecera {
+/* La cabecera de marca es fija y no ocupa sitio: el contenido empieza debajo. */
+:host {
+  display: block;
+  padding-top: var(--cabecera-espacio);
+}
+
+/* Titulo de la aplicacion, cuenta e idioma. Es una barra normal, no un banner:
+   el banner de la pagina es la cabecera de marca. */
+.barra-app {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
