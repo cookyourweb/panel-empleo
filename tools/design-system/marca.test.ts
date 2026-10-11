@@ -24,6 +24,7 @@ describe("tokens de la cabecera y el pie de marca", () => {
     ["--color-cyw-verde-400", "#4ade80"],
     ["--color-cyw-verde-500", "#22c55e"],
     ["--color-cyw-rojo-400", "#f87171"],
+    ["--color-cyw-rosa-500", "#ec4899"],
   ])("%s vale %s, como en la especificacion", (token, valor) => {
     expect(tokens[token]).toBe(valor);
   });
@@ -34,6 +35,7 @@ describe("tokens de la cabecera y el pie de marca", () => {
     ["--color-cyw-azul-500-rgb", "--color-cyw-azul-500"],
     ["--color-cyw-purpura-500-rgb", "--color-cyw-purpura-500"],
     ["--color-cyw-verde-500-rgb", "--color-cyw-verde-500"],
+    ["--color-cyw-rosa-500-rgb", "--color-cyw-rosa-500"],
   ])("%s es el mismo color que %s, en componentes R G B", (rgb, hex) => {
     const [r, g, b] = tokens[rgb].split(/\s+/).map(Number);
     const esperado = `#${[r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("")}`;

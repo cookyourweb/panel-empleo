@@ -158,6 +158,8 @@
   --color-cyw-verde-500: #22c55e;
   --color-cyw-verde-500-rgb: 34 197 94;
   --color-cyw-rojo-400: #f87171;
+  --color-cyw-rosa-500: #ec4899;
+  --color-cyw-rosa-500-rgb: 236 72 153;
 }
 
 .light {
@@ -276,6 +278,130 @@
   max-width: var(--contenedor-ancho);
   margin-inline: auto;
   padding-inline: var(--contenedor-relleno);
+}
+
+/* Como se coloca el contenido DENTRO del contenedor, igual que www.cookyourwebai.es:
+   todo va centrado y cada bloque se acota con una columna. Las paginas no fijan
+   anchos ni margenes automaticos: eligen una de estas clases.
+   - columna-texto: max-w-4xl (896 px), parrafos y bloques destacados.
+   - columna-estrecha: max-w-2xl (672 px), avisos cortos.
+   - columna-formulario: pasos del alta y de la cuenta.
+   - columna-compacta: entrada y formulario de la lista de espera.
+   - rejilla-tarjetas: max-w-7xl (1280 px), rejillas de tarjetas. */
+:root {
+  --rejilla-hueco: 1.5rem;
+  --tarjeta-relleno: 1.5rem;
+  --titulo-seccion-tamano: 1.5rem;
+  --titulo-seccion-interlineado: 2rem;
+  --titulo-hero-tamano: 2.25rem;
+  --titulo-hero-interlineado: 1.25;
+  --lead-tamano: 1.125rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --rejilla-hueco: 2rem;
+    --tarjeta-relleno: 2rem;
+    --titulo-seccion-tamano: 1.875rem;
+    --titulo-seccion-interlineado: 2.25rem;
+    --titulo-hero-tamano: 3rem;
+    --lead-tamano: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --titulo-hero-tamano: 4.5rem;
+    --lead-tamano: 1.5rem;
+  }
+}
+
+.columna-texto {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 56rem;
+  margin-inline: auto;
+}
+
+.columna-estrecha {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 42rem;
+  margin-inline: auto;
+}
+
+.columna-formulario {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+.columna-compacta {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+.rejilla-tarjetas {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--rejilla-hueco);
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+}
+
+/* h1/h2 de seccion: text-2xl md:text-3xl font-bold, centrado. */
+.titulo-seccion {
+  margin-block: 0 1.5rem;
+  color: var(--color-cyw-blanco);
+  font-size: var(--titulo-seccion-tamano);
+  line-height: var(--titulo-seccion-interlineado);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Portada: titular grande y texto de apoyo centrados en columna. */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero__titulo {
+  margin: 0 0 1.5rem;
+  color: var(--color-cyw-blanco);
+  font-size: var(--titulo-hero-tamano);
+  line-height: var(--titulo-hero-interlineado);
+  font-weight: 700;
+  overflow-wrap: break-word;
+}
+
+.hero__lead {
+  margin: 0;
+  color: var(--color-cyw-zinc-300);
+  font-size: var(--lead-tamano);
+  line-height: 1.625;
+}
+
+/* Bloque destacado: rounded-3xl, borde zinc-800 y degradado suave al 20 %. */
+.tarjeta-destacada {
+  box-sizing: border-box;
+  padding: var(--tarjeta-relleno);
+  border: 1px solid var(--color-cyw-zinc-800);
+  border-radius: 1.5rem;
+  background-image: linear-gradient(
+    to right,
+    rgb(var(--color-cyw-azul-500-rgb) / 0.2),
+    rgb(var(--color-cyw-purpura-500-rgb) / 0.2),
+    rgb(var(--color-cyw-rosa-500-rgb) / 0.2)
+  );
+  color: var(--color-cyw-zinc-300);
+  text-align: center;
 }
 
 /* El tema oscuro es el principal: es donde la marca funciona. */
