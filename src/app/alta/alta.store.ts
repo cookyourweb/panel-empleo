@@ -45,6 +45,7 @@ export class AltaStore {
   private readonly _errorDeGuardado = signal(false);
   private readonly _cvGuardado = signal(false);
   private readonly _consentiendo = signal(false);
+  private readonly _consentido = signal(false);
   private readonly _guardando = signal(false);
 
   readonly paso = this._paso.asReadonly();
@@ -59,6 +60,8 @@ export class AltaStore {
    * separate facts: reading may fail or be unavailable while the CV stays safe.
    */
   readonly cvGuardado = this._cvGuardado.asReadonly();
+  /** True once both consents were recorded, so the final summary only states what happened. */
+  readonly consentido = this._consentido.asReadonly();
   /** True while the consent request is in flight. */
   readonly consentiendo = this._consentiendo.asReadonly();
   /** True while the profile is being saved: the form shows it and refuses a second submit. */
@@ -78,6 +81,7 @@ export class AltaStore {
     } finally {
       this._consentiendo.set(false);
     }
+    this._consentido.set(true);
     this._paso.set(PASOS.subida);
   }
 

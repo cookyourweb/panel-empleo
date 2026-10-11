@@ -17,7 +17,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
           <li
             class="indicador__paso"
             [attr.aria-current]="$index + 1 === actual() ? 'step' : null"
-            [attr.data-hecho]="$index + 1 < actual() ? '' : null"
+            [attr.data-completado]="$index + 1 < actual() ? '' : null"
           >
             {{ etiqueta }}
           </li>

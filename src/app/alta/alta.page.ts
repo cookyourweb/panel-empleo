@@ -1,4 +1,5 @@
 import { afterRenderEffect, ChangeDetectionStrategy, Component, computed, ElementRef, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { AltaStore, Paso, PASOS } from './alta.store';
 import { Consentimiento } from './consentimiento';
@@ -58,7 +59,7 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
  */
 @Component({
   selector: 'app-alta',
-  imports: [Consentimiento, SubidaDeCv, RevisionDeCampos, FormularioManual, IndicadorDePasos],
+  imports: [Consentimiento, SubidaDeCv, RevisionDeCampos, FormularioManual, IndicadorDePasos, RouterLink],
   providers: [AltaStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './alta.css',
@@ -132,8 +133,26 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
           <h2 id="hecho-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso final@@alta.hecho.titulo">
             Perfil guardado
           </h2>
-          <p i18n="Texto del paso final@@alta.hecho.texto">
-            Ya tenemos tu perfil. Puedes borrar tus datos y tu cuenta cuando quieras.
+          <p i18n="Introduccion del resumen final@@alta.hecho.introduccion">Esto es lo que hemos guardado:</p>
+          <ul class="resumen" data-resumen>
+            <li data-resumen-perfil i18n="Resumen final, perfil guardado@@alta.hecho.perfil">
+              Tu perfil, con los datos que has confirmado.
+            </li>
+            @if (store.cvGuardado()) {
+              <li data-resumen-cv i18n="Resumen final, CV guardado cifrado@@alta.hecho.cv">Tu CV, guardado cifrado.</li>
+            }
+            @if (store.consentido()) {
+              <li data-resumen-consentimientos i18n="Resumen final, consentimientos registrados@@alta.hecho.consentimientos">
+                Tus consentimientos, registrados: guardar tu CV cifrado y enviarlo a proveedores de IA para leerlo.
+              </li>
+            }
+          </ul>
+          <p i18n="Como borrar lo guardado@@alta.hecho.borrar">
+            Puedes borrarlo todo cuando quieras. Es inmediato y no se puede deshacer.
+          </p>
+          <p class="acciones">
+            <a routerLink="/cuenta" i18n="Enlace a la cuenta para borrar los datos@@alta.hecho.enlaceCuenta">Borrar mis datos o mi cuenta</a>
+            <a routerLink="/panel" i18n="Enlace al panel tras el alta@@alta.hecho.enlacePanel">Ir a mi panel</a>
           </p>
         </section>
       }

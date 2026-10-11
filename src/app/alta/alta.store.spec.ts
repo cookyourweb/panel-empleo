@@ -215,6 +215,30 @@ describe('AltaStore', () => {
     });
   });
 
+  describe('consentido', () => {
+    it('empieza en falso, pasa a verdadero al registrar los consentimientos y no si se va a mano', async () => {
+      expect(store.consentido()).toBe(false);
+
+      await store.consentir();
+
+      expect(store.consentido()).toBe(true);
+    });
+
+    it('rellenar a mano sin consentir lo deja en falso', () => {
+      store.irAManual();
+
+      expect(store.consentido()).toBe(false);
+    });
+
+    it('si el servidor falla no cuenta como consentido', async () => {
+      repositorio.consentir.mockRejectedValue(new Error('500'));
+
+      await store.consentir();
+
+      expect(store.consentido()).toBe(false);
+    });
+  });
+
   describe('estado ocupado', () => {
     it('consentiendo es verdadero solo mientras el servidor registra el consentimiento', async () => {
       const espera = aplazada<void>();

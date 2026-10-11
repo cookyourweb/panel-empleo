@@ -2405,13 +2405,67 @@
         <source>Perfil guardado</source>
       </segment>
     </unit>
-    <unit id="alta.hecho.texto">
+    <unit id="alta.hecho.introduccion">
       <notes>
-        <note category="location">src/app/alta/alta.page.ts:82</note>
-        <note category="description">Texto del paso final</note>
+        <note category="location">src/app/alta/alta.page.ts:136</note>
+        <note category="description">Introduccion del resumen final</note>
       </notes>
       <segment>
-        <source>Ya tenemos tu perfil. Puedes borrar tus datos y tu cuenta cuando quieras.</source>
+        <source>Esto es lo que hemos guardado:</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.perfil">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:138</note>
+        <note category="description">Resumen final, perfil guardado</note>
+      </notes>
+      <segment>
+        <source>Tu perfil, con los datos que has confirmado.</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.cv">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:142</note>
+        <note category="description">Resumen final, CV guardado cifrado</note>
+      </notes>
+      <segment>
+        <source>Tu CV, guardado cifrado.</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.consentimientos">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:145</note>
+        <note category="description">Resumen final, consentimientos registrados</note>
+      </notes>
+      <segment>
+        <source>Tus consentimientos, registrados: guardar tu CV cifrado y enviarlo a proveedores de IA para leerlo.</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.borrar">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:150</note>
+        <note category="description">Como borrar lo guardado</note>
+      </notes>
+      <segment>
+        <source>Puedes borrarlo todo cuando quieras. Es inmediato y no se puede deshacer.</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.enlaceCuenta">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:154</note>
+        <note category="description">Enlace a la cuenta para borrar los datos</note>
+      </notes>
+      <segment>
+        <source>Borrar mis datos o mi cuenta</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.enlacePanel">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:155</note>
+        <note category="description">Enlace al panel tras el alta</note>
+      </notes>
+      <segment>
+        <source>Ir a mi panel</source>
       </segment>
     </unit>
     <unit id="cuenta.titulo">

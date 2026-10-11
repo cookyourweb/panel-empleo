@@ -129,7 +129,7 @@ button:disabled {
   color: hsl(var(--muted-foreground, var(--foreground)));
 }
 
-.indicador__paso[data-hecho]::before {
+.indicador__paso[data-completado]::before {
   content: '\2713\00a0';
   content: '\2713\00a0' / '';
 }
@@ -147,4 +147,18 @@ button:disabled {
 
 button[aria-busy='true'] {
   cursor: progress;
+}
+
+.resumen {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.resumen li {
+  margin: 0.25rem 0;
+}
+
+a:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
 }

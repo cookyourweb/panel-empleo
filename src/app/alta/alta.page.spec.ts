@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { AltaPage } from './alta.page';
 import { MotivoManual, MOTIVOS_MANUAL, ResultadoExtraccion, SubidaRechazada } from './dominio';
@@ -15,6 +16,7 @@ describe('AltaPage', () => {
   async function pintar() {
     TestBed.configureTestingModule({
       providers: [
+        provideRouter([]),
         { provide: RepositorioDePerfil, useValue: repositorio },
         { provide: ExtractorDeCv, useValue: extractor },
         { provide: Sesion, useValue: { perfilGuardado: vi.fn() } },
@@ -316,6 +318,59 @@ describe('AltaPage', () => {
 
         expect(indicador(p)).toBe('Paso 4 de 4: Listo');
         expect(siguiente(p)).not.toBe('');
+      });
+    });
+
+    describe('resumen final', () => {
+      const resumen = (p: Awaited<ReturnType<typeof pintar>>) => p.raiz.querySelector('[data-hecho]')!;
+
+      it('tras subir el CV y consentir resume perfil, CV cifrado y consentimientos', async () => {
+        repositorio.guardar.mockResolvedValue(undefined);
+        const p = await hastaLaSubida();
+        await subir(p, { estado: 'manual', motivo: 'indisponible' });
+
+        await rellenarYGuardar(p);
+
+        expect(resumen(p).querySelector('[data-resumen-perfil]')).not.toBeNull();
+        expect(resumen(p).querySelector('[data-resumen-cv]')!.textContent).toContain('cifrado');
+        expect(resumen(p).querySelector('[data-resumen-consentimientos]')).not.toBeNull();
+      });
+
+      it('si se relleno a mano sin CV ni consentimientos, solo resume el perfil', async () => {
+        repositorio.guardar.mockResolvedValue(undefined);
+        const p = await pintar();
+        p.raiz.querySelector<HTMLButtonElement>('[data-a-mano]')!.click();
+        await p.fixture.whenStable();
+
+        await rellenarYGuardar(p);
+
+        expect(resumen(p).querySelector('[data-resumen-perfil]')).not.toBeNull();
+        expect(resumen(p).querySelector('[data-resumen-cv]')).toBeNull();
+        expect(resumen(p).querySelector('[data-resumen-consentimientos]')).toBeNull();
+      });
+
+      it('explica como borrarlo, con un enlace a /cuenta, y ofrece ir al panel', async () => {
+        repositorio.guardar.mockResolvedValue(undefined);
+        const p = await pintar();
+        p.raiz.querySelector<HTMLButtonElement>('[data-a-mano]')!.click();
+        await p.fixture.whenStable();
+
+        await rellenarYGuardar(p);
+
+        expect(resumen(p).querySelector('a[href="/cuenta"]')).not.toBeNull();
+        expect(resumen(p).querySelector('a[href="/panel"]')).not.toBeNull();
+        expect(resumen(p).textContent).toContain('borrar');
+      });
+
+      it('el titulo del resumen recibe el foco al llegar', async () => {
+        repositorio.guardar.mockResolvedValue(undefined);
+        const p = await pintar();
+        p.raiz.querySelector<HTMLButtonElement>('[data-a-mano]')!.click();
+        await p.fixture.whenStable();
+
+        await rellenarYGuardar(p);
+
+        expect(document.activeElement).toBe(resumen(p).querySelector('[data-titulo-de-paso]'));
       });
     });
 

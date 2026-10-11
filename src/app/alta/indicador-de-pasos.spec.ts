@@ -39,7 +39,7 @@ describe('IndicadorDePasos', () => {
   it('distingue los pasos ya hechos sin depender solo del color', async () => {
     const raiz = await pintar(3);
 
-    const hechos = [...raiz.querySelectorAll('li')].map((li) => li.hasAttribute('data-hecho'));
+    const hechos = [...raiz.querySelectorAll('li')].map((li) => li.hasAttribute('data-completado'));
     expect(hechos).toEqual([true, true, false, false]);
   });
 });
