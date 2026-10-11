@@ -2298,8 +2298,48 @@
         <note category="description">Pista del formato aceptado</note>
       </notes>
       <segment>
-        <source>PDF o DOCX, hasta 2 MB.</source>
-        <target>PDF or DOCX, up to 2 MB.</target>
+        <source>PDF o DOCX, hasta 2 MB</source>
+        <target>PDF or DOCX, up to 2 MB</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.arrastra">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:50</note>
+        <note category="description">Texto de la zona de subida</note>
+      </notes>
+      <segment>
+        <source>Arrastra tu CV hasta aquí o elígelo desde tu dispositivo.</source>
+        <target>Drag your CV here or choose it from your device.</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.soltar">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:50</note>
+        <note category="description">Texto de la zona al arrastrar encima</note>
+      </notes>
+      <segment>
+        <source>Suelta tu CV aquí</source>
+        <target>Drop your CV here</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.elegir">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:50</note>
+        <note category="description">Boton para elegir el CV</note>
+      </notes>
+      <segment>
+        <source>Elegir mi CV</source>
+        <target>Choose my CV</target>
+      </segment>
+    </unit>
+    <unit id="alta.subida.archivoElegido">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:50</note>
+        <note category="description">Etiqueta del archivo elegido</note>
+      </notes>
+      <segment>
+        <source>Archivo elegido:</source>
+        <target>Chosen file:</target>
       </segment>
     </unit>
     <unit id="alta.subida.aMano">

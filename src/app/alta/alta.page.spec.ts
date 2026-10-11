@@ -197,6 +197,15 @@ describe('AltaPage', () => {
         expect(estado(p)).toBe('Subiendo tu CV…');
       });
 
+      it('mientras sube, enseña el nombre del archivo elegido', async () => {
+        const p = await hastaLaSubida();
+        extractor.subir.mockReturnValueOnce(new Promise<void>(() => undefined));
+
+        await elegirArchivo(p);
+
+        expect(p.raiz.querySelector('[data-archivo]')?.textContent).toContain('cv.pdf');
+      });
+
       it('al terminar la subida confirma que esta guardado (cifrado) mientras lo lee', async () => {
         const p = await hastaLaSubida();
         extractor.extraer.mockReturnValueOnce(new Promise<ResultadoExtraccion>(() => undefined));

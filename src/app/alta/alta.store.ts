@@ -22,6 +22,12 @@ export const PASOS = {
   hecho: 'hecho',
 } as const;
 
+/** Lo que se enseña del archivo elegido: nunca su contenido. */
+export interface ArchivoElegido {
+  readonly nombre: string;
+  readonly tamano: number;
+}
+
 export type Paso = (typeof PASOS)[keyof typeof PASOS];
 
 /**
@@ -47,6 +53,7 @@ export class AltaStore {
   private readonly _consentiendo = signal(false);
   private readonly _consentido = signal(false);
   private readonly _guardando = signal(false);
+  private readonly _archivoElegido = signal<ArchivoElegido | null>(null);
 
   readonly paso = this._paso.asReadonly();
   readonly propuestas = this._propuestas.asReadonly();
@@ -64,6 +71,8 @@ export class AltaStore {
   readonly consentido = this._consentido.asReadonly();
   /** True while the consent request is in flight. */
   readonly consentiendo = this._consentiendo.asReadonly();
+  /** Nombre y tamano del CV elegido, para enseñarlos mientras se sube. */
+  readonly archivoElegido = this._archivoElegido.asReadonly();
   /** True while the profile is being saved: the form shows it and refuses a second submit. */
   readonly guardando = this._guardando.asReadonly();
 
@@ -89,6 +98,7 @@ export class AltaStore {
   async subirCv(archivo: File): Promise<void> {
     if (this._paso() !== PASOS.subida) return;
     this._rechazoDeSubida.set(null);
+    this._archivoElegido.set({ nombre: archivo.name, tamano: archivo.size });
     this._paso.set(PASOS.extrayendo);
     try {
       await this.extractor.subir(archivo);

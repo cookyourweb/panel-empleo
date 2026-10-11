@@ -97,6 +97,17 @@ describe('AltaStore', () => {
       expect(store.paso()).toBe('consentimiento');
     });
 
+    it('recuerda el archivo elegido mientras sube, para poder mostrarlo', async () => {
+      await hastaSubida();
+      extractor.subir.mockReturnValueOnce(new Promise<void>(() => undefined));
+      expect(store.archivoElegido()).toBeNull();
+
+      void store.subirCv(ARCHIVO);
+      await Promise.resolve();
+
+      expect(store.archivoElegido()).toEqual({ nombre: 'cv.pdf', tamano: ARCHIVO.size });
+    });
+
     it('pasa por extrayendo y termina en la revision con las propuestas', async () => {
       await hastaSubida();
       const espera = aplazada<ResultadoExtraccion>();

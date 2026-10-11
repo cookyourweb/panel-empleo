@@ -6,6 +6,7 @@ import { Consentimiento } from './consentimiento';
 import { MotivoManual } from './dominio';
 import { FormularioManual } from './formulario-manual';
 import { IndicadorDePasos } from './indicador-de-pasos';
+import { ResumenDeArchivo } from './resumen-de-archivo';
 import { RevisionDeCampos } from './revision-de-campos';
 import { SubidaDeCv } from './subida-de-cv';
 
@@ -59,7 +60,7 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
  */
 @Component({
   selector: 'app-alta',
-  imports: [Consentimiento, SubidaDeCv, RevisionDeCampos, FormularioManual, IndicadorDePasos, RouterLink],
+  imports: [Consentimiento, SubidaDeCv, RevisionDeCampos, FormularioManual, IndicadorDePasos, ResumenDeArchivo, RouterLink],
   providers: [AltaStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './alta.css',
@@ -98,6 +99,11 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
           <h2 id="extrayendo-titulo" tabindex="-1" data-titulo-de-paso>
             {{ store.cvGuardado() ? textos.leyendo : textos.subiendo }}
           </h2>
+          @if (store.archivoElegido(); as archivo) {
+            <p class="archivo" data-archivo>
+              <app-resumen-de-archivo [nombre]="archivo.nombre" [tamano]="archivo.tamano" />
+            </p>
+          }
         </section>
       }
       @case (pasos.revision) {
