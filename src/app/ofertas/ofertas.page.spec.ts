@@ -10,6 +10,8 @@ import { Candidatura } from './dominio';
 import { FuenteDeEncaje } from './encaje';
 import { FuenteDeAcciones, FuenteDeAccionesDemo } from './fuente-de-acciones';
 import { ENCAJE_ACTIVO } from '../configuracion';
+import { FuenteDeCuota } from '../cuota/fuente-de-cuota';
+import { FuenteDeCuotaDemo } from '../cuota/fuente-de-cuota-demo';
 import { FuenteDeEncajeDemo } from './fuente-de-encaje-demo';
 import { OfertasPage } from './ofertas.page';
 import { RepositorioDemo } from './repositorio-demo';
@@ -28,6 +30,7 @@ describe('OfertasPage', () => {
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
+        { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
       ],
     }).compileComponents();
   });
@@ -37,6 +40,27 @@ describe('OfertasPage', () => {
     await fixture.whenStable();
     return fixture.nativeElement as HTMLElement;
   }
+
+  it('con la demo no pinta ningun medidor de cuota', async () => {
+    const pagina = await pintar();
+
+    expect(pagina.querySelector('app-cuota')).not.toBeNull();
+    expect(pagina.querySelector('[data-cuota-restantes], [data-cuota-agotada]')).toBeNull();
+  });
+
+  it('muestra cuantas candidaturas le quedan si la fuente tiene cuota', async () => {
+    TestBed.overrideProvider(FuenteDeCuota, {
+      useValue: {
+        actual: async () => ({ usadas: 2.7, limite: 8, seRenueva: '2026-11-01' }),
+        refrescar: async () => null,
+        registrarInteres: async () => undefined,
+      },
+    });
+
+    const pagina = await pintar();
+
+    expect(pagina.querySelector('[data-cuota-restantes]')?.textContent).toContain('Te quedan 5 candidaturas');
+  });
 
   it('lista las ofertas en una tabla con cabeceras de columna', async () => {
     const pagina = await pintar();
@@ -260,6 +284,7 @@ describe('OfertasPage · números según el idioma activo', () => {
         { provide: RepositorioDeCandidaturas, useValue: { listar: async () => MUCHAS } },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
+        { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
       ],
     }).compileComponents();
     const fixture = TestBed.createComponent(OfertasPage);
@@ -286,6 +311,7 @@ describe('OfertasPage · con el encaje apagado', () => {
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useValue: { resumen } },
+        { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
         { provide: ENCAJE_ACTIVO, useValue: false },
       ],
     }).compileComponents();
@@ -314,6 +340,7 @@ describe('OfertasPage · filtro de alcanzables', () => {
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useValue: fuente ?? { resumen } },
+        { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
         { provide: ENCAJE_ACTIVO, useValue: true },
       ],
     }).compileComponents();

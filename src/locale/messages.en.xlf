@@ -3152,5 +3152,135 @@
         <target>The first time can take a few seconds while the server wakes up.</target>
       </segment>
     </unit>
+    <unit id="cuota.restantes.una">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Cuantas candidaturas le queda a quien genera, una sola</note>
+      </notes>
+      <segment>
+        <source>Te queda 1 candidatura este mes · se renueva el <ph id="0" equiv="fecha" disp="fecha"/></source>
+        <target>You have 1 application left this month · renews on <ph id="0" equiv="fecha" disp="fecha"/></target>
+      </segment>
+    </unit>
+    <unit id="cuota.restantes.varias">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Cuantas candidaturas le quedan a quien genera, mas de una o ninguna entera</note>
+      </notes>
+      <segment>
+        <source>Te quedan <ph id="0" equiv="restantes" disp="restantes"/> candidaturas este mes · se renueva el <ph id="1" equiv="fecha" disp="fecha"/></source>
+        <target>You have <ph id="0" equiv="restantes" disp="restantes"/> applications left this month · renews on <ph id="1" equiv="fecha" disp="fecha"/></target>
+      </segment>
+    </unit>
+    <unit id="cuota.agotada.tope">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Aviso de que el cupo gratuito de todo el mundo se ha agotado</note>
+      </notes>
+      <segment>
+        <source>Este mes se ha agotado el cupo gratuito para todo el mundo. Se renueva el <ph id="0" equiv="fecha" disp="fecha"/>.</source>
+        <target>This month the free allowance has run out for everyone. It renews on <ph id="0" equiv="fecha" disp="fecha"/>.</target>
+      </segment>
+    </unit>
+    <unit id="cuota.agotada.cuota">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Aviso de que ha gastado sus candidaturas del mes</note>
+      </notes>
+      <segment>
+        <source>Has usado tus candidaturas de este mes. Se renuevan el <ph id="0" equiv="fecha" disp="fecha"/>.</source>
+        <target>You have used your applications for this month. They renew on <ph id="0" equiv="fecha" disp="fecha"/>.</target>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.gracias">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Confirmacion de que se guardo el aviso de interes</note>
+      </notes>
+      <segment>
+        <source>Gracias, te avisaremos.</source>
+        <target>Thank you, we will let you know.</target>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.abrir">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Boton que abre el formulario para que le avisen de paquetes o academia</note>
+      </notes>
+      <segment>
+        <source>Avísame si hay paquetes o acceso por mi academia</source>
+        <target>Let me know if there are packs or access through my academy</target>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.leyenda">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Pregunta del formulario de aviso</note>
+      </notes>
+      <segment>
+        <source>¿Qué te interesa?</source>
+        <target>What are you interested in?</target>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.paquetes">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Opcion de interes en paquetes de candidaturas</note>
+      </notes>
+      <segment>
+        <source>Paquetes de candidaturas</source>
+        <target>Application packs</target>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.academia">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Opcion de interes en acceso por una academia</note>
+      </notes>
+      <segment>
+        <source>Acceso a través de mi academia</source>
+        <target>Access through my academy</target>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.organizacion">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Etiqueta del campo de organizacion, que es opcional</note>
+      </notes>
+      <segment>
+        <source>Tu academia u organización (opcional)</source>
+        <target>Your academy or organisation (optional)</target>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.error">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Error al guardar el aviso de interes</note>
+      </notes>
+      <segment>
+        <source>No hemos podido guardar tu aviso. Prueba de nuevo.</source>
+        <target>We could not save your request. Please try again.</target>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.enviando">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Boton de enviar el aviso mientras se envia</note>
+      </notes>
+      <segment>
+        <source>Enviando…</source>
+        <target>Sending…</target>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.enviar">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Boton que envia el aviso de interes</note>
+      </notes>
+      <segment>
+        <source>Avisarme</source>
+        <target>Notify me</target>
+      </segment>
+    </unit>
   </file>
 </xliff>

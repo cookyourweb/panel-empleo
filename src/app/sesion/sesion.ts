@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
+import { Cuota, cuotaDeCuerpo } from '../cuota/cuota';
 import { CONFIGURACION_DE_SESION } from './configuracion';
 
 export const RESULTADO_DE_ENTRADA = {
@@ -22,6 +23,12 @@ export type OrigenMaster = 'drive' | 'neon';
 export interface EstadoDePerfil {
   readonly tienePerfil: boolean;
   readonly origenMaster: OrigenMaster | null;
+  readonly conocidoEn: number;
+}
+
+/** What the latest /yo said about the generation quota (null: none applies), and when. */
+interface EstadoDeCuota {
+  readonly cuota: Cuota | null;
   readonly conocidoEn: number;
 }
 
@@ -64,12 +71,15 @@ export class Sesion {
 
   private readonly _usuaria = signal<Usuaria | null>(null);
   private readonly _perfil = signal<EstadoDePerfil | null>(null);
+  private readonly _cuota = signal<EstadoDeCuota | null>(null);
   private credencial: string | null = null;
 
   readonly usuaria = this._usuaria.asReadonly();
   readonly activa = computed(() => this._usuaria() !== null);
   /** The latest definite /yo answer about the profile, or null while unknown. */
   readonly perfil = this._perfil.asReadonly();
+  /** The latest quota /yo reported; null when none applies (owner, exempt, legacy) or unknown. */
+  readonly cuota = computed(() => this._cuota()?.cuota ?? null);
 
   token(): string | null {
     return this.credencial;
@@ -87,6 +97,7 @@ export class Sesion {
       if (!esUsuaria(cuerpo)) return RESULTADO_DE_ENTRADA.sinServidor;
       this._usuaria.set(cuerpo);
       this._perfil.set(estadoDePerfilDe(cuerpo));
+      this.recordarCuota(cuerpo);
       this.credencial = credencial;
       return RESULTADO_DE_ENTRADA.dentro;
     } catch (error) {
@@ -98,6 +109,31 @@ export class Sesion {
   perfilReciente(): EstadoDePerfil | null {
     const estado = this._perfil();
     return estado !== null && Date.now() - estado.conocidoEn <= VIGENCIA_DE_PERFIL_MS ? estado : null;
+  }
+
+  /** The quota answer, only while /yo is fresh enough to reuse; `{ cuota: null }` means "none applies". */
+  cuotaReciente(): { cuota: Cuota | null } | null {
+    const estado = this._cuota();
+    return estado !== null && Date.now() - estado.conocidoEn <= VIGENCIA_DE_PERFIL_MS
+      ? { cuota: estado.cuota }
+      : null;
+  }
+
+  /**
+   * Asks /yo again (after a generation, say) and refreshes what it says about the
+   * profile and the quota. The interceptor adds the token. Rejects if /yo fails,
+   * leaving what was known untouched.
+   */
+  async refrescar(): Promise<void> {
+    const cuerpo = await firstValueFrom(this.http.get<unknown>(`${this.configuracion.urlApi}/yo`));
+    if (!esUsuaria(cuerpo)) return;
+    const perfil = estadoDePerfilDe(cuerpo);
+    if (perfil !== null) this._perfil.set(perfil);
+    this.recordarCuota(cuerpo);
+  }
+
+  private recordarCuota(cuerpo: unknown): void {
+    this._cuota.set({ cuota: cuotaDeCuerpo(cuerpo), conocidoEn: Date.now() });
   }
 
   /** Keeps a definite answer learned elsewhere (a guard's own /yo, a 404). */
@@ -113,6 +149,7 @@ export class Sesion {
   cerrar(): void {
     this._usuaria.set(null);
     this._perfil.set(null);
+    this._cuota.set(null);
     this.credencial = null;
   }
 }
