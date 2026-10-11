@@ -1,17 +1,17 @@
 <article class="bienvenida">
   <header class="portada hero">
-    <p class="etiqueta" data-etiqueta i18n="Etiqueta que avisa de que el producto aun no esta abierto@@bienvenida.proximamente">Próximamente</p>
+    <p class="pildora" data-etiqueta i18n="Etiqueta que avisa de que el producto aun no esta abierto@@bienvenida.proximamente">Próximamente</p>
     <h1 class="hero__titulo" i18n="Titular de la pagina de bienvenida@@bienvenida.titulo">Tu próximo trabajo, buscado mientras programas.</h1>
     <p class="hero__lead columna-texto" data-explicacion i18n="Subtitulo que explica el producto@@bienvenida.explicacion">
       Sin tiempo para revisar portales ni reescribir el CV para cada oferta. Cada mañana te traemos las que encajan contigo y, si te gustan, preparamos tu CV y tu carta.
     </p>
 
     <p class="acciones">
-      <a class="secundaria" data-entrar routerLink="/entrar" i18n="Enlace a la pantalla de entrada para quien ya tiene acceso@@bienvenida.yaTienesAcceso">¿Ya tienes acceso? Entra</a>
+      <a class="boton boton--secundario" data-entrar routerLink="/entrar" i18n="Enlace a la pantalla de entrada para quien ya tiene acceso@@bienvenida.yaTienesAcceso">¿Ya tienes acceso? Entra</a>
     </p>
 
     <section class="espera tarjeta-destacada columna-texto" aria-labelledby="espera-titulo">
-      <p id="espera-titulo" class="espera-titulo" i18n="Titulo del formulario de la lista de espera@@bienvenida.listaDeEspera">Únete a la lista de espera</p>
+      <p id="espera-titulo" class="tarjeta__titulo" i18n="Titulo del formulario de la lista de espera@@bienvenida.listaDeEspera">Únete a la lista de espera</p>
 
       <div aria-live="polite">
         @if (apuntada()) {
@@ -45,7 +45,7 @@
           }
 
           <p class="legal" i18n="Aviso legal (LSSI art. 21) junto al boton de la lista de espera@@bienvenida.espera.lssi">Al enviar este formulario aceptas recibir un email de aviso cuando haya una plaza disponible en Empleo Tech.</p>
-          <button class="principal" type="submit" [disabled]="enviando()" [attr.aria-busy]="enviando() ? 'true' : null">
+          <button class="boton boton--primario boton--grande boton--bloque" type="submit" [disabled]="enviando()" [attr.aria-busy]="enviando() ? 'true' : null">
             @if (enviando()) {
               <ng-container i18n="Texto del boton de la lista de espera mientras envia@@bienvenida.espera.enviando">Enviando…</ng-container>
             } @else {
@@ -58,30 +58,40 @@
   </header>
 
   <div class="rejilla rejilla-tarjetas">
-    <section class="tarjeta" data-beneficio>
-      <h2 i18n="Titulo del primer beneficio@@bienvenida.beneficio1.titulo">Busca por ti cada mañana</h2>
-      <p i18n="Texto del primer beneficio@@bienvenida.beneficio1.texto">Revisa Tecnoempleo, Adzuna, Remotive, Indeed y LinkedIn, quita duplicados y ordena las ofertas por encaje. Con salario y modalidad cuando se publican.</p>
+    <section class="tarjeta tarjeta--azul-rosa" data-beneficio>
+      <div class="tarjeta__interior">
+        <h2 class="tarjeta__titulo" i18n="Titulo del primer beneficio@@bienvenida.beneficio1.titulo">Busca por ti cada mañana</h2>
+        <p class="tarjeta__texto" i18n="Texto del primer beneficio@@bienvenida.beneficio1.texto">Revisa Tecnoempleo, Adzuna, Remotive, Indeed y LinkedIn, quita duplicados y ordena las ofertas por encaje. Con salario y modalidad cuando se publican.</p>
+      </div>
     </section>
-    <section class="tarjeta" data-beneficio>
-      <h2 i18n="Titulo del segundo beneficio@@bienvenida.beneficio2.titulo">CV y carta, sin inventar</h2>
-      <p i18n="Texto del segundo beneficio@@bienvenida.beneficio2.texto">Para cada oferta que apruebas, un CV adaptado y una carta. Los escribe la IA, con controles en código que le impiden inventar experiencia o tecnologías.</p>
+    <section class="tarjeta tarjeta--esmeralda-celeste" data-beneficio>
+      <div class="tarjeta__interior">
+        <h2 class="tarjeta__titulo" i18n="Titulo del segundo beneficio@@bienvenida.beneficio2.titulo">CV y carta, sin inventar</h2>
+        <p class="tarjeta__texto" i18n="Texto del segundo beneficio@@bienvenida.beneficio2.texto">Para cada oferta que apruebas, un CV adaptado y una carta. Los escribe la IA, con controles en código que le impiden inventar experiencia o tecnologías.</p>
+      </div>
     </section>
-    <section class="tarjeta" data-beneficio>
-      <h2 i18n="Titulo del tercer beneficio@@bienvenida.beneficio3.titulo">Tú decides siempre</h2>
-      <p i18n="Texto del tercer beneficio@@bienvenida.beneficio3.texto">Apruebas las ofertas que te interesan y nada se envía sin ti. Todo en un solo panel, en español e inglés.</p>
+    <section class="tarjeta tarjeta--verde-purpura" data-beneficio>
+      <div class="tarjeta__interior">
+        <h2 class="tarjeta__titulo" i18n="Titulo del tercer beneficio@@bienvenida.beneficio3.titulo">Tú decides siempre</h2>
+        <p class="tarjeta__texto" i18n="Texto del tercer beneficio@@bienvenida.beneficio3.texto">Apruebas las ofertas que te interesan y nada se envía sin ti. Todo en un solo panel, en español e inglés.</p>
+      </div>
     </section>
   </div>
 
   <div class="rejilla rejilla-tarjetas proximas">
-    <section class="tarjeta apagada" data-proximamente>
-      <p class="etiqueta" data-etiqueta-tarjeta i18n="Etiqueta de una tarjeta que aun no esta disponible@@bienvenida.proximamenteTarjeta">Próximamente</p>
-      <h2 i18n="Titulo de la preparacion de entrevistas@@bienvenida.entrevistas.titulo">Preparación de entrevistas</h2>
-      <p i18n="Texto de la preparacion de entrevistas@@bienvenida.entrevistas.texto">Te ayudará a preparar cada proceso a partir de la oferta concreta.</p>
+    <section class="tarjeta tarjeta--esmeralda-azul" data-proximamente>
+      <div class="tarjeta__interior">
+        <p class="pildora" data-etiqueta-tarjeta i18n="Etiqueta de una tarjeta que aun no esta disponible@@bienvenida.proximamenteTarjeta">Próximamente</p>
+        <h2 class="tarjeta__titulo" i18n="Titulo de la preparacion de entrevistas@@bienvenida.entrevistas.titulo">Preparación de entrevistas</h2>
+        <p class="tarjeta__texto" i18n="Texto de la preparacion de entrevistas@@bienvenida.entrevistas.texto">Te ayudará a preparar cada proceso a partir de la oferta concreta.</p>
+      </div>
     </section>
-    <section class="tarjeta apagada" data-proximamente>
-      <p class="etiqueta" data-etiqueta-tarjeta i18n="Etiqueta de una tarjeta que aun no esta disponible@@bienvenida.proximamenteTarjeta">Próximamente</p>
-      <h2 i18n="Titulo de la formacion@@bienvenida.formacion.titulo">¿Necesitas ponerte al día?</h2>
-      <p i18n="Texto de la formacion@@bienvenida.formacion.texto">Aprende a programar como se hace hoy, con la IA como compañera de trabajo, en la formación para desarrolladores de CookYourWebAI.</p>
+    <section class="tarjeta tarjeta--rosa-naranja" data-proximamente>
+      <div class="tarjeta__interior">
+        <p class="pildora" data-etiqueta-tarjeta i18n="Etiqueta de una tarjeta que aun no esta disponible@@bienvenida.proximamenteTarjeta">Próximamente</p>
+        <h2 class="tarjeta__titulo" i18n="Titulo de la formacion@@bienvenida.formacion.titulo">¿Necesitas ponerte al día?</h2>
+        <p class="tarjeta__texto" i18n="Texto de la formacion@@bienvenida.formacion.texto">Aprende a programar como se hace hoy, con la IA como compañera de trabajo, en la formación para desarrolladores de CookYourWebAI.</p>
+      </div>
     </section>
   </div>
 

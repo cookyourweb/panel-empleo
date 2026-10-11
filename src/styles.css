@@ -538,6 +538,18 @@ body {
   background-color: var(--color-cyw-rojo-700);
 }
 
+/* Tablas, barras y filtros: menos relleno y letra, pero el mismo objetivo de 44 px. */
+.boton--compacto {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+/* Filtro o interruptor activo: degradado de marca, ademas de aria-pressed. */
+.boton--neutro[aria-pressed='true'] {
+  border-color: transparent;
+  background-image: linear-gradient(to right, var(--color-cyw-azul-600), var(--color-cyw-purpura-600));
+}
+
 .boton--grande {
   padding: 0.75rem 1.5rem;
   border-radius: 1rem;
@@ -573,14 +585,6 @@ body {
   .boton--bloque {
     width: auto;
   }
-}
-
-/* Grupo de botones: se reparten el espacio y bajan de linea. */
-.botones {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1rem;
 }
 
 /* ============================================================
@@ -711,6 +715,12 @@ body {
   font-size: 0.75rem;
   font-weight: 700;
   line-height: 1rem;
+}
+
+/* La pildora de una tarjeta no se estira a todo el ancho de la columna. */
+.tarjeta__interior > .pildora {
+  align-self: flex-start;
+  margin-bottom: 1rem;
 }
 
 /* hover:scale-105 solo para quien no ha pedido menos movimiento. */

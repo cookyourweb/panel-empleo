@@ -157,8 +157,8 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
             Puedes borrarlo todo cuando quieras. Es inmediato y no se puede deshacer.
           </p>
           <p class="acciones">
-            <a routerLink="/cuenta" i18n="Enlace a la cuenta para borrar los datos@@alta.hecho.enlaceCuenta">Borrar mis datos o mi cuenta</a>
-            <a routerLink="/panel" i18n="Enlace al panel tras el alta@@alta.hecho.enlacePanel">Ir a mi panel</a>
+            <a class="boton boton--neutro" routerLink="/cuenta" i18n="Enlace a la cuenta para borrar los datos@@alta.hecho.enlaceCuenta">Borrar mis datos o mi cuenta</a>
+            <a class="boton boton--primario" routerLink="/panel" i18n="Enlace al panel tras el alta@@alta.hecho.enlacePanel">Ir a mi panel</a>
           </p>
         </section>
       }

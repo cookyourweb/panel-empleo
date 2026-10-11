@@ -58,6 +58,7 @@ import { TextoDeConsentimiento } from '../compartido/texto-de-consentimiento';
       <div class="acciones">
         <button
           type="button"
+          class="boton boton--primario boton--grande boton--bloque"
           data-continuar
           [disabled]="!marcado() || !mayorDeEdad() || ocupado()"
           [attr.aria-busy]="ocupado() ? 'true' : null"
@@ -71,6 +72,7 @@ import { TextoDeConsentimiento } from '../compartido/texto-de-consentimiento';
         </button>
         <button
           type="button"
+          class="boton boton--neutro boton--bloque"
           data-a-mano
           (click)="aMano.emit()"
           i18n="Boton para rellenar el perfil sin subir CV@@alta.consentimiento.aMano"

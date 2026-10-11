@@ -26,7 +26,7 @@
   <app-selector-de-columnas />
 
   @if (conSeleccion()) {
-    <button type="button" class="boton-cabecera" data-ver-eliminadas (click)="viendoEliminadas.set(true)">
+    <button type="button" class="boton boton--neutro boton--compacto" data-ver-eliminadas (click)="viendoEliminadas.set(true)">
       <ng-container i18n="Boton que abre la lista de eliminadas@@ofertas.verEliminadas">Eliminadas</ng-container
       >&ngsp;<span class="recuento">{{ store.eliminadas().length | number }}</span>
     </button>
@@ -41,6 +41,7 @@
 >
   <button
     type="button"
+    class="boton boton--neutro boton--compacto"
     data-filtro="todas"
     [attr.aria-pressed]="store.filtroActivo() === null"
     (click)="filtrarPor(null)"
@@ -52,6 +53,7 @@
   @for (estado of estados; track estado) {
     <button
       type="button"
+      class="boton boton--neutro boton--compacto"
       [attr.data-filtro]="estado"
       [attr.aria-pressed]="store.filtroActivo() === estado"
       (click)="filtrarPor(estado)"
@@ -198,7 +200,9 @@
                          ahi n8n confirma que la accion se hizo. -->
                     @for (accion of acciones(candidatura); track accion.tipo) {
                       <a
-                        class="accion"
+                        class="boton boton--compacto"
+                        [class.boton--neutro]="accion.tipo === 'descartar'"
+                        [class.boton--primario]="accion.tipo !== 'descartar'"
                         [attr.data-accion]="accion.tipo"
                         [href]="accion.url"
                         target="_blank"
@@ -263,14 +267,15 @@
         aria-label="Recorrer las candidaturas"
         i18n-aria-label="Nombre de la navegacion entre fichas@@ofertas.panel.navegacion"
       >
-        <button type="button" data-anterior [disabled]="!vecinos().anterior" (click)="irA(vecinos().anterior)" i18n="Boton que abre la ficha anterior@@ofertas.panel.anterior">
+        <button type="button" class="boton boton--neutro boton--compacto" data-anterior [disabled]="!vecinos().anterior" (click)="irA(vecinos().anterior)" i18n="Boton que abre la ficha anterior@@ofertas.panel.anterior">
           Anterior
         </button>
-        <button type="button" data-siguiente [disabled]="!vecinos().siguiente" (click)="irA(vecinos().siguiente)" i18n="Boton que abre la ficha siguiente@@ofertas.panel.siguiente">
+        <button type="button" class="boton boton--neutro boton--compacto" data-siguiente [disabled]="!vecinos().siguiente" (click)="irA(vecinos().siguiente)" i18n="Boton que abre la ficha siguiente@@ofertas.panel.siguiente">
           Siguiente
         </button>
         <button
           type="button"
+          class="boton boton--neutro boton--compacto"
           data-cerrar
           (click)="cerrar()"
           aria-label="Cerrar la ficha (Esc)"
@@ -280,7 +285,7 @@
           Cerrar
         </button>
       </nav>
-      <a extra class="completa" [routerLink]="['/panel/candidatura', una.id]" i18n="Enlace que abre la ficha en su propia pantalla@@ofertas.panel.pantallaCompleta"
+      <a extra class="boton boton--secundario boton--compacto" [routerLink]="['/panel/candidatura', una.id]" i18n="Enlace que abre la ficha en su propia pantalla@@ofertas.panel.pantallaCompleta"
         >Pantalla completa</a
       >
     </app-ficha-candidatura>
@@ -312,7 +317,7 @@
   >
     <span>{{ a.texto }}</span>
     @if (a.deshacer) {
-      <button type="button" data-deshacer (click)="deshacer()" i18n="Boton que revierte la ultima accion@@ofertas.aviso.deshacer">Deshacer</button>
+      <button type="button" class="boton boton--secundario boton--compacto" data-deshacer (click)="deshacer()" i18n="Boton que revierte la ultima accion@@ofertas.aviso.deshacer">Deshacer</button>
     }
   </div>
 }

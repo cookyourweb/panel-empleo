@@ -2,31 +2,6 @@
   position: relative;
 }
 
-.boton {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  height: 2.25rem;
-  padding: 0 0.8rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
-  background: transparent;
-  color: hsl(var(--foreground));
-  font: inherit;
-  font-size: 0.875rem;
-  cursor: pointer;
-}
-
-.boton.pequeno {
-  height: 1.75rem;
-  font-size: 0.8rem;
-}
-
-.boton:focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
-}
-
 .recuento {
   color: hsl(var(--muted-foreground));
   font-variant-numeric: tabular-nums;

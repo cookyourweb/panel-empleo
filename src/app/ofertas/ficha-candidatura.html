@@ -16,7 +16,7 @@
     <app-estado [estado]="una.estado" />
     @if (una.oferta.enlace) {
       <a
-        class="boton"
+        class="boton boton--neutro boton--compacto"
         data-oferta-original
         [href]="una.oferta.enlace"
         target="_blank"
@@ -28,7 +28,7 @@
     }
     @if (una.notion) {
       <a
-        class="boton"
+        class="boton boton--neutro boton--compacto"
         data-notion
         [href]="una.notion"
         target="_blank"
@@ -39,7 +39,7 @@
     }
     <ng-content select="[extra]" />
     @if (editable() && !editando()) {
-      <button type="button" class="boton" data-editar (click)="editar()">
+      <button type="button" class="boton boton--neutro boton--compacto" data-editar (click)="editar()">
         <svg class="icono" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4" />
         </svg>
@@ -47,7 +47,7 @@
       </button>
     }
     @if (editando()) {
-      <button type="button" class="boton primario" data-guardar [disabled]="guardando()" (click)="guardar()">
+      <button type="button" class="boton boton--primario boton--compacto" data-guardar [disabled]="guardando()" (click)="guardar()">
         <svg class="icono" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6" />
         </svg>
@@ -57,7 +57,7 @@
           <ng-container i18n="Boton que guarda los cambios de la ficha@@ficha.guardar">Guardar</ng-container>
         }
       </button>
-      <button type="button" class="boton" data-cancelar [disabled]="guardando()" (click)="cancelar()" i18n="Boton que descarta la edicion@@ficha.cancelar">
+      <button type="button" class="boton boton--neutro boton--compacto" data-cancelar [disabled]="guardando()" (click)="cancelar()" i18n="Boton que descarta la edicion@@ficha.cancelar">
         Cancelar
       </button>
     }
@@ -65,7 +65,9 @@
          confirma que la accion se hizo. -->
     @for (accion of acciones(); track accion.tipo) {
       <a
-        class="boton accion"
+        class="boton boton--compacto"
+        [class.boton--neutro]="accion.tipo === 'descartar'"
+        [class.boton--primario]="accion.tipo !== 'descartar'"
         [attr.data-accion]="accion.tipo"
         [href]="accion.url"
         target="_blank"
@@ -166,7 +168,7 @@
                       <!-- Nada de Google se carga por defecto: el iframe solo existe tras pedirlo. -->
                       <button
                         type="button"
-                        class="vista-previa"
+                        class="boton boton--secundario boton--compacto"
                         data-ver-vista-previa
                         [attr.aria-expanded]="vistaPreviaAbierta() ? 'true' : 'false'"
                         [attr.aria-controls]="'visor-' + campo.clave"

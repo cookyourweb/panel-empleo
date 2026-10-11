@@ -86,6 +86,17 @@ describe('OfertasPage', () => {
     expect(filtros[0].textContent).toContain('13');
   });
 
+  it('los filtros son botones del sistema y el elegido se marca con aria-pressed y el degradado de marca', async () => {
+    const pagina = await pintar();
+
+    const filtros = [...pagina.querySelectorAll<HTMLButtonElement>('[data-filtro]')];
+
+    for (const filtro of filtros) {
+      expect(filtro.tagName).toBe('BUTTON');
+      expect([...filtro.classList]).toEqual(expect.arrayContaining(['boton', 'boton--neutro']));
+    }
+  });
+
   it('al elegir un estado solo quedan sus ofertas', async () => {
     const fixture = TestBed.createComponent(OfertasPage);
     await fixture.whenStable();
@@ -197,6 +208,11 @@ describe('OfertasPage', () => {
     expect(aprobar?.getAttribute('href')).toBe('https://n8n.test/webhook/A?id=c1');
     expect(aprobar?.getAttribute('target')).toBe('_blank');
     expect(fila.querySelector('[data-accion="descartar"]')).not.toBeNull();
+    // Son enlaces (abren la URL del correo) pero se ven como botones: aprobar con la marca, descartar neutro.
+    expect([...aprobar!.classList]).toEqual(expect.arrayContaining(['boton', 'boton--primario']));
+    expect([...fila.querySelector('[data-accion="descartar"]')!.classList]).toEqual(
+      expect.arrayContaining(['boton', 'boton--neutro']),
+    );
 
     const conCv = [...pagina.querySelectorAll('tbody tr')].find((tr) => tr.textContent?.includes('Lumen Grid'))!;
     expect(conCv.querySelector('[data-accion="enviarEmpresa"]')?.textContent).toContain('Enviar a empresa');

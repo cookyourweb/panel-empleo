@@ -98,7 +98,8 @@ describe('SubidaDeCv', () => {
 
       const boton = botonDe(raiz);
       expect(boton.textContent!.trim()).toBe('Elegir mi CV');
-      expect(boton.classList).toContain('boton-principal');
+      expect(boton.tagName).toBe('BUTTON');
+      expect([...boton.classList]).toEqual(expect.arrayContaining(['boton', 'boton--primario', 'boton--grande']));
       expect(zonaDe(raiz).contains(boton)).toBe(true);
     });
 
@@ -232,15 +233,16 @@ describe('SubidaDeCv', () => {
       expect(elegido).toHaveBeenCalledWith(otro);
     });
 
-    it('rellenar a mano sigue visible pero como enlace secundario', async () => {
+    it('rellenar a mano sigue visible pero como boton neutro, secundario respecto al principal', async () => {
       const { raiz, aMano } = await pintar();
       const enlace = raiz.querySelector<HTMLButtonElement>('[data-a-mano]')!;
 
       enlace.click();
 
       expect(aMano).toHaveBeenCalledTimes(1);
-      expect(enlace.classList).toContain('enlace');
-      expect(enlace.classList).not.toContain('boton-principal');
+      expect(enlace.tagName).toBe('BUTTON');
+      expect([...enlace.classList]).toEqual(expect.arrayContaining(['boton', 'boton--neutro']));
+      expect(enlace.classList).not.toContain('boton--primario');
       expect(zonaDe(raiz).contains(enlace)).toBe(false);
     });
   });

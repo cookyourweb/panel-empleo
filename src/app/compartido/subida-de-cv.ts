@@ -64,7 +64,7 @@ const RECHAZOS: Readonly<Record<MotivoDeSubida, string>> = {
               <ng-container i18n="Texto de la zona de subida@@alta.subida.arrastra">Arrastra tu CV hasta aquí o elígelo desde tu dispositivo.</ng-container>
             }
           </p>
-          <button type="button" class="boton-principal" data-elegir aria-describedby="subida-pista" i18n="Boton para elegir el CV@@alta.subida.elegir">
+          <button type="button" class="boton boton--primario boton--grande boton--bloque" data-elegir aria-describedby="subida-pista" i18n="Boton para elegir el CV@@alta.subida.elegir">
             Elegir mi CV
           </button>
           <p id="subida-pista" class="pista" i18n="Pista del formato aceptado@@alta.subida.pista">
@@ -87,7 +87,7 @@ const RECHAZOS: Readonly<Record<MotivoDeSubida, string>> = {
         <div class="acciones">
           <button
             type="button"
-            class="enlace"
+            class="boton boton--neutro"
             data-a-mano
             (click)="aMano.emit()"
             i18n="Boton para rellenar el perfil sin subir CV@@alta.subida.aMano"

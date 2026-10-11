@@ -33,7 +33,7 @@ import { formatearFecha } from './fecha';
             </div>
             <button
               type="button"
-              class="boton"
+              class="boton boton--secundario boton--compacto"
               data-restaurar
               [attr.aria-label]="descripcionDeRestaurar(e.candidatura.oferta.empresa)"
               (click)="restaurar.emit([e.candidatura.id])"
@@ -46,10 +46,10 @@ import { formatearFecha } from './fecha';
           <p class="apagado" i18n="Lista vacia@@eliminadas.vacia">No hay nada eliminado desde el panel.</p>
         }
         <div class="pie">
-          <button type="button" class="boton" [disabled]="!eliminadas().length" (click)="restaurarTodas()" i18n="Boton que restaura todas las eliminadas@@eliminadas.restaurarTodas">
+          <button type="button" class="boton boton--neutro" [disabled]="!eliminadas().length" (click)="restaurarTodas()" i18n="Boton que restaura todas las eliminadas@@eliminadas.restaurarTodas">
             Restaurar todas
           </button>
-          <button #cerrarBoton type="button" class="boton primario" (click)="cerrar.emit()" i18n="Boton que cierra la lista@@eliminadas.cerrar">
+          <button #cerrarBoton type="button" class="boton boton--primario" (click)="cerrar.emit()" i18n="Boton que cierra la lista@@eliminadas.cerrar">
             Cerrar
           </button>
         </div>

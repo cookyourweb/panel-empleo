@@ -110,6 +110,53 @@ describe('CuentaPage', () => {
     expect(raiz.textContent).not.toMatch(/[—–→]/);
   });
 
+  describe('sistema de botones', () => {
+    const clases = (el: Element | null) => [...(el?.classList ?? [])];
+
+    it('las acciones destructivas son botones de peligro y cancelar es neutro', async () => {
+      const { raiz, pulsar } = await pintar();
+
+      expect(raiz.querySelector('[data-borrar]')!.tagName).toBe('BUTTON');
+      expect(clases(raiz.querySelector('[data-borrar]'))).toEqual(expect.arrayContaining(['boton', 'boton--peligro']));
+
+      await pulsar('[data-borrar]');
+
+      expect(clases(raiz.querySelector('[data-confirmar]'))).toEqual(expect.arrayContaining(['boton', 'boton--peligro']));
+      expect(clases(raiz.querySelector('[data-cancelar]'))).toEqual(expect.arrayContaining(['boton', 'boton--neutro']));
+    });
+
+    it('borrar un CV es peligro y retirar un consentimiento es neutro, ambos compactos', async () => {
+      repositorio.listarCvs.mockResolvedValue([{ idioma: 'es', formato: 'pdf' }]);
+      consentimientos.set({ almacenarCv: true, enviarCvAIa: true });
+      const { raiz } = await pintar();
+
+      expect(clases(raiz.querySelector('[data-borrar-cv]'))).toEqual(
+        expect.arrayContaining(['boton', 'boton--peligro', 'boton--compacto']),
+      );
+      expect(clases(raiz.querySelector('[data-retirar]'))).toEqual(
+        expect.arrayContaining(['boton', 'boton--neutro', 'boton--compacto']),
+      );
+    });
+
+    it('la confirmacion de borrar un CV es un panel suave', async () => {
+      repositorio.listarCvs.mockResolvedValue([{ idioma: 'es', formato: 'pdf' }]);
+      const { raiz, pulsar } = await pintar();
+
+      await pulsar('[data-borrar-cv]');
+
+      expect(clases(raiz.querySelector('[data-confirmacion-cv]'))).toContain('panel-suave');
+      expect(clases(raiz.querySelector('[data-confirmar-accion]'))).toContain('boton--peligro');
+    });
+
+    it('el correo dentro de la frase sigue siendo un enlace', async () => {
+      const { raiz } = await pintar();
+
+      const correo = raiz.querySelector('a[href^="mailto:"]')!;
+
+      expect(correo.classList).not.toContain('boton');
+    });
+  });
+
   it('no borra nada al abrir ni al pedir borrar: hace falta confirmar', async () => {
     const { raiz, pulsar } = await pintar();
     expect(raiz.querySelector('[data-confirmar]')).toBeNull();

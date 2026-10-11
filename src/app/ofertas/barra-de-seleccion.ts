@@ -12,11 +12,11 @@ import { plural } from './plural';
   template: `
     <div class="barra" data-bloque role="region" aria-label="Acciones en bloque" i18n-aria-label="Nombre de la barra de acciones sobre varias filas@@barra.etiqueta">
       <span class="cuantas" aria-live="polite">{{ texto() }}</span>
-      <button type="button" class="boton peligro" data-eliminar (click)="eliminar.emit()" i18n="Boton que elimina las filas marcadas@@barra.eliminar">Eliminar</button>
+      <button type="button" class="boton boton--peligro boton--compacto" data-eliminar (click)="eliminar.emit()" i18n="Boton que elimina las filas marcadas@@barra.eliminar">Eliminar</button>
       <span class="menu-envoltorio">
         <button
           type="button"
-          class="boton"
+          class="boton boton--neutro boton--compacto"
           data-cambiar-estado
           aria-haspopup="menu"
           [attr.aria-expanded]="menuAbierto()"
@@ -34,9 +34,9 @@ import { plural } from './plural';
           </div>
         }
       </span>
-      <button type="button" class="boton" data-caducada (click)="caducar.emit()" i18n="Boton que pasa las filas marcadas a Caducada@@barra.marcarCaducada">Marcar caducada</button>
+      <button type="button" class="boton boton--neutro boton--compacto" data-caducada (click)="caducar.emit()" i18n="Boton que pasa las filas marcadas a Caducada@@barra.marcarCaducada">Marcar caducada</button>
       <span class="hueco"></span>
-      <button type="button" class="boton fantasma" (click)="limpiar.emit()" i18n="Boton que desmarca todas las filas@@barra.quitarSeleccion">Quitar selección</button>
+      <button type="button" class="boton boton--neutro boton--compacto" (click)="limpiar.emit()" i18n="Boton que desmarca todas las filas@@barra.quitarSeleccion">Quitar selección</button>
     </div>
   `,
   styleUrl: './barra-de-seleccion.css',

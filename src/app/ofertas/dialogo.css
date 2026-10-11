@@ -14,10 +14,10 @@
   width: min(30rem, 100%);
   max-height: 85vh;
   overflow: auto;
-  padding: 1.1rem 1.25rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: 10px;
-  background: hsl(var(--background));
+  padding: 1.5rem;
+  border: 1px solid var(--color-cyw-zinc-700);
+  border-radius: 1rem;
+  background: var(--color-cyw-zinc-900);
   box-shadow: 0 16px 48px hsl(0 0% 0% / 0.45);
 }
 
@@ -58,37 +58,7 @@ li {
   margin-top: 1rem;
 }
 
-.boton {
-  height: 2rem;
-  padding: 0 0.85rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
-  background: transparent;
-  color: hsl(var(--foreground));
-  font: inherit;
-  font-size: 0.875rem;
-  cursor: pointer;
-}
-
-.boton.peligro {
-  border-color: hsl(0 70% 50%);
-  background: hsl(0 70% 45%);
-  color: white;
-}
-
-.boton.primario {
-  border-color: hsl(var(--primary));
-  background: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-}
-
-.boton:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.boton:focus-visible,
-a:focus-visible {
+.fila a:focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }

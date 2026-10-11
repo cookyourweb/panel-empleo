@@ -43,7 +43,7 @@
     </p>
     <p data-volver i18n="Como volver tras borrar la cuenta@@cuenta.volver">Si más adelante quieres volver, pídenos una invitación nueva.</p>
     <div class="acciones">
-      <button type="button" data-salir (click)="salir()" i18n="Boton que cierra la sesion tras borrar la cuenta@@cuenta.borrada.salir">
+      <button type="button" class="boton boton--primario" data-salir (click)="salir()" i18n="Boton que cierra la sesion tras borrar la cuenta@@cuenta.borrada.salir">
         Cerrar sesión y volver al inicio
       </button>
     </div>
@@ -70,7 +70,7 @@
           No hemos podido consultar tus CV.
         </p>
         <div class="acciones">
-          <button type="button" data-reintentar-cvs (click)="cargarCvs()" i18n="Boton para volver a consultar los CV@@cuenta.cv.reintentar">
+          <button type="button" class="boton boton--secundario" data-reintentar-cvs (click)="cargarCvs()" i18n="Boton para volver a consultar los CV@@cuenta.cv.reintentar">
             Probar de nuevo
           </button>
         </div>
@@ -84,6 +84,7 @@
                 <span [id]="'cv-nombre-' + cv.idioma">{{ nombreDeIdioma(cv.idioma) }} · {{ cv.formato.toUpperCase() }}</span>
                 <button
                   type="button"
+                  class="boton boton--peligro boton--compacto"
                   [attr.data-borrar-cv]="cv.idioma"
                   [attr.aria-describedby]="'cv-nombre-' + cv.idioma"
                   [disabled]="ocupado()"
@@ -99,7 +100,7 @@
       }
 
       @if (!cargandoCvs() && !errorDeCvs()) {
-        <div class="subir" data-subir-cv [attr.aria-busy]="subiendo() ? 'true' : null">
+        <div class="subir panel-suave" data-subir-cv [attr.aria-busy]="subiendo() ? 'true' : null">
           <h3 id="subir-titulo" i18n="Titulo de subir un CV desde la cuenta@@cuenta.subir.titulo">Subir mi CV</h3>
           @if (necesitaConsentimiento()) {
             <p data-subir-sin-cv i18n="Explicacion de subir un CV sin tener ninguno guardado@@cuenta.subir.explicacionSin">
@@ -175,7 +176,7 @@
 
       @if (accionCv(); as idioma) {
         <div
-          class="confirmacion"
+          class="confirmacion panel-suave"
           role="group"
           aria-labelledby="confirmacion-titulo"
           data-confirmacion-cv
@@ -191,14 +192,14 @@
             </p>
           }
           <div class="acciones">
-            <button type="button" data-confirmar-accion [disabled]="ocupado()" [attr.aria-busy]="ocupado() ? 'true' : null" (click)="confirmarAccion()">
+            <button type="button" class="boton boton--peligro" data-confirmar-accion [disabled]="ocupado()" [attr.aria-busy]="ocupado() ? 'true' : null" (click)="confirmarAccion()">
               @if (ocupado()) {
                 <ng-container i18n="Boton de borrar un CV mientras se borra@@cuenta.accion.borrando">Borrando…</ng-container>
               } @else {
                 <ng-container i18n="Boton que confirma el borrado de un CV@@cuenta.cv.confirmar.si">Sí, borrar este CV</ng-container>
               }
             </button>
-            <button type="button" data-cancelar-accion [disabled]="ocupado()" (click)="cancelarAccion()" i18n="Boton que cancela el borrado@@cuenta.cancelar">
+            <button type="button" class="boton boton--neutro" data-cancelar-accion [disabled]="ocupado()" (click)="cancelarAccion()" i18n="Boton que cancela el borrado@@cuenta.cancelar">
               Cancelar
             </button>
           </div>
@@ -225,6 +226,7 @@
             @if (vigente(consentimiento.tipo)) {
               <button
                 type="button"
+                class="boton boton--neutro boton--compacto"
                 [attr.data-retirar]="consentimiento.tipo"
                 [attr.aria-describedby]="'consentimiento-' + consentimiento.tipo"
                 [disabled]="ocupado() || dandoConsentimiento() !== null"
@@ -246,6 +248,7 @@
               @if (puedeDarConsentimiento(consentimiento.tipo)) {
                 <button
                   type="button"
+                  class="boton boton--primario boton--compacto"
                   [attr.data-consentir]="consentimiento.tipo"
                   [attr.aria-describedby]="'consentimiento-' + consentimiento.tipo"
                   [disabled]="ocupado() || dandoConsentimiento() !== null"
@@ -268,7 +271,7 @@
 
       @if (accionConsentimiento(); as tipo) {
         <div
-          class="confirmacion"
+          class="confirmacion panel-suave"
           role="group"
           aria-labelledby="confirmacion-titulo"
           [attr.data-confirmacion-consentimiento]="tipo"
@@ -282,14 +285,14 @@
             </p>
           }
           <div class="acciones">
-            <button type="button" data-confirmar-accion [disabled]="ocupado()" [attr.aria-busy]="ocupado() ? 'true' : null" (click)="confirmarAccion()">
+            <button type="button" class="boton boton--primario" data-confirmar-accion [disabled]="ocupado()" [attr.aria-busy]="ocupado() ? 'true' : null" (click)="confirmarAccion()">
               @if (ocupado()) {
                 <ng-container i18n="Boton de retirar un consentimiento mientras se retira@@cuenta.consentimientos.retirando">Retirando…</ng-container>
               } @else {
                 {{ textosDeRetirar(tipo).confirmar }}
               }
             </button>
-            <button type="button" data-cancelar-accion [disabled]="ocupado()" (click)="cancelarAccion()">
+            <button type="button" class="boton boton--neutro" data-cancelar-accion [disabled]="ocupado()" (click)="cancelarAccion()">
               <ng-container i18n="Boton que cancela el borrado@@cuenta.cancelar">Cancelar</ng-container>
             </button>
           </div>
@@ -306,7 +309,7 @@
       <p data-volver i18n="Como volver tras borrar la cuenta@@cuenta.volver">Si más adelante quieres volver, pídenos una invitación nueva.</p>
       <ng-container [ngTemplateOutlet]="queda" />
       <div class="acciones">
-        <button type="button" data-borrar (click)="pedirConfirmacion()" i18n="Boton que inicia el borrado@@cuenta.borrar">
+        <button type="button" class="boton boton--peligro" data-borrar (click)="pedirConfirmacion()" i18n="Boton que inicia el borrado@@cuenta.borrar">
           Borrar mi cuenta
         </button>
       </div>
@@ -335,14 +338,14 @@
     }
 
     <div class="acciones">
-      <button type="button" data-confirmar [disabled]="borrando()" [attr.aria-busy]="borrando() ? 'true' : null" (click)="confirmar()">
+      <button type="button" class="boton boton--peligro boton--grande" data-confirmar [disabled]="borrando()" [attr.aria-busy]="borrando() ? 'true' : null" (click)="confirmar()">
         @if (borrando()) {
           <ng-container i18n="Boton de borrar mientras se borra la cuenta@@cuenta.borrando">Borrando tu cuenta…</ng-container>
         } @else {
           <ng-container i18n="Boton que confirma el borrado@@cuenta.confirmar">Sí, borrar todo</ng-container>
         }
       </button>
-      <button type="button" data-cancelar [disabled]="borrando()" (click)="cancelar()" i18n="Boton que cancela el borrado@@cuenta.cancelar">
+      <button type="button" class="boton boton--neutro boton--grande" data-cancelar [disabled]="borrando()" (click)="cancelar()" i18n="Boton que cancela el borrado@@cuenta.cancelar">
         Cancelar
       </button>
     </div>

@@ -26,6 +26,17 @@ describe('Consentimiento', () => {
     };
   }
 
+  it('Continuar es el boton primario y rellenar a mano un boton neutro, los dos <button>', async () => {
+    const { raiz, continuar } = await pintar();
+
+    const aMano = raiz.querySelector<HTMLButtonElement>('[data-a-mano]')!;
+
+    expect(continuar.tagName).toBe('BUTTON');
+    expect([...continuar.classList]).toEqual(expect.arrayContaining(['boton', 'boton--primario']));
+    expect(aMano.tagName).toBe('BUTTON');
+    expect([...aMano.classList]).toEqual(expect.arrayContaining(['boton', 'boton--neutro']));
+  });
+
   it('dice que el CV se guarda cifrado y que puede ir a Anthropic y Groq', async () => {
     const { raiz } = await pintar();
     const texto = raiz.textContent ?? '';

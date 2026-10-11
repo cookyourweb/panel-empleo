@@ -288,6 +288,15 @@ describe('EntradaPage con el servidor dormido', () => {
     expect(preparar).not.toHaveBeenCalled();
   });
 
+  it('Reintentar es un button con la clase del sistema, no un texto suelto', async () => {
+    await responder(false);
+
+    const boton = reintentar()!;
+
+    expect(boton.tagName).toBe('BUTTON');
+    expect([...boton.classList]).toEqual(expect.arrayContaining(['boton', 'boton--primario']));
+  });
+
   it('reintentar vuelve a comprobar y reinicia los dos plazos', async () => {
     await responder(false);
 

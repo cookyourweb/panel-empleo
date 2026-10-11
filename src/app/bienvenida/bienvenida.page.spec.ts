@@ -96,6 +96,72 @@ describe('BienvenidaPage', () => {
     expect(entrar?.getAttribute('href')).toBe('/entrar');
   });
 
+  describe('sistema de botones y tarjetas de CookYourWeb', () => {
+    const clasesDe = (el: Element | null) => [...(el?.classList ?? [])];
+
+    it('las tres tarjetas de beneficio son marcos de degradado con interior oscuro y degradados distintos', async () => {
+      const pagina = await abrir();
+
+      const tarjetas = [...pagina.querySelectorAll('[data-beneficio]')];
+      const variantes = tarjetas.map((t) => clasesDe(t).find((c) => c.startsWith('tarjeta--')));
+
+      expect(tarjetas.every((t) => t.classList.contains('tarjeta'))).toBe(true);
+      expect(tarjetas.every((t) => t.querySelector(':scope > .tarjeta__interior') !== null)).toBe(true);
+      expect(new Set(variantes).size).toBe(3);
+      expect(variantes).not.toContain(undefined);
+    });
+
+    it('los titulos de tarjeta usan la escala del titulo de tarjeta', async () => {
+      const pagina = await abrir();
+
+      const titulos = pagina.querySelectorAll('[data-beneficio] h2, [data-proximamente] h2');
+
+      expect(titulos).toHaveLength(5);
+      for (const titulo of titulos) expect(titulo.classList).toContain('tarjeta__titulo');
+    });
+
+    it('las tarjetas de proximamente usan otro degradado y una pildora, no un borde discontinuo', async () => {
+      const pagina = await abrir();
+
+      const proximas = [...pagina.querySelectorAll('[data-proximamente]')];
+      const beneficios = [...pagina.querySelectorAll('[data-beneficio]')].map((t) => clasesDe(t).find((c) => c.startsWith('tarjeta--')));
+
+      for (const tarjeta of proximas) {
+        expect(clasesDe(tarjeta).some((c) => c.startsWith('tarjeta--'))).toBe(true);
+        expect(clasesDe(tarjeta)).not.toContain('apagada');
+        expect(tarjeta.querySelector('[data-etiqueta-tarjeta]')?.classList).toContain('pildora');
+      }
+      expect(proximas.map((t) => clasesDe(t).find((c) => c.startsWith('tarjeta--')))).not.toEqual(expect.arrayContaining(beneficios));
+    });
+
+    it('la lista de espera sigue siendo la tarjeta destacada y su envio es un boton primario grande', async () => {
+      const pagina = await abrir();
+
+      const envio = pagina.querySelector<HTMLButtonElement>('form[data-lista-espera] button[type="submit"]')!;
+
+      expect(pagina.querySelector('.espera')?.classList).toContain('tarjeta-destacada');
+      expect(envio.tagName).toBe('BUTTON');
+      expect(clasesDe(envio)).toEqual(expect.arrayContaining(['boton', 'boton--primario', 'boton--grande']));
+    });
+
+    it('Ya tienes acceso es un enlace de navegacion vestido de boton secundario', async () => {
+      const pagina = await abrir();
+
+      const entrar = pagina.querySelector('a[data-entrar]')!;
+
+      expect(entrar.tagName).toBe('A');
+      expect(clasesDe(entrar)).toEqual(expect.arrayContaining(['boton', 'boton--secundario']));
+    });
+
+    it('el enlace de privacidad dentro de la frase sigue siendo un enlace, no un boton', async () => {
+      const pagina = await abrir('https://ejemplo.test/privacidad');
+
+      const privacidad = pagina.querySelector('label[for="espera-privacidad"] a')!;
+
+      expect(privacidad.classList).not.toContain('boton');
+    });
+  });
+
   it('ya no queda ningun mailto ni rastro de tally.so', async () => {
     const pagina = await abrir();
 

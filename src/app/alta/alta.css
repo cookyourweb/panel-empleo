@@ -41,27 +41,6 @@
   margin-top: 1rem;
 }
 
-button {
-  min-height: 2.75rem;
-  padding: 0 1rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
-  background: transparent;
-  color: hsl(var(--foreground));
-  font: inherit;
-  cursor: pointer;
-}
-
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-:is(button, input):focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
-}
-
 .grupo {
   margin: 1.25rem 0 0;
   padding: 0;
@@ -97,10 +76,6 @@ button:disabled {
 
 .confirmacion {
   margin: 1rem 0 0;
-  padding: 0.5rem 0.65rem;
-  border: 1px solid hsl(var(--border));
-  border-left-width: 4px;
-  border-radius: 6px;
 }
 
 .indicador {
@@ -145,10 +120,6 @@ button:disabled {
   text-align: center;
 }
 
-button[aria-busy='true'] {
-  cursor: progress;
-}
-
 .resumen {
   margin: 0.5rem 0 1rem;
   padding-left: 1.25rem;
@@ -158,7 +129,7 @@ button[aria-busy='true'] {
   margin: 0.25rem 0;
 }
 
-a:focus-visible {
+a:not(.boton):focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }
@@ -219,37 +190,9 @@ a:focus-visible {
   margin: 0;
 }
 
-.boton-principal {
-  min-width: 12rem;
-  padding: 0 1.5rem;
-  border-color: hsl(var(--primary));
-  background: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-  font-weight: 600;
-}
-
-.boton-principal:hover {
-  filter: brightness(1.08);
-}
-
 .archivo {
   margin: 1rem 0 0;
   overflow-wrap: anywhere;
-}
-
-/* Rellenar a mano: visible, pero sin competir con la accion principal. */
-.enlace {
-  padding: 0 0.25rem;
-  border-color: transparent;
-  color: hsl(var(--foreground));
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-
-@media (max-width: 36rem) {
-  .boton-principal {
-    width: 100%;
-  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

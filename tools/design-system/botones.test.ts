@@ -120,6 +120,7 @@ describe("clases del sistema de botones", () => {
     ".boton--neutro",
     ".boton--peligro",
     ".boton--grande",
+    ".boton--compacto",
   ])("existe %s", (selector) => {
     expect(() => regla(selector)).not.toThrow();
   });
@@ -159,6 +160,19 @@ describe("clases del sistema de botones", () => {
     const r = regla(".boton--opcion");
     expect(r).toContain("width: 100%");
     expect(r).toContain("justify-content: flex-start");
+  });
+
+  it("el compacto baja relleno y letra pero conserva los 44 px de objetivo (min-height heredado de .boton)", () => {
+    const r = regla(".boton--compacto");
+    expect(r).toContain("padding: 0.5rem 1rem");
+    expect(r).toContain("font-size: 0.875rem");
+    expect(r).not.toMatch(/min-height:\s*(?!2\.75rem)/);
+  });
+
+  it("un boton neutro con aria-pressed='true' se pinta con el degradado de marca: el estado no depende solo del color del borde", () => {
+    const r = regla(".boton--neutro[aria-pressed='true']");
+    expect(r).toContain("linear-gradient(to right");
+    expect(r).toContain("var(--color-cyw-azul-600)");
   });
 
   it("el foco visible se dibuja con un anillo blanco de 2 px y separacion", () => {

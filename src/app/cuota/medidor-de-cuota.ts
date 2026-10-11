@@ -33,7 +33,7 @@ import {
   styleUrl: './medidor-de-cuota.css',
   template: `
     @if (sinSaldo()) {
-      <div class="cuota agotada">
+      <div class="cuota agotada panel-suave">
         <p data-cuota-agotada>{{ mensajeAgotada() }}</p>
 
         @if (enviado()) {
@@ -43,6 +43,7 @@ import {
         } @else if (!abierto()) {
           <button
             type="button"
+            class="boton boton--secundario"
             data-abrir-interes
             aria-expanded="false"
             (click)="abrir()"
@@ -104,6 +105,7 @@ import {
 
             <button
               type="submit"
+              class="boton boton--primario"
               data-enviar-interes
               [disabled]="enviando()"
               [attr.aria-busy]="enviando() ? 'true' : null"
