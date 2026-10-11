@@ -1,0 +1,249 @@
+<!-- Lo que se conserva tras borrar la cuenta. Se usa en la pagina y en la confirmacion final. -->
+<ng-template #queda>
+  <div data-queda>
+    <h3 i18n="Titulo de lo que no se borra con la cuenta@@cuenta.queda.titulo">Lo que no se borra</h3>
+    <ul class="resumen">
+      <li i18n="Registros de uso anonimos que se conservan@@cuenta.queda.uso">
+        Registros de uso sin tu nombre: solo guardan fecha, tipo, modelo y coste, y sirven para controlar el gasto.
+      </li>
+      <li i18n="Copias de seguridad que se conservan hasta 30 dias@@cuenta.queda.copias">
+        Copias de seguridad cifradas, que se borran solas a los 30 días.
+      </li>
+      <li>
+        <ng-container i18n="Registros de ofertas y documentos que se borran por correo, antes del enlace@@cuenta.queda.ofertas"
+          >Los registros de ofertas y los documentos generados que conserva el servicio. Para borrarlos, escríbenos a</ng-container
+        >
+        <a href="mailto:veronica@cookyourwebai.es">veronica&#64;cookyourwebai.es</a>.
+      </li>
+    </ul>
+  </div>
+</ng-template>
+
+@if (borrada()) {
+  <section class="paso" data-borrada aria-labelledby="cuenta-borrada-titulo">
+    <h1
+      id="cuenta-borrada-titulo"
+      tabindex="-1"
+      data-titulo-de-paso
+      i18n="Titulo de la confirmacion de que la cuenta se ha borrado@@cuenta.borrada.titulo"
+    >
+      Tu cuenta se ha borrado
+    </h1>
+    <p i18n="Introduccion de lo que se ha borrado@@cuenta.borrada.introduccion">Hemos eliminado:</p>
+    <ul class="resumen">
+      <li i18n="Se ha borrado el perfil@@cuenta.borrada.perfil">Tu perfil.</li>
+      <li i18n="Se han borrado los CV cifrados@@cuenta.borrada.cv">Tus CV cifrados, en todos los idiomas.</li>
+      <li i18n="Se han borrado los consentimientos@@cuenta.borrada.consentimientos">Tus consentimientos.</li>
+      <li i18n="Se han borrado los avisos de interes@@cuenta.borrada.intereses">Tus avisos de interés.</li>
+      <li i18n="Se ha borrado la invitacion@@cuenta.borrada.invitacion">Tu invitación.</li>
+    </ul>
+    <ng-container [ngTemplateOutlet]="queda" />
+    <p i18n="Que pasa ahora que la cuenta esta borrada@@cuenta.borrada.despues">
+      Al continuar cerraremos tu sesión. Para volver a usar el panel necesitarías una nueva invitación.
+    </p>
+    <div class="acciones">
+      <button type="button" data-salir (click)="salir()" i18n="Boton que cierra la sesion tras borrar la cuenta@@cuenta.borrada.salir">
+        Cerrar sesión y volver al inicio
+      </button>
+    </div>
+  </section>
+} @else if (!confirmando()) {
+  <section class="paso" aria-labelledby="cuenta-titulo">
+    <h1 id="cuenta-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo de la pagina de cuenta@@cuenta.titulo">
+      Tu cuenta
+    </h1>
+
+    <!-- Region educada siempre presente: un lector de pantalla solo anuncia lo que cambia dentro de una region que ya existia. -->
+    <div class="resultado" role="status" aria-live="polite" data-resultado>{{ resultado() }}</div>
+
+    <section class="seccion" aria-labelledby="cuenta-cv-titulo" data-seccion-cv>
+      <h2 id="cuenta-cv-titulo" tabindex="-1" data-titulo-seccion="cv" i18n="Titulo de la seccion de CV@@cuenta.cv.titulo">Tu CV</h2>
+      <p i18n="Explicacion de la seccion de CV@@cuenta.cv.explicacion">
+        Guardamos tu CV cifrado, uno por idioma. Puedes borrar el que quieras sin borrar tu cuenta.
+      </p>
+
+      @if (cargandoCvs()) {
+        <p data-cargando-cvs i18n="Aviso mientras se consultan los CV@@cuenta.cv.cargando">Consultando tus CV…</p>
+      } @else if (errorDeCvs()) {
+        <p class="error" role="alert" data-error-cvs i18n="Error al consultar los CV@@cuenta.cv.errorLista">
+          No hemos podido consultar tus CV.
+        </p>
+        <div class="acciones">
+          <button type="button" data-reintentar-cvs (click)="cargarCvs()" i18n="Boton para volver a consultar los CV@@cuenta.cv.reintentar">
+            Probar de nuevo
+          </button>
+        </div>
+      } @else {
+        @if (cvs().length === 0) {
+          <p data-sin-cv i18n="No hay ningun CV guardado@@cuenta.cv.vacio">No tienes ningún CV guardado.</p>
+        } @else {
+          <ul class="filas">
+            @for (cv of cvs(); track cv.idioma) {
+              <li class="fila">
+                <span [id]="'cv-nombre-' + cv.idioma">{{ nombreDeIdioma(cv.idioma) }} · {{ cv.formato.toUpperCase() }}</span>
+                <button
+                  type="button"
+                  [attr.data-borrar-cv]="cv.idioma"
+                  [attr.aria-describedby]="'cv-nombre-' + cv.idioma"
+                  [disabled]="ocupado()"
+                  (click)="pedirBorrarCv(cv.idioma, $event)"
+                  i18n="Boton que pide borrar un CV@@cuenta.cv.borrar"
+                >
+                  Borrar mi CV
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      }
+
+      @if (accionCv(); as idioma) {
+        <div
+          class="confirmacion"
+          role="group"
+          aria-labelledby="confirmacion-titulo"
+          data-confirmacion-cv
+          (keydown.escape)="cancelarAccion()"
+        >
+          <h3 id="confirmacion-titulo" tabindex="-1" data-titulo-confirmacion>{{ tituloDeBorrarCv(idioma) }}</h3>
+          <p i18n="Aviso antes de borrar un CV@@cuenta.cv.confirmar.texto">
+            Se borra el CV que guardamos cifrado en este idioma. Tu perfil y tus consentimientos no cambian.
+          </p>
+          @if (errorDeAccion()) {
+            <p class="error" role="alert" data-error-accion i18n="Error al borrar un CV@@cuenta.cv.error">
+              No hemos podido borrar tu CV. No se ha borrado nada: prueba de nuevo.
+            </p>
+          }
+          <div class="acciones">
+            <button type="button" data-confirmar-accion [disabled]="ocupado()" [attr.aria-busy]="ocupado() ? 'true' : null" (click)="confirmarAccion()">
+              @if (ocupado()) {
+                <ng-container i18n="Boton de borrar un CV mientras se borra@@cuenta.accion.borrando">Borrando…</ng-container>
+              } @else {
+                <ng-container i18n="Boton que confirma el borrado de un CV@@cuenta.cv.confirmar.si">Sí, borrar este CV</ng-container>
+              }
+            </button>
+            <button type="button" data-cancelar-accion [disabled]="ocupado()" (click)="cancelarAccion()" i18n="Boton que cancela el borrado@@cuenta.cancelar">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      }
+    </section>
+
+    <section class="seccion" aria-labelledby="cuenta-consentimientos-titulo" data-consentimientos>
+      <h2
+        id="cuenta-consentimientos-titulo"
+        tabindex="-1"
+        data-titulo-seccion="consentimientos"
+        i18n="Titulo de la seccion de consentimientos@@cuenta.consentimientos.titulo"
+      >
+        Tus consentimientos
+      </h2>
+      <p i18n="Explicacion de la seccion de consentimientos@@cuenta.consentimientos.explicacion">
+        Puedes retirar un consentimiento cuando quieras, sin que cambie lo que ya se hizo antes. Retirar uno que ya habías retirado no cambia nada.
+      </p>
+      <ul class="filas">
+        @for (consentimiento of consentimientos; track consentimiento.tipo) {
+          <li class="fila">
+            <span [id]="'consentimiento-' + consentimiento.tipo">{{ consentimiento.descripcion }}</span>
+            @if (retirados().has(consentimiento.tipo)) {
+              <span class="retirado" [attr.data-retirado]="consentimiento.tipo" i18n="Estado de un consentimiento ya retirado@@cuenta.consentimientos.retirado">
+                Consentimiento retirado
+              </span>
+            } @else {
+              <button
+                type="button"
+                [attr.data-retirar]="consentimiento.tipo"
+                [attr.aria-describedby]="'consentimiento-' + consentimiento.tipo"
+                [disabled]="ocupado()"
+                (click)="pedirRetirar(consentimiento.tipo, $event)"
+                i18n="Boton que pide retirar un consentimiento@@cuenta.consentimientos.retirar"
+              >
+                Retirar consentimiento
+              </button>
+            }
+          </li>
+        }
+      </ul>
+
+      @if (accionConsentimiento(); as tipo) {
+        <div
+          class="confirmacion"
+          role="group"
+          aria-labelledby="confirmacion-titulo"
+          [attr.data-confirmacion-consentimiento]="tipo"
+          (keydown.escape)="cancelarAccion()"
+        >
+          <h3 id="confirmacion-titulo" tabindex="-1" data-titulo-confirmacion>{{ textosDeRetirar(tipo).titulo }}</h3>
+          <p>{{ textosDeRetirar(tipo).efecto }}</p>
+          @if (errorDeAccion()) {
+            <p class="error" role="alert" data-error-accion i18n="Error al retirar un consentimiento@@cuenta.consentimientos.error">
+              No hemos podido retirar el consentimiento. No ha cambiado nada: prueba de nuevo.
+            </p>
+          }
+          <div class="acciones">
+            <button type="button" data-confirmar-accion [disabled]="ocupado()" [attr.aria-busy]="ocupado() ? 'true' : null" (click)="confirmarAccion()">
+              @if (ocupado()) {
+                <ng-container i18n="Boton de retirar un consentimiento mientras se retira@@cuenta.consentimientos.retirando">Retirando…</ng-container>
+              } @else {
+                {{ textosDeRetirar(tipo).confirmar }}
+              }
+            </button>
+            <button type="button" data-cancelar-accion [disabled]="ocupado()" (click)="cancelarAccion()">
+              <ng-container i18n="Boton que cancela el borrado@@cuenta.cancelar">Cancelar</ng-container>
+            </button>
+          </div>
+        </div>
+      }
+    </section>
+
+    <section class="seccion" aria-labelledby="cuenta-borrar-titulo" data-borrado-cuenta>
+      <h2 id="cuenta-borrar-titulo" i18n="Titulo de la seccion de borrar la cuenta@@cuenta.borrarCuenta.titulo">Borrar mi cuenta</h2>
+      <p i18n="Que se borra al eliminar la cuenta@@cuenta.explicacion">
+        Si borras tu cuenta eliminamos al momento tu perfil, tus CV cifrados, tus consentimientos, tus avisos de interés y tu invitación.
+        No se puede deshacer.
+      </p>
+      <ng-container [ngTemplateOutlet]="queda" />
+      <div class="acciones">
+        <button type="button" data-borrar (click)="pedirConfirmacion()" i18n="Boton que inicia el borrado@@cuenta.borrar">
+          Borrar mi cuenta
+        </button>
+      </div>
+    </section>
+  </section>
+} @else {
+  <section class="paso" aria-labelledby="cuenta-confirmar-titulo">
+    <h1
+      id="cuenta-confirmar-titulo"
+      tabindex="-1"
+      data-titulo-de-paso
+      i18n="Titulo de la confirmacion del borrado@@cuenta.confirmar.titulo"
+    >
+      ¿Seguro que quieres borrar tu cuenta?
+    </h1>
+    <p i18n="Aviso final antes de borrar@@cuenta.confirmar.texto">
+      Se borrarán tu perfil, tus CV cifrados, tus consentimientos, tus avisos de interés y tu invitación, y se cerrará tu
+      sesión. Quedarán los registros de uso sin tu nombre y las copias de seguridad cifradas, que se borran solas a los
+      30 días. Para volver a usar el panel necesitarías una nueva invitación.
+    </p>
+
+    @if (error()) {
+      <p class="error" role="alert" i18n="Error al borrar la cuenta@@cuenta.error">
+        No hemos podido borrar tu cuenta. No se ha borrado nada: prueba de nuevo.
+      </p>
+    }
+
+    <div class="acciones">
+      <button type="button" data-confirmar [disabled]="borrando()" [attr.aria-busy]="borrando() ? 'true' : null" (click)="confirmar()">
+        @if (borrando()) {
+          <ng-container i18n="Boton de borrar mientras se borra la cuenta@@cuenta.borrando">Borrando tu cuenta…</ng-container>
+        } @else {
+          <ng-container i18n="Boton que confirma el borrado@@cuenta.confirmar">Sí, borrar todo</ng-container>
+        }
+      </button>
+      <button type="button" data-cancelar [disabled]="borrando()" (click)="cancelar()" i18n="Boton que cancela el borrado@@cuenta.cancelar">
+        Cancelar
+      </button>
+    </div>
+  </section>
+}

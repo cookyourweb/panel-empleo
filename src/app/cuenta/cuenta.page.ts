@@ -1,94 +1,52 @@
-import { afterRenderEffect, ChangeDetectionStrategy, Component, ElementRef, inject, signal } from '@angular/core';
+import {
+  afterNextRender,
+  afterRenderEffect,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  Injector,
+  signal,
+} from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { Router } from '@angular/router';
 
+import { TIPOS_DE_CONSENTIMIENTO, TipoDeConsentimiento } from '../alta/dominio';
+import { IDIOMAS } from '../idioma/idiomas';
 import { Sesion } from '../sesion/sesion';
-import { RepositorioDeCuenta } from './repositorio-de-cuenta';
+import { CvGuardado, IdiomaDeCv, RepositorioDeCuenta } from './repositorio-de-cuenta';
+
+type AccionPendiente =
+  | { readonly clase: 'cv'; readonly idioma: IdiomaDeCv }
+  | { readonly clase: 'consentimiento'; readonly tipo: TipoDeConsentimiento };
+
+/** Lo que el panel puede retirar, en el orden en que se pinta. */
+const CONSENTIMIENTOS: readonly { readonly tipo: TipoDeConsentimiento; readonly descripcion: string }[] = [
+  {
+    tipo: TIPOS_DE_CONSENTIMIENTO.almacenarCv,
+    descripcion: $localize`:Descripcion del consentimiento de guardar el CV@@cuenta.consentimientos.almacenar:Guardar mi CV cifrado`,
+  },
+  {
+    tipo: TIPOS_DE_CONSENTIMIENTO.enviarCvAIa,
+    descripcion: $localize`:Descripcion del consentimiento de enviar el CV a la IA@@cuenta.consentimientos.ia:Enviar mi CV a Anthropic y Groq (Estados Unidos) para extraer mi perfil y para generar mis CV y cartas cuando lo pida`,
+  },
+];
 
 /**
- * Borrar la cuenta. Dos pasos dentro de la propia pagina (nada de confirm() del
- * navegador): explicar que se borra y pedir una confirmacion explicita.
+ * Tu cuenta: borrar un CV, retirar un consentimiento o borrar la cuenta entera.
+ *
+ * Nada se hace de un clic ni con los dialogos del navegador: cada accion abre
+ * una confirmacion dentro de la propia pagina que explica el efecto, se opera
+ * con teclado (Escape cancela) y su resultado se anuncia en una region educada.
+ * Lo que se muestra es lo que el servidor confirmo: si falla, no cambia nada.
  */
 @Component({
   selector: 'app-cuenta',
+  imports: [NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: '../alta/alta.css',
-  template: `
-    @if (borrada()) {
-      <section class="paso" data-borrada aria-labelledby="cuenta-borrada-titulo">
-        <h1
-          id="cuenta-borrada-titulo"
-          tabindex="-1"
-          data-titulo-de-paso
-          i18n="Titulo de la confirmacion de que la cuenta se ha borrado@@cuenta.borrada.titulo"
-        >
-          Tu cuenta se ha borrado
-        </h1>
-        <p i18n="Introduccion de lo que se ha borrado@@cuenta.borrada.introduccion">Hemos eliminado:</p>
-        <ul class="resumen">
-          <li i18n="Se ha borrado el perfil@@cuenta.borrada.perfil">Tu perfil.</li>
-          <li i18n="Se ha borrado el CV cifrado@@cuenta.borrada.cv">Tu CV cifrado.</li>
-          <li i18n="Se han borrado los consentimientos@@cuenta.borrada.consentimientos">Tus consentimientos.</li>
-        </ul>
-        <p i18n="Que pasa ahora que la cuenta esta borrada@@cuenta.borrada.despues">
-          Al continuar cerraremos tu sesión. Para volver a usar el panel necesitarías una nueva invitación.
-        </p>
-        <div class="acciones">
-          <button type="button" data-salir (click)="salir()" i18n="Boton que cierra la sesion tras borrar la cuenta@@cuenta.borrada.salir">
-            Cerrar sesión y volver al inicio
-          </button>
-        </div>
-      </section>
-    } @else if (!confirmando()) {
-      <section class="paso" aria-labelledby="cuenta-titulo">
-        <h1 id="cuenta-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo de la pagina de cuenta@@cuenta.titulo">
-          Tu cuenta
-        </h1>
-        <p i18n="Que se borra al eliminar la cuenta@@cuenta.explicacion">
-          Si borras tu cuenta eliminamos tu perfil, tu CV cifrado y tus consentimientos. Es inmediato y no se puede
-          deshacer.
-        </p>
-        <div class="acciones">
-          <button type="button" data-borrar (click)="pedirConfirmacion()" i18n="Boton que inicia el borrado@@cuenta.borrar">
-            Borrar mi cuenta
-          </button>
-        </div>
-      </section>
-    } @else {
-      <section class="paso" aria-labelledby="cuenta-confirmar-titulo">
-        <h1
-          id="cuenta-confirmar-titulo"
-          tabindex="-1"
-          data-titulo-de-paso
-          i18n="Titulo de la confirmacion del borrado@@cuenta.confirmar.titulo"
-        >
-          ¿Seguro que quieres borrar tu cuenta?
-        </h1>
-        <p i18n="Aviso final antes de borrar@@cuenta.confirmar.texto">
-          Se borrarán tu perfil, tu CV cifrado y tus consentimientos, y se cerrará tu sesión. Para volver a usar el
-          panel necesitarías una nueva invitación.
-        </p>
-
-        @if (error()) {
-          <p class="error" role="alert" i18n="Error al borrar la cuenta@@cuenta.error">
-            No hemos podido borrar tu cuenta. No se ha borrado nada: prueba de nuevo.
-          </p>
-        }
-
-        <div class="acciones">
-          <button type="button" data-confirmar [disabled]="borrando()" [attr.aria-busy]="borrando() ? 'true' : null" (click)="confirmar()">
-            @if (borrando()) {
-              <ng-container i18n="Boton de borrar mientras se borra la cuenta@@cuenta.borrando">Borrando tu cuenta…</ng-container>
-            } @else {
-              <ng-container i18n="Boton que confirma el borrado@@cuenta.confirmar">Sí, borrar todo</ng-container>
-            }
-          </button>
-          <button type="button" data-cancelar [disabled]="borrando()" (click)="cancelar()" i18n="Boton que cancela el borrado@@cuenta.cancelar">
-            Cancelar
-          </button>
-        </div>
-      </section>
-    }
-  `,
+  styleUrls: ['../alta/alta.css', './cuenta.css'],
+  templateUrl: './cuenta.page.html',
 })
 export class CuentaPage {
   private readonly repositorio = inject(RepositorioDeCuenta);
@@ -102,9 +60,37 @@ export class CuentaPage {
   /** The server deleted everything; the session stays open until the user continues. */
   protected readonly borrada = signal(false);
 
+  protected readonly consentimientos = CONSENTIMIENTOS;
+  private readonly injector = inject(Injector);
+
+  /** null mientras no se ha leido; [] es "no tiene ningun CV", que es otra cosa. */
+  private readonly _cvs = signal<readonly CvGuardado[] | null>(null);
+  protected readonly cvs = computed(() => this._cvs() ?? []);
+  protected readonly cargandoCvs = signal(true);
+  protected readonly errorDeCvs = signal(false);
+  /** Lo retirado en esta visita: no hay forma de leer el estado de un consentimiento, solo de retirarlo. */
+  protected readonly retirados = signal<ReadonlySet<TipoDeConsentimiento>>(new Set());
+
+  protected readonly accion = signal<AccionPendiente | null>(null);
+  protected readonly accionCv = computed(() => {
+    const accion = this.accion();
+    return accion?.clase === 'cv' ? accion.idioma : null;
+  });
+  protected readonly accionConsentimiento = computed(() => {
+    const accion = this.accion();
+    return accion?.clase === 'consentimiento' ? accion.tipo : null;
+  });
+  protected readonly ocupado = signal(false);
+  protected readonly errorDeAccion = signal(false);
+  /** Texto de la region educada: lo ultimo que el servidor confirmo. */
+  protected readonly resultado = signal('');
+
+  /** El boton que abrio la confirmacion, para devolverle el foco al cancelar. */
+  private disparador: HTMLElement | null = null;
   private primerPaso = true;
 
   constructor() {
+    void this.cargarCvs();
     afterRenderEffect(() => {
       this.confirmando();
       this.borrada();
@@ -113,6 +99,110 @@ export class CuentaPage {
         return;
       }
       this.anfitrion.nativeElement.querySelector<HTMLElement>('[data-titulo-de-paso]')?.focus();
+    });
+  }
+
+  protected async cargarCvs(): Promise<void> {
+    this.cargandoCvs.set(true);
+    this.errorDeCvs.set(false);
+    try {
+      this._cvs.set(await this.repositorio.listarCvs());
+    } catch {
+      // No se pudo leer: no se afirma que no haya CV.
+      this._cvs.set(null);
+      this.errorDeCvs.set(true);
+    } finally {
+      this.cargandoCvs.set(false);
+    }
+  }
+
+  protected nombreDeIdioma(idioma: IdiomaDeCv): string {
+    return IDIOMAS.find((i) => i.codigo === idioma)?.nombre ?? idioma;
+  }
+
+  protected tituloDeBorrarCv(idioma: IdiomaDeCv): string {
+    const nombre = this.nombreDeIdioma(idioma);
+    return $localize`:Titulo de la confirmacion de borrar un CV@@cuenta.cv.confirmar.titulo:¿Borrar tu CV en ${nombre}:nombre:?`;
+  }
+
+  protected textosDeRetirar(tipo: TipoDeConsentimiento): { titulo: string; efecto: string; confirmar: string } {
+    return tipo === TIPOS_DE_CONSENTIMIENTO.almacenarCv
+      ? {
+          titulo: $localize`:Titulo de la confirmacion de retirar el consentimiento de guardar el CV@@cuenta.consentimientos.almacenar.confirmar.titulo:¿Retirar el consentimiento para guardar tu CV?`,
+          efecto: $localize`:Efecto de retirar el consentimiento de guardar el CV@@cuenta.consentimientos.almacenar.confirmar.texto:Si lo retiras, borramos tu CV guardado en todos los idiomas y no podremos generar CV adaptados a partir del tuyo. Tu perfil se queda como está.`,
+          confirmar: $localize`:Boton que confirma retirar el consentimiento de guardar el CV@@cuenta.consentimientos.almacenar.confirmar.si:Sí, retirar y borrar mi CV`,
+        }
+      : {
+          titulo: $localize`:Titulo de la confirmacion de retirar el consentimiento de usar la IA@@cuenta.consentimientos.ia.confirmar.titulo:¿Retirar el consentimiento para usar IA con tu CV?`,
+          efecto: $localize`:Efecto de retirar el consentimiento de usar la IA@@cuenta.consentimientos.ia.confirmar.texto:Si lo retiras, dejamos de enviar tu CV a Anthropic y Groq, así que no podremos extraer tu perfil ni generar CV y cartas adaptados. Tu perfil se queda como está.`,
+          confirmar: $localize`:Boton que confirma retirar el consentimiento de usar la IA@@cuenta.consentimientos.ia.confirmar.si:Sí, retirar consentimiento`,
+        };
+  }
+
+  protected pedirBorrarCv(idioma: IdiomaDeCv, evento: Event): void {
+    this.abrirAccion({ clase: 'cv', idioma }, evento);
+  }
+
+  protected pedirRetirar(tipo: TipoDeConsentimiento, evento: Event): void {
+    this.abrirAccion({ clase: 'consentimiento', tipo }, evento);
+  }
+
+  private abrirAccion(accion: AccionPendiente, evento: Event): void {
+    if (this.ocupado()) return;
+    this.disparador = evento.currentTarget as HTMLElement;
+    this.errorDeAccion.set(false);
+    this.resultado.set('');
+    this.accion.set(accion);
+    this.enfocar('[data-titulo-confirmacion]');
+  }
+
+  protected cancelarAccion(): void {
+    if (this.ocupado()) return;
+    const disparador = this.disparador;
+    this.disparador = null;
+    this.errorDeAccion.set(false);
+    this.accion.set(null);
+    afterNextRender(() => (disparador?.isConnected ? disparador.focus() : undefined), { injector: this.injector });
+  }
+
+  /** Solo cambia lo que el servidor confirmo; si falla, la pantalla sigue diciendo la verdad de antes. */
+  protected async confirmarAccion(): Promise<void> {
+    const accion = this.accion();
+    if (!accion || this.ocupado()) return;
+    this.ocupado.set(true);
+    this.errorDeAccion.set(false);
+    try {
+      if (accion.clase === 'cv') {
+        await this.repositorio.borrarCv(accion.idioma);
+        this._cvs.update((lista) => lista?.filter((cv) => cv.idioma !== accion.idioma) ?? lista);
+        const nombre = this.nombreDeIdioma(accion.idioma);
+        this.resultado.set($localize`:Resultado de borrar un CV@@cuenta.cv.borrado:Hemos borrado tu CV en ${nombre}:nombre:.`);
+      } else {
+        await this.repositorio.retirarConsentimiento(accion.tipo);
+        this.retirados.update((actuales) => new Set(actuales).add(accion.tipo));
+        if (accion.tipo === TIPOS_DE_CONSENTIMIENTO.almacenarCv) {
+          // El servidor borra los CV al retirar este consentimiento: se vuelve a leer, no se supone.
+          await this.cargarCvs();
+          this.resultado.set($localize`:Resultado de retirar el consentimiento de guardar el CV@@cuenta.consentimientos.almacenar.hecho:Has retirado el consentimiento para guardar tu CV y hemos borrado tus CV.`);
+        } else {
+          this.resultado.set($localize`:Resultado de retirar el consentimiento de usar la IA@@cuenta.consentimientos.ia.hecho:Has retirado el consentimiento para usar IA con tu CV. Tu perfil se queda como está.`);
+        }
+      }
+    } catch {
+      this.errorDeAccion.set(true);
+      this.ocupado.set(false);
+      return;
+    }
+    this.ocupado.set(false);
+    this.accion.set(null);
+    this.disparador = null;
+    // El boton que se pulso puede haber desaparecido: el foco pasa al titulo de su seccion.
+    this.enfocar(accion.clase === 'cv' ? '[data-titulo-seccion="cv"]' : '[data-titulo-seccion="consentimientos"]');
+  }
+
+  private enfocar(selector: string): void {
+    afterNextRender(() => this.anfitrion.nativeElement.querySelector<HTMLElement>(selector)?.focus(), {
+      injector: this.injector,
     });
   }
 

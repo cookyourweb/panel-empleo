@@ -359,7 +359,7 @@ run in memory and must never present invented data as real:
 
 | Flag | When `false` | Backend it needs |
 | --- | --- | --- |
-| `ALTA_CON_BACKEND` | `/alta` and `/cuenta` are not registered, the header has no "Your account" link, and `/panel` skips the profile check | `GET /yo` returning `tiene_perfil`, `/perfil`, `/consentimientos`, `/cv`, `/extraccion`, `DELETE /cuenta` |
+| `ALTA_CON_BACKEND` | `/alta` and `/cuenta` are not registered, the header has no "Your account" link, and `/panel` skips the profile check | `GET /yo` returning `tiene_perfil`, `/perfil`, `/consentimientos`, `/cv` (including `GET /cv` and `DELETE /cv/{idioma}`), `DELETE /consentimientos/{tipo}`, `/extraccion`, `DELETE /cuenta`, consent version `v2` |
 | `ENCAJE_CON_BACKEND` | The "Your fit" section and the "Reachable only" filter are not rendered, and no fit request is made | `GET /ofertas/{id}/encaje`, `POST /encajes` |
 
 Before flipping them:

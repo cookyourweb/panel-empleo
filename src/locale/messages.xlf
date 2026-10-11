@@ -2821,11 +2821,11 @@
     </unit>
     <unit id="cuenta.borrada.cv">
       <notes>
-        <note category="location">src/app/cuenta/cuenta.page.ts:26</note>
-        <note category="description">Se ha borrado el CV cifrado</note>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Se han borrado los CV cifrados</note>
       </notes>
       <segment>
-        <source>Tu CV cifrado.</source>
+        <source>Tus CV cifrados, en todos los idiomas.</source>
       </segment>
     </unit>
     <unit id="cuenta.borrada.consentimientos">
@@ -2835,6 +2835,330 @@
       </notes>
       <segment>
         <source>Tus consentimientos.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.intereses">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Se han borrado los avisos de interes</note>
+      </notes>
+      <segment>
+        <source>Tus avisos de interés.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.invitacion">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Se ha borrado la invitacion</note>
+      </notes>
+      <segment>
+        <source>Tu invitación.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.queda.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Titulo de lo que no se borra con la cuenta</note>
+      </notes>
+      <segment>
+        <source>Lo que no se borra</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.queda.uso">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Registros de uso anonimos que se conservan</note>
+      </notes>
+      <segment>
+        <source>Registros de uso sin tu nombre: solo guardan fecha, tipo, modelo y coste, y sirven para controlar el gasto.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.queda.copias">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Copias de seguridad que se conservan hasta 30 dias</note>
+      </notes>
+      <segment>
+        <source>Copias de seguridad cifradas, que se borran solas a los 30 días.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.queda.ofertas">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Registros de ofertas y documentos que se borran por correo, antes del enlace</note>
+      </notes>
+      <segment>
+        <source>Los registros de ofertas y los documentos generados que conserva el servicio. Para borrarlos, escríbenos a</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Titulo de la seccion de CV</note>
+      </notes>
+      <segment>
+        <source>Tu CV</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.explicacion">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Explicacion de la seccion de CV</note>
+      </notes>
+      <segment>
+        <source>Guardamos tu CV cifrado, uno por idioma. Puedes borrar el que quieras sin borrar tu cuenta.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.cargando">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Aviso mientras se consultan los CV</note>
+      </notes>
+      <segment>
+        <source>Consultando tus CV…</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.errorLista">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Error al consultar los CV</note>
+      </notes>
+      <segment>
+        <source>No hemos podido consultar tus CV.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.reintentar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton para volver a consultar los CV</note>
+      </notes>
+      <segment>
+        <source>Probar de nuevo</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.vacio">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">No hay ningun CV guardado</note>
+      </notes>
+      <segment>
+        <source>No tienes ningún CV guardado.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.borrar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton que pide borrar un CV</note>
+      </notes>
+      <segment>
+        <source>Borrar mi CV</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.confirmar.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Titulo de la confirmacion de borrar un CV</note>
+      </notes>
+      <segment>
+        <source>¿Borrar tu CV en <ph id="0" equiv="nombre" disp="nombre"/>?</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.confirmar.texto">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Aviso antes de borrar un CV</note>
+      </notes>
+      <segment>
+        <source>Se borra el CV que guardamos cifrado en este idioma. Tu perfil y tus consentimientos no cambian.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.confirmar.si">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton que confirma el borrado de un CV</note>
+      </notes>
+      <segment>
+        <source>Sí, borrar este CV</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.accion.borrando">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton de borrar un CV mientras se borra</note>
+      </notes>
+      <segment>
+        <source>Borrando…</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.error">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Error al borrar un CV</note>
+      </notes>
+      <segment>
+        <source>No hemos podido borrar tu CV. No se ha borrado nada: prueba de nuevo.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.borrado">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Resultado de borrar un CV</note>
+      </notes>
+      <segment>
+        <source>Hemos borrado tu CV en <ph id="0" equiv="nombre" disp="nombre"/>.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Titulo de la seccion de consentimientos</note>
+      </notes>
+      <segment>
+        <source>Tus consentimientos</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.explicacion">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Explicacion de la seccion de consentimientos</note>
+      </notes>
+      <segment>
+        <source>Puedes retirar un consentimiento cuando quieras, sin que cambie lo que ya se hizo antes. Retirar uno que ya habías retirado no cambia nada.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Descripcion del consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>Guardar mi CV cifrado</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Descripcion del consentimiento de enviar el CV a la IA</note>
+      </notes>
+      <segment>
+        <source>Enviar mi CV a Anthropic y Groq (Estados Unidos) para extraer mi perfil y para generar mis CV y cartas cuando lo pida</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.retirado">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Estado de un consentimiento ya retirado</note>
+      </notes>
+      <segment>
+        <source>Consentimiento retirado</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.retirar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton que pide retirar un consentimiento</note>
+      </notes>
+      <segment>
+        <source>Retirar consentimiento</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar.confirmar.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Titulo de la confirmacion de retirar el consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>¿Retirar el consentimiento para guardar tu CV?</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar.confirmar.texto">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Efecto de retirar el consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>Si lo retiras, borramos tu CV guardado en todos los idiomas y no podremos generar CV adaptados a partir del tuyo. Tu perfil se queda como está.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar.confirmar.si">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Boton que confirma retirar el consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>Sí, retirar y borrar mi CV</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia.confirmar.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Titulo de la confirmacion de retirar el consentimiento de usar la IA</note>
+      </notes>
+      <segment>
+        <source>¿Retirar el consentimiento para usar IA con tu CV?</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia.confirmar.texto">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Efecto de retirar el consentimiento de usar la IA</note>
+      </notes>
+      <segment>
+        <source>Si lo retiras, dejamos de enviar tu CV a Anthropic y Groq, así que no podremos extraer tu perfil ni generar CV y cartas adaptados. Tu perfil se queda como está.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia.confirmar.si">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Boton que confirma retirar el consentimiento de usar la IA</note>
+      </notes>
+      <segment>
+        <source>Sí, retirar consentimiento</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.retirando">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton de retirar un consentimiento mientras se retira</note>
+      </notes>
+      <segment>
+        <source>Retirando…</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.error">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Error al retirar un consentimiento</note>
+      </notes>
+      <segment>
+        <source>No hemos podido retirar el consentimiento. No ha cambiado nada: prueba de nuevo.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar.hecho">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Resultado de retirar el consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>Has retirado el consentimiento para guardar tu CV y hemos borrado tus CV.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia.hecho">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Resultado de retirar el consentimiento de usar la IA</note>
+      </notes>
+      <segment>
+        <source>Has retirado el consentimiento para usar IA con tu CV. Tu perfil se queda como está.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrarCuenta.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Titulo de la seccion de borrar la cuenta</note>
+      </notes>
+      <segment>
+        <source>Borrar mi cuenta</source>
       </segment>
     </unit>
     <unit id="cuenta.borrada.despues">
@@ -2857,11 +3181,11 @@
     </unit>
     <unit id="cuenta.explicacion">
       <notes>
-        <note category="location">src/app/cuenta/cuenta.page.ts:21</note>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
         <note category="description">Que se borra al eliminar la cuenta</note>
       </notes>
       <segment>
-        <source>Si borras tu cuenta eliminamos tu perfil, tu CV cifrado y tus consentimientos. Es inmediato y no se puede deshacer.</source>
+        <source>Si borras tu cuenta eliminamos al momento tu perfil, tus CV cifrados, tus consentimientos, tus avisos de interés y tu invitación. No se puede deshacer.</source>
       </segment>
     </unit>
     <unit id="cuenta.borrar">
@@ -2884,11 +3208,11 @@
     </unit>
     <unit id="cuenta.confirmar.texto">
       <notes>
-        <note category="location">src/app/cuenta/cuenta.page.ts:41</note>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
         <note category="description">Aviso final antes de borrar</note>
       </notes>
       <segment>
-        <source>Se borrarán tu perfil, tu CV cifrado y tus consentimientos, y se cerrará tu sesión. Para volver a usar el panel necesitarías una nueva invitación.</source>
+        <source>Se borrarán tu perfil, tus CV cifrados, tus consentimientos, tus avisos de interés y tu invitación, y se cerrará tu sesión. Quedarán los registros de uso sin tu nombre y las copias de seguridad cifradas, que se borran solas a los 30 días. Para volver a usar el panel necesitarías una nueva invitación.</source>
       </segment>
     </unit>
     <unit id="cuenta.error">
