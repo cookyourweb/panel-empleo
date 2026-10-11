@@ -6,10 +6,12 @@
 
 <div class="barra-app contenedor-pagina">
   <h1>{{ titulo() }}</h1>
-  @if (sesion.activa() && altaActiva) {
-      <a routerLink="/cuenta" i18n="Enlace de la cabecera a la cuenta@@app.cuenta">Tu cuenta</a>
-  }
-  <app-selector-de-idioma />
+  <div class="barra-app__acciones">
+    @if (sesion.activa() && altaActiva) {
+      <a class="barra-app__cuenta" routerLink="/cuenta" i18n="Enlace de la cabecera a la cuenta@@app.cuenta">Tu cuenta</a>
+    }
+    <app-selector-de-idioma />
+  </div>
 </div>
 
 @if (sesion.activa() && faltaConsentimiento()) {

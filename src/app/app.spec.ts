@@ -134,6 +134,32 @@ describe('App', () => {
       expect(pagina.querySelector('main')?.classList.contains('contenedor-pagina')).toBe(true);
       expect(pagina.querySelector('app-cabecera-de-marca .contenedor')?.classList.contains('contenedor-pagina')).toBe(true);
     });
+
+    it('la barra tiene un unico h1 con el titulo, y a su lado un grupo con la cuenta y el idioma', async () => {
+      TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
+      activa.set(true);
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+      const pagina = fixture.nativeElement as HTMLElement;
+      const barra = pagina.querySelector('.barra-app')!;
+
+      expect(pagina.querySelectorAll('h1')).toHaveLength(1);
+      expect(barra.firstElementChild?.tagName).toBe('H1');
+      expect(barra.firstElementChild?.textContent?.trim()).toBe('Panel de empleo');
+      const acciones = barra.querySelector('.barra-app__acciones');
+      expect(acciones?.querySelector('a[href="/cuenta"]')).not.toBeNull();
+      expect(acciones?.querySelector('app-selector-de-idioma')).not.toBeNull();
+      expect(acciones?.parentElement).toBe(barra);
+    });
+
+    it('sin cuenta, el grupo de la derecha solo lleva el idioma', async () => {
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+      const acciones = (fixture.nativeElement as HTMLElement).querySelector('.barra-app__acciones')!;
+
+      expect(acciones.querySelector('a[href="/cuenta"]')).toBeNull();
+      expect(acciones.querySelector('app-selector-de-idioma')).not.toBeNull();
+    });
   });
 
   describe('aviso de consentimiento', () => {
