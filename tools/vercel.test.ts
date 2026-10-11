@@ -127,5 +127,13 @@ describe("vercel.json", () => {
       expect(todas()).toContainEqual({ key: "Referrer-Policy", value: "strict-origin-when-cross-origin" });
       expect(todas()).toContainEqual({ key: "X-Frame-Options", value: "DENY" });
     });
+
+    it("cada cabecera es un par clave y valor: Vercel rechaza el despliegue si no", () => {
+      for (const regla of config.headers) {
+        for (const cabecera of regla.headers) {
+          expect(Object.keys(cabecera).sort()).toEqual(["key", "value"]);
+        }
+      }
+    });
   });
 });
