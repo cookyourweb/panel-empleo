@@ -64,3 +64,9 @@ describe("tokens de la cabecera y el pie de marca", () => {
     expect(css).toMatch(/@media \(min-width: 768px\) \{\s*:root \{\s*--cabecera-espacio: 8rem;/);
   });
 });
+
+describe("curva de las transiciones de la cabecera de marca", () => {
+  it("--suave existe: sin ella el navegador descarta cada transition que la usa", () => {
+    expect(readThemeTokens(":root")["--suave"]).toBe("cubic-bezier(0.4, 0, 0.2, 1)");
+  });
+});

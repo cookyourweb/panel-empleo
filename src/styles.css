@@ -145,6 +145,8 @@
   --color-cyw-zinc-500: #71717a;
   --color-cyw-zinc-800: #27272a;
   --color-cyw-zinc-800-rgb: 39 39 42;
+  /* Tailwind's default easing, used by the brand header transitions. */
+  --suave: cubic-bezier(0.4, 0, 0.2, 1);
   --color-cyw-azul-300: #93c5fd;
   --color-cyw-azul-400: #60a5fa;
   --color-cyw-azul-500: #3b82f6;
