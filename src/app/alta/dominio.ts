@@ -61,14 +61,6 @@ export type TipoDeConsentimiento = (typeof TIPOS_DE_CONSENTIMIENTO)[keyof typeof
  */
 export const VERSION_DE_CONSENTIMIENTO = 'v2';
 
-export const MOTIVOS_DE_SUBIDA = ['tamano', 'tipo', 'ilegible', 'sinConsentimiento', 'servidor'] as const;
-
-export type MotivoDeSubida = (typeof MOTIVOS_DE_SUBIDA)[number];
-
-/** El servidor no acepto el CV. Lleva el motivo, nunca el contenido. */
-export class SubidaRechazada extends Error {
-  constructor(readonly motivo: MotivoDeSubida) {
-    super(`Subida rechazada: ${motivo}`);
-    this.name = 'SubidaRechazada';
-  }
-}
+// La subida del CV la comparten el alta y Tu cuenta: vive en compartido/ y se reexporta aqui.
+export { MOTIVOS_DE_SUBIDA, SubidaRechazada } from '../compartido/subida-rechazada';
+export type { MotivoDeSubida } from '../compartido/subida-rechazada';

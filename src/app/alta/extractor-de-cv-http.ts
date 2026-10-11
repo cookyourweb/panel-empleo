@@ -1,9 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
+import { enviarCv } from '../compartido/enviar-cv';
 import { CONFIGURACION_DE_SESION } from '../sesion/configuracion';
-import { Campo, MOTIVOS_MANUAL, MotivoDeSubida, MotivoManual, Propuesta, ResultadoExtraccion, SubidaRechazada } from './dominio';
+import { Campo, MOTIVOS_MANUAL, MotivoManual, Propuesta, ResultadoExtraccion } from './dominio';
 import { ExtractorDeCv } from './extractor-de-cv';
 
 const INDISPONIBLE: ResultadoExtraccion = { estado: 'manual', motivo: 'indisponible' };
@@ -16,21 +17,6 @@ const CAMPOS_DE_API: ReadonlyMap<string, Campo> = new Map<string, Campo>([
   ['idiomas', 'idiomas'],
   ['ubicacion', 'ubicacion'],
 ]);
-
-function motivoDeSubida(error: unknown): MotivoDeSubida {
-  switch (error instanceof HttpErrorResponse ? error.status : 0) {
-    case 413:
-      return 'tamano';
-    case 415:
-      return 'tipo';
-    case 422:
-      return 'ilegible';
-    case 403:
-      return 'sinConsentimiento';
-    default:
-      return 'servidor';
-  }
-}
 
 function esRegistro(valor: unknown): valor is Record<string, unknown> {
   return typeof valor === 'object' && valor !== null;
@@ -76,13 +62,7 @@ export class ExtractorDeCvHttp implements ExtractorDeCv {
   private readonly configuracion = inject(CONFIGURACION_DE_SESION);
 
   async subir(archivo: File): Promise<void> {
-    const formulario = new FormData();
-    formulario.append('archivo', archivo);
-    try {
-      await firstValueFrom(this.http.post(`${this.configuracion.urlApi}/cv`, formulario));
-    } catch (error) {
-      throw new SubidaRechazada(motivoDeSubida(error));
-    }
+    await enviarCv(this.http, this.configuracion.urlApi, archivo);
   }
 
   async extraer(): Promise<ResultadoExtraccion> {

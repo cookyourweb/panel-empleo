@@ -1,14 +1,14 @@
 import { afterRenderEffect, ChangeDetectionStrategy, Component, computed, ElementRef, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { ResumenDeArchivo } from '../compartido/resumen-de-archivo';
+import { SubidaDeCv } from '../compartido/subida-de-cv';
 import { AltaStore, Paso, PASOS } from './alta.store';
 import { Consentimiento } from './consentimiento';
 import { MotivoManual } from './dominio';
 import { FormularioManual } from './formulario-manual';
 import { IndicadorDePasos } from './indicador-de-pasos';
-import { ResumenDeArchivo } from './resumen-de-archivo';
 import { RevisionDeCampos } from './revision-de-campos';
-import { SubidaDeCv } from './subida-de-cv';
 
 // Every reason starts from the same fact: the CV is stored. What failed is only the reading.
 const MENSAJES_DE_MOTIVO: Readonly<Record<MotivoManual, string>> = {

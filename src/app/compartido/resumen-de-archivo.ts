@@ -8,7 +8,7 @@ const MB = KB * KB;
 @Component({
   selector: 'app-resumen-de-archivo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: './alta.css',
+  styleUrl: '../alta/alta.css',
   template: `
     <span class="archivo__etiqueta" i18n="Etiqueta del archivo elegido@@alta.subida.archivoElegido">Archivo elegido:</span>
     <strong class="archivo__nombre">{{ nombre() }}</strong>

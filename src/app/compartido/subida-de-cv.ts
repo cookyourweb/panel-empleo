@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 
-import { MotivoDeSubida } from './dominio';
+import { MotivoDeSubida } from './subida-rechazada';
 import { ResumenDeArchivo } from './resumen-de-archivo';
 
 const RECHAZOS: Readonly<Record<MotivoDeSubida, string>> = {
@@ -19,7 +19,7 @@ const RECHAZOS: Readonly<Record<MotivoDeSubida, string>> = {
   selector: 'app-subida-de-cv',
   imports: [ResumenDeArchivo],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: './alta.css',
+  styleUrl: '../alta/alta.css',
   template: `
     <section class="paso" aria-labelledby="subida-titulo">
       <h2 id="subida-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de subida@@alta.subida.titulo">Sube tu CV</h2>

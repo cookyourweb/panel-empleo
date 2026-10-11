@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MotivoDeSubida } from './dominio';
+import { MotivoDeSubida } from './subida-rechazada';
 import { SubidaDeCv } from './subida-de-cv';
 
 describe('SubidaDeCv', () => {
