@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter, skip } from 'rxjs';
@@ -20,6 +20,13 @@ export class App {
   protected readonly titulo = signal($localize`:Nombre de la aplicacion, titulo de la cabecera@@app.titulo:Panel de empleo`);
   protected readonly sesion = inject(Sesion);
   protected readonly altaActiva = inject(ALTA_ACTIVA);
+  /**
+   * She has a profile but the server no longer holds a current consent to keep her CV
+   * (say, she only gave the v1 text). Unknown never counts as "no consent".
+   */
+  protected readonly faltaConsentimiento = computed(
+    () => this.altaActiva && this.sesion.perfil()?.tienePerfil === true && this.sesion.consentimientos()?.almacenarCv === false,
+  );
   private readonly principal = viewChild.required<ElementRef<HTMLElement>>('principal');
 
   constructor() {

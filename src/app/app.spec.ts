@@ -14,13 +14,17 @@ const guardaLenta = () => new Promise<boolean>((resolver) => (liberarGuarda = ()
 
 describe('App', () => {
   const activa = signal(false);
+  const consentimientos = signal<{ almacenarCv: boolean; enviarCvAIa: boolean } | null>(null);
+  const perfil = signal<{ tienePerfil: boolean } | null>(null);
 
   beforeEach(async () => {
     activa.set(false);
+    consentimientos.set(null);
+    perfil.set(null);
     await TestBed.configureTestingModule({
       imports: [App],
       providers: [
-        { provide: Sesion, useValue: { activa } },
+        { provide: Sesion, useValue: { activa, consentimientos, perfil } },
         { provide: ALTA_ACTIVA, useValue: false },
         provideRouter([
           { path: 'a', component: PaginaFalsa },
@@ -118,6 +122,60 @@ describe('App', () => {
     const enlace = cabecera?.querySelector('a[href="/cuenta"]');
 
     expect(enlace?.textContent?.trim()).toBe('Tu cuenta');
+  });
+
+  describe('aviso de consentimiento', () => {
+    async function pintar() {
+      TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
+      activa.set(true);
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+      return fixture.nativeElement as HTMLElement;
+    }
+
+    it('con perfil y sin consentimiento de guardar el CV, avisa con amabilidad y enlaza a Tu cuenta', async () => {
+      perfil.set({ tienePerfil: true });
+      consentimientos.set({ almacenarCv: false, enviarCvAIa: true });
+      const pagina = await pintar();
+
+      const aviso = pagina.querySelector('[data-aviso-consentimiento]')!;
+      expect(aviso.textContent).toContain('consentimiento');
+      expect(aviso.querySelector('a')?.getAttribute('href')).toBe('/cuenta');
+      expect(aviso.textContent).not.toMatch(/[—–→]/);
+    });
+
+    it('si el estado es desconocido nunca avisa', async () => {
+      perfil.set({ tienePerfil: true });
+      const pagina = await pintar();
+
+      expect(pagina.querySelector('[data-aviso-consentimiento]')).toBeNull();
+    });
+
+    it('con el consentimiento vigente no avisa', async () => {
+      perfil.set({ tienePerfil: true });
+      consentimientos.set({ almacenarCv: true, enviarCvAIa: false });
+      const pagina = await pintar();
+
+      expect(pagina.querySelector('[data-aviso-consentimiento]')).toBeNull();
+    });
+
+    it('sin perfil no avisa: ese camino es el del alta', async () => {
+      perfil.set({ tienePerfil: false });
+      consentimientos.set({ almacenarCv: false, enviarCvAIa: false });
+      const pagina = await pintar();
+
+      expect(pagina.querySelector('[data-aviso-consentimiento]')).toBeNull();
+    });
+
+    it('sin backend de alta no avisa', async () => {
+      perfil.set({ tienePerfil: true });
+      consentimientos.set({ almacenarCv: false, enviarCvAIa: false });
+      activa.set(true);
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+
+      expect((fixture.nativeElement as HTMLElement).querySelector('[data-aviso-consentimiento]')).toBeNull();
+    });
   });
 
   it('sin sesion, la barra de la app no ofrece la cuenta', async () => {

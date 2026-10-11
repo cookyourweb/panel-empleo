@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
@@ -16,10 +17,13 @@ describe('CuentaPage', () => {
     consentir: vi.fn(),
     subirCv: vi.fn(),
   };
-  const sesion = { cerrar: vi.fn() };
+  const consentimientos = signal<{ almacenarCv: boolean; enviarCvAIa: boolean } | null>(null);
+  const sesion = { cerrar: vi.fn(), consentimientos, refrescar: vi.fn() };
 
   beforeEach(() => {
     vi.clearAllMocks();
+    consentimientos.set(null);
+    sesion.refrescar.mockResolvedValue(undefined);
     repositorio.borrar.mockResolvedValue(undefined);
     repositorio.listarCvs.mockResolvedValue([]);
     repositorio.borrarCv.mockResolvedValue(undefined);
@@ -656,6 +660,88 @@ describe('CuentaPage', () => {
       const { raiz } = await conSubida();
 
       expect(raiz.querySelector('[data-subir-cv]')!.textContent).not.toMatch(/[—–→]/);
+    });
+  });
+  describe('estado real de los consentimientos (lo que dice /yo)', () => {
+    it('muestra Retirar solo en los consentimientos vigentes y Dar consentimiento en los demas', async () => {
+      consentimientos.set({ almacenarCv: true, enviarCvAIa: false });
+      const { raiz } = await pintar();
+
+      expect(raiz.querySelector('[data-retirar="almacenar_cv"]')).not.toBeNull();
+      expect(raiz.querySelector('[data-consentir="almacenar_cv"]')).toBeNull();
+      expect(raiz.querySelector('[data-retirar="enviar_cv_a_ia"]')).toBeNull();
+      expect(raiz.querySelector('[data-consentir="enviar_cv_a_ia"]')).not.toBeNull();
+    });
+
+    it('si el estado es desconocido sigue ofreciendo Retirar y no ofrece dar consentimiento', async () => {
+      const { raiz } = await pintar();
+
+      expect(raiz.querySelector('[data-retirar="almacenar_cv"]')).not.toBeNull();
+      expect(raiz.querySelector('[data-retirar="enviar_cv_a_ia"]')).not.toBeNull();
+      expect(raiz.querySelector('[data-consentir]')).toBeNull();
+    });
+
+    it('dar de nuevo solo el de la IA con un CV guardado: registra v2 y refresca /yo', async () => {
+      repositorio.listarCvs.mockResolvedValue([{ idioma: 'es', formato: 'pdf', subidoEn: '2026-10-01T10:00:00+00:00' }]);
+      consentimientos.set({ almacenarCv: true, enviarCvAIa: false });
+      const { raiz, pulsar } = await pintar();
+
+      await pulsar('[data-consentir="enviar_cv_a_ia"]');
+
+      expect(repositorio.consentir.mock.calls).toEqual([['enviar_cv_a_ia', 'v2']]);
+      expect(sesion.refrescar).toHaveBeenCalledTimes(1);
+      expect(raiz.querySelector('[data-resultado]')!.textContent).toContain('consentimiento');
+    });
+
+    it('tras retirar uno refresca /yo', async () => {
+      consentimientos.set({ almacenarCv: true, enviarCvAIa: true });
+      const { pulsar } = await pintar();
+
+      await pulsar('[data-retirar="enviar_cv_a_ia"]');
+      await pulsar('[data-confirmar-accion]');
+
+      expect(sesion.refrescar).toHaveBeenCalledTimes(1);
+    });
+
+    it('si falla dar el consentimiento avisa con role=alert, no refresca y sigue ofreciendolo', async () => {
+      repositorio.consentir.mockRejectedValue(new Error('500'));
+      consentimientos.set({ almacenarCv: true, enviarCvAIa: false });
+      const { raiz, pulsar } = await pintar();
+
+      await pulsar('[data-consentir="enviar_cv_a_ia"]');
+
+      expect(raiz.querySelector('[data-consentimientos] [role="alert"]')).not.toBeNull();
+      expect(sesion.refrescar).not.toHaveBeenCalled();
+      expect(raiz.querySelector('[data-consentir="enviar_cv_a_ia"]')).not.toBeNull();
+    });
+
+    it('un fallo al refrescar /yo no se presenta como fallo del consentimiento', async () => {
+      sesion.refrescar.mockRejectedValue(new Error('500'));
+      consentimientos.set({ almacenarCv: true, enviarCvAIa: false });
+      const { raiz, pulsar } = await pintar();
+
+      await pulsar('[data-consentir="enviar_cv_a_ia"]');
+
+      expect(raiz.querySelector('[data-consentimientos] [role="alert"]')).toBeNull();
+      expect(raiz.querySelector('[data-resultado]')!.textContent).toContain('consentimiento');
+    });
+
+    it('sin consentimiento de guardar, aunque haya CV, pide el consentimiento para subir y se puede dar sin subir', async () => {
+      repositorio.listarCvs.mockResolvedValue([{ idioma: 'es', formato: 'pdf', subidoEn: '2026-10-01T10:00:00+00:00' }]);
+      consentimientos.set({ almacenarCv: false, enviarCvAIa: false });
+      const { raiz, pulsar } = await pintar();
+
+      expect(raiz.querySelector('[data-consentimiento-subida]')).not.toBeNull();
+      await pulsar('[data-consentir="almacenar_cv"]');
+      expect(repositorio.consentir.mock.calls).toEqual([['almacenar_cv', 'v2']]);
+      expect(repositorio.subirCv).not.toHaveBeenCalled();
+    });
+
+    it('los textos nuevos no usan guiones largos ni flechas', async () => {
+      consentimientos.set({ almacenarCv: false, enviarCvAIa: false });
+      const { raiz } = await pintar();
+
+      expect(raiz.querySelector('[data-consentimientos]')!.textContent).not.toMatch(/[—–→]/);
     });
   });
 });

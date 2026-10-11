@@ -32,6 +32,17 @@ interface EstadoDeCuota {
   readonly conocidoEn: number;
 }
 
+/** Which consents are active for the current text version (true only for it and not withdrawn). */
+export interface ConsentimientosVigentes {
+  readonly almacenarCv: boolean;
+  readonly enviarCvAIa: boolean;
+}
+
+interface EstadoDeConsentimientos {
+  readonly valores: ConsentimientosVigentes;
+  readonly conocidoEn: number;
+}
+
 export interface Usuaria {
   readonly sub: string;
   readonly email: string;
@@ -60,6 +71,16 @@ function estadoDePerfilDe(cuerpo: unknown): EstadoDePerfil | null {
   };
 }
 
+/** Absent or malformed means "unknown" (null), never "no consent". */
+function consentimientosDe(cuerpo: unknown): ConsentimientosVigentes | null {
+  if (typeof cuerpo !== 'object' || cuerpo === null) return null;
+  const bruto = (cuerpo as Record<string, unknown>)['consentimientos'];
+  if (typeof bruto !== 'object' || bruto === null) return null;
+  const { almacenar_cv: almacenar, enviar_cv_a_ia: enviar } = bruto as Record<string, unknown>;
+  if (typeof almacenar !== 'boolean' || typeof enviar !== 'boolean') return null;
+  return { almacenarCv: almacenar, enviarCvAIa: enviar };
+}
+
 /**
  * Quien ha entrado. Vive solo en memoria: recargar la pagina cierra la sesion
  * y nada de la credencial toca localStorage ni sessionStorage.
@@ -72,6 +93,7 @@ export class Sesion {
   private readonly _usuaria = signal<Usuaria | null>(null);
   private readonly _perfil = signal<EstadoDePerfil | null>(null);
   private readonly _cuota = signal<EstadoDeCuota | null>(null);
+  private readonly _consentimientos = signal<EstadoDeConsentimientos | null>(null);
   private credencial: string | null = null;
 
   readonly usuaria = this._usuaria.asReadonly();
@@ -80,6 +102,8 @@ export class Sesion {
   readonly perfil = this._perfil.asReadonly();
   /** The latest quota /yo reported; null when none applies (owner, exempt, legacy) or unknown. */
   readonly cuota = computed(() => this._cuota()?.cuota ?? null);
+  /** The latest consent state /yo reported; null when unknown (never read it as "no consent"). */
+  readonly consentimientos = computed(() => this._consentimientos()?.valores ?? null);
 
   token(): string | null {
     return this.credencial;
@@ -98,6 +122,7 @@ export class Sesion {
       this._usuaria.set(cuerpo);
       this._perfil.set(estadoDePerfilDe(cuerpo));
       this.recordarCuota(cuerpo);
+      this.recordarConsentimientos(cuerpo);
       this.credencial = credencial;
       return RESULTADO_DE_ENTRADA.dentro;
     } catch (error) {
@@ -119,6 +144,12 @@ export class Sesion {
       : null;
   }
 
+  /** The consent answer, only while /yo is fresh enough to reuse. */
+  consentimientosRecientes(): ConsentimientosVigentes | null {
+    const estado = this._consentimientos();
+    return estado !== null && Date.now() - estado.conocidoEn <= VIGENCIA_DE_PERFIL_MS ? estado.valores : null;
+  }
+
   /**
    * Asks /yo again (after a generation, say) and refreshes what it says about the
    * profile and the quota. The interceptor adds the token. Rejects if /yo fails,
@@ -130,6 +161,12 @@ export class Sesion {
     const perfil = estadoDePerfilDe(cuerpo);
     if (perfil !== null) this._perfil.set(perfil);
     this.recordarCuota(cuerpo);
+    this.recordarConsentimientos(cuerpo);
+  }
+
+  private recordarConsentimientos(cuerpo: unknown): void {
+    const valores = consentimientosDe(cuerpo);
+    this._consentimientos.set(valores === null ? null : { valores, conocidoEn: Date.now() });
   }
 
   private recordarCuota(cuerpo: unknown): void {
@@ -150,6 +187,7 @@ export class Sesion {
     this._usuaria.set(null);
     this._perfil.set(null);
     this._cuota.set(null);
+    this._consentimientos.set(null);
     this.credencial = null;
   }
 }

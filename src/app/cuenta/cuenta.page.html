@@ -216,31 +216,55 @@
         Tus consentimientos
       </h2>
       <p i18n="Explicacion de la seccion de consentimientos@@cuenta.consentimientos.explicacion">
-        Puedes retirar un consentimiento cuando quieras, sin que cambie lo que ya se hizo antes. Retirar uno que ya habías retirado no cambia nada.
+        Puedes retirar un consentimiento cuando quieras, sin que cambie lo que ya se hizo antes, y volver a darlo si cambias de idea. Retirar uno que ya habías retirado no cambia nada.
       </p>
       <ul class="filas">
         @for (consentimiento of consentimientos; track consentimiento.tipo) {
           <li class="fila">
             <span [id]="'consentimiento-' + consentimiento.tipo">{{ consentimiento.descripcion }}</span>
-            @if (retirados().has(consentimiento.tipo)) {
-              <span class="retirado" [attr.data-retirado]="consentimiento.tipo" i18n="Estado de un consentimiento ya retirado@@cuenta.consentimientos.retirado">
-                Consentimiento retirado
-              </span>
-            } @else {
+            @if (vigente(consentimiento.tipo)) {
               <button
                 type="button"
                 [attr.data-retirar]="consentimiento.tipo"
                 [attr.aria-describedby]="'consentimiento-' + consentimiento.tipo"
-                [disabled]="ocupado()"
+                [disabled]="ocupado() || dandoConsentimiento() !== null"
                 (click)="pedirRetirar(consentimiento.tipo, $event)"
                 i18n="Boton que pide retirar un consentimiento@@cuenta.consentimientos.retirar"
               >
                 Retirar consentimiento
               </button>
+            } @else {
+              @if (retirados().has(consentimiento.tipo)) {
+                <span class="retirado" [attr.data-retirado]="consentimiento.tipo" i18n="Estado de un consentimiento ya retirado@@cuenta.consentimientos.retirado">
+                  Consentimiento retirado
+                </span>
+              } @else {
+                <span class="retirado" [attr.data-inactivo]="consentimiento.tipo" i18n="Estado de un consentimiento que no esta vigente@@cuenta.consentimientos.inactivo">
+                  Sin consentimiento vigente
+                </span>
+              }
+              @if (puedeDarConsentimiento(consentimiento.tipo)) {
+                <button
+                  type="button"
+                  [attr.data-consentir]="consentimiento.tipo"
+                  [attr.aria-describedby]="'consentimiento-' + consentimiento.tipo"
+                  [disabled]="ocupado() || dandoConsentimiento() !== null"
+                  [attr.aria-busy]="dandoConsentimiento() === consentimiento.tipo ? 'true' : null"
+                  (click)="darConsentimiento(consentimiento.tipo)"
+                  i18n="Boton que da de nuevo un consentimiento@@cuenta.consentimientos.dar"
+                >
+                  Dar consentimiento
+                </button>
+              }
             }
           </li>
         }
       </ul>
+      @if (errorAlConsentir()) {
+        <p class="error" role="alert" data-error-consentir i18n="Error al dar de nuevo un consentimiento@@cuenta.consentimientos.errorDar">
+          No hemos podido registrar tu consentimiento. No ha cambiado nada: prueba de nuevo.
+        </p>
+      }
 
       @if (accionConsentimiento(); as tipo) {
         <div

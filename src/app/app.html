@@ -12,6 +12,17 @@
   <app-selector-de-idioma />
 </div>
 
+@if (sesion.activa() && faltaConsentimiento()) {
+  <aside class="aviso-consentimiento" data-aviso-consentimiento aria-labelledby="aviso-consentimiento-texto">
+    <p id="aviso-consentimiento-texto">
+      <ng-container i18n="Aviso de que hay que volver a dar el consentimiento para guardar el CV@@app.avisoConsentimiento.texto"
+        >Hemos actualizado el texto de privacidad y ahora necesitamos que vuelvas a darnos tu consentimiento para guardar tu CV. Mientras tanto no lo usaremos. Tu perfil se queda como está.</ng-container
+      >
+      <a routerLink="/cuenta" i18n="Enlace del aviso de consentimiento a Tu cuenta@@app.avisoConsentimiento.enlace">Ir a Tu cuenta para aceptarlo</a>
+    </p>
+  </aside>
+}
+
 <app-preparando-zona />
 
 <main #principal id="main-content" tabindex="-1">

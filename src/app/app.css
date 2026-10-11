@@ -15,3 +15,15 @@
   /* Same side gutter as the page content, so the title is not flush with the edge. */
   padding: 0.75rem 1rem;
 }
+
+.aviso-consentimiento {
+  margin: 0 1rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid hsl(var(--border));
+  border-left-width: 4px;
+  border-radius: 6px;
+}
+
+.aviso-consentimiento p {
+  margin: 0;
+}

@@ -11,6 +11,26 @@
         <target>Your account</target>
       </segment>
     </unit>
+    <unit id="app.avisoConsentimiento.texto">
+      <notes>
+        <note category="location">src/app/app.html:1</note>
+        <note category="description">Aviso de que hay que volver a dar el consentimiento para guardar el CV</note>
+      </notes>
+      <segment>
+        <source>Hemos actualizado el texto de privacidad y ahora necesitamos que vuelvas a darnos tu consentimiento para guardar tu CV. Mientras tanto no lo usaremos. Tu perfil se queda como está.</source>
+        <target>We have updated our privacy text and we now need you to give us your consent again to keep your CV. Until then we will not use it. Your profile stays as it is.</target>
+      </segment>
+    </unit>
+    <unit id="app.avisoConsentimiento.enlace">
+      <notes>
+        <note category="location">src/app/app.html:1</note>
+        <note category="description">Enlace del aviso de consentimiento a Tu cuenta</note>
+      </notes>
+      <segment>
+        <source>Ir a Tu cuenta para aceptarlo</source>
+        <target>Go to Your account to accept it</target>
+      </segment>
+    </unit>
     <unit id="app.saltarAlContenido">
       <notes>
         <note category="location">src/app/app.html:2,8</note>
@@ -3358,8 +3378,58 @@
         <note category="description">Explicacion de la seccion de consentimientos</note>
       </notes>
       <segment>
-        <source>Puedes retirar un consentimiento cuando quieras, sin que cambie lo que ya se hizo antes. Retirar uno que ya habías retirado no cambia nada.</source>
-        <target>You can withdraw a consent at any time, without changing what was already done before. Withdrawing one you had already withdrawn changes nothing.</target>
+        <source>Puedes retirar un consentimiento cuando quieras, sin que cambie lo que ya se hizo antes, y volver a darlo si cambias de idea. Retirar uno que ya habías retirado no cambia nada.</source>
+        <target>You can withdraw a consent at any time, without changing what was already done before, and give it again if you change your mind. Withdrawing one you had already withdrawn changes nothing.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar.dado">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Resultado de dar de nuevo el consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>Gracias, hemos registrado de nuevo tu consentimiento para guardar tu CV.</source>
+        <target>Thank you, we have recorded your consent to keep your CV again.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia.dado">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Resultado de dar de nuevo el consentimiento de usar la IA</note>
+      </notes>
+      <segment>
+        <source>Gracias, hemos registrado de nuevo tu consentimiento para usar IA con tu CV.</source>
+        <target>Thank you, we have recorded your consent to use AI with your CV again.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.inactivo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Estado de un consentimiento que no esta vigente</note>
+      </notes>
+      <segment>
+        <source>Sin consentimiento vigente</source>
+        <target>No current consent</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.dar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton que da de nuevo un consentimiento</note>
+      </notes>
+      <segment>
+        <source>Dar consentimiento</source>
+        <target>Give consent</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.errorDar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Error al dar de nuevo un consentimiento</note>
+      </notes>
+      <segment>
+        <source>No hemos podido registrar tu consentimiento. No ha cambiado nada: prueba de nuevo.</source>
+        <target>We could not record your consent. Nothing has changed: please try again.</target>
       </segment>
     </unit>
     <unit id="cuenta.consentimientos.almacenar">

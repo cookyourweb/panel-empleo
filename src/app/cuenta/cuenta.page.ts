@@ -78,6 +78,10 @@ export class CuentaPage {
   /** Lo retirado en esta visita: no hay forma de leer el estado de un consentimiento, solo de retirarlo. */
   protected readonly retirados = signal<ReadonlySet<TipoDeConsentimiento>>(new Set());
 
+  /** Que consentimiento se esta registrando desde su boton, o null. */
+  protected readonly dandoConsentimiento = signal<TipoDeConsentimiento | null>(null);
+  protected readonly errorAlConsentir = signal(false);
+
   protected readonly accion = signal<AccionPendiente | null>(null);
   protected readonly accionCv = computed(() => {
     const accion = this.accion();
@@ -105,7 +109,9 @@ export class CuentaPage {
   private readonly consentimientoForzado = signal(false);
 
   /** Sin ningun CV guardado (ella retiro el consentimiento o los borro) se vuelve a pedir; con CV ya hay consentimiento vigente. */
-  protected readonly necesitaConsentimiento = computed(() => this.cvs().length === 0 || this.consentimientoForzado());
+  protected readonly necesitaConsentimiento = computed(
+    () => this.cvs().length === 0 || this.consentimientoForzado() || this.sesion.consentimientos()?.almacenarCv === false,
+  );
   protected readonly puedeElegirArchivo = computed(
     () => !this.necesitaConsentimiento() || (this.marcaGuardar() && this.marcaMayor()),
   );
@@ -192,10 +198,57 @@ export class CuentaPage {
       this.marcaIa.set(false);
       this.marcaMayor.set(false);
       await this.cargarCvs();
+      await this.refrescarSesion();
       this.resultado.set(GUARDADO);
       this.enfocar('[data-titulo-seccion="cv"]');
     } finally {
       this.subiendo.set(false);
+    }
+  }
+
+  /** Vigente segun /yo; si /yo no lo dijo, se supone vigente salvo que ella lo retirara en esta visita. */
+  protected vigente(tipo: TipoDeConsentimiento): boolean {
+    const real = this.sesion.consentimientos();
+    if (real === null) return !this.retirados().has(tipo);
+    return tipo === TIPOS_DE_CONSENTIMIENTO.almacenarCv ? real.almacenarCv : real.enviarCvAIa;
+  }
+
+  /** Dar consentimiento solo se ofrece cuando se sabe que no esta vigente. */
+  protected puedeDarConsentimiento(tipo: TipoDeConsentimiento): boolean {
+    return !this.vigente(tipo) && (this.sesion.consentimientos() !== null || this.retirados().has(tipo));
+  }
+
+  protected async darConsentimiento(tipo: TipoDeConsentimiento): Promise<void> {
+    if (this.ocupado() || this.dandoConsentimiento() !== null) return;
+    this.dandoConsentimiento.set(tipo);
+    this.errorAlConsentir.set(false);
+    this.resultado.set(REGISTRANDO);
+    try {
+      await this.repositorio.consentir(tipo, VERSION_DE_CONSENTIMIENTO);
+    } catch {
+      this.resultado.set('');
+      this.errorAlConsentir.set(true);
+      this.dandoConsentimiento.set(null);
+      return;
+    }
+    this.retirados.update((actuales) => new Set([...actuales].filter((t) => t !== tipo)));
+    this.consentimientoForzado.set(false);
+    await this.refrescarSesion();
+    this.resultado.set(
+      tipo === TIPOS_DE_CONSENTIMIENTO.almacenarCv
+        ? $localize`:Resultado de dar de nuevo el consentimiento de guardar el CV@@cuenta.consentimientos.almacenar.dado:Gracias, hemos registrado de nuevo tu consentimiento para guardar tu CV.`
+        : $localize`:Resultado de dar de nuevo el consentimiento de usar la IA@@cuenta.consentimientos.ia.dado:Gracias, hemos registrado de nuevo tu consentimiento para usar IA con tu CV.`,
+    );
+    this.dandoConsentimiento.set(null);
+    this.enfocar('[data-titulo-seccion="consentimientos"]');
+  }
+
+  /** Vuelve a leer /yo para que el aviso y los botones digan la verdad; si falla, no es un fallo del cambio. */
+  private async refrescarSesion(): Promise<void> {
+    try {
+      await this.sesion.refrescar();
+    } catch {
+      // El cambio ya esta hecho en el servidor; /yo se leera en la siguiente ocasion.
     }
   }
 
@@ -263,6 +316,7 @@ export class CuentaPage {
       } else {
         await this.repositorio.retirarConsentimiento(accion.tipo);
         this.retirados.update((actuales) => new Set(actuales).add(accion.tipo));
+        await this.refrescarSesion();
         if (accion.tipo === TIPOS_DE_CONSENTIMIENTO.almacenarCv) {
           // El servidor borra los CV al retirar este consentimiento: se vuelve a leer, no se supone.
           await this.cargarCvs();
