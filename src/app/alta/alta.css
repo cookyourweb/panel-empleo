@@ -1,6 +1,6 @@
 .paso {
   max-width: 36rem;
-  margin: 2rem auto;
+  margin: 2rem 0;
 }
 
 .casilla {
@@ -106,7 +106,7 @@ button:disabled {
 
 .indicador {
   max-width: 36rem;
-  margin: 1rem auto 0;
+  margin: 1rem 0 0;
 }
 
 .indicador__actual {
@@ -142,7 +142,7 @@ button:disabled {
 
 .siguiente {
   max-width: 36rem;
-  margin: 0.75rem auto 0;
+  margin: 0.75rem 0 0;
 }
 
 button[aria-busy='true'] {

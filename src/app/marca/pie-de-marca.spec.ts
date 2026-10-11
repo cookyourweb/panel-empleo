@@ -25,6 +25,14 @@ async function crear(legales?: readonly EnlaceLegal[], privacidad?: UrlDePrivaci
 }
 
 describe('PieDeMarca', () => {
+  it('alinea su contenido con el contenedor de la pagina y conserva dentro una columna de lectura', async () => {
+    const pie = await crear();
+
+    const contenedor = pie.querySelector('footer > .contenedor-pagina');
+    expect(contenedor).not.toBeNull();
+    expect(contenedor?.querySelector(':scope > .pie__contenedor')).not.toBeNull();
+  });
+
   it('es el contentinfo, con el titulo Contacto', async () => {
     const pie = await crear();
 

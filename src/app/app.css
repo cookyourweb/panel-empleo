@@ -4,20 +4,18 @@
   padding-top: var(--cabecera-espacio);
 }
 
-/* Titulo de la aplicacion, cuenta e idioma. Es una barra normal, no un banner:
-   el banner de la pagina es la cabecera de marca. */
+/* Titulo de la aplicacion, cuenta e idioma. El ancho lo da .contenedor-pagina. */
 .barra-app {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem 1rem;
-  /* Same side gutter as the page content, so the title is not flush with the edge. */
-  padding: 0.75rem 1rem;
+  padding-block: 0.75rem;
 }
 
 .aviso-consentimiento {
-  margin: 0 1rem;
+  margin: 1rem 0 0;
   padding: 0.5rem 0.65rem;
   border: 1px solid hsl(var(--border));
   border-left-width: 4px;

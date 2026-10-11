@@ -1,29 +1,31 @@
 <footer class="pie">
-  <div class="pie__contenedor">
-    <div>
-      <h2 class="pie__titulo" i18n="Titulo del bloque de contacto del pie@@pie.contacto">Contacto</h2>
-      <p class="pie__dato">
-        <span i18n="Etiqueta del telefono de contacto@@pie.telefono">Teléfono:</span>
-        <a href="tel:+34688757782">34 688 75 77 82</a>
-      </p>
-      <p class="pie__dato">
-        <span i18n="Etiqueta del email de contacto@@pie.email">Email:</span>
-        <a href="mailto:veronica@cookyourwebai.es">veronica&#64;cookyourwebai.es</a>
-      </p>
-    </div>
-
-    <div class="pie__derechos">
-      <p>{{ derechos }}</p>
-      @if (legales.length > 0) {
-        <nav class="pie__legales" [attr.aria-label]="etiquetaLegales">
-          @for (enlace of legales; track enlace.clave; let primero = $first) {
-            @if (!primero) {
-              <span aria-hidden="true">·</span>
+  <div class="contenedor-pagina">
+    <div class="pie__contenedor">
+      <div>
+        <h2 class="pie__titulo" i18n="Titulo del bloque de contacto del pie@@pie.contacto">Contacto</h2>
+        <p class="pie__dato">
+          <span i18n="Etiqueta del telefono de contacto@@pie.telefono">Teléfono:</span>
+          <a href="tel:+34688757782">34 688 75 77 82</a>
+        </p>
+        <p class="pie__dato">
+          <span i18n="Etiqueta del email de contacto@@pie.email">Email:</span>
+          <a href="mailto:veronica@cookyourwebai.es">veronica&#64;cookyourwebai.es</a>
+        </p>
+      </div>
+  
+      <div class="pie__derechos">
+        <p>{{ derechos }}</p>
+        @if (legales.length > 0) {
+          <nav class="pie__legales" [attr.aria-label]="etiquetaLegales">
+            @for (enlace of legales; track enlace.clave; let primero = $first) {
+              @if (!primero) {
+                <span aria-hidden="true">·</span>
+              }
+              <a class="pie__legal" [class.pie__legal--baja]="enlace.clave === 'baja'" [href]="enlace.url">{{ enlace.etiqueta }}</a>
             }
-            <a class="pie__legal" [class.pie__legal--baja]="enlace.clave === 'baja'" [href]="enlace.url">{{ enlace.etiqueta }}</a>
-          }
-        </nav>
-      }
+          </nav>
+        }
+      </div>
     </div>
   </div>
 

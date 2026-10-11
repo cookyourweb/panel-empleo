@@ -1,5 +1,5 @@
 <header class="cabecera" [class.cabecera--desplazada]="desplazada()">
-  <div class="contenedor">
+  <div class="contenedor contenedor-pagina">
     <div class="logo">
       <a class="logo__nombre" [href]="agencia">cookYourWebAI</a>
       <span class="logo__etiqueta" i18n="Etiqueta bajo el logo de la agencia@@cabecera.agencia">Agencia AI</span>
@@ -49,7 +49,7 @@
   </div>
 
   <div id="menu-movil" class="menu-movil" [hidden]="!menuAbierto()">
-    <nav class="menu-movil__nav" [attr.aria-label]="etiquetaDelMenu">
+    <nav class="menu-movil__nav contenedor-pagina" [attr.aria-label]="etiquetaDelMenu">
       @for (enlace of enlaces; track enlace.clave) {
         <a class="enlace-movil" [href]="enlace.url" [attr.aria-current]="enlace.actual ? 'page' : null" (click)="cerrarMenu()"
           ><span class="enlace-movil__texto">{{ enlace.etiqueta }}</span

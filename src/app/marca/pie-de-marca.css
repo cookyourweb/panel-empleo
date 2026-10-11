@@ -20,8 +20,8 @@ a:focus-visible {
   width: 100%;
   max-width: 56rem;
   margin-inline: auto;
-  /* La web de la agencia no lleva margen lateral aqui porque su pagina ya lo da. */
-  padding-inline: 1rem;
+  /* Columna de lectura de 896 px (max-w-4xl de la agencia) dentro del contenedor
+     de la pagina, que es quien da el relleno lateral. */
   text-align: center;
 }
 

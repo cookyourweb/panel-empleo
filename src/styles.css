@@ -226,6 +226,56 @@
   }
 }
 
+/* Contenedor unico de la plataforma: cabecera de marca, barra de la app, contenido
+   y pie lo usan, asi sus bordes izquierdo y derecho caen en la misma vertical.
+   Mismos puntos de corte que el container de Tailwind de la cabecera de la agencia
+   (ancho completo hasta 640 px, luego un tope por punto de corte) y mismo relleno
+   lateral (px-4, y px-8 desde 768 px). No hay otro ancho de pagina en la aplicacion:
+   una columna de lectura (formularios, pie) se acota por dentro, nunca por fuera. */
+:root {
+  --contenedor-ancho: 100%;
+  --contenedor-relleno: 1rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --contenedor-ancho: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --contenedor-ancho: 768px;
+    --contenedor-relleno: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --contenedor-ancho: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --contenedor-ancho: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --contenedor-ancho: 1536px;
+  }
+}
+
+.contenedor-pagina {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--contenedor-ancho);
+  margin-inline: auto;
+  padding-inline: var(--contenedor-relleno);
+}
+
 /* El tema oscuro es el principal: es donde la marca funciona. */
 html {
   color-scheme: dark;

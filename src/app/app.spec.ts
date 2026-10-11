@@ -124,6 +124,18 @@ describe('App', () => {
     expect(enlace?.textContent?.trim()).toBe('Tu cuenta');
   });
 
+  describe('anchos y barra de la app', () => {
+    it('la barra de la app, el contenido principal y la cabecera de marca comparten el contenedor de la pagina', async () => {
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+      const pagina = fixture.nativeElement as HTMLElement;
+
+      expect(pagina.querySelector('.barra-app')?.classList.contains('contenedor-pagina')).toBe(true);
+      expect(pagina.querySelector('main')?.classList.contains('contenedor-pagina')).toBe(true);
+      expect(pagina.querySelector('app-cabecera-de-marca .contenedor')?.classList.contains('contenedor-pagina')).toBe(true);
+    });
+  });
+
   describe('aviso de consentimiento', () => {
     async function pintar() {
       TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });

@@ -31,15 +31,8 @@ button:focus-visible {
   backdrop-filter: blur(12px);
 }
 
-/* El "container" de Tailwind: ancho completo con un tope por punto de corte. */
-.contenedor,
-.menu-movil__nav {
-  box-sizing: border-box;
-  width: 100%;
-  margin-inline: auto;
-  padding-inline: 1rem;
-}
-
+/* El ancho y el relleno lateral los da .contenedor-pagina (styles.css), el mismo
+   que usan la barra de la app, el contenido y el pie. */
 .contenedor {
   display: flex;
   align-items: center;
@@ -48,45 +41,6 @@ button:focus-visible {
 
 .menu-movil__nav {
   padding-block: 1.5rem;
-}
-
-@media (min-width: 640px) {
-  .contenedor,
-  .menu-movil__nav {
-    max-width: 640px;
-  }
-}
-
-@media (min-width: 768px) {
-  .contenedor,
-  .menu-movil__nav {
-    max-width: 768px;
-  }
-
-  .contenedor {
-    padding-inline: 2rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .contenedor,
-  .menu-movil__nav {
-    max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .contenedor,
-  .menu-movil__nav {
-    max-width: 1280px;
-  }
-}
-
-@media (min-width: 1536px) {
-  .contenedor,
-  .menu-movil__nav {
-    max-width: 1536px;
-  }
 }
 
 /* ---------- Logo ---------- */
