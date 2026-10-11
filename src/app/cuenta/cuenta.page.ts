@@ -13,7 +13,32 @@ import { RepositorioDeCuenta } from './repositorio-de-cuenta';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: '../alta/alta.css',
   template: `
-    @if (!confirmando()) {
+    @if (borrada()) {
+      <section class="paso" data-borrada aria-labelledby="cuenta-borrada-titulo">
+        <h1
+          id="cuenta-borrada-titulo"
+          tabindex="-1"
+          data-titulo-de-paso
+          i18n="Titulo de la confirmacion de que la cuenta se ha borrado@@cuenta.borrada.titulo"
+        >
+          Tu cuenta se ha borrado
+        </h1>
+        <p i18n="Introduccion de lo que se ha borrado@@cuenta.borrada.introduccion">Hemos eliminado:</p>
+        <ul class="resumen">
+          <li i18n="Se ha borrado el perfil@@cuenta.borrada.perfil">Tu perfil.</li>
+          <li i18n="Se ha borrado el CV cifrado@@cuenta.borrada.cv">Tu CV cifrado.</li>
+          <li i18n="Se han borrado los consentimientos@@cuenta.borrada.consentimientos">Tus consentimientos.</li>
+        </ul>
+        <p i18n="Que pasa ahora que la cuenta esta borrada@@cuenta.borrada.despues">
+          Al continuar cerraremos tu sesión. Para volver a usar el panel necesitarías una nueva invitación.
+        </p>
+        <div class="acciones">
+          <button type="button" data-salir (click)="salir()" i18n="Boton que cierra la sesion tras borrar la cuenta@@cuenta.borrada.salir">
+            Cerrar sesión y volver al inicio
+          </button>
+        </div>
+      </section>
+    } @else if (!confirmando()) {
       <section class="paso" aria-labelledby="cuenta-titulo">
         <h1 id="cuenta-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo de la pagina de cuenta@@cuenta.titulo">
           Tu cuenta
@@ -50,8 +75,12 @@ import { RepositorioDeCuenta } from './repositorio-de-cuenta';
         }
 
         <div class="acciones">
-          <button type="button" data-confirmar [disabled]="borrando()" (click)="confirmar()" i18n="Boton que confirma el borrado@@cuenta.confirmar">
-            Sí, borrar todo
+          <button type="button" data-confirmar [disabled]="borrando()" [attr.aria-busy]="borrando() ? 'true' : null" (click)="confirmar()">
+            @if (borrando()) {
+              <ng-container i18n="Boton de borrar mientras se borra la cuenta@@cuenta.borrando">Borrando tu cuenta…</ng-container>
+            } @else {
+              <ng-container i18n="Boton que confirma el borrado@@cuenta.confirmar">Sí, borrar todo</ng-container>
+            }
           </button>
           <button type="button" data-cancelar [disabled]="borrando()" (click)="cancelar()" i18n="Boton que cancela el borrado@@cuenta.cancelar">
             Cancelar
@@ -70,12 +99,15 @@ export class CuentaPage {
   protected readonly confirmando = signal(false);
   protected readonly borrando = signal(false);
   protected readonly error = signal(false);
+  /** The server deleted everything; the session stays open until the user continues. */
+  protected readonly borrada = signal(false);
 
   private primerPaso = true;
 
   constructor() {
     afterRenderEffect(() => {
       this.confirmando();
+      this.borrada();
       if (this.primerPaso) {
         this.primerPaso = false;
         return;
@@ -104,6 +136,12 @@ export class CuentaPage {
       this.borrando.set(false);
       return;
     }
+    // Show what was deleted before signing out: leaving at once would hide it.
+    this.borrando.set(false);
+    this.borrada.set(true);
+  }
+
+  protected async salir(): Promise<void> {
     this.sesion.cerrar();
     await this.router.navigateByUrl('/');
   }

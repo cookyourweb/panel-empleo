@@ -61,16 +61,58 @@ describe('CuentaPage', () => {
     expect(repositorio.borrar).not.toHaveBeenCalled();
   });
 
-  it('al confirmar borra, cierra la sesion y vuelve al inicio', async () => {
+  it('al confirmar borra y enseña que se ha borrado, sin cerrar la sesion todavia', async () => {
     const navegar = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
-    const { pulsar } = await pintar();
+    const { raiz, pulsar } = await pintar();
     await pulsar('[data-borrar]');
 
     await pulsar('[data-confirmar]');
 
     expect(repositorio.borrar).toHaveBeenCalledTimes(1);
+    const borrada = raiz.querySelector('[data-borrada]')!;
+    expect(borrada).not.toBeNull();
+    expect(borrada.textContent).toContain('perfil');
+    expect(borrada.textContent).toContain('CV cifrado');
+    expect(borrada.textContent).toContain('consentimientos');
+    expect(raiz.querySelector('[data-confirmar]')).toBeNull();
+    expect(sesion.cerrar).not.toHaveBeenCalled();
+    expect(navegar).not.toHaveBeenCalled();
+  });
+
+  it('la confirmacion lleva el foco a su titulo', async () => {
+    const { raiz, pulsar } = await pintar();
+    await pulsar('[data-borrar]');
+
+    await pulsar('[data-confirmar]');
+
+    expect(document.activeElement).toBe(raiz.querySelector('[data-borrada] [data-titulo-de-paso]'));
+  });
+
+  it('al continuar cierra la sesion y vuelve al inicio', async () => {
+    const navegar = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+    const { pulsar } = await pintar();
+    await pulsar('[data-borrar]');
+    await pulsar('[data-confirmar]');
+
+    await pulsar('[data-salir]');
+
     expect(sesion.cerrar).toHaveBeenCalledTimes(1);
     expect(navegar).toHaveBeenCalledWith('/');
+  });
+
+  it('mientras borra, el boton queda ocupado con su texto y no se puede cancelar', async () => {
+    repositorio.borrar.mockReturnValue(new Promise<void>(() => undefined));
+    const { raiz, pulsar } = await pintar();
+    await pulsar('[data-borrar]');
+
+    await pulsar('[data-confirmar]');
+
+    const boton = raiz.querySelector<HTMLButtonElement>('[data-confirmar]')!;
+    expect(boton.disabled).toBe(true);
+    expect(boton.getAttribute('aria-busy')).toBe('true');
+    expect(boton.textContent!.trim()).toBe('Borrando tu cuenta…');
+    expect(raiz.querySelector<HTMLButtonElement>('[data-cancelar]')!.disabled).toBe(true);
+    expect(raiz.querySelector('[data-borrada]')).toBeNull();
   });
 
   it('si el servidor falla muestra el error, no cierra la sesion y deja reintentar', async () => {
@@ -82,7 +124,11 @@ describe('CuentaPage', () => {
 
     expect(sesion.cerrar).not.toHaveBeenCalled();
     expect(raiz.querySelector('[role="alert"]')).not.toBeNull();
-    expect(raiz.querySelector<HTMLButtonElement>('[data-confirmar]')!.disabled).toBe(false);
+    expect(raiz.querySelector('[data-borrada]')).toBeNull();
+    const boton = raiz.querySelector<HTMLButtonElement>('[data-confirmar]')!;
+    expect(boton.disabled).toBe(false);
+    expect(boton.hasAttribute('aria-busy')).toBe(false);
+    expect(boton.textContent!.trim()).toBe('Sí, borrar todo');
   });
 
   it('mueve el foco al titulo de la confirmacion', async () => {

@@ -2752,6 +2752,76 @@
         <target>Your account</target>
       </segment>
     </unit>
+    <unit id="cuenta.borrada.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:18</note>
+        <note category="description">Titulo de la confirmacion de que la cuenta se ha borrado</note>
+      </notes>
+      <segment>
+        <source>Tu cuenta se ha borrado</source>
+        <target>Your account has been deleted</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.introduccion">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:23</note>
+        <note category="description">Introduccion de lo que se ha borrado</note>
+      </notes>
+      <segment>
+        <source>Hemos eliminado:</source>
+        <target>We have deleted:</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.perfil">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:25</note>
+        <note category="description">Se ha borrado el perfil</note>
+      </notes>
+      <segment>
+        <source>Tu perfil.</source>
+        <target>Your profile.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.cv">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:26</note>
+        <note category="description">Se ha borrado el CV cifrado</note>
+      </notes>
+      <segment>
+        <source>Tu CV cifrado.</source>
+        <target>Your encrypted CV.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.consentimientos">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:27</note>
+        <note category="description">Se han borrado los consentimientos</note>
+      </notes>
+      <segment>
+        <source>Tus consentimientos.</source>
+        <target>Your consents.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.despues">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:29</note>
+        <note category="description">Que pasa ahora que la cuenta esta borrada</note>
+      </notes>
+      <segment>
+        <source>Al continuar cerraremos tu sesión. Para volver a usar el panel necesitarías una nueva invitación.</source>
+        <target>When you continue we will sign you out. To use the dashboard again you would need a new invitation.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.salir">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:33</note>
+        <note category="description">Boton que cierra la sesion tras borrar la cuenta</note>
+      </notes>
+      <segment>
+        <source>Cerrar sesión y volver al inicio</source>
+        <target>Sign out and go back to the start</target>
+      </segment>
+    </unit>
     <unit id="cuenta.explicacion">
       <notes>
         <note category="location">src/app/cuenta/cuenta.page.ts:21</note>
@@ -2810,6 +2880,16 @@
       <segment>
         <source>Sí, borrar todo</source>
         <target>Yes, delete everything</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrando">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:80</note>
+        <note category="description">Boton de borrar mientras se borra la cuenta</note>
+      </notes>
+      <segment>
+        <source>Borrando tu cuenta…</source>
+        <target>Deleting your account…</target>
       </segment>
     </unit>
     <unit id="cuenta.cancelar">
