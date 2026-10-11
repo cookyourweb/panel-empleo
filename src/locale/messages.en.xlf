@@ -1982,6 +1982,146 @@
         <target>Your profile</target>
       </segment>
     </unit>
+    <unit id="alta.pasos.consentimiento">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:11</note>
+        <note category="description">Etiqueta del paso 1 del alta</note>
+      </notes>
+      <segment>
+        <source>Antes de empezar</source>
+        <target>Before you start</target>
+      </segment>
+    </unit>
+    <unit id="alta.pasos.subida">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:12</note>
+        <note category="description">Etiqueta del paso 2 del alta</note>
+      </notes>
+      <segment>
+        <source>Sube tu CV</source>
+        <target>Upload your CV</target>
+      </segment>
+    </unit>
+    <unit id="alta.pasos.perfil">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:13</note>
+        <note category="description">Etiqueta del paso 3 del alta</note>
+      </notes>
+      <segment>
+        <source>Completa tu perfil</source>
+        <target>Complete your profile</target>
+      </segment>
+    </unit>
+    <unit id="alta.pasos.hecho">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:14</note>
+        <note category="description">Etiqueta del paso 4 del alta</note>
+      </notes>
+      <segment>
+        <source>Listo</source>
+        <target>Done</target>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.consentimiento">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:26</note>
+        <note category="description">Que pasa despues del consentimiento</note>
+      </notes>
+      <segment>
+        <source>A continuación: elegirás tu CV y lo guardaremos cifrado.</source>
+        <target>Next: you will choose your CV and we will store it encrypted.</target>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.subida">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:27</note>
+        <note category="description">Que pasa despues de elegir el CV</note>
+      </notes>
+      <segment>
+        <source>A continuación: guardamos tu CV cifrado y, si podemos, lo leemos para proponerte los datos de tu perfil.</source>
+        <target>Next: we store your CV encrypted and, if we can, read it to suggest the details of your profile.</target>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.extrayendo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:28</note>
+        <note category="description">Que pasa mientras se sube y se lee el CV</note>
+      </notes>
+      <segment>
+        <source>A continuación: te enseñaremos lo que hayamos leído o, si no se puede, un formulario para rellenar a mano.</source>
+        <target>Next: we will show you what we read or, if that is not possible, a form to fill in by hand.</target>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.revision">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:29</note>
+        <note category="description">Que pasa despues de la revision</note>
+      </notes>
+      <segment>
+        <source>A continuación: acepta, corrige o descarta cada dato y pulsa «Guardar mi perfil». Hasta entonces no se guarda tu perfil.</source>
+        <target>Next: accept, correct or discard each item and press "Save my profile". Your profile is not saved until then.</target>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.manual">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:30</note>
+        <note category="description">Que pasa despues del formulario manual</note>
+      </notes>
+      <segment>
+        <source>A continuación: rellena el formulario y pulsa «Guardar mi perfil».</source>
+        <target>Next: fill in the form and press "Save my profile".</target>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.hecho">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:31</note>
+        <note category="description">Que pasa cuando el alta termina</note>
+      </notes>
+      <segment>
+        <source>Ya has terminado: tu perfil está listo.</source>
+        <target>You are done: your profile is ready.</target>
+      </segment>
+    </unit>
+    <unit id="alta.anuncio.registrando">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:33</note>
+        <note category="description">Aviso de que se registra el consentimiento</note>
+      </notes>
+      <segment>
+        <source>Registrando tu consentimiento…</source>
+        <target>Recording your consent…</target>
+      </segment>
+    </unit>
+    <unit id="alta.anuncio.guardando">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:34</note>
+        <note category="description">Aviso de que se guarda el perfil</note>
+      </notes>
+      <segment>
+        <source>Guardando tu perfil…</source>
+        <target>Saving your profile…</target>
+      </segment>
+    </unit>
+    <unit id="alta.pasos.nombre">
+      <notes>
+        <note category="location">src/app/alta/indicador-de-pasos.ts:38</note>
+        <note category="description">Nombre accesible del indicador de pasos</note>
+      </notes>
+      <segment>
+        <source>Progreso de tu alta</source>
+        <target>Your sign-up progress</target>
+      </segment>
+    </unit>
+    <unit id="alta.pasos.frase">
+      <notes>
+        <note category="location">src/app/alta/indicador-de-pasos.ts:44</note>
+        <note category="description">Frase que dice en que paso esta la usuaria</note>
+      </notes>
+      <segment>
+        <source>Paso <ph id="0" equiv="numero" disp="numero"/> de <ph id="1" equiv="total" disp="total"/>: <ph id="2" equiv="etiqueta" disp="etiqueta"/></source>
+        <target>Step <ph id="0" equiv="numero" disp="numero"/> of <ph id="1" equiv="total" disp="total"/>: <ph id="2" equiv="etiqueta" disp="etiqueta"/></target>
+      </segment>
+    </unit>
     <unit id="alta.extrayendo.subiendo">
       <notes>
         <note category="location">src/app/alta/alta.page.ts:24</note>
@@ -2060,6 +2200,16 @@
       <segment>
         <source>Continuar</source>
         <target>Continue</target>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.registrando">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:52</note>
+        <note category="description">Boton de consentimiento mientras se registra</note>
+      </notes>
+      <segment>
+        <source>Registrando tu consentimiento…</source>
+        <target>Recording your consent…</target>
       </segment>
     </unit>
     <unit id="alta.consentimiento.aMano">
@@ -2320,6 +2470,16 @@
       <segment>
         <source>Guardar mi perfil</source>
         <target>Save my profile</target>
+      </segment>
+    </unit>
+    <unit id="alta.formulario.guardando">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:164</note>
+        <note category="description">Boton de guardar mientras se guarda el perfil</note>
+      </notes>
+      <segment>
+        <source>Guardando tu perfil…</source>
+        <target>Saving your profile…</target>
       </segment>
     </unit>
     <unit id="alta.revision.estado.propuesto">

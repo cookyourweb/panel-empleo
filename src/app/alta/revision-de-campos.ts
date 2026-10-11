@@ -30,6 +30,7 @@ import { FormularioManual } from './formulario-manual';
         [propuestas]="propuestas()"
         [enRevision]="true"
         [errorDeGuardado]="errorDeGuardado()"
+        [guardando]="guardando()"
         (guardar)="guardar.emit($event)"
       />
     </section>
@@ -39,5 +40,6 @@ export class RevisionDeCampos {
   readonly propuestas = input<Propuesta[]>([]);
   readonly cvGuardado = input(false);
   readonly errorDeGuardado = input(false);
+  readonly guardando = input(false);
   readonly guardar = output<Perfil>();
 }

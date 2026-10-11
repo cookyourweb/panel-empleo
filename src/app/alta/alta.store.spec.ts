@@ -215,6 +215,53 @@ describe('AltaStore', () => {
     });
   });
 
+  describe('estado ocupado', () => {
+    it('consentiendo es verdadero solo mientras el servidor registra el consentimiento', async () => {
+      const espera = aplazada<void>();
+      repositorio.consentir.mockReturnValue(espera.promesa);
+      expect(store.consentiendo()).toBe(false);
+
+      const consentimiento = store.consentir();
+      expect(store.consentiendo()).toBe(true);
+
+      espera.resolver();
+      await consentimiento;
+      expect(store.consentiendo()).toBe(false);
+    });
+
+    it('consentiendo vuelve a falso si el servidor falla', async () => {
+      repositorio.consentir.mockRejectedValue(new Error('500'));
+
+      await store.consentir();
+
+      expect(store.consentiendo()).toBe(false);
+    });
+
+    it('guardando es verdadero mientras se guarda y un segundo guardar no repite la peticion', async () => {
+      store.irAManual();
+      const espera = aplazada<void>();
+      repositorio.guardar.mockReturnValue(espera.promesa);
+
+      const primero = store.guardar(PERFIL);
+      const segundo = store.guardar(PERFIL);
+      expect(store.guardando()).toBe(true);
+
+      espera.resolver();
+      await Promise.all([primero, segundo]);
+      expect(store.guardando()).toBe(false);
+      expect(repositorio.guardar).toHaveBeenCalledTimes(1);
+    });
+
+    it('guardando vuelve a falso si el servidor falla', async () => {
+      store.irAManual();
+      repositorio.guardar.mockRejectedValue(new Error('422'));
+
+      await store.guardar(PERFIL);
+
+      expect(store.guardando()).toBe(false);
+    });
+  });
+
   describe('guardar', () => {
     it('guarda el perfil y termina (REQ-5.5: solo al confirmar)', async () => {
       store.irAManual();

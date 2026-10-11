@@ -46,11 +46,15 @@ import { ChangeDetectionStrategy, Component, input, output, signal } from '@angu
         <button
           type="button"
           data-continuar
-          [disabled]="!marcado()"
+          [disabled]="!marcado() || ocupado()"
+          [attr.aria-busy]="ocupado() ? 'true' : null"
           (click)="aceptar.emit()"
-          i18n="Boton que acepta el consentimiento@@alta.consentimiento.continuar"
         >
-          Continuar
+          @if (ocupado()) {
+            <ng-container i18n="Boton de consentimiento mientras se registra@@alta.consentimiento.registrando">Registrando tu consentimiento…</ng-container>
+          } @else {
+            <ng-container i18n="Boton que acepta el consentimiento@@alta.consentimiento.continuar">Continuar</ng-container>
+          }
         </button>
         <button
           type="button"
@@ -66,6 +70,8 @@ import { ChangeDetectionStrategy, Component, input, output, signal } from '@angu
 })
 export class Consentimiento {
   readonly conError = input(false);
+  /** True while the consent request is in flight. */
+  readonly ocupado = input(false);
   readonly aceptar = output<void>();
   readonly aMano = output<void>();
 

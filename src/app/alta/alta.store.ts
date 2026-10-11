@@ -44,6 +44,8 @@ export class AltaStore {
   private readonly _errorDeConsentimiento = signal(false);
   private readonly _errorDeGuardado = signal(false);
   private readonly _cvGuardado = signal(false);
+  private readonly _consentiendo = signal(false);
+  private readonly _guardando = signal(false);
 
   readonly paso = this._paso.asReadonly();
   readonly propuestas = this._propuestas.asReadonly();
@@ -57,17 +59,24 @@ export class AltaStore {
    * separate facts: reading may fail or be unavailable while the CV stays safe.
    */
   readonly cvGuardado = this._cvGuardado.asReadonly();
+  /** True while the consent request is in flight. */
+  readonly consentiendo = this._consentiendo.asReadonly();
+  /** True while the profile is being saved: the form shows it and refuses a second submit. */
+  readonly guardando = this._guardando.asReadonly();
 
   /** Registra los dos consentimientos de la version vigente y abre la subida. */
   async consentir(): Promise<void> {
-    if (this._paso() !== PASOS.consentimiento) return;
+    if (this._paso() !== PASOS.consentimiento || this._consentiendo()) return;
     this._errorDeConsentimiento.set(false);
+    this._consentiendo.set(true);
     try {
       await this.repositorio.consentir(TIPOS_DE_CONSENTIMIENTO.almacenarCv, VERSION_DE_CONSENTIMIENTO);
       await this.repositorio.consentir(TIPOS_DE_CONSENTIMIENTO.enviarCvAIa, VERSION_DE_CONSENTIMIENTO);
     } catch {
       this._errorDeConsentimiento.set(true);
       return;
+    } finally {
+      this._consentiendo.set(false);
     }
     this._paso.set(PASOS.subida);
   }
@@ -104,13 +113,16 @@ export class AltaStore {
 
   /** Solo al confirmar (REQ-5.5). Si el servidor falla, no se pierde lo escrito. */
   async guardar(perfil: Perfil): Promise<void> {
-    if (this._paso() !== PASOS.revision && this._paso() !== PASOS.manual) return;
+    if ((this._paso() !== PASOS.revision && this._paso() !== PASOS.manual) || this._guardando()) return;
     this._errorDeGuardado.set(false);
+    this._guardando.set(true);
     try {
       await this.repositorio.guardar(perfil);
     } catch {
       this._errorDeGuardado.set(true);
       return;
+    } finally {
+      this._guardando.set(false);
     }
     // The cached /yo answer may still say "no profile": correct it before any guard runs.
     this.sesion.perfilGuardado();

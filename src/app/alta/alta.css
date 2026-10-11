@@ -103,3 +103,48 @@ button:disabled {
   border-left-width: 4px;
   border-radius: 6px;
 }
+
+.indicador {
+  max-width: 36rem;
+  margin: 1rem auto 0;
+}
+
+.indicador__actual {
+  margin: 0;
+  font-weight: 600;
+}
+
+.indicador__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.indicador__paso {
+  padding: 0.15rem 0;
+  border-bottom: 2px solid transparent;
+  color: hsl(var(--muted-foreground, var(--foreground)));
+}
+
+.indicador__paso[data-hecho]::before {
+  content: '\2713\00a0';
+  content: '\2713\00a0' / '';
+}
+
+.indicador__paso[aria-current='step'] {
+  border-bottom-color: hsl(var(--primary));
+  color: hsl(var(--foreground));
+  font-weight: 600;
+}
+
+.siguiente {
+  max-width: 36rem;
+  margin: 0.75rem auto 0;
+}
+
+button[aria-busy='true'] {
+  cursor: progress;
+}

@@ -1,9 +1,10 @@
 import { afterRenderEffect, ChangeDetectionStrategy, Component, computed, ElementRef, inject } from '@angular/core';
 
-import { AltaStore, PASOS } from './alta.store';
+import { AltaStore, Paso, PASOS } from './alta.store';
 import { Consentimiento } from './consentimiento';
 import { MotivoManual } from './dominio';
 import { FormularioManual } from './formulario-manual';
+import { IndicadorDePasos } from './indicador-de-pasos';
 import { RevisionDeCampos } from './revision-de-campos';
 import { SubidaDeCv } from './subida-de-cv';
 
@@ -16,6 +17,36 @@ const MENSAJES_DE_MOTIVO: Readonly<Record<MotivoManual, string>> = {
   indisponible: $localize`:Motivo manual, servicio no disponible@@alta.manual.motivo.indisponible:Tu CV está guardado. Ahora mismo no podemos leerlo automáticamente, así que rellena tu perfil a mano; solo te llevará unos minutos.`,
 };
 
+// The sign-up has four visible steps; reading the CV belongs to step 2 and the
+// review and the manual form are both step 3.
+const ETIQUETAS_DE_PASOS: readonly string[] = [
+  $localize`:Etiqueta del paso 1 del alta@@alta.pasos.consentimiento:Antes de empezar`,
+  $localize`:Etiqueta del paso 2 del alta@@alta.pasos.subida:Sube tu CV`,
+  $localize`:Etiqueta del paso 3 del alta@@alta.pasos.perfil:Completa tu perfil`,
+  $localize`:Etiqueta del paso 4 del alta@@alta.pasos.hecho:Listo`,
+];
+
+const NUMERO_DE_PASO: Readonly<Record<Paso, number>> = {
+  [PASOS.consentimiento]: 1,
+  [PASOS.subida]: 2,
+  [PASOS.extrayendo]: 2,
+  [PASOS.revision]: 3,
+  [PASOS.manual]: 3,
+  [PASOS.hecho]: 4,
+};
+
+const QUE_VIENE_DESPUES: Readonly<Record<Paso, string>> = {
+  [PASOS.consentimiento]: $localize`:Que pasa despues del consentimiento@@alta.siguiente.consentimiento:A continuación: elegirás tu CV y lo guardaremos cifrado.`,
+  [PASOS.subida]: $localize`:Que pasa despues de elegir el CV@@alta.siguiente.subida:A continuación: guardamos tu CV cifrado y, si podemos, lo leemos para proponerte los datos de tu perfil.`,
+  [PASOS.extrayendo]: $localize`:Que pasa mientras se sube y se lee el CV@@alta.siguiente.extrayendo:A continuación: te enseñaremos lo que hayamos leído o, si no se puede, un formulario para rellenar a mano.`,
+  [PASOS.revision]: $localize`:Que pasa despues de la revision@@alta.siguiente.revision:A continuación: acepta, corrige o descarta cada dato y pulsa «Guardar mi perfil». Hasta entonces no se guarda tu perfil.`,
+  [PASOS.manual]: $localize`:Que pasa despues del formulario manual@@alta.siguiente.manual:A continuación: rellena el formulario y pulsa «Guardar mi perfil».`,
+  [PASOS.hecho]: $localize`:Que pasa cuando el alta termina@@alta.siguiente.hecho:Ya has terminado: tu perfil está listo.`,
+};
+
+const REGISTRANDO = $localize`:Aviso de que se registra el consentimiento@@alta.anuncio.registrando:Registrando tu consentimiento…`;
+const GUARDANDO = $localize`:Aviso de que se guarda el perfil@@alta.anuncio.guardando:Guardando tu perfil…`;
+
 const SUBIENDO = $localize`:Aviso de que se esta subiendo el CV@@alta.extrayendo.subiendo:Subiendo tu CV…`;
 const LEYENDO = $localize`:Titulo mientras se lee el CV ya guardado@@alta.extrayendo.leyendo:Leyendo tu CV…`;
 const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta leyendo@@alta.extrayendo.guardado:Tu CV está guardado (cifrado). Ahora lo estamos leyendo, un momento.`;
@@ -27,12 +58,15 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
  */
 @Component({
   selector: 'app-alta',
-  imports: [Consentimiento, SubidaDeCv, RevisionDeCampos, FormularioManual],
+  imports: [Consentimiento, SubidaDeCv, RevisionDeCampos, FormularioManual, IndicadorDePasos],
   providers: [AltaStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './alta.css',
   template: `
     <h1 i18n="Titulo de la pantalla de alta@@alta.titulo">Tu perfil</h1>
+
+    <app-indicador-de-pasos [etiquetas]="etiquetas" [actual]="numeroDePaso()" />
+    <p class="siguiente" data-siguiente>{{ siguiente() }}</p>
 
     <!-- La region existe siempre: un role="status" que nace ya con texto no se
          anuncia de forma fiable. Solo cambia el texto de dentro. -->
@@ -46,6 +80,7 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
       @case (pasos.consentimiento) {
         <app-consentimiento
           [conError]="store.errorDeConsentimiento()"
+          [ocupado]="store.consentiendo()"
           (aceptar)="store.consentir()"
           (aMano)="store.irAManual()"
         />
@@ -69,6 +104,7 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
           [cvGuardado]="store.cvGuardado()"
           [propuestas]="store.propuestas()"
           [errorDeGuardado]="store.errorDeGuardado()"
+          [guardando]="store.guardando()"
           (guardar)="store.guardar($event)"
         />
       }
@@ -84,7 +120,11 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
               Rellena tu perfil a mano. No se guarda nada hasta que lo confirmes.
             </p>
           }
-          <app-formulario-manual [errorDeGuardado]="store.errorDeGuardado()" (guardar)="store.guardar($event)" />
+          <app-formulario-manual
+            [errorDeGuardado]="store.errorDeGuardado()"
+            [guardando]="store.guardando()"
+            (guardar)="store.guardar($event)"
+          />
         </section>
       }
       @case (pasos.hecho) {
@@ -108,9 +148,15 @@ export class AltaPage {
 
   /** What the live region says: the CV is first uploaded, then (already stored) read. */
   protected readonly anuncio = computed(() => {
+    if (this.store.guardando()) return GUARDANDO;
+    if (this.store.consentiendo()) return REGISTRANDO;
     if (this.store.paso() !== PASOS.extrayendo) return null;
     return this.store.cvGuardado() ? GUARDADO_Y_LEYENDO : SUBIENDO;
   });
+
+  protected readonly etiquetas = ETIQUETAS_DE_PASOS;
+  protected readonly numeroDePaso = computed(() => NUMERO_DE_PASO[this.store.paso()]);
+  protected readonly siguiente = computed(() => QUE_VIENE_DESPUES[this.store.paso()]);
 
   private readonly anfitrion = inject<ElementRef<HTMLElement>>(ElementRef);
   private primerPaso = true;

@@ -159,7 +159,13 @@ function aLista(texto: string): string[] {
       }
 
       <div class="acciones">
-        <button type="submit" data-guardar i18n="Boton que guarda el perfil@@alta.formulario.guardar">Guardar mi perfil</button>
+        <button type="submit" data-guardar [disabled]="guardando()" [attr.aria-busy]="guardando() ? 'true' : null">
+          @if (guardando()) {
+            <ng-container i18n="Boton de guardar mientras se guarda el perfil@@alta.formulario.guardando">Guardando tu perfil…</ng-container>
+          } @else {
+            <ng-container i18n="Boton que guarda el perfil@@alta.formulario.guardar">Guardar mi perfil</ng-container>
+          }
+        </button>
       </div>
     </form>
   `,
@@ -169,6 +175,8 @@ export class FormularioManual {
   /** Con propuestas del CV: cada campo muestra su cita y se puede aceptar, editar o descartar. */
   readonly enRevision = input(false);
   readonly errorDeGuardado = input(false);
+  /** True while the save request is in flight: the button is busy and a second submit is ignored. */
+  readonly guardando = input(false);
   readonly guardar = output<Perfil>();
 
   protected readonly camposDeTexto = ['rol', 'aniosExperiencia', 'stack', 'idiomas', 'ubicacion'] as const satisfies readonly Campo[];
@@ -264,6 +272,7 @@ export class FormularioManual {
   }
 
   protected confirmar(): void {
+    if (this.guardando()) return;
     this.enviado.set(true);
     this.formulario.markAllAsTouched();
     if (this.formulario.invalid) return;
