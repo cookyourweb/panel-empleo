@@ -5,10 +5,11 @@ import { filter, skip } from 'rxjs';
 
 import { ALTA_ACTIVA } from './configuracion';
 import { SelectorDeIdioma } from './idioma/selector-de-idioma';
+import { PreparandoZona } from './preparacion/preparando-zona';
 import { Sesion } from './sesion/sesion';
 
 @Component({
-  imports: [RouterLink, RouterOutlet, SelectorDeIdioma],
+  imports: [PreparandoZona, RouterLink, RouterOutlet, SelectorDeIdioma],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',

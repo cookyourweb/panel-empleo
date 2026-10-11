@@ -1,0 +1,15 @@
+<div class="region" role="status" aria-live="polite">
+  @if (visible()) {
+    <div class="preparando" [class.preparando--sin-animacion]="movimientoReducido()">
+      <p class="preparando__titulo" i18n="Aviso mientras se prepara la zona de la usuaria tras entrar@@preparando.titulo">
+        Estamos preparando tu zona…
+      </p>
+      @if (conAvisoDeArranque()) {
+        <p class="preparando__detalle" i18n="Aviso de que la primera vez puede tardar porque el servidor duerme@@preparando.detalle">
+          La primera vez puede tardar unos segundos mientras el servidor se despierta.
+        </p>
+      }
+      <div class="preparando__barra" aria-hidden="true"></div>
+    </div>
+  }
+</div>

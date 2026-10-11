@@ -2762,5 +2762,25 @@
         <target>None of these offers is reachable right now.</target>
       </segment>
     </unit>
+    <unit id="preparando.titulo">
+      <notes>
+        <note category="location">src/app/preparacion/preparando-zona.html:4,6</note>
+        <note category="description">Aviso mientras se prepara la zona de la usuaria tras entrar</note>
+      </notes>
+      <segment>
+        <source>Estamos preparando tu zona…</source>
+        <target>We are getting your area ready…</target>
+      </segment>
+    </unit>
+    <unit id="preparando.detalle">
+      <notes>
+        <note category="location">src/app/preparacion/preparando-zona.html:8,10</note>
+        <note category="description">Aviso de que la primera vez puede tardar porque el servidor duerme</note>
+      </notes>
+      <segment>
+        <source>La primera vez puede tardar unos segundos mientras el servidor se despierta.</source>
+        <target>The first time can take a few seconds while the server wakes up.</target>
+      </segment>
+    </unit>
   </file>
 </xliff>

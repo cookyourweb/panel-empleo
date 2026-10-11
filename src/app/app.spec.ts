@@ -9,6 +9,9 @@ import { Sesion } from './sesion/sesion';
 @Component({ template: 'pagina' })
 class PaginaFalsa {}
 
+let liberarGuarda: () => void = () => undefined;
+const guardaLenta = () => new Promise<boolean>((resolver) => (liberarGuarda = () => resolver(true)));
+
 describe('App', () => {
   const activa = signal(false);
 
@@ -22,6 +25,7 @@ describe('App', () => {
         provideRouter([
           { path: 'a', component: PaginaFalsa },
           { path: 'b', component: PaginaFalsa },
+          { path: 'lenta', component: PaginaFalsa, canActivate: [guardaLenta] },
         ]),
       ],
     }).compileComponents();
@@ -101,5 +105,26 @@ describe('App', () => {
     await fixture.whenStable();
 
     expect((fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
+  });
+
+  it('muestra el aviso de preparar la zona mientras una guarda espera y lo quita al decidir', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+    const router = TestBed.inject(Router);
+    const estado = () => pagina.querySelector('[role="status"]')?.textContent ?? '';
+    expect(estado().trim()).toBe('');
+
+    void router.navigateByUrl('/lenta');
+    await vi.waitFor(() => {
+      fixture.detectChanges();
+      expect(estado()).toContain('Estamos preparando tu zona…');
+    });
+
+    liberarGuarda();
+    await vi.waitFor(() => {
+      fixture.detectChanges();
+      expect(estado().trim()).toBe('');
+    });
   });
 });

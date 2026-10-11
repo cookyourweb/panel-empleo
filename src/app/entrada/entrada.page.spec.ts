@@ -4,6 +4,7 @@ import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
 import { ProveedorDeIdentidad } from '../sesion/proveedor-de-identidad';
+import { Preparacion } from '../preparacion/preparacion';
 import { RESULTADO_DE_ENTRADA, ResultadoDeEntrada, Sesion } from '../sesion/sesion';
 import { Servidor } from '../sesion/servidor';
 import { EntradaPage } from './entrada.page';
@@ -138,6 +139,39 @@ describe('EntradaPage', () => {
     expect(pagina.querySelector('[role="alert"]')?.textContent).toContain(
       'El servidor no puede comprobar la identidad ahora',
     );
+  });
+
+  it('avisa de la espera desde que la credencial se envia hasta que la navegacion acaba', async () => {
+    await abrir();
+    const preparacion = TestBed.inject(Preparacion);
+    let terminarEntrada: (resultado: ResultadoDeEntrada) => void = () => undefined;
+    entrar.mockReturnValue(new Promise<ResultadoDeEntrada>((resolver) => (terminarEntrada = resolver)));
+    let terminarNavegacion: (ok: boolean) => void = () => undefined;
+    navegar.mockReturnValue(new Promise<boolean>((resolver) => (terminarNavegacion = resolver)));
+
+    identidad.alRecibir?.('jwt-de-prueba');
+    await vi.waitFor(() => expect(preparacion.visible()).toBe(true));
+
+    // /yo ya contesto, pero las guardas de la ruta aun deciden: sigue la espera.
+    terminarEntrada(RESULTADO_DE_ENTRADA.dentro);
+    await vi.waitFor(() => expect(navegar).toHaveBeenCalled());
+    expect(preparacion.visible()).toBe(true);
+
+    terminarNavegacion(true);
+    await vi.waitFor(() => expect(preparacion.visible()).toBe(false));
+  });
+
+  it('deja de avisar si la cuenta no entra', async () => {
+    await abrir();
+    const preparacion = TestBed.inject(Preparacion);
+    let terminarEntrada: (resultado: ResultadoDeEntrada) => void = () => undefined;
+    entrar.mockReturnValue(new Promise<ResultadoDeEntrada>((resolver) => (terminarEntrada = resolver)));
+
+    identidad.alRecibir?.('jwt-de-prueba');
+    await vi.waitFor(() => expect(preparacion.visible()).toBe(true));
+
+    terminarEntrada(RESULTADO_DE_ENTRADA.rechazada);
+    await vi.waitFor(() => expect(preparacion.visible()).toBe(false));
   });
 });
 
