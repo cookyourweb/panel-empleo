@@ -337,7 +337,7 @@
     <unit id="bienvenida.listaDeEspera">
       <notes>
         <note category="location">src/app/bienvenida/bienvenida.page.html:11,12</note>
-        <note category="description">Enlace al formulario de la lista de espera</note>
+        <note category="description">Titulo del formulario de la lista de espera</note>
       </notes>
       <segment>
         <source>Únete a la lista de espera</source>
@@ -350,6 +350,87 @@
       </notes>
       <segment>
         <source> (se abre en una pestaña nueva)</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.exito">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Mensaje cuando la persona queda apuntada a la lista de espera</note>
+      </notes>
+      <segment>
+        <source>¡Listo! Te avisaremos por email en cuanto haya una plaza disponible.</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.nombre">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Etiqueta del campo nombre de la lista de espera</note>
+      </notes>
+      <segment>
+        <source>Nombre</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.email">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Etiqueta del campo email de la lista de espera</note>
+      </notes>
+      <segment>
+        <source>Email</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.privacidad">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Primera parte de la casilla de privacidad</note>
+      </notes>
+      <segment>
+        <source>He leído y acepto la </source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.privacidadEnlace">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Texto del enlace a la politica de privacidad</note>
+      </notes>
+      <segment>
+        <source>política de privacidad</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.error">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Aviso cuando la solicitud no se ha podido registrar</note>
+      </notes>
+      <segment>
+        <source>No hemos podido registrar tu solicitud. Inténtalo de nuevo en unos minutos o escribe a veronica@cookyourwebai.es.</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.lssi">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Aviso legal (LSSI art. 21) junto al boton de la lista de espera</note>
+      </notes>
+      <segment>
+        <source>Al enviar este formulario aceptas recibir un email de aviso cuando haya una plaza disponible en Empleo Tech.</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.enviando">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Texto del boton de la lista de espera mientras envia</note>
+      </notes>
+      <segment>
+        <source>Enviando…</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.unirme">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Texto del boton para unirse a la lista de espera</note>
+      </notes>
+      <segment>
+        <source>Unirme a la lista de espera</source>
       </segment>
     </unit>
     <unit id="bienvenida.yaTienesAcceso">

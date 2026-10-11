@@ -77,6 +77,14 @@ export type UrlDePrivacidad = '' | `https://${string}`;
  */
 export const URL_DE_PRIVACIDAD_DE_EMPLEO: UrlDePrivacidad = '';
 
+/** Politica de privacidad general de la agencia: la que se enlaza en la lista de espera hasta que exista la seccion de Empleo Tech. */
+export const POLITICA_DE_PRIVACIDAD_DE_LA_AGENCIA = 'https://www.cookyourwebai.es/politicadeprivacidad';
+
+/** La politica que enlaza la lista de espera: la de Empleo Tech si ya esta publicada y, si no, la base sin ancla. */
+export function urlDePrivacidadDeLaLista(empleo: UrlDePrivacidad): string {
+  return empleo || POLITICA_DE_PRIVACIDAD_DE_LA_AGENCIA;
+}
+
 /** Inyectable para poder sustituirla en las pruebas. */
 export const URL_DE_PRIVACIDAD = new InjectionToken<UrlDePrivacidad>('URL_DE_PRIVACIDAD', {
   providedIn: 'root',

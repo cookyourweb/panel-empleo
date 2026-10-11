@@ -7,12 +7,54 @@
     </p>
 
     <p class="acciones">
-      <a class="principal" data-lista-espera [href]="listaDeEspera" target="_blank" rel="noopener noreferrer"
-        ><ng-container i18n="Enlace al formulario de la lista de espera@@bienvenida.listaDeEspera">Únete a la lista de espera</ng-container>
-        <span class="solo-lectores" i18n="Aviso de que el enlace abre una pestana nueva@@bienvenida.pestanaNueva"> (se abre en una pestaña nueva)</span></a
-      >
       <a class="secundaria" data-entrar routerLink="/entrar" i18n="Enlace a la pantalla de entrada para quien ya tiene acceso@@bienvenida.yaTienesAcceso">¿Ya tienes acceso? Entra</a>
     </p>
+
+    <section class="espera" aria-labelledby="espera-titulo">
+      <p id="espera-titulo" class="espera-titulo" i18n="Titulo del formulario de la lista de espera@@bienvenida.listaDeEspera">Únete a la lista de espera</p>
+
+      <div aria-live="polite">
+        @if (apuntada()) {
+          <p #exito class="exito" data-exito tabindex="-1" i18n="Mensaje cuando la persona queda apuntada a la lista de espera@@bienvenida.espera.exito">¡Listo! Te avisaremos por email en cuanto haya una plaza disponible.</p>
+        }
+      </div>
+
+      @if (!apuntada()) {
+        <form data-lista-espera (submit)="$event.preventDefault(); enviar()">
+          <p class="campo">
+            <label for="espera-nombre" i18n="Etiqueta del campo nombre de la lista de espera@@bienvenida.espera.nombre">Nombre</label>
+            <input id="espera-nombre" name="nombre" type="text" autocomplete="name" required [value]="nombre()" (input)="nombre.set($any($event.target).value)" />
+          </p>
+          <p class="campo">
+            <label for="espera-email" i18n="Etiqueta del campo email de la lista de espera@@bienvenida.espera.email">Email</label>
+            <input id="espera-email" name="email" type="email" autocomplete="email" required [value]="email()" (input)="email.set($any($event.target).value)" />
+          </p>
+          <p class="casilla">
+            <input id="espera-privacidad" name="privacidad" type="checkbox" required [checked]="aceptada()" (change)="aceptada.set($any($event.target).checked)" />
+            <label for="espera-privacidad"
+              ><span i18n="Primera parte de la casilla de privacidad@@bienvenida.espera.privacidad">He leído y acepto la </span
+              ><a [href]="urlDePrivacidad" target="_blank" rel="noopener noreferrer"
+                ><ng-container i18n="Texto del enlace a la politica de privacidad@@bienvenida.espera.privacidadEnlace">política de privacidad</ng-container
+                ><span class="solo-lectores" i18n="Aviso de que el enlace abre una pestana nueva@@bienvenida.pestanaNueva"> (se abre en una pestaña nueva)</span></a
+              >.</label
+            >
+          </p>
+
+          @if (fallo()) {
+            <p class="error" role="alert" i18n="Aviso cuando la solicitud no se ha podido registrar@@bienvenida.espera.error">No hemos podido registrar tu solicitud. Inténtalo de nuevo en unos minutos o escribe a veronica@cookyourwebai.es.</p>
+          }
+
+          <p class="legal" i18n="Aviso legal (LSSI art. 21) junto al boton de la lista de espera@@bienvenida.espera.lssi">Al enviar este formulario aceptas recibir un email de aviso cuando haya una plaza disponible en Empleo Tech.</p>
+          <button class="principal" type="submit" [disabled]="enviando()" [attr.aria-busy]="enviando() ? 'true' : null">
+            @if (enviando()) {
+              <ng-container i18n="Texto del boton de la lista de espera mientras envia@@bienvenida.espera.enviando">Enviando…</ng-container>
+            } @else {
+              <ng-container i18n="Texto del boton para unirse a la lista de espera@@bienvenida.espera.unirme">Unirme a la lista de espera</ng-container>
+            }
+          </button>
+        </form>
+      }
+    </section>
   </header>
 
   <div class="rejilla">
