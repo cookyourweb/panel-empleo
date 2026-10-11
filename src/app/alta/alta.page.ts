@@ -149,7 +149,7 @@ const GUARDADO_Y_LEYENDO = $localize`:Aviso de que el CV esta guardado y se esta
             }
             @if (store.consentido()) {
               <li data-resumen-consentimientos i18n="Resumen final, consentimientos registrados@@alta.hecho.consentimientos">
-                Tus consentimientos, registrados: guardar tu CV cifrado y enviarlo a proveedores de IA para leerlo.
+                Tus consentimientos, registrados: guardar tu CV cifrado y enviarlo a proveedores de IA para leerlo y para generar tus CV y cartas cuando lo pidas.
               </li>
             }
           </ul>

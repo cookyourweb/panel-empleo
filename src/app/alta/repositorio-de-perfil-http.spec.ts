@@ -92,11 +92,11 @@ describe('RepositorioDePerfilHttp', () => {
   });
 
   it('consentir manda POST /consentimientos con tipo y version', async () => {
-    const resultado = repositorio.consentir('enviar_cv_a_ia', 'v1');
+    const resultado = repositorio.consentir('enviar_cv_a_ia', 'v2');
     const peticion = http.expectOne(`${URL_API}/consentimientos`);
 
     expect(peticion.request.method).toBe('POST');
-    expect(peticion.request.body).toEqual({ tipo: 'enviar_cv_a_ia', version: 'v1' });
+    expect(peticion.request.body).toEqual({ tipo: 'enviar_cv_a_ia', version: 'v2' });
     peticion.flush(null, { status: 201, statusText: 'Created' });
 
     await resultado;

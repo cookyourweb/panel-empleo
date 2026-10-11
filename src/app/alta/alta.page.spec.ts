@@ -37,7 +37,7 @@ describe('AltaPage', () => {
   it('al aceptar pasa a la subida', async () => {
     const { fixture, raiz } = await pintar();
 
-    raiz.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click();
+    raiz.querySelectorAll<HTMLInputElement>('input[type=\"checkbox\"]').forEach((c) => c.click());
     await fixture.whenStable();
     raiz.querySelector<HTMLButtonElement>('[data-continuar]')!.click();
     await fixture.whenStable();
@@ -65,7 +65,7 @@ describe('AltaPage', () => {
   describe('revision, manual y hecho', () => {
     async function hastaLaSubida() {
       const p = await pintar();
-      p.raiz.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click();
+      p.raiz.querySelectorAll<HTMLInputElement>('input[type=\"checkbox\"]').forEach((c) => c.click());
       await p.fixture.whenStable();
       p.raiz.querySelector<HTMLButtonElement>('[data-continuar]')!.click();
       await p.fixture.whenStable();
@@ -343,6 +343,7 @@ describe('AltaPage', () => {
         expect(resumen(p).querySelector('[data-resumen-perfil]')).not.toBeNull();
         expect(resumen(p).querySelector('[data-resumen-cv]')!.textContent).toContain('cifrado');
         expect(resumen(p).querySelector('[data-resumen-consentimientos]')).not.toBeNull();
+        expect(resumen(p).querySelector('[data-resumen-consentimientos]')!.textContent).toContain('generar');
       });
 
       it('si se relleno a mano sin CV ni consentimientos, solo resume el perfil', async () => {
@@ -387,7 +388,7 @@ describe('AltaPage', () => {
       it('al continuar, el boton queda deshabilitado, con aria-busy y el texto de lo que hace', async () => {
         repositorio.consentir.mockReturnValueOnce(new Promise<void>(() => undefined));
         const p = await pintar();
-        p.raiz.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click();
+        p.raiz.querySelectorAll<HTMLInputElement>('input[type=\"checkbox\"]').forEach((c) => c.click());
         await p.fixture.whenStable();
 
         p.raiz.querySelector<HTMLButtonElement>('[data-continuar]')!.click();
@@ -403,7 +404,7 @@ describe('AltaPage', () => {
       it('si el consentimiento falla, el boton vuelve a estar disponible', async () => {
         repositorio.consentir.mockRejectedValueOnce(new Error('500'));
         const p = await pintar();
-        p.raiz.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click();
+        p.raiz.querySelectorAll<HTMLInputElement>('input[type=\"checkbox\"]').forEach((c) => c.click());
         await p.fixture.whenStable();
 
         p.raiz.querySelector<HTMLButtonElement>('[data-continuar]')!.click();
@@ -451,7 +452,7 @@ describe('AltaPage', () => {
 
     it('mueve el foco al titulo del paso en cada cambio de paso', async () => {
       const p = await pintar();
-      p.raiz.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click();
+      p.raiz.querySelectorAll<HTMLInputElement>('input[type=\"checkbox\"]').forEach((c) => c.click());
       await p.fixture.whenStable();
       p.raiz.querySelector<HTMLButtonElement>('[data-continuar]')!.click();
       await p.fixture.whenStable();

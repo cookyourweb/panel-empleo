@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
+
+import { URL_DE_PRIVACIDAD } from '../marca/enlaces-de-marca';
 
 /**
- * El consentimiento antes de subir nada. El texto debe nombrar a todos los
- * proveedores a los que puede llegar el CV; si cambia el fondo, se sube
- * VERSION_DE_CONSENTIMIENTO (dominio.ts).
+ * El consentimiento antes de subir nada, mas la confirmacion de ser mayor de
+ * 18 años (sin ella no se continua). El texto debe nombrar a todos los
+ * proveedores a los que puede llegar el CV y todos los usos; si cambia el
+ * fondo, se sube VERSION_DE_CONSENTIMIENTO (dominio.ts).
  */
 @Component({
   selector: 'app-consentimiento',
@@ -14,11 +17,32 @@ import { ChangeDetectionStrategy, Component, input, output, signal } from '@angu
       <h2 id="consentimiento-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de consentimiento@@alta.consentimiento.titulo">
         Antes de empezar
       </h2>
-      <p id="consentimiento-texto" i18n="Explicacion de que pasa con el CV@@alta.consentimiento.texto">
-        Guardamos tu CV cifrado. Para proponerte los datos de tu perfil, el texto de tu CV puede enviarse una sola vez
-        a proveedores externos de inteligencia artificial (Anthropic y Groq). Puedes borrar tu CV y tu cuenta cuando
-        quieras.
-      </p>
+      <div id="consentimiento-texto">
+        <p i18n="Que se guarda del CV@@alta.consentimiento.texto">
+          Guardamos tu CV cifrado. Solo se guarda el texto, no el archivo que subes.
+        </p>
+        <p i18n="A quien se envia el CV y para que@@alta.consentimiento.textoIa">
+          Para proponerte los datos de tu perfil, el texto de tu CV se envía una vez a Anthropic y a Groq, proveedores
+          de inteligencia artificial que lo procesan en Estados Unidos. Cuando lo pidas, también se envía para generar
+          CV y cartas de presentación adaptados a cada oferta.
+        </p>
+        <p i18n="Como borrar el CV o retirar el consentimiento@@alta.consentimiento.textoDerechos">
+          Puedes borrar tu CV o retirar tu consentimiento cuando quieras desde «Tu cuenta».
+        </p>
+        @if (urlDePrivacidad) {
+          <p>
+            <ng-container i18n="Antes del enlace a la politica de privacidad@@alta.consentimiento.privacidadAntes">Más información en nuestra</ng-container>
+            <a
+              data-privacidad
+              [href]="urlDePrivacidad"
+              target="_blank"
+              rel="noopener noreferrer"
+              i18n="Enlace a la politica de privacidad@@alta.consentimiento.privacidad"
+              >política de privacidad</a
+            >.
+          </p>
+        }
+      </div>
 
       <div class="casilla">
         <input
@@ -32,7 +56,20 @@ import { ChangeDetectionStrategy, Component, input, output, signal } from '@angu
           for="consentimiento-casilla"
           i18n="Casilla de consentimiento@@alta.consentimiento.casilla"
         >
-          Entiendo y acepto que mi CV se guarde cifrado y que pueda enviarse a Anthropic y Groq para extraer mi perfil.
+          Entiendo y acepto que mi CV se guarde cifrado y que se envíe a Anthropic y Groq, en Estados Unidos, para
+          extraer mi perfil y para generar mis CV y cartas cuando yo lo pida.
+        </label>
+      </div>
+
+      <div class="casilla">
+        <input
+          id="consentimiento-mayor"
+          type="checkbox"
+          [checked]="mayorDeEdad()"
+          (change)="alternarEdad($event)"
+        />
+        <label for="consentimiento-mayor" i18n="Casilla de mayoria de edad@@alta.consentimiento.mayor">
+          Confirmo que tengo 18 años o más.
         </label>
       </div>
 
@@ -46,7 +83,7 @@ import { ChangeDetectionStrategy, Component, input, output, signal } from '@angu
         <button
           type="button"
           data-continuar
-          [disabled]="!marcado() || ocupado()"
+          [disabled]="!marcado() || !mayorDeEdad() || ocupado()"
           [attr.aria-busy]="ocupado() ? 'true' : null"
           (click)="aceptar.emit()"
         >
@@ -76,8 +113,15 @@ export class Consentimiento {
   readonly aMano = output<void>();
 
   protected readonly marcado = signal(false);
+  protected readonly mayorDeEdad = signal(false);
+  /** Vacia mientras no exista la politica de Empleo Tech: entonces no se pinta enlace. */
+  protected readonly urlDePrivacidad = inject(URL_DE_PRIVACIDAD);
 
   protected alternar(evento: Event): void {
     this.marcado.set((evento.target as HTMLInputElement).checked);
+  }
+
+  protected alternarEdad(evento: Event): void {
+    this.mayorDeEdad.set((evento.target as HTMLInputElement).checked);
   }
 }
