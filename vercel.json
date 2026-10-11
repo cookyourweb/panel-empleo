@@ -14,12 +14,22 @@
   ],
   "rewrites": [
     { "source": "/es/:path*", "destination": "/es/index.html" },
-    { "source": "/en/:path*", "destination": "/en/index.html" }
+    { "source": "/en/:path*", "destination": "/en/index.html" },
+    { "source": "/favicon.ico", "destination": "/es/favicon.ico" },
+    { "source": "/apple-touch-icon.png", "destination": "/es/apple-touch-icon.png" }
   ],
   "headers": [
     {
+      "source": "/favicon.ico",
+      "headers": [{ "key": "Content-Type", "value": "image/vnd.microsoft.icon" }]
+    },
+    {
       "source": "/(.*)",
       "headers": [
+    {
+      "source": "/favicon.ico",
+      "headers": [{ "key": "Content-Type", "value": "image/vnd.microsoft.icon" }]
+    },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "X-Frame-Options", "value": "DENY" }
