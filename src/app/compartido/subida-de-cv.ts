@@ -21,8 +21,10 @@ const RECHAZOS: Readonly<Record<MotivoDeSubida, string>> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: '../alta/alta.css',
   template: `
-    <section class="paso" aria-labelledby="subida-titulo">
-      <h2 id="subida-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de subida@@alta.subida.titulo">Sube tu CV</h2>
+    <section [class.paso]="!incrustada()" [attr.aria-labelledby]="incrustada() ? null : 'subida-titulo'">
+      @if (!incrustada()) {
+        <h2 id="subida-titulo" tabindex="-1" data-titulo-de-paso i18n="Titulo del paso de subida@@alta.subida.titulo">Sube tu CV</h2>
+      }
 
       <div class="subida">
         <!-- El input real sigue en el DOM, con su etiqueta: solo se oculta a la vista.
@@ -81,22 +83,26 @@ const RECHAZOS: Readonly<Record<MotivoDeSubida, string>> = {
         <p class="error" role="alert">{{ texto }}</p>
       }
 
-      <div class="acciones">
-        <button
-          type="button"
-          class="enlace"
-          data-a-mano
-          (click)="aMano.emit()"
-          i18n="Boton para rellenar el perfil sin subir CV@@alta.subida.aMano"
-        >
-          Prefiero rellenar el perfil a mano
-        </button>
-      </div>
+      @if (!incrustada()) {
+        <div class="acciones">
+          <button
+            type="button"
+            class="enlace"
+            data-a-mano
+            (click)="aMano.emit()"
+            i18n="Boton para rellenar el perfil sin subir CV@@alta.subida.aMano"
+          >
+            Prefiero rellenar el perfil a mano
+          </button>
+        </div>
+      }
     </section>
   `,
 })
 export class SubidaDeCv {
   readonly rechazo = input<MotivoDeSubida | null>(null);
+  /** Dentro de otra pantalla (Tu cuenta): sin titulo de paso ni la salida de rellenar a mano. */
+  readonly incrustada = input(false);
   readonly elegido = output<File>();
   readonly aMano = output<void>();
 

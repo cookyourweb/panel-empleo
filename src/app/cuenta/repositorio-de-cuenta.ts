@@ -36,4 +36,16 @@ export abstract class RepositorioDeCuenta {
    * borra tambien sus CV guardados. Rechaza si el servidor no lo hizo.
    */
   abstract retirarConsentimiento(tipo: TipoDeConsentimiento): Promise<void>;
+
+  /**
+   * Registra un consentimiento de esa version (idempotente; tras retirarlo, vuelve a quedar
+   * activo en el servidor). Rechaza si el servidor no lo hizo.
+   */
+  abstract consentir(tipo: TipoDeConsentimiento, version: string): Promise<void>;
+
+  /**
+   * Guarda un CV (cifrado, uno por idioma: reemplaza el de su idioma). No lee el perfil.
+   * Rechaza con SubidaRechazada si el servidor no lo acepta.
+   */
+  abstract subirCv(archivo: File): Promise<void>;
 }

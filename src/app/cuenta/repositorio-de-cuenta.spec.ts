@@ -2,6 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
+import { SubidaRechazada } from '../compartido/subida-rechazada';
 import { CONFIGURACION_DE_SESION } from '../sesion/configuracion';
 import { elegirRepositorioDeCuenta } from './elegir-repositorio-de-cuenta';
 import { RepositorioDeCuentaDemo } from './repositorio-de-cuenta-demo';
@@ -136,6 +137,50 @@ describe('RepositorioDeCuentaHttp, CV y consentimientos', () => {
 
     await expect(retirado).rejects.toBeDefined();
   });
+
+  it('registra un consentimiento con POST /consentimientos {tipo, version}', async () => {
+    const hecho = repositorio.consentir('almacenar_cv', 'v2');
+
+    const peticion = http.expectOne(`${URL_API}/consentimientos`);
+    expect(peticion.request.method).toBe('POST');
+    expect(peticion.request.body).toEqual({ tipo: 'almacenar_cv', version: 'v2' });
+    peticion.flush({ tipo: 'almacenar_cv', version: 'v2' }, { status: 201, statusText: 'Created' });
+
+    await expect(hecho).resolves.toBeUndefined();
+  });
+
+  it('si el servidor falla al registrar un consentimiento, se propaga', async () => {
+    const hecho = repositorio.consentir('enviar_cv_a_ia', 'v2');
+
+    http.expectOne(`${URL_API}/consentimientos`).flush({}, { status: 500, statusText: 'Server Error' });
+
+    await expect(hecho).rejects.toBeDefined();
+  });
+
+  it('sube un CV con POST /cv en el campo archivo', async () => {
+    const subida = repositorio.subirCv(new File(['x'], 'cv.pdf', { type: 'application/pdf' }));
+
+    const peticion = http.expectOne(`${URL_API}/cv`);
+    expect(peticion.request.method).toBe('POST');
+    expect((peticion.request.body as FormData).get('archivo')).toBeInstanceOf(File);
+    peticion.flush({ idioma: 'es', formato: 'pdf', caracteres: 10 }, { status: 201, statusText: 'Created' });
+
+    await expect(subida).resolves.toBeUndefined();
+  });
+
+  it.each([
+    [413, 'tamano'],
+    [415, 'tipo'],
+    [422, 'ilegible'],
+    [403, 'sinConsentimiento'],
+    [500, 'servidor'],
+  ] as const)('un %i al subir el CV es el motivo %s', async (estado, motivo) => {
+    const subida = repositorio.subirCv(new File(['x'], 'cv.pdf'));
+
+    http.expectOne(`${URL_API}/cv`).flush({}, { status: estado, statusText: 'x' });
+
+    await expect(subida).rejects.toEqual(new SubidaRechazada(motivo));
+  });
 });
 
 describe('RepositorioDeCuentaDemo', () => {
@@ -148,6 +193,19 @@ describe('RepositorioDeCuentaDemo', () => {
 
     await expect(demo.borrarCv('es')).resolves.toBeUndefined();
     await expect(demo.retirarConsentimiento('enviar_cv_a_ia')).resolves.toBeUndefined();
+  });
+});
+
+describe('RepositorioDeCuentaDemo, subir un CV', () => {
+  it('un CV subido aparece en la lista y borrarlo o retirar almacenar_cv lo quita', async () => {
+    const demo = new RepositorioDeCuentaDemo();
+    await demo.consentir('almacenar_cv', 'v2');
+
+    await demo.subirCv(new File(['x'], 'cv.pdf'));
+    expect((await demo.listarCvs()).map((cv) => cv.formato)).toEqual(['pdf']);
+
+    await demo.retirarConsentimiento('almacenar_cv');
+    await expect(demo.listarCvs()).resolves.toEqual([]);
   });
 });
 

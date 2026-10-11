@@ -3522,6 +3522,86 @@
         <target>When you continue we will sign you out.</target>
       </segment>
     </unit>
+    <unit id="cuenta.subir.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Titulo de subir un CV desde la cuenta</note>
+      </notes>
+      <segment>
+        <source>Subir mi CV</source>
+        <target>Upload my CV</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.explicacionSin">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Explicacion de subir un CV sin tener ninguno guardado</note>
+      </notes>
+      <segment>
+        <source>Para volver a guardar un CV necesitamos tu consentimiento. Léelo y márcalo antes de elegir el archivo. Tu perfil se queda como está.</source>
+        <target>To store a CV again we need your consent. Read it and tick it before choosing the file. Your profile stays as it is.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.casillaGuardar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Casilla obligatoria de guardar el CV al subirlo desde la cuenta</note>
+      </notes>
+      <segment>
+        <source>Entiendo y acepto que mi CV se guarde cifrado.</source>
+        <target>I understand and agree that my CV is stored encrypted.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.casillaIa">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Casilla opcional de usar la IA al subir el CV desde la cuenta</note>
+      </notes>
+      <segment>
+        <source>Opcional: acepto que mi CV se envíe a Anthropic y Groq, en Estados Unidos, para extraer mi perfil y para generar mis CV y cartas cuando yo lo pida.</source>
+        <target>Optional: I agree that my CV is sent to Anthropic and Groq, in the United States, to extract my profile and to generate my CVs and letters when I ask for them.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.explicacionCon">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Explicacion de subir un CV teniendo ya uno guardado</note>
+      </notes>
+      <segment>
+        <source>Elige un archivo para guardarlo cifrado. Si ya tienes un CV en el mismo idioma, se reemplaza. Tu perfil se queda como está.</source>
+        <target>Choose a file to store it encrypted. If you already have a CV in the same language, it is replaced. Your profile stays as it is.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.faltaConsentimiento">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Falta el consentimiento vigente al subir desde la cuenta</note>
+      </notes>
+      <segment>
+        <source>Falta tu consentimiento vigente. Marca las casillas y vuelve a elegir tu CV.</source>
+        <target>Your current consent is missing. Tick the boxes and choose your CV again.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.pista">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Pista de que faltan casillas para elegir el CV</note>
+      </notes>
+      <segment>
+        <source>Marca guardar tu CV y confirmar que tienes 18 años o más para poder elegir el archivo.</source>
+        <target>Tick storing your CV and confirming you are 18 or older to be able to choose the file.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.hecho">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Resultado de subir un CV desde la cuenta</note>
+      </notes>
+      <segment>
+        <source>Hemos guardado tu CV cifrado. Tu perfil se queda como está.</source>
+        <target>We have stored your CV encrypted. Your profile stays as it is.</target>
+      </segment>
+    </unit>
     <unit id="cuenta.volver">
       <notes>
         <note category="location">src/app/cuenta/cuenta.page.html:1</note>

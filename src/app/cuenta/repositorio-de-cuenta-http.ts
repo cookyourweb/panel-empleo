@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { TipoDeConsentimiento } from '../alta/dominio';
+import { enviarCv } from '../compartido/enviar-cv';
 import { CONFIGURACION_DE_SESION } from '../sesion/configuracion';
 import { CvGuardado, esIdiomaDeCv, IdiomaDeCv, RepositorioDeCuenta } from './repositorio-de-cuenta';
 
@@ -44,5 +45,13 @@ export class RepositorioDeCuentaHttp implements RepositorioDeCuenta {
 
   async retirarConsentimiento(tipo: TipoDeConsentimiento): Promise<void> {
     await firstValueFrom(this.http.delete(`${this.configuracion.urlApi}/consentimientos/${tipo}`));
+  }
+
+  async consentir(tipo: TipoDeConsentimiento, version: string): Promise<void> {
+    await firstValueFrom(this.http.post(`${this.configuracion.urlApi}/consentimientos`, { tipo, version }));
+  }
+
+  async subirCv(archivo: File): Promise<void> {
+    await enviarCv(this.http, this.configuracion.urlApi, archivo);
   }
 }

@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
+import { SubidaRechazada } from '../compartido/subida-rechazada';
+import { URL_DE_PRIVACIDAD } from '../marca/enlaces-de-marca';
 import { Sesion } from '../sesion/sesion';
 import { CuentaPage } from './cuenta.page';
 import { RepositorioDeCuenta } from './repositorio-de-cuenta';
@@ -11,6 +13,8 @@ describe('CuentaPage', () => {
     listarCvs: vi.fn(),
     borrarCv: vi.fn(),
     retirarConsentimiento: vi.fn(),
+    consentir: vi.fn(),
+    subirCv: vi.fn(),
   };
   const sesion = { cerrar: vi.fn() };
 
@@ -20,6 +24,8 @@ describe('CuentaPage', () => {
     repositorio.listarCvs.mockResolvedValue([]);
     repositorio.borrarCv.mockResolvedValue(undefined);
     repositorio.retirarConsentimiento.mockResolvedValue(undefined);
+    repositorio.consentir.mockResolvedValue(undefined);
+    repositorio.subirCv.mockResolvedValue(undefined);
     TestBed.configureTestingModule({
       providers: [
         provideRouter([]),
@@ -424,6 +430,232 @@ describe('CuentaPage', () => {
       const { raiz } = await pintar();
 
       expect(raiz.querySelector('[data-consentimientos]')!.textContent).toContain('no cambia nada');
+    });
+  });
+
+  describe('subir mi CV', () => {
+    const CV_ES = { idioma: 'es', formato: 'pdf', subidoEn: '2026-10-01T10:00:00+00:00' };
+    const ARCHIVO = () => new File(['contenido'], 'mi-cv.pdf', { type: 'application/pdf' });
+
+    async function conSubida(opciones: { cvs?: unknown[]; privacidad?: string } = {}) {
+      repositorio.listarCvs.mockResolvedValue(opciones.cvs ?? []);
+      if (opciones.privacidad !== undefined) {
+        TestBed.overrideProvider(URL_DE_PRIVACIDAD, { useValue: opciones.privacidad });
+      }
+      const p = await pintar();
+      const marcar = async (id: string) => {
+        p.raiz.querySelector<HTMLInputElement>(id)!.click();
+        await p.fixture.whenStable();
+      };
+      const elegir = async (archivo: File = ARCHIVO()) => {
+        const entrada = p.raiz.querySelector<HTMLInputElement>('[data-subir-cv] input[type="file"]')!;
+        Object.defineProperty(entrada, 'files', { value: [archivo], configurable: true });
+        entrada.dispatchEvent(new Event('change'));
+        await p.fixture.whenStable();
+      };
+      const marcarObligatorias = async () => {
+        await marcar('#subida-casilla-guardar');
+        await marcar('#subida-casilla-mayor');
+      };
+      return { ...p, marcar, elegir, marcarObligatorias };
+    }
+
+    it('sin ningun CV ofrece subirlo y enseña el texto del consentimiento v2 con la casilla de 18 años', async () => {
+      const { raiz } = await conSubida();
+
+      const bloque = raiz.querySelector('[data-subir-cv]')!;
+      expect(bloque.querySelector('h3')?.textContent).toContain('Subir mi CV');
+      const texto = bloque.querySelector('#consentimiento-texto')!.textContent!;
+      expect(texto).toContain('Anthropic');
+      expect(texto).toContain('Groq');
+      expect(texto).toContain('Estados Unidos');
+      expect(bloque.querySelector('label[for="subida-casilla-mayor"]')?.textContent).toContain('18 años o más');
+      expect(bloque.querySelector('label[for="subida-casilla-guardar"]')?.textContent).toContain('cifrado');
+      expect(bloque.querySelector('label[for="subida-casilla-ia"]')?.textContent).toContain('Anthropic y Groq');
+    });
+
+    it('sin URL de privacidad en la marca no se pinta ningun enlace', async () => {
+      const { raiz } = await conSubida();
+
+      expect(raiz.querySelector('[data-subir-cv] [data-privacidad]')).toBeNull();
+    });
+
+    it('el enlace a la privacidad sale de la fuente unica de la marca', async () => {
+      const { raiz } = await conSubida({ privacidad: 'https://www.cookyourwebai.es/empleo-tech/privacidad' });
+
+      expect(raiz.querySelector('[data-subir-cv] [data-privacidad]')?.getAttribute('href')).toBe(
+        'https://www.cookyourwebai.es/empleo-tech/privacidad',
+      );
+    });
+
+    it('hasta marcar guardar el CV y los 18 años no se puede elegir archivo, y la IA es opcional', async () => {
+      const { raiz, marcar } = await conSubida();
+      expect(raiz.querySelector('[data-subir-cv] input[type="file"]')).toBeNull();
+      expect(raiz.querySelector('[data-pista-casillas]')).not.toBeNull();
+
+      await marcar('#subida-casilla-guardar');
+      expect(raiz.querySelector('[data-subir-cv] input[type="file"]')).toBeNull();
+      await marcar('#subida-casilla-mayor');
+      expect(raiz.querySelector('[data-subir-cv] input[type="file"]')).not.toBeNull();
+      expect(raiz.querySelector('[data-pista-casillas]')).toBeNull();
+
+      await marcar('#subida-casilla-mayor');
+      expect(raiz.querySelector('[data-subir-cv] input[type="file"]')).toBeNull();
+    });
+
+    it('registra solo almacenar_cv (v2) y luego sube, sin pedir IA si no la marcó, y recarga la lista', async () => {
+      const { raiz, marcarObligatorias, elegir } = await conSubida();
+      repositorio.listarCvs.mockResolvedValue([CV_ES]);
+      await marcarObligatorias();
+      const archivo = ARCHIVO();
+
+      await elegir(archivo);
+
+      expect(repositorio.consentir).toHaveBeenCalledTimes(1);
+      expect(repositorio.consentir).toHaveBeenCalledWith('almacenar_cv', 'v2');
+      expect(repositorio.subirCv).toHaveBeenCalledWith(archivo);
+      expect(repositorio.consentir.mock.invocationCallOrder[0]).toBeLessThan(repositorio.subirCv.mock.invocationCallOrder[0]);
+      expect(raiz.querySelector('[data-resultado]')!.textContent).toContain('Hemos guardado tu CV');
+      expect(raiz.querySelectorAll('[data-borrar-cv]').length).toBe(1);
+      expect(raiz.querySelector('[data-consentimiento-subida]')).toBeNull();
+    });
+
+    it('con la casilla de IA marcada registra tambien enviar_cv_a_ia, despues de almacenar_cv', async () => {
+      const { marcar, marcarObligatorias, elegir } = await conSubida();
+      await marcarObligatorias();
+      await marcar('#subida-casilla-ia');
+
+      await elegir();
+
+      expect(repositorio.consentir.mock.calls).toEqual([
+        ['almacenar_cv', 'v2'],
+        ['enviar_cv_a_ia', 'v2'],
+      ]);
+    });
+
+    it('tras volver a consentir, el consentimiento ya no figura como retirado', async () => {
+      const { raiz, pulsar, marcar, marcarObligatorias, elegir } = await conSubida({ cvs: [CV_ES] });
+      repositorio.listarCvs.mockResolvedValue([]);
+      await pulsar('[data-retirar="almacenar_cv"]');
+      await pulsar('[data-confirmar-accion]');
+      expect(raiz.querySelector('[data-retirado="almacenar_cv"]')).not.toBeNull();
+      repositorio.listarCvs.mockResolvedValue([CV_ES]);
+
+      await marcarObligatorias();
+      await marcar('#subida-casilla-ia');
+      await elegir();
+
+      expect(raiz.querySelector('[data-retirado="almacenar_cv"]')).toBeNull();
+      expect(raiz.querySelector('[data-retirado="enviar_cv_a_ia"]')).toBeNull();
+      expect(raiz.querySelector('[data-retirar="almacenar_cv"]')).not.toBeNull();
+    });
+
+    it('si falla el registro del consentimiento avisa con role=alert y no sube nada', async () => {
+      repositorio.consentir.mockRejectedValue(new Error('x'));
+      const { raiz, marcarObligatorias, elegir } = await conSubida();
+      await marcarObligatorias();
+
+      await elegir();
+
+      expect(raiz.querySelector('[data-subir-cv] [role="alert"]')?.textContent).toContain('No hemos podido registrar tu consentimiento');
+      expect(repositorio.subirCv).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      ['tamano', '2 MB'],
+      ['tipo', 'PDF o DOCX'],
+      ['ilegible', 'No hemos podido leer texto'],
+      ['servidor', 'no ha podido recibir'],
+    ] as const)('un archivo rechazado por %s se explica con el mismo mensaje del alta y no cambia la lista', async (motivo, texto) => {
+      repositorio.subirCv.mockRejectedValue(new SubidaRechazada(motivo));
+      const { raiz, marcarObligatorias, elegir } = await conSubida();
+      await marcarObligatorias();
+      const lecturas = repositorio.listarCvs.mock.calls.length;
+
+      await elegir();
+
+      expect(raiz.querySelector('[data-subir-cv] [role="alert"]')?.textContent).toContain(texto);
+      expect(repositorio.listarCvs.mock.calls.length).toBe(lecturas);
+      expect(raiz.querySelector('[data-resultado]')!.textContent).not.toContain('Hemos guardado');
+    });
+
+    it('un fallo que no es SubidaRechazada tambien se explica como fallo del servidor', async () => {
+      repositorio.subirCv.mockRejectedValue(new Error('red'));
+      const { raiz, marcarObligatorias, elegir } = await conSubida();
+      await marcarObligatorias();
+
+      await elegir();
+
+      expect(raiz.querySelector('[data-subir-cv] [role="alert"]')?.textContent).toContain('no ha podido recibir');
+    });
+
+    it('con un CV guardado no vuelve a pedir el consentimiento: deja reemplazarlo y sube directamente', async () => {
+      const { raiz, elegir } = await conSubida({ cvs: [CV_ES] });
+
+      expect(raiz.querySelector('[data-consentimiento-subida]')).toBeNull();
+      expect(raiz.querySelector('[data-subir-cv]')!.textContent).toContain('reemplaza');
+
+      await elegir();
+
+      expect(repositorio.consentir).not.toHaveBeenCalled();
+      expect(repositorio.subirCv).toHaveBeenCalledTimes(1);
+    });
+
+    it('si el servidor dice que falta el consentimiento vigente (403), enseña las casillas aunque haya CV', async () => {
+      repositorio.subirCv.mockRejectedValue(new SubidaRechazada('sinConsentimiento'));
+      const { raiz, elegir } = await conSubida({ cvs: [CV_ES] });
+
+      await elegir();
+
+      expect(raiz.querySelector('[data-consentimiento-subida]')).not.toBeNull();
+      expect(raiz.querySelector('[data-subir-cv] [role="alert"]')?.textContent).toContain('consentimiento');
+    });
+
+    it('mientras sube anuncia el estado en la region educada, marca ocupado y no admite una segunda subida', async () => {
+      let terminar!: () => void;
+      repositorio.subirCv.mockReturnValue(new Promise<void>((resolver) => (terminar = resolver)));
+      const { fixture, raiz, marcarObligatorias, elegir } = await conSubida();
+      await marcarObligatorias();
+
+      await elegir();
+      await elegir();
+
+      expect(repositorio.subirCv).toHaveBeenCalledTimes(1);
+      expect(raiz.querySelector('[data-resultado]')!.textContent).toContain('Subiendo tu CV');
+      expect(raiz.querySelector('[data-subir-cv]')!.getAttribute('aria-busy')).toBe('true');
+      terminar();
+      await vi.waitFor(async () => {
+        await fixture.whenStable();
+        expect(raiz.querySelector('[data-subir-cv]')?.getAttribute('aria-busy') ?? null).toBeNull();
+      });
+    });
+
+    it('al terminar el foco va al titulo de la seccion de CV y el resultado queda en la region educada', async () => {
+      const { raiz, marcarObligatorias, elegir } = await conSubida();
+      await marcarObligatorias();
+
+      await elegir();
+
+      expect(document.activeElement).toBe(raiz.querySelector('[data-titulo-seccion="cv"]'));
+      const region = raiz.querySelector('[data-resultado]')!;
+      expect(region.getAttribute('aria-live')).toBe('polite');
+      expect(region.textContent).toContain('cifrado');
+    });
+
+    it('no pide leer el perfil: solo guarda el CV', async () => {
+      const { raiz, marcarObligatorias, elegir } = await conSubida();
+      await marcarObligatorias();
+
+      await elegir();
+
+      expect(raiz.querySelector('[data-resultado]')!.textContent).toContain('Tu perfil se queda como está');
+      expect(Object.keys(repositorio)).not.toContain('extraer');
+    });
+
+    it('ningun texto de subir el CV usa guiones largos ni flechas', async () => {
+      const { raiz } = await conSubida();
+
+      expect(raiz.querySelector('[data-subir-cv]')!.textContent).not.toMatch(/[—–→]/);
     });
   });
 });

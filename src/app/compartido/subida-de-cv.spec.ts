@@ -4,9 +4,10 @@ import { MotivoDeSubida } from './subida-rechazada';
 import { SubidaDeCv } from './subida-de-cv';
 
 describe('SubidaDeCv', () => {
-  async function pintar(rechazo: MotivoDeSubida | null = null) {
+  async function pintar(rechazo: MotivoDeSubida | null = null, incrustada = false) {
     const fixture = TestBed.createComponent(SubidaDeCv);
     fixture.componentRef.setInput('rechazo', rechazo);
+    fixture.componentRef.setInput('incrustada', incrustada);
     const elegido = vi.fn();
     const aMano = vi.fn();
     fixture.componentInstance.elegido.subscribe(elegido);
@@ -241,6 +242,25 @@ describe('SubidaDeCv', () => {
       expect(enlace.classList).toContain('enlace');
       expect(enlace.classList).not.toContain('boton-principal');
       expect(zonaDe(raiz).contains(enlace)).toBe(false);
+    });
+  });
+
+  describe('incrustada en otra pantalla', () => {
+    it('por defecto es un paso con titulo y la salida de rellenar a mano', async () => {
+      const { raiz } = await pintar();
+
+      expect(raiz.querySelector('h2')).not.toBeNull();
+      expect(raiz.querySelector('[data-a-mano]')).not.toBeNull();
+    });
+
+    it('incrustada no pinta ni titulo propio ni la salida a mano, pero conserva etiqueta, zona y errores', async () => {
+      const { raiz, entrada } = await pintar('tipo', true);
+
+      expect(raiz.querySelector('h2')).toBeNull();
+      expect(raiz.querySelector('[data-a-mano]')).toBeNull();
+      expect(raiz.querySelector(`label[for="${entrada.id}"]`)).not.toBeNull();
+      expect(raiz.querySelector('[data-zona]')).not.toBeNull();
+      expect(raiz.querySelector('[role="alert"]')?.textContent).toContain('PDF o DOCX');
     });
   });
 });

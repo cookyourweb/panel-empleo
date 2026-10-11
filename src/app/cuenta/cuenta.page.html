@@ -98,6 +98,81 @@
         }
       }
 
+      @if (!cargandoCvs() && !errorDeCvs()) {
+        <div class="subir" data-subir-cv [attr.aria-busy]="subiendo() ? 'true' : null">
+          <h3 id="subir-titulo" i18n="Titulo de subir un CV desde la cuenta@@cuenta.subir.titulo">Subir mi CV</h3>
+          @if (necesitaConsentimiento()) {
+            <p data-subir-sin-cv i18n="Explicacion de subir un CV sin tener ninguno guardado@@cuenta.subir.explicacionSin">
+              Para volver a guardar un CV necesitamos tu consentimiento. Léelo y márcalo antes de elegir el archivo. Tu perfil se queda como está.
+            </p>
+            <div data-consentimiento-subida>
+              <app-texto-de-consentimiento />
+              <div class="casilla">
+                <input
+                  id="subida-casilla-guardar"
+                  type="checkbox"
+                  aria-describedby="consentimiento-texto"
+                  [checked]="marcaGuardar()"
+                  [disabled]="subiendo()"
+                  (change)="alternar(marcaGuardar, $event)"
+                />
+                <label for="subida-casilla-guardar" i18n="Casilla obligatoria de guardar el CV al subirlo desde la cuenta@@cuenta.subir.casillaGuardar">
+                  Entiendo y acepto que mi CV se guarde cifrado.
+                </label>
+              </div>
+              <div class="casilla">
+                <input
+                  id="subida-casilla-ia"
+                  type="checkbox"
+                  aria-describedby="consentimiento-texto"
+                  [checked]="marcaIa()"
+                  [disabled]="subiendo()"
+                  (change)="alternar(marcaIa, $event)"
+                />
+                <label for="subida-casilla-ia" i18n="Casilla opcional de usar la IA al subir el CV desde la cuenta@@cuenta.subir.casillaIa">
+                  Opcional: acepto que mi CV se envíe a Anthropic y Groq, en Estados Unidos, para extraer mi perfil y para generar mis CV y cartas cuando yo lo pida.
+                </label>
+              </div>
+              <div class="casilla">
+                <input
+                  id="subida-casilla-mayor"
+                  type="checkbox"
+                  [checked]="marcaMayor()"
+                  [disabled]="subiendo()"
+                  (change)="alternar(marcaMayor, $event)"
+                />
+                <label for="subida-casilla-mayor" i18n="Casilla de mayoria de edad@@alta.consentimiento.mayor">
+                  Confirmo que tengo 18 años o más.
+                </label>
+              </div>
+            </div>
+          } @else {
+            <p i18n="Explicacion de subir un CV teniendo ya uno guardado@@cuenta.subir.explicacionCon">
+              Elige un archivo para guardarlo cifrado. Si ya tienes un CV en el mismo idioma, se reemplaza. Tu perfil se queda como está.
+            </p>
+          }
+
+          @if (errorDeConsentimiento()) {
+            <p class="error" role="alert" data-error-consentimiento i18n="Error al registrar el consentimiento@@alta.consentimiento.error">
+              No hemos podido registrar tu consentimiento. Prueba de nuevo.
+            </p>
+          }
+          @if (faltaConsentimiento()) {
+            <p class="error" role="alert" data-falta-consentimiento i18n="Falta el consentimiento vigente al subir desde la cuenta@@cuenta.subir.faltaConsentimiento">
+              Falta tu consentimiento vigente. Marca las casillas y vuelve a elegir tu CV.
+            </p>
+          }
+
+          @if (puedeElegirArchivo()) {
+            <app-subida-de-cv [incrustada]="true" [rechazo]="rechazoDeSubida()" (elegido)="subirCv($event)" />
+          } @else {
+            <p class="pista" data-pista-casillas i18n="Pista de que faltan casillas para elegir el CV@@cuenta.subir.pista">
+              Marca guardar tu CV y confirmar que tienes 18 años o más para poder elegir el archivo.
+            </p>
+          }
+        </div>
+      }
+
       @if (accionCv(); as idioma) {
         <div
           class="confirmacion"

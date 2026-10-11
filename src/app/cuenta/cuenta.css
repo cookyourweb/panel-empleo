@@ -39,3 +39,7 @@
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }
+
+.subir {
+  margin-top: 1.5rem;
+}

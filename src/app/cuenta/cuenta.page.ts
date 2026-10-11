@@ -8,11 +8,14 @@ import {
   inject,
   Injector,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { TIPOS_DE_CONSENTIMIENTO, TipoDeConsentimiento } from '../alta/dominio';
+import { MotivoDeSubida, SubidaRechazada, TIPOS_DE_CONSENTIMIENTO, TipoDeConsentimiento, VERSION_DE_CONSENTIMIENTO } from '../alta/dominio';
+import { SubidaDeCv } from '../compartido/subida-de-cv';
+import { TextoDeConsentimiento } from '../compartido/texto-de-consentimiento';
 import { IDIOMAS } from '../idioma/idiomas';
 import { Sesion } from '../sesion/sesion';
 import { CvGuardado, IdiomaDeCv, RepositorioDeCuenta } from './repositorio-de-cuenta';
@@ -33,8 +36,12 @@ const CONSENTIMIENTOS: readonly { readonly tipo: TipoDeConsentimiento; readonly 
   },
 ];
 
+const REGISTRANDO = $localize`:Aviso de que se registra el consentimiento@@alta.anuncio.registrando:Registrando tu consentimiento…`;
+const SUBIENDO = $localize`:Aviso de que se esta subiendo el CV@@alta.extrayendo.subiendo:Subiendo tu CV…`;
+const GUARDADO = $localize`:Resultado de subir un CV desde la cuenta@@cuenta.subir.hecho:Hemos guardado tu CV cifrado. Tu perfil se queda como está.`;
+
 /**
- * Tu cuenta: borrar un CV, retirar un consentimiento o borrar la cuenta entera.
+ * Tu cuenta: subir o borrar un CV, retirar un consentimiento o borrar la cuenta entera.
  *
  * Nada se hace de un clic ni con los dialogos del navegador: cada accion abre
  * una confirmacion dentro de la propia pagina que explica el efecto, se opera
@@ -43,7 +50,7 @@ const CONSENTIMIENTOS: readonly { readonly tipo: TipoDeConsentimiento; readonly 
  */
 @Component({
   selector: 'app-cuenta',
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, SubidaDeCv, TextoDeConsentimiento],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['../alta/alta.css', './cuenta.css'],
   templateUrl: './cuenta.page.html',
@@ -86,6 +93,24 @@ export class CuentaPage {
   protected readonly resultado = signal('');
 
   /** El boton que abrio la confirmacion, para devolverle el foco al cancelar. */
+  // Subir un CV desde aqui (sin pasar por /alta, que con perfil esta cerrada).
+  protected readonly marcaGuardar = signal(false);
+  protected readonly marcaIa = signal(false);
+  protected readonly marcaMayor = signal(false);
+  protected readonly subiendo = signal(false);
+  protected readonly errorDeConsentimiento = signal(false);
+  protected readonly rechazoDeSubida = signal<MotivoDeSubida | null>(null);
+  protected readonly faltaConsentimiento = signal(false);
+  /** El servidor dijo que falta un consentimiento vigente aunque haya CV (p. ej. uno dado con el texto v1). */
+  private readonly consentimientoForzado = signal(false);
+
+  /** Sin ningun CV guardado (ella retiro el consentimiento o los borro) se vuelve a pedir; con CV ya hay consentimiento vigente. */
+  protected readonly necesitaConsentimiento = computed(() => this.cvs().length === 0 || this.consentimientoForzado());
+  protected readonly puedeElegirArchivo = computed(
+    () => !this.necesitaConsentimiento() || (this.marcaGuardar() && this.marcaMayor()),
+  );
+
+  /** El boton que abrio la confirmacion, para devolverle el foco al cancelar. */
   private disparador: HTMLElement | null = null;
   private primerPaso = true;
 
@@ -113,6 +138,64 @@ export class CuentaPage {
       this.errorDeCvs.set(true);
     } finally {
       this.cargandoCvs.set(false);
+    }
+  }
+
+  protected alternar(marca: WritableSignal<boolean>, evento: Event): void {
+    marca.set((evento.target as HTMLInputElement).checked);
+  }
+
+  /** Consiente si hace falta, sube el CV y vuelve a leer la lista. No lee el perfil. */
+  protected async subirCv(archivo: File): Promise<void> {
+    if (this.subiendo()) return;
+    this.subiendo.set(true);
+    this.errorDeConsentimiento.set(false);
+    this.rechazoDeSubida.set(null);
+    this.faltaConsentimiento.set(false);
+    this.resultado.set('');
+    const consentidos: TipoDeConsentimiento[] = [];
+    try {
+      if (this.necesitaConsentimiento()) {
+        this.resultado.set(REGISTRANDO);
+        try {
+          await this.repositorio.consentir(TIPOS_DE_CONSENTIMIENTO.almacenarCv, VERSION_DE_CONSENTIMIENTO);
+          consentidos.push(TIPOS_DE_CONSENTIMIENTO.almacenarCv);
+          if (this.marcaIa()) {
+            await this.repositorio.consentir(TIPOS_DE_CONSENTIMIENTO.enviarCvAIa, VERSION_DE_CONSENTIMIENTO);
+            consentidos.push(TIPOS_DE_CONSENTIMIENTO.enviarCvAIa);
+          }
+        } catch {
+          this.resultado.set('');
+          this.errorDeConsentimiento.set(true);
+          return;
+        } finally {
+          // Lo que el servidor si registro ya no esta retirado, aunque lo siguiente falle.
+          this.retirados.update((actuales) => new Set([...actuales].filter((tipo) => !consentidos.includes(tipo))));
+        }
+      }
+      this.resultado.set(SUBIENDO);
+      try {
+        await this.repositorio.subirCv(archivo);
+      } catch (error) {
+        const motivo = error instanceof SubidaRechazada ? error.motivo : 'servidor';
+        this.resultado.set('');
+        if (motivo === 'sinConsentimiento') {
+          this.consentimientoForzado.set(true);
+          this.faltaConsentimiento.set(true);
+        } else {
+          this.rechazoDeSubida.set(motivo);
+        }
+        return;
+      }
+      this.consentimientoForzado.set(false);
+      this.marcaGuardar.set(false);
+      this.marcaIa.set(false);
+      this.marcaMayor.set(false);
+      await this.cargarCvs();
+      this.resultado.set(GUARDADO);
+      this.enfocar('[data-titulo-seccion="cv"]');
+    } finally {
+      this.subiendo.set(false);
     }
   }
 
