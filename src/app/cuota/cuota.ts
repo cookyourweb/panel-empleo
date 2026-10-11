@@ -101,6 +101,10 @@ export function fechaDeRenovacion(iso: string, locale: string): string {
 export function textoDeRestantes(cuota: Cuota, locale: string): string {
   const restantes = candidaturasRestantes(cuota);
   const fecha = fechaDeRenovacion(cuota.seRenueva, locale);
+  // Entre 0,7 y 0,99 no hay candidatura entera pero si un CV: decir "0" seria falso.
+  if (restantes === 0) {
+    return $localize`:Le queda saldo para un CV pero no para una candidatura entera con su carta@@cuota.restantes.cv:Te queda para un CV, pero no para una candidatura entera (CV y carta) este mes · se renueva el ${fecha}:fecha:`;
+  }
   return restantes === 1
     ? $localize`:Cuantas candidaturas le queda a quien genera, una sola@@cuota.restantes.una:Te queda 1 candidatura este mes · se renueva el ${fecha}:fecha:`
     : $localize`:Cuantas candidaturas le quedan a quien genera, mas de una o ninguna entera@@cuota.restantes.varias:Te quedan ${restantes}:restantes: candidaturas este mes · se renueva el ${fecha}:fecha:`;

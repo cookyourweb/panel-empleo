@@ -3062,6 +3062,15 @@
         <source>Te quedan <ph id="0" equiv="restantes" disp="restantes"/> candidaturas este mes · se renueva el <ph id="1" equiv="fecha" disp="fecha"/></source>
       </segment>
     </unit>
+    <unit id="cuota.restantes.cv">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Le queda saldo para un CV pero no para una candidatura entera con su carta</note>
+      </notes>
+      <segment>
+        <source>Te queda para un CV, pero no para una candidatura entera (CV y carta) este mes · se renueva el <ph id="0" equiv="fecha" disp="fecha"/></source>
+      </segment>
+    </unit>
     <unit id="cuota.agotada.tope">
       <notes>
         <note category="location">src/app/cuota/cuota.ts:1</note>

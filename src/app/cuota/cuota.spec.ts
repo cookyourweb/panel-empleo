@@ -119,10 +119,27 @@ describe('textos', () => {
     );
   });
 
-  it('con cero enteras pero algo de saldo, sigue en plural', () => {
-    expect(textoDeRestantes({ ...CUOTA, usadas: 7.5 }, 'es')).toBe(
-      'Te quedan 0 candidaturas este mes · se renueva el 1 de noviembre',
-    );
+  it.each([7.2, 7.1])(
+    'con %s usadas queda para un CV pero no para una candidatura entera: no dice "0 candidaturas"',
+    (usadas) => {
+      const texto = textoDeRestantes({ ...CUOTA, usadas }, 'es');
+
+      expect(texto).toBe(
+        'Te queda para un CV, pero no para una candidatura entera (CV y carta) este mes · se renueva el 1 de noviembre',
+      );
+      expect(texto).not.toContain('0 candidaturas');
+    },
+  );
+
+  it('con 0,7 justos (el coste de un CV) todavia no esta agotada y el texto habla de un CV', () => {
+    const cuota = { ...CUOTA, usadas: 7.3 };
+
+    expect(agotada(cuota)).toBe(false);
+    expect(textoDeRestantes(cuota, 'es')).toContain('Te queda para un CV');
+  });
+
+  it('con 1,0 justos ya es una candidatura entera', () => {
+    expect(textoDeRestantes({ ...CUOTA, usadas: 7 }, 'es')).toContain('Te queda 1 candidatura');
   });
 
   it('agotada por cuota: lo dice sin rodeos y sin guiones largos ni flechas', () => {
