@@ -57,7 +57,7 @@ describe("contenedor unico de la plataforma", () => {
 
   it.each([
     ["src/app/bienvenida/bienvenida.page.html", ["rejilla-tarjetas", "tarjeta-destacada", "columna-texto", "columna-compacta"]],
-    ["src/app/entrada/entrada.page.html", ["columna-compacta", "titulo-seccion"]],
+    ["src/app/entrada/entrada.page.html", ["columna-formulario", "titulo-seccion"]],
     ["src/app/cuenta/cuenta.page.html", ["columna-formulario", "titulo-seccion"]],
     ["src/app/alta/alta.page.ts", ["columna-formulario", "titulo-seccion"]],
     ["src/app/alta/consentimiento.ts", ["columna-formulario", "titulo-seccion"]],

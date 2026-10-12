@@ -63,6 +63,20 @@ describe('EntradaPage', () => {
     expect(pagina.querySelector('h2')).toBeNull();
   });
 
+  it('mete todo el contenido en una unica tarjeta centrada del sistema', async () => {
+    const pagina = await abrir();
+    const tarjeta = pagina.querySelector('article.tarjeta-cta');
+
+    expect(pagina.querySelectorAll('.tarjeta-cta')).toHaveLength(1);
+    expect([...tarjeta!.classList]).toEqual(
+      expect.arrayContaining(['columna-formulario', 'entrada__tarjeta']),
+    );
+    expect(tarjeta?.querySelector('h1')).not.toBeNull();
+    expect(tarjeta?.querySelector('[data-acceso]')).not.toBeNull();
+    expect(tarjeta?.querySelector('[role="status"]')).not.toBeNull();
+    expect(pagina.querySelector('.entrada')?.contains(tarjeta)).toBe(true);
+  });
+
   it('prepara el acceso en el contenedor con el proveedor de identidad', async () => {
     const pagina = await abrir();
 
@@ -295,6 +309,18 @@ describe('EntradaPage con el servidor dormido', () => {
 
     expect(boton.tagName).toBe('BUTTON');
     expect([...boton.classList]).toEqual(expect.arrayContaining(['boton', 'boton--primario']));
+  });
+
+  it('Reintentar vive dentro de la tarjeta, centrado bajo el aviso', async () => {
+    await responder(false);
+
+    const tarjeta = pagina().querySelector('.tarjeta-cta')!;
+    const boton = reintentar()!;
+
+    expect(tarjeta.contains(boton)).toBe(true);
+    expect(boton.classList.contains('boton--bloque')).toBe(false);
+    expect(boton.closest('.entrada__acciones')).not.toBeNull();
+    expect(region()!.compareDocumentPosition(boton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it('reintentar vuelve a comprobar y reinicia los dos plazos', async () => {
