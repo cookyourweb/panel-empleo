@@ -28,7 +28,7 @@ describe('RepositorioDePerfilDemo', () => {
   });
 
   it('consentir no falla', async () => {
-    await expect(new RepositorioDePerfilDemo().consentir('almacenar_cv', 'v1')).resolves.toBeUndefined();
+    await expect(new RepositorioDePerfilDemo().consentir('almacenar_cv', 'v2')).resolves.toBeUndefined();
   });
 });
 

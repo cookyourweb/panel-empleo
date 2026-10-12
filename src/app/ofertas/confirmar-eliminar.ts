@@ -50,10 +50,10 @@ const NOMBRES_A_LA_VISTA = 6;
           }
         </div>
         <div class="pie">
-          <button #cancelarBoton type="button" class="boton" (click)="cancelar.emit()" i18n="Boton que cierra el dialogo sin eliminar@@confirmar.cancelar">
+          <button #cancelarBoton type="button" class="boton boton--neutro" (click)="cancelar.emit()" i18n="Boton que cierra el dialogo sin eliminar@@confirmar.cancelar">
             Cancelar
           </button>
-          <button type="button" class="boton peligro" data-confirmar-eliminar (click)="confirmar.emit()" i18n="Boton que confirma la eliminacion, con el numero de ofertas@@confirmar.confirmar">
+          <button type="button" class="boton boton--peligro" data-confirmar-eliminar (click)="confirmar.emit()" i18n="Boton que confirma la eliminacion, con el numero de ofertas@@confirmar.confirmar">
             Eliminar {{ cuantas() }}
           </button>
         </div>

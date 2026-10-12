@@ -1,15 +1,26 @@
-<a class="salto-al-contenido" href="#contenido" i18n="Enlace para saltar la cabecera y llegar al contenido@@app.saltarAlContenido"
+<a class="salto-al-contenido" href="#main-content" i18n="Enlace para saltar la cabecera y llegar al contenido@@app.saltarAlContenido"
   >Saltar al contenido principal</a
 >
 
-<header class="cabecera">
-  <h1>{{ titulo() }}</h1>
-  @if (sesion.activa() && altaActiva) {
-    <a routerLink="/cuenta" i18n="Enlace de la cabecera a la cuenta@@app.cuenta">Tu cuenta</a>
-  }
-  <app-selector-de-idioma />
-</header>
+<app-cabecera-de-marca />
 
-<main #principal id="contenido" tabindex="-1">
+@if (sesion.activa() && faltaConsentimiento()) {
+  <div class="contenedor-pagina">
+    <aside class="aviso-consentimiento" data-aviso-consentimiento aria-labelledby="aviso-consentimiento-texto">
+      <p id="aviso-consentimiento-texto">
+        <ng-container i18n="Aviso de que hay que volver a dar el consentimiento para guardar el CV@@app.avisoConsentimiento.texto"
+          >Hemos actualizado el texto de privacidad y ahora necesitamos que vuelvas a darnos tu consentimiento para guardar tu CV. Mientras tanto no lo usaremos. Tu perfil se queda como está.</ng-container
+        >
+        <a class="boton boton--secundario boton--compacto" routerLink="/cuenta" i18n="Enlace del aviso de consentimiento a Tu cuenta@@app.avisoConsentimiento.enlace">Ir a Tu cuenta para aceptarlo</a>
+      </p>
+    </aside>
+  </div>
+}
+
+<app-preparando-zona />
+
+<main #principal id="main-content" class="contenedor-pagina" tabindex="-1">
   <router-outlet />
 </main>
+
+<app-pie-de-marca />

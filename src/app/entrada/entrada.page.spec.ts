@@ -4,6 +4,7 @@ import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
 import { ProveedorDeIdentidad } from '../sesion/proveedor-de-identidad';
+import { Preparacion } from '../preparacion/preparacion';
 import { RESULTADO_DE_ENTRADA, ResultadoDeEntrada, Sesion } from '../sesion/sesion';
 import { Servidor } from '../sesion/servidor';
 import { EntradaPage } from './entrada.page';
@@ -53,6 +54,28 @@ describe('EntradaPage', () => {
   }
 
   beforeEach(() => entrar.mockReset());
+
+  it('tiene exactamente un h1, y es el titular de la pantalla', async () => {
+    const pagina = await abrir();
+
+    expect(pagina.querySelectorAll('h1')).toHaveLength(1);
+    expect(pagina.querySelector('h1')?.textContent?.trim()).toBe('Entrar');
+    expect(pagina.querySelector('h2')).toBeNull();
+  });
+
+  it('mete todo el contenido en una unica tarjeta centrada del sistema', async () => {
+    const pagina = await abrir();
+    const tarjeta = pagina.querySelector('article.tarjeta-cta');
+
+    expect(pagina.querySelectorAll('.tarjeta-cta')).toHaveLength(1);
+    expect([...tarjeta!.classList]).toEqual(
+      expect.arrayContaining(['columna-formulario', 'entrada__tarjeta']),
+    );
+    expect(tarjeta?.querySelector('h1')).not.toBeNull();
+    expect(tarjeta?.querySelector('[data-acceso]')).not.toBeNull();
+    expect(tarjeta?.querySelector('[role="status"]')).not.toBeNull();
+    expect(pagina.querySelector('.entrada')?.contains(tarjeta)).toBe(true);
+  });
 
   it('prepara el acceso en el contenedor con el proveedor de identidad', async () => {
     const pagina = await abrir();
@@ -138,6 +161,39 @@ describe('EntradaPage', () => {
     expect(pagina.querySelector('[role="alert"]')?.textContent).toContain(
       'El servidor no puede comprobar la identidad ahora',
     );
+  });
+
+  it('avisa de la espera desde que la credencial se envia hasta que la navegacion acaba', async () => {
+    await abrir();
+    const preparacion = TestBed.inject(Preparacion);
+    let terminarEntrada: (resultado: ResultadoDeEntrada) => void = () => undefined;
+    entrar.mockReturnValue(new Promise<ResultadoDeEntrada>((resolver) => (terminarEntrada = resolver)));
+    let terminarNavegacion: (ok: boolean) => void = () => undefined;
+    navegar.mockReturnValue(new Promise<boolean>((resolver) => (terminarNavegacion = resolver)));
+
+    identidad.alRecibir?.('jwt-de-prueba');
+    await vi.waitFor(() => expect(preparacion.visible()).toBe(true));
+
+    // /yo ya contesto, pero las guardas de la ruta aun deciden: sigue la espera.
+    terminarEntrada(RESULTADO_DE_ENTRADA.dentro);
+    await vi.waitFor(() => expect(navegar).toHaveBeenCalled());
+    expect(preparacion.visible()).toBe(true);
+
+    terminarNavegacion(true);
+    await vi.waitFor(() => expect(preparacion.visible()).toBe(false));
+  });
+
+  it('deja de avisar si la cuenta no entra', async () => {
+    await abrir();
+    const preparacion = TestBed.inject(Preparacion);
+    let terminarEntrada: (resultado: ResultadoDeEntrada) => void = () => undefined;
+    entrar.mockReturnValue(new Promise<ResultadoDeEntrada>((resolver) => (terminarEntrada = resolver)));
+
+    identidad.alRecibir?.('jwt-de-prueba');
+    await vi.waitFor(() => expect(preparacion.visible()).toBe(true));
+
+    terminarEntrada(RESULTADO_DE_ENTRADA.rechazada);
+    await vi.waitFor(() => expect(preparacion.visible()).toBe(false));
   });
 });
 
@@ -244,6 +300,27 @@ describe('EntradaPage con el servidor dormido', () => {
     expect(reintentar()).toBeDefined();
     expect(aviso()?.textContent).not.toContain(MENSAJE_DESPERTANDO);
     expect(preparar).not.toHaveBeenCalled();
+  });
+
+  it('Reintentar es un button con la clase del sistema, no un texto suelto', async () => {
+    await responder(false);
+
+    const boton = reintentar()!;
+
+    expect(boton.tagName).toBe('BUTTON');
+    expect([...boton.classList]).toEqual(expect.arrayContaining(['boton', 'boton--primario']));
+  });
+
+  it('Reintentar vive dentro de la tarjeta, centrado bajo el aviso', async () => {
+    await responder(false);
+
+    const tarjeta = pagina().querySelector('.tarjeta-cta')!;
+    const boton = reintentar()!;
+
+    expect(tarjeta.contains(boton)).toBe(true);
+    expect(boton.classList.contains('boton--bloque')).toBe(false);
+    expect(boton.closest('.entrada__acciones')).not.toBeNull();
+    expect(region()!.compareDocumentPosition(boton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it('reintentar vuelve a comprobar y reinicia los dos plazos', async () => {

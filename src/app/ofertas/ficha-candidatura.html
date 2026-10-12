@@ -2,7 +2,11 @@
 
 <header class="cabecera">
   <div class="arriba">
-    <h2 [id]="idTitulo()">{{ una.oferta.empresa }}</h2>
+    @if (nivel() === 1) {
+      <h1 class="titulo-ficha" [id]="idTitulo()">{{ una.oferta.empresa }}</h1>
+    } @else {
+      <h2 class="titulo-ficha" [id]="idTitulo()">{{ una.oferta.empresa }}</h2>
+    }
     <!-- Quien la contiene pone aqui su navegacion (el panel: anterior,
          siguiente y cerrar). La pagina completa no pone nada. -->
     <ng-content select="[navegacion]" />
@@ -12,7 +16,7 @@
     <app-estado [estado]="una.estado" />
     @if (una.oferta.enlace) {
       <a
-        class="boton"
+        class="boton boton--neutro boton--compacto"
         data-oferta-original
         [href]="una.oferta.enlace"
         target="_blank"
@@ -24,7 +28,7 @@
     }
     @if (una.notion) {
       <a
-        class="boton"
+        class="boton boton--neutro boton--compacto"
         data-notion
         [href]="una.notion"
         target="_blank"
@@ -35,7 +39,7 @@
     }
     <ng-content select="[extra]" />
     @if (editable() && !editando()) {
-      <button type="button" class="boton" data-editar (click)="editar()">
+      <button type="button" class="boton boton--neutro boton--compacto" data-editar (click)="editar()">
         <svg class="icono" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4" />
         </svg>
@@ -43,7 +47,7 @@
       </button>
     }
     @if (editando()) {
-      <button type="button" class="boton primario" data-guardar [disabled]="guardando()" (click)="guardar()">
+      <button type="button" class="boton boton--primario boton--compacto" data-guardar [disabled]="guardando()" (click)="guardar()">
         <svg class="icono" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6" />
         </svg>
@@ -53,7 +57,7 @@
           <ng-container i18n="Boton que guarda los cambios de la ficha@@ficha.guardar">Guardar</ng-container>
         }
       </button>
-      <button type="button" class="boton" data-cancelar [disabled]="guardando()" (click)="cancelar()" i18n="Boton que descarta la edicion@@ficha.cancelar">
+      <button type="button" class="boton boton--neutro boton--compacto" data-cancelar [disabled]="guardando()" (click)="cancelar()" i18n="Boton que descarta la edicion@@ficha.cancelar">
         Cancelar
       </button>
     }
@@ -61,7 +65,9 @@
          confirma que la accion se hizo. -->
     @for (accion of acciones(); track accion.tipo) {
       <a
-        class="boton accion"
+        class="boton boton--compacto"
+        [class.boton--neutro]="accion.tipo === 'descartar'"
+        [class.boton--primario]="accion.tipo !== 'descartar'"
         [attr.data-accion]="accion.tipo"
         [href]="accion.url"
         target="_blank"
@@ -142,7 +148,11 @@
 <div class="contenido">
   @for (seccion of ficha().secciones; track seccion.titulo) {
     <section [attr.aria-label]="seccion.titulo">
-      <h3>{{ seccion.titulo }}</h3>
+      @if (nivel() === 1) {
+        <h2 class="titulo-seccion-ficha">{{ seccion.titulo }}</h2>
+      } @else {
+        <h3 class="titulo-seccion-ficha">{{ seccion.titulo }}</h3>
+      }
       @if (seccion.campos.length) {
         <dl>
           @for (campo of seccion.campos; track campo.clave) {
@@ -155,13 +165,35 @@
                       campo.textoEnlace ?? campo.valor
                     }}</a>
                     @if (campo.vistaPrevia) {
-                      <iframe
-                        class="visor"
-                        [src]="incrustable(campo.vistaPrevia)"
-                        [title]="tituloDelVisor(una.oferta.empresa)"
-                        loading="lazy"
-                        referrerpolicy="no-referrer"
-                      ></iframe>
+                      <!-- Nada de Google se carga por defecto: el iframe solo existe tras pedirlo. -->
+                      <button
+                        type="button"
+                        class="boton boton--secundario boton--compacto"
+                        data-ver-vista-previa
+                        [attr.aria-expanded]="vistaPreviaAbierta() ? 'true' : 'false'"
+                        [attr.aria-controls]="'visor-' + campo.clave"
+                        [attr.aria-describedby]="'visor-aviso-' + campo.clave"
+                        (click)="alternarVistaPrevia()"
+                      >
+                        @if (vistaPreviaAbierta()) {
+                          <ng-container i18n="Boton que oculta la vista previa del CV@@ficha.visor.ocultar">Ocultar vista previa</ng-container>
+                        } @else {
+                          <ng-container i18n="Boton que carga la vista previa del CV@@ficha.visor.ver">Ver vista previa</ng-container>
+                        }
+                      </button>
+                      <p class="apagado" [id]="'visor-aviso-' + campo.clave" i18n="Aviso de que la vista previa la sirve Google@@ficha.visor.aviso">
+                        La vista previa la sirve Google y puede usar sus propias cookies. Solo se carga si la pides.
+                      </p>
+                      @if (vistaPreviaAbierta()) {
+                        <iframe
+                          class="visor"
+                          [id]="'visor-' + campo.clave"
+                          [src]="incrustable(campo.vistaPrevia)"
+                          [title]="tituloDelVisor(una.oferta.empresa)"
+                          loading="lazy"
+                          referrerpolicy="no-referrer"
+                        ></iframe>
+                      }
                     }
                   }
                   @case ('email') {
@@ -189,7 +221,11 @@
 
   <section aria-label="Contenido de la ficha" i18n-aria-label="Nombre de la seccion con el cuerpo de la pagina de Notion@@ficha.contenido.etiqueta">
     @if (grupos().length) {
-      <h3 i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.conCuerpo">Contenido de la ficha (historial y encaje)</h3>
+      @if (nivel() === 1) {
+        <h2 class="titulo-seccion-ficha" i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.conCuerpo">Contenido de la ficha (historial y encaje)</h2>
+      } @else {
+        <h3 class="titulo-seccion-ficha" i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.conCuerpo">Contenido de la ficha (historial y encaje)</h3>
+      }
       <div class="cuerpo" data-cuerpo>
         @for (grupo of grupos(); track $index) {
           @if (grupo.tipo === 'lista') {
@@ -210,10 +246,18 @@
             @let bloque = comoBloque(grupo);
             @switch (bloque.tipo) {
               @case ('titulo') {
-                <h4>{{ bloque.texto }}</h4>
+                @if (nivel() === 1) {
+                  <h3 class="bloque-titulo">{{ bloque.texto }}</h3>
+                } @else {
+                  <h4 class="bloque-titulo">{{ bloque.texto }}</h4>
+                }
               }
               @case ('subtitulo') {
-                <h5>{{ bloque.texto }}</h5>
+                @if (nivel() === 1) {
+                  <h4 class="bloque-subtitulo">{{ bloque.texto }}</h4>
+                } @else {
+                  <h5 class="bloque-subtitulo">{{ bloque.texto }}</h5>
+                }
               }
               @case ('cita') {
                 <blockquote>{{ bloque.texto }}</blockquote>
@@ -238,7 +282,11 @@
         }
       </div>
     } @else {
-      <h3 i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.sinCuerpo">Contenido de la ficha</h3>
+      @if (nivel() === 1) {
+        <h2 class="titulo-seccion-ficha" i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.sinCuerpo">Contenido de la ficha</h2>
+      } @else {
+        <h3 class="titulo-seccion-ficha" i18n="Titulo del contenido de la pagina de Notion@@ficha.contenido.sinCuerpo">Contenido de la ficha</h3>
+      }
       <p class="apagado" i18n="Aviso de que la pagina de Notion esta vacia@@ficha.contenido.vacio">
         La ficha no tiene contenido en el cuerpo de la página.
       </p>

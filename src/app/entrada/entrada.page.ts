@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { Preparacion } from '../preparacion/preparacion';
 import { ProveedorDeIdentidad } from '../sesion/proveedor-de-identidad';
 import { RESULTADO_DE_ENTRADA, ResultadoDeEntrada, Sesion } from '../sesion/sesion';
 import { Servidor } from '../sesion/servidor';
@@ -45,6 +46,7 @@ export class EntradaPage {
   private readonly router = inject(Router);
   private readonly ruta = inject(ActivatedRoute);
   private readonly servidor = inject(Servidor);
+  private readonly preparacion = inject(Preparacion);
   private readonly destruccion = inject(DestroyRef);
   private readonly anfitrion = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly acceso = viewChild.required<ElementRef<HTMLElement>>('acceso');
@@ -117,6 +119,12 @@ export class EntradaPage {
 
   private async entrar(credencial: string): Promise<void> {
     this.error.set(null);
+    // The wait covers /yo and the route guards that follow: the user sees one
+    // continuous "getting your area ready" instead of a silent page.
+    await this.preparacion.mientras(this.entrarYNavegar(credencial));
+  }
+
+  private async entrarYNavegar(credencial: string): Promise<void> {
     const resultado = await this.sesion.entrar(credencial);
     if (resultado === RESULTADO_DE_ENTRADA.dentro) {
       await this.router.navigateByUrl(rutaInterna(this.ruta.snapshot.queryParamMap.get('volver')));

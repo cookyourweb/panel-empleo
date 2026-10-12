@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AltaStore } from './alta.store';
 import { Perfil, ResultadoExtraccion, SubidaRechazada, TIPOS_DE_CONSENTIMIENTO, VERSION_DE_CONSENTIMIENTO } from './dominio';
 import { ExtractorDeCv } from './extractor-de-cv';
+import { Sesion } from '../sesion/sesion';
 import { RepositorioDePerfil } from './repositorio-de-perfil';
 
 const PERFIL: Perfil = {
@@ -32,14 +33,17 @@ function aplazada<T>(): { promesa: Promise<T>; resolver: (valor: T) => void } {
 describe('AltaStore', () => {
   let repositorio: { obtener: ReturnType<typeof vi.fn>; guardar: ReturnType<typeof vi.fn>; consentir: ReturnType<typeof vi.fn> };
   let extractor: { subir: ReturnType<typeof vi.fn>; extraer: ReturnType<typeof vi.fn> };
+  let sesion: { perfilGuardado: ReturnType<typeof vi.fn> };
   let store: AltaStore;
 
   beforeEach(() => {
     repositorio = { obtener: vi.fn(), guardar: vi.fn().mockResolvedValue(undefined), consentir: vi.fn().mockResolvedValue(undefined) };
     extractor = { subir: vi.fn().mockResolvedValue(undefined), extraer: vi.fn().mockResolvedValue(PROPUESTA) };
+    sesion = { perfilGuardado: vi.fn() };
     TestBed.configureTestingModule({
       providers: [
         AltaStore,
+        { provide: Sesion, useValue: sesion },
         { provide: RepositorioDePerfil, useValue: repositorio },
         { provide: ExtractorDeCv, useValue: extractor },
       ],
@@ -93,6 +97,17 @@ describe('AltaStore', () => {
       expect(store.paso()).toBe('consentimiento');
     });
 
+    it('recuerda el archivo elegido mientras sube, para poder mostrarlo', async () => {
+      await hastaSubida();
+      extractor.subir.mockReturnValueOnce(new Promise<void>(() => undefined));
+      expect(store.archivoElegido()).toBeNull();
+
+      void store.subirCv(ARCHIVO);
+      await Promise.resolve();
+
+      expect(store.archivoElegido()).toEqual({ nombre: 'cv.pdf', tamano: ARCHIVO.size });
+    });
+
     it('pasa por extrayendo y termina en la revision con las propuestas', async () => {
       await hastaSubida();
       const espera = aplazada<ResultadoExtraccion>();
@@ -118,6 +133,39 @@ describe('AltaStore', () => {
 
       expect(store.paso()).toBe('manual');
       expect(store.motivoManual()).toBe('tope');
+    });
+
+    it('cvGuardado empieza en falso y pasa a verdadero en cuanto el servidor acepta el archivo', async () => {
+      await hastaSubida();
+      expect(store.cvGuardado()).toBe(false);
+      const espera = aplazada<ResultadoExtraccion>();
+      extractor.extraer.mockReturnValue(espera.promesa);
+
+      const subida = store.subirCv(ARCHIVO);
+      await vi.waitFor(() => expect(store.cvGuardado()).toBe(true));
+      expect(store.paso()).toBe('extrayendo');
+
+      espera.resolver(PROPUESTA);
+      await subida;
+    });
+
+    it('cvGuardado sigue verdadero aunque la lectura no este disponible', async () => {
+      await hastaSubida();
+      extractor.extraer.mockResolvedValue({ estado: 'manual', motivo: 'indisponible' });
+
+      await store.subirCv(ARCHIVO);
+
+      expect(store.paso()).toBe('manual');
+      expect(store.cvGuardado()).toBe(true);
+    });
+
+    it('un archivo rechazado no marca el CV como guardado', async () => {
+      await hastaSubida();
+      extractor.subir.mockRejectedValue(new SubidaRechazada('tamano'));
+
+      await store.subirCv(ARCHIVO);
+
+      expect(store.cvGuardado()).toBe(false);
     });
 
     it('un archivo rechazado vuelve a la subida con el motivo y sin extraer (S5.7)', async () => {
@@ -178,6 +226,77 @@ describe('AltaStore', () => {
     });
   });
 
+  describe('consentido', () => {
+    it('empieza en falso, pasa a verdadero al registrar los consentimientos y no si se va a mano', async () => {
+      expect(store.consentido()).toBe(false);
+
+      await store.consentir();
+
+      expect(store.consentido()).toBe(true);
+    });
+
+    it('rellenar a mano sin consentir lo deja en falso', () => {
+      store.irAManual();
+
+      expect(store.consentido()).toBe(false);
+    });
+
+    it('si el servidor falla no cuenta como consentido', async () => {
+      repositorio.consentir.mockRejectedValue(new Error('500'));
+
+      await store.consentir();
+
+      expect(store.consentido()).toBe(false);
+    });
+  });
+
+  describe('estado ocupado', () => {
+    it('consentiendo es verdadero solo mientras el servidor registra el consentimiento', async () => {
+      const espera = aplazada<void>();
+      repositorio.consentir.mockReturnValue(espera.promesa);
+      expect(store.consentiendo()).toBe(false);
+
+      const consentimiento = store.consentir();
+      expect(store.consentiendo()).toBe(true);
+
+      espera.resolver();
+      await consentimiento;
+      expect(store.consentiendo()).toBe(false);
+    });
+
+    it('consentiendo vuelve a falso si el servidor falla', async () => {
+      repositorio.consentir.mockRejectedValue(new Error('500'));
+
+      await store.consentir();
+
+      expect(store.consentiendo()).toBe(false);
+    });
+
+    it('guardando es verdadero mientras se guarda y un segundo guardar no repite la peticion', async () => {
+      store.irAManual();
+      const espera = aplazada<void>();
+      repositorio.guardar.mockReturnValue(espera.promesa);
+
+      const primero = store.guardar(PERFIL);
+      const segundo = store.guardar(PERFIL);
+      expect(store.guardando()).toBe(true);
+
+      espera.resolver();
+      await Promise.all([primero, segundo]);
+      expect(store.guardando()).toBe(false);
+      expect(repositorio.guardar).toHaveBeenCalledTimes(1);
+    });
+
+    it('guardando vuelve a falso si el servidor falla', async () => {
+      store.irAManual();
+      repositorio.guardar.mockRejectedValue(new Error('422'));
+
+      await store.guardar(PERFIL);
+
+      expect(store.guardando()).toBe(false);
+    });
+  });
+
   describe('guardar', () => {
     it('guarda el perfil y termina (REQ-5.5: solo al confirmar)', async () => {
       store.irAManual();
@@ -187,6 +306,23 @@ describe('AltaStore', () => {
 
       expect(repositorio.guardar).toHaveBeenCalledWith(PERFIL);
       expect(store.paso()).toBe('hecho');
+    });
+
+    it('avisa a la sesion de que ya hay perfil, para que las guardas no la devuelvan al alta', async () => {
+      store.irAManual();
+
+      await store.guardar(PERFIL);
+
+      expect(sesion.perfilGuardado).toHaveBeenCalledTimes(1);
+    });
+
+    it('si falla el guardado no toca el estado de la sesion', async () => {
+      store.irAManual();
+      repositorio.guardar.mockRejectedValue(new Error('422'));
+
+      await store.guardar(PERFIL);
+
+      expect(sesion.perfilGuardado).not.toHaveBeenCalled();
     });
 
     it('si falla se queda donde estaba y lo dice', async () => {

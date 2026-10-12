@@ -79,14 +79,14 @@ function aLista(texto: string): string[] {
           <p class="error" role="alert" [id]="'error-' + campo">{{ mensajeDeError(campo) }}</p>
         }
         @if (enRevision()) {
-          <div class="revision">
+          <div class="revision panel-suave">
             @if (propuestaDe(campo); as propuesta) {
               <p class="pista" i18n="Encabezado de la frase del CV@@alta.revision.cita">Frase de tu CV:</p>
               <!-- Interpolation, never innerHTML: the quote is text from the CV, not markup. -->
               <blockquote class="cita" [id]="'cita-' + campo" [attr.data-cita]="campo">{{ propuesta.cita }}</blockquote>
               <div class="acciones">
-                <button type="button" [attr.data-aceptar]="campo" [attr.aria-describedby]="'etiqueta-' + campo" (click)="aceptar(campo)" i18n="Boton que acepta un valor propuesto@@alta.revision.aceptar">Aceptar</button>
-                <button type="button" [attr.data-descartar]="campo" [attr.aria-describedby]="'etiqueta-' + campo" (click)="descartar(campo)" i18n="Boton que descarta un valor propuesto@@alta.revision.descartar">Descartar</button>
+                <button type="button" class="boton boton--secundario boton--compacto" [attr.data-aceptar]="campo" [attr.aria-describedby]="'etiqueta-' + campo" (click)="aceptar(campo)" i18n="Boton que acepta un valor propuesto@@alta.revision.aceptar">Aceptar</button>
+                <button type="button" class="boton boton--neutro boton--compacto" [attr.data-descartar]="campo" [attr.aria-describedby]="'etiqueta-' + campo" (click)="descartar(campo)" i18n="Boton que descarta un valor propuesto@@alta.revision.descartar">Descartar</button>
               </div>
               <p class="pista" aria-live="polite" [id]="'estado-' + campo" [attr.data-estado]="campo" [attr.data-valor]="estados()[campo] ?? 'propuesto'">{{ textoDeEstado(campo) }}</p>
             } @else {
@@ -159,7 +159,13 @@ function aLista(texto: string): string[] {
       }
 
       <div class="acciones">
-        <button type="submit" data-guardar i18n="Boton que guarda el perfil@@alta.formulario.guardar">Guardar mi perfil</button>
+        <button type="submit" class="boton boton--primario boton--grande boton--bloque" data-guardar [disabled]="guardando()" [attr.aria-busy]="guardando() ? 'true' : null">
+          @if (guardando()) {
+            <ng-container i18n="Boton de guardar mientras se guarda el perfil@@alta.formulario.guardando">Guardando tu perfil…</ng-container>
+          } @else {
+            <ng-container i18n="Boton que guarda el perfil@@alta.formulario.guardar">Guardar mi perfil</ng-container>
+          }
+        </button>
       </div>
     </form>
   `,
@@ -169,6 +175,8 @@ export class FormularioManual {
   /** Con propuestas del CV: cada campo muestra su cita y se puede aceptar, editar o descartar. */
   readonly enRevision = input(false);
   readonly errorDeGuardado = input(false);
+  /** True while the save request is in flight: the button is busy and a second submit is ignored. */
+  readonly guardando = input(false);
   readonly guardar = output<Perfil>();
 
   protected readonly camposDeTexto = ['rol', 'aniosExperiencia', 'stack', 'idiomas', 'ubicacion'] as const satisfies readonly Campo[];
@@ -264,6 +272,7 @@ export class FormularioManual {
   }
 
   protected confirmar(): void {
+    if (this.guardando()) return;
     this.enviado.set(true);
     this.formulario.markAllAsTouched();
     if (this.formulario.invalid) return;

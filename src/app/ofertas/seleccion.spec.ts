@@ -6,6 +6,8 @@ import { CambiosDeCandidatura } from './edicion';
 import { EditorDeCandidaturas } from './editor-de-candidaturas';
 import { FuenteDeEncaje } from './encaje';
 import { FuenteDeAcciones, FuenteDeAccionesDemo } from './fuente-de-acciones';
+import { FuenteDeCuota } from '../cuota/fuente-de-cuota';
+import { FuenteDeCuotaDemo } from '../cuota/fuente-de-cuota-demo';
 import { FuenteDeEncajeDemo } from './fuente-de-encaje-demo';
 import { OfertasPage } from './ofertas.page';
 import { RepositorioDemo } from './repositorio-demo';
@@ -41,6 +43,7 @@ describe('Seleccion y acciones en bloque', () => {
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
+        { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
         { provide: EditorDeCandidaturas, useValue: editor },
       ],
     });

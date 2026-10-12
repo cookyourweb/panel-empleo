@@ -26,3 +26,26 @@ export function readThemeTokens(selector: string): Record<string, string> {
   }
   return tokens;
 }
+
+/**
+ * Valor de un token declarado en un bloque :root de src/styles.css.
+ * Sin minWidth lee los bloques base; con minWidth, el bloque de ese punto de corte.
+ */
+export function readTokenAt(token: string, minWidth?: number): string | undefined {
+  const css = readFileSync(STYLES_CSS, 'utf8');
+  const bloques = [...css.matchAll(/(@media \(min-width: (\d+)px\) \{\s*)?:root \{([^}]*)\}/g)].filter(([, , corte]) =>
+    minWidth === undefined ? corte === undefined : Number(corte) === minWidth,
+  );
+  for (const [, , , cuerpo] of bloques) {
+    const valor = cuerpo.match(new RegExp(`${token}:\\s*([^;]+);`))?.[1].trim();
+    if (valor !== undefined) return valor;
+  }
+  return undefined;
+}
+
+/** Cuerpo de la primera regla `selector { ... }` de src/styles.css (sin media queries). */
+export function readRule(selector: string): string | undefined {
+  const css = readFileSync(STYLES_CSS, 'utf8');
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return css.match(new RegExp(`(?:^|\\n)${escaped} \\{([^}]*)\\}`))?.[1];
+}

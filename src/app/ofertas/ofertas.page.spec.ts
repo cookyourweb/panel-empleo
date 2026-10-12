@@ -10,6 +10,8 @@ import { Candidatura } from './dominio';
 import { FuenteDeEncaje } from './encaje';
 import { FuenteDeAcciones, FuenteDeAccionesDemo } from './fuente-de-acciones';
 import { ENCAJE_ACTIVO } from '../configuracion';
+import { FuenteDeCuota } from '../cuota/fuente-de-cuota';
+import { FuenteDeCuotaDemo } from '../cuota/fuente-de-cuota-demo';
 import { FuenteDeEncajeDemo } from './fuente-de-encaje-demo';
 import { OfertasPage } from './ofertas.page';
 import { RepositorioDemo } from './repositorio-demo';
@@ -28,6 +30,7 @@ describe('OfertasPage', () => {
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
+        { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
       ],
     }).compileComponents();
   });
@@ -37,6 +40,34 @@ describe('OfertasPage', () => {
     await fixture.whenStable();
     return fixture.nativeElement as HTMLElement;
   }
+
+  it('tiene exactamente un h1, el titular Ofertas, y sin saltar niveles', async () => {
+    const pagina = await pintar();
+
+    expect(pagina.querySelectorAll('h1')).toHaveLength(1);
+    expect(pagina.querySelector('h1')?.textContent?.trim()).toBe('Ofertas');
+  });
+
+  it('con la demo no pinta ningun medidor de cuota', async () => {
+    const pagina = await pintar();
+
+    expect(pagina.querySelector('app-cuota')).not.toBeNull();
+    expect(pagina.querySelector('[data-cuota-restantes], [data-cuota-agotada]')).toBeNull();
+  });
+
+  it('muestra cuantas candidaturas le quedan si la fuente tiene cuota', async () => {
+    TestBed.overrideProvider(FuenteDeCuota, {
+      useValue: {
+        actual: async () => ({ usadas: 2.7, limite: 8, seRenueva: '2026-11-01', topeAgotado: false }),
+        refrescar: async () => null,
+        registrarInteres: async () => undefined,
+      },
+    });
+
+    const pagina = await pintar();
+
+    expect(pagina.querySelector('[data-cuota-restantes]')?.textContent).toContain('Te quedan 5 candidaturas');
+  });
 
   it('lista las ofertas en una tabla con cabeceras de columna', async () => {
     const pagina = await pintar();
@@ -53,6 +84,17 @@ describe('OfertasPage', () => {
     expect(filtros.length).toBe(10);
     expect(filtros[0].textContent).toContain('Todas');
     expect(filtros[0].textContent).toContain('13');
+  });
+
+  it('los filtros son botones del sistema y el elegido se marca con aria-pressed y el degradado de marca', async () => {
+    const pagina = await pintar();
+
+    const filtros = [...pagina.querySelectorAll<HTMLButtonElement>('[data-filtro]')];
+
+    for (const filtro of filtros) {
+      expect(filtro.tagName).toBe('BUTTON');
+      expect([...filtro.classList]).toEqual(expect.arrayContaining(['boton', 'boton--neutro']));
+    }
   });
 
   it('al elegir un estado solo quedan sus ofertas', async () => {
@@ -166,6 +208,11 @@ describe('OfertasPage', () => {
     expect(aprobar?.getAttribute('href')).toBe('https://n8n.test/webhook/A?id=c1');
     expect(aprobar?.getAttribute('target')).toBe('_blank');
     expect(fila.querySelector('[data-accion="descartar"]')).not.toBeNull();
+    // Son enlaces (abren la URL del correo) pero se ven como botones: aprobar con la marca, descartar neutro.
+    expect([...aprobar!.classList]).toEqual(expect.arrayContaining(['boton', 'boton--primario']));
+    expect([...fila.querySelector('[data-accion="descartar"]')!.classList]).toEqual(
+      expect.arrayContaining(['boton', 'boton--neutro']),
+    );
 
     const conCv = [...pagina.querySelectorAll('tbody tr')].find((tr) => tr.textContent?.includes('Lumen Grid'))!;
     expect(conCv.querySelector('[data-accion="enviarEmpresa"]')?.textContent).toContain('Enviar a empresa');
@@ -260,6 +307,7 @@ describe('OfertasPage · números según el idioma activo', () => {
         { provide: RepositorioDeCandidaturas, useValue: { listar: async () => MUCHAS } },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
+        { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
       ],
     }).compileComponents();
     const fixture = TestBed.createComponent(OfertasPage);
@@ -286,6 +334,7 @@ describe('OfertasPage · con el encaje apagado', () => {
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useValue: { resumen } },
+        { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
         { provide: ENCAJE_ACTIVO, useValue: false },
       ],
     }).compileComponents();
@@ -314,6 +363,7 @@ describe('OfertasPage · filtro de alcanzables', () => {
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useValue: fuente ?? { resumen } },
+        { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
         { provide: ENCAJE_ACTIVO, useValue: true },
       ],
     }).compileComponents();

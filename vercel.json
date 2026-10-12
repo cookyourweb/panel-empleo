@@ -14,9 +14,15 @@
   ],
   "rewrites": [
     { "source": "/es/:path*", "destination": "/es/index.html" },
-    { "source": "/en/:path*", "destination": "/en/index.html" }
+    { "source": "/en/:path*", "destination": "/en/index.html" },
+    { "source": "/favicon.ico", "destination": "/es/favicon.ico" },
+    { "source": "/apple-touch-icon.png", "destination": "/es/apple-touch-icon.png" }
   ],
   "headers": [
+    {
+      "source": "/favicon.ico",
+      "headers": [{ "key": "Content-Type", "value": "image/vnd.microsoft.icon" }]
+    },
     {
       "source": "/(.*)",
       "headers": [

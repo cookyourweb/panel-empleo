@@ -1,9 +1,23 @@
-.cabecera {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
-  /* Same side gutter as the page content, so the title is not flush with the edge. */
-  padding: 0.75rem 1rem;
+/* La cabecera de marca es fija y no ocupa sitio: el contenido empieza debajo. */
+:host {
+  display: block;
+  padding-top: var(--cabecera-espacio);
+}
+
+/* Sin barra de titulo propia, el contenido arranca justo bajo el hueco de la cabecera:
+   un respiro para que el titular de cada pantalla no quede pegado a ella. */
+main {
+  padding-block-start: 1rem;
+}
+
+.aviso-consentimiento {
+  margin: 1rem 0 0;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid hsl(var(--border));
+  border-left-width: 4px;
+  border-radius: 6px;
+}
+
+.aviso-consentimiento p {
+  margin: 0;
 }

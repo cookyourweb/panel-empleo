@@ -198,7 +198,7 @@ consola.
 La guarda protege todo el panel, en desarrollo y en producción. Solo son públicas la
 bienvenida y la página de entrada. El sitio público muestra una bienvenida que dice que el
 producto llega próximamente y que se accede por invitación, con un enlace a la lista de
-espera de CookYourWebAI (un formulario externo de Tally; el panel no guarda ningún dato). Mientras no existan datos por usuaria, una
+espera de CookYourWebAI (un formulario propio que se envía al flujo de contactos de CookYourWeb AI en n8n y se guarda en Notion; el panel no guarda ningún dato). Mientras no existan datos por usuaria, una
 cuenta invitada ve en producción los datos de demo.
 
 | Ruta | Acceso | Qué muestra |

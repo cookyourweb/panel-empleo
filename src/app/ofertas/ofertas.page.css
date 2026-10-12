@@ -13,8 +13,9 @@
   margin-bottom: 0.75rem;
 }
 
-.cabecera h2 {
+.cabecera h1 {
   margin: 0;
+  font-size: 1.5rem;
 }
 
 .buscador {
@@ -52,37 +53,9 @@
   margin-bottom: 1rem;
 }
 
-.filtros button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  height: 1.75rem;
-  padding: 0 0.7rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: 999px;
-  background: transparent;
-  color: hsl(var(--foreground));
-  font: inherit;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.filtros button:focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
-}
-
-/* El estado elegido se marca con color y con aria-pressed. El color solo no
-   basta: quien no lo distingue necesita que el lector de pantalla lo diga. */
-.filtros button[aria-pressed='true'] {
-  background: hsl(var(--primary));
-  border-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-}
-
 .recuento {
   font-variant-numeric: tabular-nums;
-  opacity: 0.75;
+  font-weight: 400;
 }
 
 .caja-tabla {
@@ -223,50 +196,23 @@ td.empresa a {
   font-weight: 600;
 }
 
-td a {
+td a:not(.boton) {
   color: hsl(var(--primary));
   text-decoration: none;
 }
 
-td a:hover,
-td a:focus-visible {
+td a:not(.boton):hover,
+td a:not(.boton):focus-visible {
   text-decoration: underline;
 }
 
-/* Acciones: parecen botones porque lo son para quien las usa, aunque sean
-   enlaces (abren la misma URL que el correo). */
+/* Las acciones son botones del sistema (.boton): solo se deja sitio entre ellas. */
 td.acciones {
   overflow: visible;
 }
 
-.accion {
-  display: inline-flex;
-  align-items: center;
-  height: 1.5rem;
-  padding: 0 0.6rem;
+td .boton {
   margin-right: 0.35rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-td .accion[data-accion='aprobar'],
-td .accion[data-accion='enviarEmpresa'] {
-  background: hsl(var(--primary));
-  border-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-}
-
-td .accion[data-accion='descartar'] {
-  color: hsl(var(--foreground));
-}
-
-td .accion:hover,
-td .accion:focus-visible {
-  text-decoration: none;
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 1px;
 }
 
 td.vacio {
@@ -289,7 +235,8 @@ td.vacio {
    cabecera de la ficha se queda quieta y solo se desplaza el contenido. */
 .panel {
   position: fixed;
-  inset: 0 0 0 auto;
+  /* Empieza debajo de la cabecera fija de marca, que si no taparia su boton de cerrar. */
+  inset: var(--cabecera-alto) 0 0 auto;
   z-index: 20;
   display: flex;
   flex-direction: column;
@@ -326,34 +273,6 @@ td.vacio {
   display: flex;
   flex: none;
   gap: 0.25rem;
-}
-
-.nav button,
-.completa {
-  display: inline-flex;
-  align-items: center;
-  height: 1.75rem;
-  padding: 0 0.65rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
-  background: transparent;
-  color: hsl(var(--foreground));
-  font: inherit;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.nav button:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.nav button:focus-visible,
-.completa:focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
 }
 
 /* ---------- Seleccion ----------
@@ -400,26 +319,6 @@ tbody tr[aria-selected='true'] td {
   background: hsl(var(--primary) / 0.14);
 }
 
-.boton-cabecera {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  height: 2.25rem;
-  padding: 0 0.8rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
-  background: transparent;
-  color: hsl(var(--foreground));
-  font: inherit;
-  font-size: 0.875rem;
-  cursor: pointer;
-}
-
-.boton-cabecera:focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
-}
-
 /* Abajo en el centro, encima de todo, como en la maqueta. */
 .aviso-general {
   position: fixed;
@@ -436,23 +335,6 @@ tbody tr[aria-selected='true'] td {
   color: hsl(var(--background));
   box-shadow: 0 12px 32px hsl(0 0% 0% / 0.35);
   transform: translateX(-50%);
-}
-
-.aviso-general button {
-  height: 1.75rem;
-  padding: 0 0.65rem;
-  border: 1px solid currentColor;
-  border-radius: 5px;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.aviso-general button:focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
 }
 
 .alcanzables {

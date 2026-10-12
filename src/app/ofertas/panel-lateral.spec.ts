@@ -6,6 +6,8 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { CandidaturasStore } from './candidaturas.store';
 import { FuenteDeEncaje } from './encaje';
 import { FuenteDeAcciones, FuenteDeAccionesDemo } from './fuente-de-acciones';
+import { FuenteDeCuota } from '../cuota/fuente-de-cuota';
+import { FuenteDeCuotaDemo } from '../cuota/fuente-de-cuota-demo';
 import { FuenteDeEncajeDemo } from './fuente-de-encaje-demo';
 import { OfertasPage } from './ofertas.page';
 import { RepositorioDemo } from './repositorio-demo';
@@ -24,6 +26,7 @@ describe('Panel lateral de la tabla', () => {
         { provide: RepositorioDeCandidaturas, useClass: RepositorioDemo },
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
+        { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
       ],
     });
     harness = await RouterTestingHarness.create();

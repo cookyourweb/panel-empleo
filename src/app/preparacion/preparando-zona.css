@@ -1,0 +1,71 @@
+:host {
+  display: block;
+}
+
+.preparando {
+  max-width: 28rem;
+  margin: 1rem auto 0;
+  padding: 1.5rem;
+  border: 1px solid var(--color-cyw-zinc-800);
+  border-radius: 1.5rem;
+  background-color: rgb(var(--color-cyw-zinc-900-rgb) / 0.9);
+  color: var(--color-cyw-zinc-300);
+  text-align: center;
+}
+
+.preparando p {
+  margin: 0;
+}
+
+.preparando__titulo {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.preparando__detalle {
+  margin-top: 0.25rem;
+}
+
+.preparando__barra {
+  position: relative;
+  height: 0.25rem;
+  margin-top: 0.75rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background-color: rgb(var(--color-cyw-zinc-800-rgb) / 0.8);
+}
+
+/* The moving segment: a decorative cue that the page is working. */
+.preparando__barra::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  border-radius: inherit;
+  background-image: linear-gradient(to right, var(--color-cyw-azul-500), var(--color-cyw-purpura-500), var(--color-cyw-rosa-500));
+  animation: preparando-avance 1.4s ease-in-out infinite;
+}
+
+@keyframes preparando-avance {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+/* Reduced motion: a still, full bar instead of a moving one. Mirrored by a class so it is testable. */
+.preparando--sin-animacion .preparando__barra::before {
+  width: 100%;
+  animation: none;
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preparando__barra::before {
+    width: 100%;
+    animation: none;
+    opacity: 0.6;
+  }
+}

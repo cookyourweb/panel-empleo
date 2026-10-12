@@ -7,6 +7,10 @@ import { ExtractorDeCv } from './alta/extractor-de-cv';
 import { RepositorioDePerfil } from './alta/repositorio-de-perfil';
 import { elegirRepositorioDeCuenta } from './cuenta/elegir-repositorio-de-cuenta';
 import { RepositorioDeCuenta } from './cuenta/repositorio-de-cuenta';
+import { elegirFuenteDeCuota } from './cuota/elegir-fuente-de-cuota';
+import { FuenteDeCuota } from './cuota/fuente-de-cuota';
+import { elegirListaDeEspera } from './espera/elegir-lista-de-espera';
+import { ListaDeEspera } from './espera/lista-de-espera';
 import { CandidaturasStore } from './ofertas/candidaturas.store';
 import { EditorDeCandidaturas, elegirEditor } from './ofertas/editor-de-candidaturas';
 import { elegirFuenteDeEncaje } from './ofertas/elegir-fuente-de-encaje';
@@ -54,6 +58,7 @@ export function crearRutas({ alta, encaje }: InterruptoresDeRutas): Routes {
     {
       path: '',
       pathMatch: 'full',
+      providers: [{ provide: ListaDeEspera, useClass: elegirListaDeEspera(isDevMode()) }],
       title: $localize`:Titulo de la pestana en la pagina de bienvenida@@ruta.bienvenida:Empleo | CookYourWebAI`,
       loadComponent: () => import('./bienvenida/bienvenida.page').then((m) => m.BienvenidaPage),
     },
@@ -77,6 +82,8 @@ export function crearRutas({ alta, encaje }: InterruptoresDeRutas): Routes {
         { provide: FuenteDeAcciones, useClass: elegirFuenteDeAcciones(isDevMode()) },
         { provide: EditorDeCandidaturas, useClass: elegirEditor(isDevMode()) },
         { provide: FuenteDeEncaje, useClass: elegirFuenteDeEncaje(encaje) },
+        // /yo con cuota y /interes son del mismo backend que el alta.
+        { provide: FuenteDeCuota, useClass: elegirFuenteDeCuota(alta) },
       ],
       children: [
         {

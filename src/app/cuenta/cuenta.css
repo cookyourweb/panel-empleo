@@ -1,0 +1,45 @@
+.seccion {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.resultado:empty {
+  display: none;
+}
+
+.resultado {
+  margin: 1rem 0 0;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid hsl(var(--border));
+  border-left-width: 4px;
+  border-radius: 6px;
+}
+
+.filas {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+}
+
+.retirado {
+  font-weight: 600;
+}
+
+[tabindex='-1']:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.subir {
+  margin-top: 1.5rem;
+}

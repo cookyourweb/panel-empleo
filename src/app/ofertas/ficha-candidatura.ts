@@ -34,6 +34,12 @@ export class FichaCandidatura {
   readonly acciones = input<Accion[]>([]);
   /** Para que quien la contiene pueda nombrarse con el titulo (aria-labelledby). */
   readonly idTitulo = input('titulo-ficha');
+  /**
+   * Nivel del titular de la ficha. En su propia pantalla es el h1 de la pagina (1) y
+   * sus secciones cuelgan como h2; dentro del panel de la tabla, que ya tiene su
+   * h1, el titular es un h2 (2) y las secciones h3. Asi nunca se salta un nivel.
+   */
+  readonly nivel = input<1 | 2>(2);
 
   /** Sin opciones no hay puente, y sin puente no se ofrece editar. */
   readonly opciones = input<OpcionesDeEdicion | null>(null);
@@ -44,6 +50,8 @@ export class FichaCandidatura {
     () => !!this.opciones() && !!this.alGuardar() && !this.candidatura().id.startsWith('local-'),
   );
   protected readonly editando = signal(false);
+  /** La vista previa de Drive solo se carga tras pedirla: sin clic no hay peticion a Google. */
+  protected readonly vistaPreviaAbierta = signal(false);
   /** Solo el id: que la misma ficha se refresque al guardar no cuenta como cambiar de ficha. */
   private readonly idActual = computed(() => this.candidatura().id);
   protected readonly guardando = signal(false);
@@ -62,6 +70,7 @@ export class FichaCandidatura {
     // de una oferta no puede acabar guardado en otra.
     effect(() => {
       this.idActual();
+      this.vistaPreviaAbierta.set(false);
       this.editando.set(false);
       this.error.set(null);
     });
@@ -93,6 +102,10 @@ export class FichaCandidatura {
 
   protected tituloDelVisor(empresa: string): string {
     return $localize`:Titulo del visor incrustado con el CV@@ficha.visor.titulo:CV generado para ${empresa}:empresa:`;
+  }
+
+  protected alternarVistaPrevia(): void {
+    this.vistaPreviaAbierta.update((abierta) => !abierta);
   }
 
   protected editar(): void {

@@ -9,19 +9,28 @@ import { Sesion } from './sesion/sesion';
 @Component({ template: 'pagina' })
 class PaginaFalsa {}
 
+let liberarGuarda: () => void = () => undefined;
+const guardaLenta = () => new Promise<boolean>((resolver) => (liberarGuarda = () => resolver(true)));
+
 describe('App', () => {
   const activa = signal(false);
+  const consentimientos = signal<{ almacenarCv: boolean; enviarCvAIa: boolean } | null>(null);
+  const perfil = signal<{ tienePerfil: boolean } | null>(null);
 
   beforeEach(async () => {
     activa.set(false);
+    consentimientos.set(null);
+    perfil.set(null);
     await TestBed.configureTestingModule({
       imports: [App],
       providers: [
-        { provide: Sesion, useValue: { activa } },
+        { provide: Sesion, useValue: { activa, consentimientos, perfil } },
         { provide: ALTA_ACTIVA, useValue: false },
         provideRouter([
           { path: 'a', component: PaginaFalsa },
+          { path: 'cuenta', component: PaginaFalsa },
           { path: 'b', component: PaginaFalsa },
+          { path: 'lenta', component: PaginaFalsa, canActivate: [guardaLenta] },
         ]),
       ],
     }).compileComponents();
@@ -32,20 +41,33 @@ describe('App', () => {
     await fixture.whenStable();
     const pagina = fixture.nativeElement as HTMLElement;
 
-    const salto = pagina.querySelector('a[href="#contenido"]');
+    const salto = pagina.querySelector('a[href="#main-content"]');
 
     expect(salto?.textContent).toContain('Saltar al contenido principal');
   });
 
-  it('ofrece en la cabecera el cambio de idioma, con el idioma actual marcado', async () => {
+  it('ya no tiene barra de titulo propia: la cabecera de marca es lo unico que hay encima del contenido', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
-    const cabecera = (fixture.nativeElement as HTMLElement).querySelector('header');
+    const pagina = fixture.nativeElement as HTMLElement;
 
-    const enlaces = [...(cabecera?.querySelectorAll('nav a[hreflang]') ?? [])];
+    expect(pagina.querySelector('.barra-app')).toBeNull();
+    expect(pagina.textContent).not.toContain('Panel de empleo');
+    // El h1 lo pone cada pantalla; el shell no pone ninguno.
+    expect(pagina.querySelectorAll('h1')).toHaveLength(0);
+  });
+
+  it('ofrece el cambio de idioma en el pie, con los dos idiomas y el actual marcado', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const pie = (fixture.nativeElement as HTMLElement).querySelector('footer');
+
+    const nav = pie?.querySelector('nav[aria-label="Idioma"]');
+    const enlaces = [...(nav?.querySelectorAll('a[hreflang]') ?? [])];
 
     expect(enlaces.map((a) => a.getAttribute('hreflang'))).toEqual(['es', 'en']);
-    expect(cabecera?.querySelectorAll('a[aria-current="true"]')).toHaveLength(1);
+    expect(enlaces.map((a) => a.textContent?.trim())).toEqual(['Español', 'English']);
+    expect(nav?.querySelectorAll('a[aria-current="true"]')).toHaveLength(1);
   });
 
   it('tiene un unico landmark main, y es el que alcanza el enlace de salto', async () => {
@@ -56,7 +78,27 @@ describe('App', () => {
     const mains = pagina.querySelectorAll('main');
 
     expect(mains).toHaveLength(1);
-    expect(mains[0].id).toBe('contenido');
+    expect(mains[0].id).toBe('main-content');
+  });
+
+  it('el enlace de salto es lo primero que enfoca el teclado, antes que la cabecera de marca', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+
+    const primero = pagina.querySelector('a, button');
+
+    expect(primero?.getAttribute('href')).toBe('#main-content');
+    expect(pagina.querySelectorAll('app-cabecera-de-marca, app-pie-de-marca')).toHaveLength(2);
+  });
+
+  it('solo la cabecera de marca es el banner de la pagina, y solo el pie de marca su contentinfo', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+
+    expect(pagina.querySelectorAll('header')).toHaveLength(1);
+    expect(pagina.querySelectorAll('footer')).toHaveLength(1);
   });
 
   it('tras navegar lleva el foco al main, pero no en la carga inicial', async () => {
@@ -76,30 +118,145 @@ describe('App', () => {
     (fixture.nativeElement as HTMLElement).remove();
   });
 
-  it('con sesion pero sin backend de alta, la cabecera no ofrece la cuenta', async () => {
-    activa.set(true);
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
+  describe('Tu cuenta en la cabecera de marca', () => {
+    const enCabecera = (pagina: HTMLElement) => pagina.querySelector('app-cabecera-de-marca')!;
 
-    expect((fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
+    it('con sesion pero sin backend de alta no ofrece la cuenta', async () => {
+      activa.set(true);
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+
+      expect((fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
+    });
+
+    it('sin sesion no ofrece la cuenta, ni en la cabecera ni en el menu movil', async () => {
+      TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+
+      expect(enCabecera(fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
+    });
+
+    it('con sesion y backend de alta la ofrece junto a WhatsApp y dentro del menu movil', async () => {
+      TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
+      activa.set(true);
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+      const cabecera = enCabecera(fixture.nativeElement as HTMLElement);
+
+      const enControles = cabecera.querySelector('.controles a[href="/cuenta"]');
+      const enMenu = cabecera.querySelector('#menu-movil a[href="/cuenta"]');
+
+      expect(enControles?.getAttribute('aria-label')).toBe('Tu cuenta');
+      expect(enControles?.textContent).toContain('Tu cuenta');
+      expect(enControles?.previousElementSibling).toBeNull();
+      expect(enControles?.nextElementSibling?.classList.contains('whatsapp')).toBe(true);
+      expect(enMenu?.textContent?.trim()).toBe('Tu cuenta');
+      expect(fixture.nativeElement.querySelector('main a[href="/cuenta"]')).toBeNull();
+    });
+
+    it('marca aria-current="page" mientras se esta en /cuenta, y solo entonces', async () => {
+      TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
+      activa.set(true);
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+      const cabecera = enCabecera(fixture.nativeElement as HTMLElement);
+      const enlaces = () => [...cabecera.querySelectorAll('a[href="/cuenta"]')];
+
+      expect(enlaces().map((a) => a.getAttribute('aria-current'))).toEqual([null, null]);
+
+      await TestBed.inject(Router).navigateByUrl('/cuenta');
+      await fixture.whenStable();
+
+      expect(enlaces().map((a) => a.getAttribute('aria-current'))).toEqual(['page', 'page']);
+    });
   });
 
-  it('con sesion y backend de alta, la cabecera enlaza a la cuenta', async () => {
-    TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
-    activa.set(true);
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const cabecera = (fixture.nativeElement as HTMLElement).querySelector('header');
+  describe('anchos', () => {
+    it('el contenido principal y la cabecera de marca comparten el contenedor de la pagina', async () => {
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+      const pagina = fixture.nativeElement as HTMLElement;
 
-    const enlace = cabecera?.querySelector('a[href="/cuenta"]');
-
-    expect(enlace?.textContent?.trim()).toBe('Tu cuenta');
+      expect(pagina.querySelector('main')?.classList.contains('contenedor-pagina')).toBe(true);
+      expect(pagina.querySelector('app-cabecera-de-marca .contenedor')?.classList.contains('contenedor-pagina')).toBe(true);
+    });
   });
 
-  it('sin sesion, la cabecera no ofrece la cuenta', async () => {
+  describe('aviso de consentimiento', () => {
+    async function pintar() {
+      TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
+      activa.set(true);
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+      return fixture.nativeElement as HTMLElement;
+    }
+
+    it('con perfil y sin consentimiento de guardar el CV, avisa con amabilidad y enlaza a Tu cuenta', async () => {
+      perfil.set({ tienePerfil: true });
+      consentimientos.set({ almacenarCv: false, enviarCvAIa: true });
+      const pagina = await pintar();
+
+      const aviso = pagina.querySelector('[data-aviso-consentimiento]')!;
+      expect(aviso.textContent).toContain('consentimiento');
+      expect(aviso.querySelector('a')?.getAttribute('href')).toBe('/cuenta');
+      expect(aviso.textContent).not.toMatch(/[—–→]/);
+      expect(aviso.closest('.contenedor-pagina')).not.toBeNull();
+      expect(aviso.compareDocumentPosition(pagina.querySelector('main')!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+    it('si el estado es desconocido nunca avisa', async () => {
+      perfil.set({ tienePerfil: true });
+      const pagina = await pintar();
+
+      expect(pagina.querySelector('[data-aviso-consentimiento]')).toBeNull();
+    });
+
+    it('con el consentimiento vigente no avisa', async () => {
+      perfil.set({ tienePerfil: true });
+      consentimientos.set({ almacenarCv: true, enviarCvAIa: false });
+      const pagina = await pintar();
+
+      expect(pagina.querySelector('[data-aviso-consentimiento]')).toBeNull();
+    });
+
+    it('sin perfil no avisa: ese camino es el del alta', async () => {
+      perfil.set({ tienePerfil: false });
+      consentimientos.set({ almacenarCv: false, enviarCvAIa: false });
+      const pagina = await pintar();
+
+      expect(pagina.querySelector('[data-aviso-consentimiento]')).toBeNull();
+    });
+
+    it('sin backend de alta no avisa', async () => {
+      perfil.set({ tienePerfil: true });
+      consentimientos.set({ almacenarCv: false, enviarCvAIa: false });
+      activa.set(true);
+      const fixture = TestBed.createComponent(App);
+      await fixture.whenStable();
+
+      expect((fixture.nativeElement as HTMLElement).querySelector('[data-aviso-consentimiento]')).toBeNull();
+    });
+  });
+
+  it('muestra el aviso de preparar la zona mientras una guarda espera y lo quita al decidir', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
+    const pagina = fixture.nativeElement as HTMLElement;
+    const router = TestBed.inject(Router);
+    const estado = () => pagina.querySelector('[role="status"]')?.textContent ?? '';
+    expect(estado().trim()).toBe('');
 
-    expect((fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
+    void router.navigateByUrl('/lenta');
+    await vi.waitFor(() => {
+      fixture.detectChanges();
+      expect(estado()).toContain('Estamos preparando tu zona…');
+    });
+
+    liberarGuarda();
+    await vi.waitFor(() => {
+      fixture.detectChanges();
+      expect(estado().trim()).toBe('');
+    });
   });
 });

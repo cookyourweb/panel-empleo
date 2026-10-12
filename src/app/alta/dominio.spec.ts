@@ -26,7 +26,7 @@ describe('dominio del alta', () => {
 
   it('el consentimiento tiene dos tipos y una version fija', () => {
     expect(TIPOS_DE_CONSENTIMIENTO).toEqual({ almacenarCv: 'almacenar_cv', enviarCvAIa: 'enviar_cv_a_ia' });
-    expect(VERSION_DE_CONSENTIMIENTO).toBe('v1');
+    expect(VERSION_DE_CONSENTIMIENTO).toBe('v2');
   });
 
   it('los motivos para ir al formulario manual cubren el servidor y la caida', () => {

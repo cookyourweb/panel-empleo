@@ -54,17 +54,13 @@ export type TipoDeConsentimiento = (typeof TIPOS_DE_CONSENTIMIENTO)[keyof typeof
  * Version del texto de consentimiento. Si el texto cambia de verdad (otro
  * proveedor, otro uso) se sube la version: el servidor no da por bueno un
  * consentimiento anterior (REQ-2.2). Debe coincidir con la del servidor.
+ *
+ * v2: el texto cubre tambien la generacion de CV y cartas, el envio a EE. UU.,
+ * como borrar el CV y retirar el consentimiento, y la mayoria de edad. Los
+ * consentimientos v1 ya no cuentan: hay que aceptar de nuevo.
  */
-export const VERSION_DE_CONSENTIMIENTO = 'v1';
+export const VERSION_DE_CONSENTIMIENTO = 'v2';
 
-export const MOTIVOS_DE_SUBIDA = ['tamano', 'tipo', 'ilegible', 'sinConsentimiento', 'servidor'] as const;
-
-export type MotivoDeSubida = (typeof MOTIVOS_DE_SUBIDA)[number];
-
-/** El servidor no acepto el CV. Lleva el motivo, nunca el contenido. */
-export class SubidaRechazada extends Error {
-  constructor(readonly motivo: MotivoDeSubida) {
-    super(`Subida rechazada: ${motivo}`);
-    this.name = 'SubidaRechazada';
-  }
-}
+// La subida del CV la comparten el alta y Tu cuenta: vive en compartido/ y se reexporta aqui.
+export { MOTIVOS_DE_SUBIDA, SubidaRechazada } from '../compartido/subida-rechazada';
+export type { MotivoDeSubida } from '../compartido/subida-rechazada';

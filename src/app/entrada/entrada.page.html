@@ -1,8 +1,9 @@
-<article class="entrada">
-  <h2 i18n="Titulo de la pantalla de entrada@@entrada.titulo">Entrar</h2>
+<section class="entrada">
+<article class="entrada__tarjeta tarjeta-cta columna-formulario">
+  <h1 class="titulo-seccion" i18n="Titulo de la pantalla de entrada@@entrada.titulo">Entrar</h1>
   <p i18n="Invitacion a entrar con la cuenta@@entrada.invitacion">Entra con tu cuenta para ver tus candidaturas.</p>
 
-  <div #acceso data-acceso></div>
+  <div #acceso data-acceso class="entrada__acceso"></div>
 
   <!-- La region existe siempre: un role="status" que nace ya con texto no se
        anuncia de forma fiable. Solo cambia el texto de dentro. -->
@@ -16,12 +17,15 @@
   </div>
 
   @if (sinRespuesta()) {
-    <button type="button" (click)="reintentar()" i18n="Boton que vuelve a comprobar el servidor@@entrada.reintentar">
-      Reintentar
-    </button>
+    <div class="entrada__acciones">
+      <button type="button" class="boton boton--primario" (click)="reintentar()" i18n="Boton que vuelve a comprobar el servidor@@entrada.reintentar">
+        Reintentar
+      </button>
+    </div>
   }
 
   @if (error(); as mensaje) {
     <p class="error" role="alert">{{ mensaje }}</p>
   }
 </article>
+</section>

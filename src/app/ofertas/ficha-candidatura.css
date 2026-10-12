@@ -18,7 +18,7 @@
   align-items: flex-start;
 }
 
-h2 {
+.titulo-ficha {
   flex: 1;
   margin: 0;
   font-size: 1.125rem;
@@ -39,26 +39,6 @@ h2 {
   align-items: center;
 }
 
-.boton {
-  display: inline-flex;
-  align-items: center;
-  height: 1.75rem;
-  padding: 0 0.7rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
-  color: hsl(var(--foreground));
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.accion[data-accion='aprobar'],
-.accion[data-accion='enviarEmpresa'] {
-  background: hsl(var(--primary));
-  border-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-}
-
 .contenido {
   flex: 1;
   min-height: 0;
@@ -70,7 +50,7 @@ section {
   padding-top: 0.9rem;
 }
 
-h3 {
+.titulo-seccion-ficha {
   margin: 0 0 0.5rem;
   padding-bottom: 0.25rem;
   border-bottom: 1px solid hsl(var(--border));
@@ -129,12 +109,12 @@ dd {
   white-space: pre-wrap;
 }
 
-.cuerpo h4 {
+.cuerpo .bloque-titulo {
   margin: 0.9rem 0 0.25rem;
   font-size: 0.875rem;
 }
 
-.cuerpo h5 {
+.cuerpo .bloque-subtitulo {
   margin: 0.75rem 0 0.15rem;
   color: hsl(var(--muted-foreground));
   font-size: 0.8rem;
@@ -193,16 +173,11 @@ summary {
   cursor: pointer;
 }
 
-a {
+a:not(.boton) {
   color: hsl(var(--primary));
 }
 
-.boton,
-.accion {
-  text-decoration: none;
-}
-
-a:focus-visible,
+a:not(.boton):focus-visible,
 summary:focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
@@ -212,36 +187,11 @@ summary:focus-visible {
 .icono {
   width: 0.95rem;
   height: 0.95rem;
-  margin-right: 0.3rem;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-button.boton {
-  background: transparent;
-  font: inherit;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-button.boton.primario {
-  background: hsl(var(--primary));
-  border-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-}
-
-button.boton:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
-button.boton:focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
 }
 
 fieldset {
@@ -314,4 +264,10 @@ legend {
   border: 1px solid hsl(var(--destructive, 0 70% 50%));
   border-radius: 6px;
   color: hsl(var(--foreground));
+}
+
+[data-ver-vista-previa] {
+  display: flex;
+  width: fit-content;
+  margin-top: 0.4rem;
 }

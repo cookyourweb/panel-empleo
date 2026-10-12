@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="es">
   <file id="ngi18n" original="ng.template">
-    <unit id="app.cuenta">
+    <unit id="app.avisoConsentimiento.texto">
       <notes>
-        <note category="location">src/app/app.html:8</note>
-        <note category="description">Enlace de la cabecera a la cuenta</note>
+        <note category="location">src/app/app.html:1</note>
+        <note category="description">Aviso de que hay que volver a dar el consentimiento para guardar el CV</note>
       </notes>
       <segment>
-        <source>Tu cuenta</source>
+        <source>Hemos actualizado el texto de privacidad y ahora necesitamos que vuelvas a darnos tu consentimiento para guardar tu CV. Mientras tanto no lo usaremos. Tu perfil se queda como está.</source>
+      </segment>
+    </unit>
+    <unit id="app.avisoConsentimiento.enlace">
+      <notes>
+        <note category="location">src/app/app.html:1</note>
+        <note category="description">Enlace del aviso de consentimiento a Tu cuenta</note>
+      </notes>
+      <segment>
+        <source>Ir a Tu cuenta para aceptarlo</source>
       </segment>
     </unit>
     <unit id="app.saltarAlContenido">
@@ -73,13 +82,220 @@
         <source>Tu cuenta</source>
       </segment>
     </unit>
-    <unit id="app.titulo">
+    <unit id="cabecera.cuenta">
       <notes>
-        <note category="location">src/app/app.ts:15</note>
-        <note category="description">Nombre de la aplicacion, titulo de la cabecera</note>
+        <note category="location">src/app/marca/cabecera-de-marca.ts:38</note>
+        <note category="description">Enlace de la cabecera a la cuenta</note>
       </notes>
       <segment>
-        <source>Panel de empleo</source>
+        <source>Tu cuenta</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.agencia">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.html:4</note>
+        <note category="description">Etiqueta bajo el logo de la agencia</note>
+      </notes>
+      <segment>
+        <source>Agencia AI</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.whatsapp.ayuda">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.html:26</note>
+        <note category="description">Ayuda emergente del boton de WhatsApp</note>
+      </notes>
+      <segment>
+        <source>¡Chatbot AI en vivo!</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.chatbot">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.html:68</note>
+        <note category="description">Boton del menu movil que abre el chat de WhatsApp</note>
+      </notes>
+      <segment>
+        <source>Chatbot AI en Vivo</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.principal">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.ts:30</note>
+        <note category="description">Nombre accesible del menu de navegacion principal</note>
+      </notes>
+      <segment>
+        <source>Principal</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.whatsapp.etiqueta">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.ts:31</note>
+        <note category="description">Nombre accesible del enlace a WhatsApp</note>
+      </notes>
+      <segment>
+        <source>Contactar por WhatsApp</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.abrir">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.ts:32</note>
+        <note category="description">Nombre accesible del boton que abre el menu movil</note>
+      </notes>
+      <segment>
+        <source>Abrir menú de navegación</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.cerrar">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.ts:33</note>
+        <note category="description">Nombre accesible del boton que cierra el menu movil</note>
+      </notes>
+      <segment>
+        <source>Cerrar menú de navegación</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.automatizacion">
+      <notes>
+        <note category="location">src/app/marca/enlaces-de-marca.ts:25</note>
+        <note category="description">Enlace del menu a la seccion de automatizacion de la agencia</note>
+      </notes>
+      <segment>
+        <source>Automatización</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.funnels">
+      <notes>
+        <note category="location">src/app/marca/enlaces-de-marca.ts:30</note>
+        <note category="description">Enlace del menu a la seccion de funnels de la agencia</note>
+      </notes>
+      <segment>
+        <source>Funnels AI</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.avatares">
+      <notes>
+        <note category="location">src/app/marca/enlaces-de-marca.ts:35</note>
+        <note category="description">Enlace del menu a la seccion de avatares de la agencia</note>
+      </notes>
+      <segment>
+        <source>Avatares AI</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.auditoria">
+      <notes>
+        <note category="location">src/app/marca/enlaces-de-marca.ts:40</note>
+        <note category="description">Enlace del menu a la seccion de auditoria gratuita de la agencia</note>
+      </notes>
+      <segment>
+        <source>Auditoría Gratis</source>
+      </segment>
+    </unit>
+    <unit id="cabecera.menu.desarrolladores">
+      <notes>
+        <note category="location">src/app/marca/enlaces-de-marca.ts:45</note>
+        <note category="description">Enlace del menu a la seccion de desarrolladores de la agencia</note>
+      </notes>
+      <segment>
+        <source>Desarrolladores</source>
+      </segment>
+    </unit>
+    <unit id="pie.contacto">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.html:4</note>
+        <note category="description">Titulo del bloque de contacto del pie</note>
+      </notes>
+      <segment>
+        <source>Contacto</source>
+      </segment>
+    </unit>
+    <unit id="pie.telefono">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.html:6</note>
+        <note category="description">Etiqueta del telefono de contacto</note>
+      </notes>
+      <segment>
+        <source>Teléfono:</source>
+      </segment>
+    </unit>
+    <unit id="pie.email">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.html:10</note>
+        <note category="description">Etiqueta del email de contacto</note>
+      </notes>
+      <segment>
+        <source>Email:</source>
+      </segment>
+    </unit>
+    <unit id="pie.proyecto">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.html:36</note>
+        <note category="description">Enlace del pie a la web de la agencia</note>
+      </notes>
+      <segment>
+        <source>Un proyecto de CookYourWeb AI</source>
+      </segment>
+    </unit>
+    <unit id="pie.legal.etiqueta">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:28</note>
+        <note category="description">Nombre accesible de la fila de enlaces legales del pie</note>
+      </notes>
+      <segment>
+        <source>Información legal</source>
+      </segment>
+    </unit>
+    <unit id="pie.derechos">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:31</note>
+        <note category="description">Aviso de derechos reservados del pie</note>
+      </notes>
+      <segment>
+        <source>© <ph id="0" equiv="anio" disp="this.anio"/> CookYourWeb. Todos los derechos reservados.</source>
+      </segment>
+    </unit>
+    <unit id="pie.hechoCon">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:33</note>
+        <note category="description">Frase de cierre del pie, con un corazon en medio</note>
+      </notes>
+      <segment>
+        <source>Hecho con <ph id="0" equiv="corazon" disp="CORAZON"/> y mucha AI</source>
+      </segment>
+    </unit>
+    <unit id="pie.legal.privacidad">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:41</note>
+        <note category="description">Enlace del pie a la politica de privacidad</note>
+      </notes>
+      <segment>
+        <source>Política de Privacidad</source>
+      </segment>
+    </unit>
+    <unit id="pie.legal.cookies">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:43</note>
+        <note category="description">Enlace del pie a la politica de cookies</note>
+      </notes>
+      <segment>
+        <source>Política de Cookies</source>
+      </segment>
+    </unit>
+    <unit id="pie.legal.avisoLegal">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:45</note>
+        <note category="description">Enlace del pie al aviso legal</note>
+      </notes>
+      <segment>
+        <source>Aviso Legal</source>
+      </segment>
+    </unit>
+    <unit id="pie.legal.baja">
+      <notes>
+        <note category="location">src/app/marca/pie-de-marca.ts:47</note>
+        <note category="description">Enlace del pie a la pagina de baja</note>
+      </notes>
+      <segment>
+        <source>Darme de baja</source>
       </segment>
     </unit>
     <unit id="bienvenida.proximamente">
@@ -112,7 +328,7 @@
     <unit id="bienvenida.listaDeEspera">
       <notes>
         <note category="location">src/app/bienvenida/bienvenida.page.html:11,12</note>
-        <note category="description">Enlace al formulario de la lista de espera</note>
+        <note category="description">Titulo del formulario de la lista de espera</note>
       </notes>
       <segment>
         <source>Únete a la lista de espera</source>
@@ -125,6 +341,87 @@
       </notes>
       <segment>
         <source> (se abre en una pestaña nueva)</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.exito">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Mensaje cuando la persona queda apuntada a la lista de espera</note>
+      </notes>
+      <segment>
+        <source>¡Listo! Te avisaremos por email en cuanto haya una plaza disponible.</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.nombre">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Etiqueta del campo nombre de la lista de espera</note>
+      </notes>
+      <segment>
+        <source>Nombre</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.email">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Etiqueta del campo email de la lista de espera</note>
+      </notes>
+      <segment>
+        <source>Email</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.privacidad">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Primera parte de la casilla de privacidad</note>
+      </notes>
+      <segment>
+        <source>He leído y acepto la </source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.privacidadEnlace">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Texto del enlace a la politica de privacidad</note>
+      </notes>
+      <segment>
+        <source>política de privacidad</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.error">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Aviso cuando la solicitud no se ha podido registrar</note>
+      </notes>
+      <segment>
+        <source>No hemos podido registrar tu solicitud. Inténtalo de nuevo en unos minutos o escribe a veronica@cookyourwebai.es.</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.lssi">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Aviso legal (LSSI art. 21) junto al boton de la lista de espera</note>
+      </notes>
+      <segment>
+        <source>Al enviar este formulario aceptas recibir un email de aviso cuando haya una plaza disponible en Empleo Tech.</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.enviando">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Texto del boton de la lista de espera mientras envia</note>
+      </notes>
+      <segment>
+        <source>Enviando…</source>
+      </segment>
+    </unit>
+    <unit id="bienvenida.espera.unirme">
+      <notes>
+        <note category="location">src/app/bienvenida/bienvenida.page.html:14,60</note>
+        <note category="description">Texto del boton para unirse a la lista de espera</note>
+      </notes>
+      <segment>
+        <source>Unirme a la lista de espera</source>
       </segment>
     </unit>
     <unit id="bienvenida.yaTienesAcceso">
@@ -1253,6 +1550,33 @@
         <source>CV generado para <ph id="0" equiv="empresa" disp="empresa"/></source>
       </segment>
     </unit>
+    <unit id="ficha.visor.ver">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:170</note>
+        <note category="description">Boton que carga la vista previa del CV</note>
+      </notes>
+      <segment>
+        <source>Ver vista previa</source>
+      </segment>
+    </unit>
+    <unit id="ficha.visor.ocultar">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:168</note>
+        <note category="description">Boton que oculta la vista previa del CV</note>
+      </notes>
+      <segment>
+        <source>Ocultar vista previa</source>
+      </segment>
+    </unit>
+    <unit id="ficha.visor.aviso">
+      <notes>
+        <note category="location">src/app/ofertas/ficha-candidatura.html:173</note>
+        <note category="description">Aviso de que la vista previa la sirve Google</note>
+      </notes>
+      <segment>
+        <source>La vista previa la sirve Google y puede usar sus propias cookies. Solo se carga si la pides.</source>
+      </segment>
+    </unit>
     <unit id="ficha.errorDesconocido">
       <notes>
         <note category="location">src/app/ofertas/ficha-candidatura.ts:140</note>
@@ -1784,13 +2108,157 @@
         <source>Tu perfil</source>
       </segment>
     </unit>
-    <unit id="alta.extrayendo">
+    <unit id="alta.pasos.consentimiento">
       <notes>
-        <note category="location">src/app/alta/alta.page.ts:25</note>
-        <note category="description">Aviso de que se esta leyendo el CV</note>
+        <note category="location">src/app/alta/alta.page.ts:11</note>
+        <note category="description">Etiqueta del paso 1 del alta</note>
       </notes>
       <segment>
-        <source>Leyendo tu CV, un momento</source>
+        <source>Antes de empezar</source>
+      </segment>
+    </unit>
+    <unit id="alta.pasos.subida">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:12</note>
+        <note category="description">Etiqueta del paso 2 del alta</note>
+      </notes>
+      <segment>
+        <source>Sube tu CV</source>
+      </segment>
+    </unit>
+    <unit id="alta.pasos.perfil">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:13</note>
+        <note category="description">Etiqueta del paso 3 del alta</note>
+      </notes>
+      <segment>
+        <source>Completa tu perfil</source>
+      </segment>
+    </unit>
+    <unit id="alta.pasos.hecho">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:14</note>
+        <note category="description">Etiqueta del paso 4 del alta</note>
+      </notes>
+      <segment>
+        <source>Listo</source>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.consentimiento">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:26</note>
+        <note category="description">Que pasa despues del consentimiento</note>
+      </notes>
+      <segment>
+        <source>A continuación: elegirás tu CV y lo guardaremos cifrado.</source>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.subida">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:27</note>
+        <note category="description">Que pasa despues de elegir el CV</note>
+      </notes>
+      <segment>
+        <source>A continuación: guardamos tu CV cifrado y, si podemos, lo leemos para proponerte los datos de tu perfil.</source>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.extrayendo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:28</note>
+        <note category="description">Que pasa mientras se sube y se lee el CV</note>
+      </notes>
+      <segment>
+        <source>A continuación: te enseñaremos lo que hayamos leído o, si no se puede, un formulario para rellenar a mano.</source>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.revision">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:29</note>
+        <note category="description">Que pasa despues de la revision</note>
+      </notes>
+      <segment>
+        <source>A continuación: acepta, corrige o descarta cada dato y pulsa «Guardar mi perfil». Hasta entonces no se guarda tu perfil.</source>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.manual">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:30</note>
+        <note category="description">Que pasa despues del formulario manual</note>
+      </notes>
+      <segment>
+        <source>A continuación: rellena el formulario y pulsa «Guardar mi perfil».</source>
+      </segment>
+    </unit>
+    <unit id="alta.siguiente.hecho">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:31</note>
+        <note category="description">Que pasa cuando el alta termina</note>
+      </notes>
+      <segment>
+        <source>Ya has terminado: tu perfil está listo.</source>
+      </segment>
+    </unit>
+    <unit id="alta.anuncio.registrando">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:33</note>
+        <note category="description">Aviso de que se registra el consentimiento</note>
+      </notes>
+      <segment>
+        <source>Registrando tu consentimiento…</source>
+      </segment>
+    </unit>
+    <unit id="alta.anuncio.guardando">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:34</note>
+        <note category="description">Aviso de que se guarda el perfil</note>
+      </notes>
+      <segment>
+        <source>Guardando tu perfil…</source>
+      </segment>
+    </unit>
+    <unit id="alta.pasos.nombre">
+      <notes>
+        <note category="location">src/app/alta/indicador-de-pasos.ts:38</note>
+        <note category="description">Nombre accesible del indicador de pasos</note>
+      </notes>
+      <segment>
+        <source>Progreso de tu alta</source>
+      </segment>
+    </unit>
+    <unit id="alta.pasos.frase">
+      <notes>
+        <note category="location">src/app/alta/indicador-de-pasos.ts:44</note>
+        <note category="description">Frase que dice en que paso esta la usuaria</note>
+      </notes>
+      <segment>
+        <source>Paso <ph id="0" equiv="numero" disp="numero"/> de <ph id="1" equiv="total" disp="total"/>: <ph id="2" equiv="etiqueta" disp="etiqueta"/></source>
+      </segment>
+    </unit>
+    <unit id="alta.extrayendo.subiendo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:24</note>
+        <note category="description">Aviso de que se esta subiendo el CV</note>
+      </notes>
+      <segment>
+        <source>Subiendo tu CV…</source>
+      </segment>
+    </unit>
+    <unit id="alta.extrayendo.leyendo">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:25</note>
+        <note category="description">Titulo mientras se lee el CV ya guardado</note>
+      </notes>
+      <segment>
+        <source>Leyendo tu CV…</source>
+      </segment>
+    </unit>
+    <unit id="alta.extrayendo.guardado">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:26</note>
+        <note category="description">Aviso de que el CV esta guardado y se esta leyendo</note>
+      </notes>
+      <segment>
+        <source>Tu CV está guardado (cifrado). Ahora lo estamos leyendo, un momento.</source>
       </segment>
     </unit>
     <unit id="alta.consentimiento.titulo">
@@ -1804,20 +2272,65 @@
     </unit>
     <unit id="alta.consentimiento.texto">
       <notes>
-        <note category="location">src/app/alta/consentimiento.ts:17</note>
-        <note category="description">Explicacion de que pasa con el CV</note>
+        <note category="location">src/app/alta/consentimiento.ts:20</note>
+        <note category="description">Que se guarda del CV</note>
       </notes>
       <segment>
-        <source>Guardamos tu CV cifrado. Para proponerte los datos de tu perfil, el texto de tu CV puede enviarse una sola vez a proveedores externos de inteligencia artificial (Anthropic y Groq). Puedes borrar tu CV y tu cuenta cuando quieras.</source>
+        <source>Guardamos tu CV cifrado. Solo se guarda el texto, no el archivo que subes.</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.textoIa">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:23</note>
+        <note category="description">A quien se envia el CV y para que</note>
+      </notes>
+      <segment>
+        <source>Para proponerte los datos de tu perfil, el texto de tu CV se envía una vez a Anthropic y a Groq, proveedores de inteligencia artificial que lo procesan en Estados Unidos. Cuando lo pidas, también se envía para generar CV y cartas de presentación adaptados a cada oferta.</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.textoDerechos">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:28</note>
+        <note category="description">Como borrar el CV o retirar el consentimiento</note>
+      </notes>
+      <segment>
+        <source>Puedes borrar tu CV o retirar tu consentimiento cuando quieras desde «Tu cuenta».</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.privacidadAntes">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:32</note>
+        <note category="description">Antes del enlace a la politica de privacidad</note>
+      </notes>
+      <segment>
+        <source>Más información en nuestra</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.privacidad">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:33</note>
+        <note category="description">Enlace a la politica de privacidad</note>
+      </notes>
+      <segment>
+        <source>política de privacidad</source>
       </segment>
     </unit>
     <unit id="alta.consentimiento.casilla">
       <notes>
-        <note category="location">src/app/alta/consentimiento.ts:33</note>
+        <note category="location">src/app/alta/consentimiento.ts:56</note>
         <note category="description">Casilla de consentimiento</note>
       </notes>
       <segment>
-        <source>Entiendo y acepto que mi CV se guarde cifrado y que pueda enviarse a Anthropic y Groq para extraer mi perfil.</source>
+        <source>Entiendo y acepto que mi CV se guarde cifrado y que se envíe a Anthropic y Groq, en Estados Unidos, para extraer mi perfil y para generar mis CV y cartas cuando yo lo pida.</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.mayor">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:70</note>
+        <note category="description">Casilla de mayoria de edad</note>
+      </notes>
+      <segment>
+        <source>Confirmo que tengo 18 años o más.</source>
       </segment>
     </unit>
     <unit id="alta.consentimiento.error">
@@ -1836,6 +2349,15 @@
       </notes>
       <segment>
         <source>Continuar</source>
+      </segment>
+    </unit>
+    <unit id="alta.consentimiento.registrando">
+      <notes>
+        <note category="location">src/app/alta/consentimiento.ts:52</note>
+        <note category="description">Boton de consentimiento mientras se registra</note>
+      </notes>
+      <segment>
+        <source>Registrando tu consentimiento…</source>
       </segment>
     </unit>
     <unit id="alta.consentimiento.aMano">
@@ -1916,7 +2438,43 @@
         <note category="description">Pista del formato aceptado</note>
       </notes>
       <segment>
-        <source>PDF o DOCX, hasta 2 MB.</source>
+        <source>PDF o DOCX, hasta 2 MB</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.arrastra">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:50</note>
+        <note category="description">Texto de la zona de subida</note>
+      </notes>
+      <segment>
+        <source>Arrastra tu CV hasta aquí o elígelo desde tu dispositivo.</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.soltar">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:50</note>
+        <note category="description">Texto de la zona al arrastrar encima</note>
+      </notes>
+      <segment>
+        <source>Suelta tu CV aquí</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.elegir">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:50</note>
+        <note category="description">Boton para elegir el CV</note>
+      </notes>
+      <segment>
+        <source>Elegir mi CV</source>
+      </segment>
+    </unit>
+    <unit id="alta.subida.archivoElegido">
+      <notes>
+        <note category="location">src/app/alta/subida-de-cv.ts:50</note>
+        <note category="description">Etiqueta del archivo elegido</note>
+      </notes>
+      <segment>
+        <source>Archivo elegido:</source>
       </segment>
     </unit>
     <unit id="alta.subida.aMano">
@@ -2072,6 +2630,15 @@
         <source>Guardar mi perfil</source>
       </segment>
     </unit>
+    <unit id="alta.formulario.guardando">
+      <notes>
+        <note category="location">src/app/alta/formulario-manual.ts:164</note>
+        <note category="description">Boton de guardar mientras se guarda el perfil</note>
+      </notes>
+      <segment>
+        <source>Guardando tu perfil…</source>
+      </segment>
+    </unit>
     <unit id="alta.revision.estado.propuesto">
       <notes>
         <note category="location">src/app/alta/formulario-manual.ts:21</note>
@@ -2153,6 +2720,15 @@
         <source>Revisa lo que hemos leído</source>
       </segment>
     </unit>
+    <unit id="alta.revision.cvGuardado">
+      <notes>
+        <note category="location">src/app/alta/revision-de-campos.ts:17</note>
+        <note category="description">Confirmacion de que el CV esta guardado</note>
+      </notes>
+      <segment>
+        <source>Tu CV está guardado (cifrado).</source>
+      </segment>
+    </unit>
     <unit id="alta.revision.texto">
       <notes>
         <note category="location">src/app/alta/revision-de-campos.ts:20</note>
@@ -2168,7 +2744,7 @@
         <note category="description">Motivo manual, lectura apagada</note>
       </notes>
       <segment>
-        <source>La lectura automática del CV no está disponible por ahora. Rellena tu perfil a mano.</source>
+        <source>Tu CV está guardado (cifrado). La lectura automática no está disponible por ahora, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.yaUsada">
@@ -2177,7 +2753,7 @@
         <note category="description">Motivo manual, lectura ya usada</note>
       </notes>
       <segment>
-        <source>Ya has usado tu lectura automática del CV. Rellena tu perfil a mano.</source>
+        <source>Tu CV está guardado (cifrado). Ya has usado tu lectura automática, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.tope">
@@ -2186,7 +2762,7 @@
         <note category="description">Motivo manual, tope mensual</note>
       </notes>
       <segment>
-        <source>Hemos llegado al límite de lecturas automáticas de este mes. Rellena tu perfil a mano.</source>
+        <source>Tu CV está guardado (cifrado). Hemos llegado al límite de lecturas automáticas de este mes, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.proveedor">
@@ -2195,7 +2771,7 @@
         <note category="description">Motivo manual, fallo del proveedor</note>
       </notes>
       <segment>
-        <source>El servicio que lee el CV no ha respondido. No has perdido tu intento: puedes volver a probar más tarde. Mientras tanto, rellena tu perfil a mano.</source>
+        <source>Tu CV está guardado y no has perdido tu intento: el servicio que lo lee no ha respondido y puedes volver a probar más tarde. Mientras tanto, rellena tu perfil a mano; solo te llevará unos minutos.</source>
       </segment>
     </unit>
     <unit id="alta.manual.motivo.indisponible">
@@ -2204,7 +2780,7 @@
         <note category="description">Motivo manual, servicio no disponible</note>
       </notes>
       <segment>
-        <source>Ahora mismo no podemos leer tu CV. Rellena tu perfil a mano.</source>
+        <source>Tu CV está guardado. Ahora mismo no podemos leerlo automáticamente, así que rellena tu perfil a mano; solo te llevará unos minutos.</source>
       </segment>
     </unit>
     <unit id="alta.manual.titulo">
@@ -2234,13 +2810,67 @@
         <source>Perfil guardado</source>
       </segment>
     </unit>
-    <unit id="alta.hecho.texto">
+    <unit id="alta.hecho.introduccion">
       <notes>
-        <note category="location">src/app/alta/alta.page.ts:82</note>
-        <note category="description">Texto del paso final</note>
+        <note category="location">src/app/alta/alta.page.ts:136</note>
+        <note category="description">Introduccion del resumen final</note>
       </notes>
       <segment>
-        <source>Ya tenemos tu perfil. Puedes borrar tus datos y tu cuenta cuando quieras.</source>
+        <source>Esto es lo que hemos guardado:</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.perfil">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:138</note>
+        <note category="description">Resumen final, perfil guardado</note>
+      </notes>
+      <segment>
+        <source>Tu perfil, con los datos que has confirmado.</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.cv">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:142</note>
+        <note category="description">Resumen final, CV guardado cifrado</note>
+      </notes>
+      <segment>
+        <source>Tu CV, guardado cifrado.</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.consentimientos">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:151</note>
+        <note category="description">Resumen final, consentimientos registrados</note>
+      </notes>
+      <segment>
+        <source>Tus consentimientos, registrados: guardar tu CV cifrado y enviarlo a proveedores de IA para leerlo y para generar tus CV y cartas cuando lo pidas.</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.borrar">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:150</note>
+        <note category="description">Como borrar lo guardado</note>
+      </notes>
+      <segment>
+        <source>Puedes borrarlo todo cuando quieras. Es inmediato y no se puede deshacer.</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.enlaceCuenta">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:154</note>
+        <note category="description">Enlace a la cuenta para borrar los datos</note>
+      </notes>
+      <segment>
+        <source>Borrar mis datos o mi cuenta</source>
+      </segment>
+    </unit>
+    <unit id="alta.hecho.enlacePanel">
+      <notes>
+        <note category="location">src/app/alta/alta.page.ts:155</note>
+        <note category="description">Enlace al panel tras el alta</note>
+      </notes>
+      <segment>
+        <source>Ir a mi panel</source>
       </segment>
     </unit>
     <unit id="cuenta.titulo">
@@ -2252,13 +2882,526 @@
         <source>Tu cuenta</source>
       </segment>
     </unit>
+    <unit id="cuenta.borrada.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:18</note>
+        <note category="description">Titulo de la confirmacion de que la cuenta se ha borrado</note>
+      </notes>
+      <segment>
+        <source>Tu cuenta se ha borrado</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.introduccion">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:23</note>
+        <note category="description">Introduccion de lo que se ha borrado</note>
+      </notes>
+      <segment>
+        <source>Hemos eliminado:</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.perfil">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:25</note>
+        <note category="description">Se ha borrado el perfil</note>
+      </notes>
+      <segment>
+        <source>Tu perfil.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.cv">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Se han borrado los CV cifrados</note>
+      </notes>
+      <segment>
+        <source>Tus CV cifrados, en todos los idiomas.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.consentimientos">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:27</note>
+        <note category="description">Se han borrado los consentimientos</note>
+      </notes>
+      <segment>
+        <source>Tus consentimientos.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.intereses">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Se han borrado los avisos de interes</note>
+      </notes>
+      <segment>
+        <source>Tus avisos de interés.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.invitacion">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Se ha borrado la invitacion</note>
+      </notes>
+      <segment>
+        <source>Tu invitación.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.queda.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Titulo de lo que no se borra con la cuenta</note>
+      </notes>
+      <segment>
+        <source>Lo que no se borra</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.queda.uso">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Registros de uso anonimos que se conservan</note>
+      </notes>
+      <segment>
+        <source>Registros de uso sin tu nombre: solo guardan fecha, tipo, modelo y coste, y sirven para controlar el gasto.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.queda.copias">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Copias de seguridad que se conservan hasta 30 dias</note>
+      </notes>
+      <segment>
+        <source>Copias de seguridad cifradas, que se borran solas a los 30 días.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.queda.ofertas">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Registros de ofertas y documentos que se borran por correo, antes del enlace</note>
+      </notes>
+      <segment>
+        <source>Los registros de ofertas y los documentos generados que conserva el servicio. Para borrarlos, escríbenos a</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Titulo de la seccion de CV</note>
+      </notes>
+      <segment>
+        <source>Tu CV</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.explicacion">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Explicacion de la seccion de CV</note>
+      </notes>
+      <segment>
+        <source>Guardamos tu CV cifrado, uno por idioma. Puedes borrar el que quieras sin borrar tu cuenta.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.cargando">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Aviso mientras se consultan los CV</note>
+      </notes>
+      <segment>
+        <source>Consultando tus CV…</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.errorLista">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Error al consultar los CV</note>
+      </notes>
+      <segment>
+        <source>No hemos podido consultar tus CV.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.reintentar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton para volver a consultar los CV</note>
+      </notes>
+      <segment>
+        <source>Probar de nuevo</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.vacio">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">No hay ningun CV guardado</note>
+      </notes>
+      <segment>
+        <source>No tienes ningún CV guardado.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.borrar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton que pide borrar un CV</note>
+      </notes>
+      <segment>
+        <source>Borrar mi CV</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.confirmar.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Titulo de la confirmacion de borrar un CV</note>
+      </notes>
+      <segment>
+        <source>¿Borrar tu CV en <ph id="0" equiv="nombre" disp="nombre"/>?</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.confirmar.texto">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Aviso antes de borrar un CV</note>
+      </notes>
+      <segment>
+        <source>Se borra el CV que guardamos cifrado en este idioma. Tu perfil y tus consentimientos no cambian.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.confirmar.si">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton que confirma el borrado de un CV</note>
+      </notes>
+      <segment>
+        <source>Sí, borrar este CV</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.accion.borrando">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton de borrar un CV mientras se borra</note>
+      </notes>
+      <segment>
+        <source>Borrando…</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.error">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Error al borrar un CV</note>
+      </notes>
+      <segment>
+        <source>No hemos podido borrar tu CV. No se ha borrado nada: prueba de nuevo.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.cv.borrado">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Resultado de borrar un CV</note>
+      </notes>
+      <segment>
+        <source>Hemos borrado tu CV en <ph id="0" equiv="nombre" disp="nombre"/>.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Titulo de la seccion de consentimientos</note>
+      </notes>
+      <segment>
+        <source>Tus consentimientos</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.explicacion">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Explicacion de la seccion de consentimientos</note>
+      </notes>
+      <segment>
+        <source>Puedes retirar un consentimiento cuando quieras, sin que cambie lo que ya se hizo antes, y volver a darlo si cambias de idea. Retirar uno que ya habías retirado no cambia nada.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar.dado">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Resultado de dar de nuevo el consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>Gracias, hemos registrado de nuevo tu consentimiento para guardar tu CV.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia.dado">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Resultado de dar de nuevo el consentimiento de usar la IA</note>
+      </notes>
+      <segment>
+        <source>Gracias, hemos registrado de nuevo tu consentimiento para usar IA con tu CV.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.inactivo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Estado de un consentimiento que no esta vigente</note>
+      </notes>
+      <segment>
+        <source>Sin consentimiento vigente</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.dar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton que da de nuevo un consentimiento</note>
+      </notes>
+      <segment>
+        <source>Dar consentimiento</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.errorDar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Error al dar de nuevo un consentimiento</note>
+      </notes>
+      <segment>
+        <source>No hemos podido registrar tu consentimiento. No ha cambiado nada: prueba de nuevo.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Descripcion del consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>Guardar mi CV cifrado</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Descripcion del consentimiento de enviar el CV a la IA</note>
+      </notes>
+      <segment>
+        <source>Enviar mi CV a Anthropic y Groq (Estados Unidos) para extraer mi perfil y para generar mis CV y cartas cuando lo pida</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.retirado">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Estado de un consentimiento ya retirado</note>
+      </notes>
+      <segment>
+        <source>Consentimiento retirado</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.retirar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton que pide retirar un consentimiento</note>
+      </notes>
+      <segment>
+        <source>Retirar consentimiento</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar.confirmar.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Titulo de la confirmacion de retirar el consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>¿Retirar el consentimiento para guardar tu CV?</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar.confirmar.texto">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Efecto de retirar el consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>Si lo retiras, borramos tu CV guardado en todos los idiomas y no podremos generar CV adaptados a partir del tuyo. Tu perfil se queda como está.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar.confirmar.si">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Boton que confirma retirar el consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>Sí, retirar y borrar mi CV</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia.confirmar.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Titulo de la confirmacion de retirar el consentimiento de usar la IA</note>
+      </notes>
+      <segment>
+        <source>¿Retirar el consentimiento para usar IA con tu CV?</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia.confirmar.texto">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Efecto de retirar el consentimiento de usar la IA</note>
+      </notes>
+      <segment>
+        <source>Si lo retiras, dejamos de enviar tu CV a Anthropic y Groq, así que no podremos extraer tu perfil ni generar CV y cartas adaptados. Tu perfil se queda como está.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia.confirmar.si">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Boton que confirma retirar el consentimiento de usar la IA</note>
+      </notes>
+      <segment>
+        <source>Sí, retirar consentimiento</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.retirando">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Boton de retirar un consentimiento mientras se retira</note>
+      </notes>
+      <segment>
+        <source>Retirando…</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.error">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Error al retirar un consentimiento</note>
+      </notes>
+      <segment>
+        <source>No hemos podido retirar el consentimiento. No ha cambiado nada: prueba de nuevo.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.almacenar.hecho">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Resultado de retirar el consentimiento de guardar el CV</note>
+      </notes>
+      <segment>
+        <source>Has retirado el consentimiento para guardar tu CV y hemos borrado tus CV.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.consentimientos.ia.hecho">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:1</note>
+        <note category="description">Resultado de retirar el consentimiento de usar la IA</note>
+      </notes>
+      <segment>
+        <source>Has retirado el consentimiento para usar IA con tu CV. Tu perfil se queda como está.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrarCuenta.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Titulo de la seccion de borrar la cuenta</note>
+      </notes>
+      <segment>
+        <source>Borrar mi cuenta</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.despues">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:29</note>
+        <note category="description">Que pasa ahora que la cuenta esta borrada</note>
+      </notes>
+      <segment>
+        <source>Al continuar cerraremos tu sesión.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.titulo">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Titulo de subir un CV desde la cuenta</note>
+      </notes>
+      <segment>
+        <source>Subir mi CV</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.explicacionSin">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Explicacion de subir un CV sin tener ninguno guardado</note>
+      </notes>
+      <segment>
+        <source>Para volver a guardar un CV necesitamos tu consentimiento. Léelo y márcalo antes de elegir el archivo. Tu perfil se queda como está.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.casillaGuardar">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Casilla obligatoria de guardar el CV al subirlo desde la cuenta</note>
+      </notes>
+      <segment>
+        <source>Entiendo y acepto que mi CV se guarde cifrado.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.casillaIa">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Casilla opcional de usar la IA al subir el CV desde la cuenta</note>
+      </notes>
+      <segment>
+        <source>Opcional: acepto que mi CV se envíe a Anthropic y Groq, en Estados Unidos, para extraer mi perfil y para generar mis CV y cartas cuando yo lo pida.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.explicacionCon">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Explicacion de subir un CV teniendo ya uno guardado</note>
+      </notes>
+      <segment>
+        <source>Elige un archivo para guardarlo cifrado. Si ya tienes un CV en el mismo idioma, se reemplaza. Tu perfil se queda como está.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.faltaConsentimiento">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Falta el consentimiento vigente al subir desde la cuenta</note>
+      </notes>
+      <segment>
+        <source>Falta tu consentimiento vigente. Marca las casillas y vuelve a elegir tu CV.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.pista">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Pista de que faltan casillas para elegir el CV</note>
+      </notes>
+      <segment>
+        <source>Marca guardar tu CV y confirmar que tienes 18 años o más para poder elegir el archivo.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.subir.hecho">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Resultado de subir un CV desde la cuenta</note>
+      </notes>
+      <segment>
+        <source>Hemos guardado tu CV cifrado. Tu perfil se queda como está.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.volver">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
+        <note category="description">Como volver tras borrar la cuenta</note>
+      </notes>
+      <segment>
+        <source>Si más adelante quieres volver, pídenos una invitación nueva.</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrada.salir">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:33</note>
+        <note category="description">Boton que cierra la sesion tras borrar la cuenta</note>
+      </notes>
+      <segment>
+        <source>Cerrar sesión y volver al inicio</source>
+      </segment>
+    </unit>
     <unit id="cuenta.explicacion">
       <notes>
-        <note category="location">src/app/cuenta/cuenta.page.ts:21</note>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
         <note category="description">Que se borra al eliminar la cuenta</note>
       </notes>
       <segment>
-        <source>Si borras tu cuenta eliminamos tu perfil, tu CV cifrado y tus consentimientos. Es inmediato y no se puede deshacer.</source>
+        <source>Si borras tu cuenta eliminamos al momento tu perfil, tus CV cifrados, tus consentimientos, tus avisos de interés y tu invitación. No se puede deshacer.</source>
       </segment>
     </unit>
     <unit id="cuenta.borrar">
@@ -2281,11 +3424,11 @@
     </unit>
     <unit id="cuenta.confirmar.texto">
       <notes>
-        <note category="location">src/app/cuenta/cuenta.page.ts:41</note>
+        <note category="location">src/app/cuenta/cuenta.page.html:1</note>
         <note category="description">Aviso final antes de borrar</note>
       </notes>
       <segment>
-        <source>Se borrarán tu perfil, tu CV cifrado y tus consentimientos, y se cerrará tu sesión. Para volver a usar el panel necesitarías una nueva invitación.</source>
+        <source>Se borrarán tu perfil, tus CV cifrados, tus consentimientos, tus avisos de interés y tu invitación, y se cerrará tu sesión. Quedarán los registros de uso sin tu nombre y las copias de seguridad cifradas, que se borran solas a los 30 días. Para volver a usar el panel necesitarías una nueva invitación.</source>
       </segment>
     </unit>
     <unit id="cuenta.error">
@@ -2304,6 +3447,15 @@
       </notes>
       <segment>
         <source>Sí, borrar todo</source>
+      </segment>
+    </unit>
+    <unit id="cuenta.borrando">
+      <notes>
+        <note category="location">src/app/cuenta/cuenta.page.ts:80</note>
+        <note category="description">Boton de borrar mientras se borra la cuenta</note>
+      </notes>
+      <segment>
+        <source>Borrando tu cuenta…</source>
       </segment>
     </unit>
     <unit id="cuenta.cancelar">
@@ -2484,6 +3636,159 @@
       </notes>
       <segment>
         <source>Ninguna de estas ofertas es alcanzable ahora mismo.</source>
+      </segment>
+    </unit>
+    <unit id="preparando.titulo">
+      <notes>
+        <note category="location">src/app/preparacion/preparando-zona.html:4,6</note>
+        <note category="description">Aviso mientras se prepara la zona de la usuaria tras entrar</note>
+      </notes>
+      <segment>
+        <source>Estamos preparando tu zona…</source>
+      </segment>
+    </unit>
+    <unit id="preparando.detalle">
+      <notes>
+        <note category="location">src/app/preparacion/preparando-zona.html:8,10</note>
+        <note category="description">Aviso de que la primera vez puede tardar porque el servidor duerme</note>
+      </notes>
+      <segment>
+        <source>La primera vez puede tardar unos segundos mientras el servidor se despierta.</source>
+      </segment>
+    </unit>
+    <unit id="cuota.restantes.una">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Cuantas candidaturas le queda a quien genera, una sola</note>
+      </notes>
+      <segment>
+        <source>Te queda 1 candidatura este mes · se renueva el <ph id="0" equiv="fecha" disp="fecha"/></source>
+      </segment>
+    </unit>
+    <unit id="cuota.restantes.varias">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Cuantas candidaturas le quedan a quien genera, mas de una o ninguna entera</note>
+      </notes>
+      <segment>
+        <source>Te quedan <ph id="0" equiv="restantes" disp="restantes"/> candidaturas este mes · se renueva el <ph id="1" equiv="fecha" disp="fecha"/></source>
+      </segment>
+    </unit>
+    <unit id="cuota.restantes.cv">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Le queda saldo para un CV pero no para una candidatura entera con su carta</note>
+      </notes>
+      <segment>
+        <source>Te queda para un CV, pero no para una candidatura entera (CV y carta) este mes · se renueva el <ph id="0" equiv="fecha" disp="fecha"/></source>
+      </segment>
+    </unit>
+    <unit id="cuota.agotada.tope">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Aviso de que el cupo gratuito de todo el mundo se ha agotado</note>
+      </notes>
+      <segment>
+        <source>Este mes se ha agotado el cupo gratuito para todo el mundo. Se renueva el <ph id="0" equiv="fecha" disp="fecha"/>.</source>
+      </segment>
+    </unit>
+    <unit id="cuota.agotada.cuota">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Aviso de que ha gastado sus candidaturas del mes</note>
+      </notes>
+      <segment>
+        <source>Has usado tus candidaturas de este mes. Se renuevan el <ph id="0" equiv="fecha" disp="fecha"/>.</source>
+      </segment>
+    </unit>
+    <unit id="cuota.agotada.carta">
+      <notes>
+        <note category="location">src/app/cuota/cuota.ts:1</note>
+        <note category="description">Aviso de que le queda saldo para una carta pero no para otro CV</note>
+      </notes>
+      <segment>
+        <source>Te queda para una carta, pero no para otro CV este mes. Se renueva el <ph id="0" equiv="fecha" disp="fecha"/>.</source>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.gracias">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Confirmacion de que se guardo el aviso de interes</note>
+      </notes>
+      <segment>
+        <source>Gracias, te avisaremos.</source>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.abrir">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Boton que abre el formulario para que le avisen de paquetes o academia</note>
+      </notes>
+      <segment>
+        <source>Avísame si hay paquetes o acceso por mi academia</source>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.leyenda">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Pregunta del formulario de aviso</note>
+      </notes>
+      <segment>
+        <source>¿Qué te interesa?</source>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.paquetes">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Opcion de interes en paquetes de candidaturas</note>
+      </notes>
+      <segment>
+        <source>Paquetes de candidaturas</source>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.academia">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Opcion de interes en acceso por una academia</note>
+      </notes>
+      <segment>
+        <source>Acceso a través de mi academia</source>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.organizacion">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Etiqueta del campo de organizacion, que es opcional</note>
+      </notes>
+      <segment>
+        <source>Tu academia u organización (opcional)</source>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.error">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Error al guardar el aviso de interes</note>
+      </notes>
+      <segment>
+        <source>No hemos podido guardar tu aviso. Prueba de nuevo.</source>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.enviando">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Boton de enviar el aviso mientras se envia</note>
+      </notes>
+      <segment>
+        <source>Enviando…</source>
+      </segment>
+    </unit>
+    <unit id="cuota.interes.enviar">
+      <notes>
+        <note category="location">src/app/cuota/medidor-de-cuota.ts:1</note>
+        <note category="description">Boton que envia el aviso de interes</note>
+      </notes>
+      <segment>
+        <source>Avisarme</source>
       </segment>
     </unit>
   </file>

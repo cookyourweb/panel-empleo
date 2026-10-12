@@ -6,6 +6,9 @@ import { crearRutas } from './app.routes';
 import { BienvenidaPage } from './bienvenida/bienvenida.page';
 import { CuentaPage } from './cuenta/cuenta.page';
 import { RepositorioDeCuenta } from './cuenta/repositorio-de-cuenta';
+import { FuenteDeCuota } from './cuota/fuente-de-cuota';
+import { FuenteDeCuotaDemo } from './cuota/fuente-de-cuota-demo';
+import { FuenteDeCuotaHttp } from './cuota/fuente-de-cuota-http';
 import { EntradaPage } from './entrada/entrada.page';
 import { soloConSesion } from './sesion/solo-con-sesion';
 
@@ -54,6 +57,16 @@ describe('routes', () => {
 
   it('el panel cuelga de /panel con la lista y la ficha', () => {
     expect(panel?.children?.map((hija) => hija.path)).toEqual(['', 'candidatura/:id']);
+  });
+
+  it('el panel conecta la cuota con el mismo flag que el alta', () => {
+    const proveedor = (rutas: ReturnType<typeof crearRutas>) =>
+      (rutas.find((r) => r.path === 'panel')?.providers as { provide: unknown; useClass: unknown }[]).find(
+        (p) => p.provide === FuenteDeCuota,
+      )?.useClass;
+
+    expect(proveedor(crearRutas({ alta: true, encaje: false }))).toBe(FuenteDeCuotaHttp);
+    expect(proveedor(crearRutas({ alta: false, encaje: false }))).toBe(FuenteDeCuotaDemo);
   });
 
   it('el panel exige sesion en cualquier entorno', () => {

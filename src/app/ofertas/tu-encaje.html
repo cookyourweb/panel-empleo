@@ -1,5 +1,5 @@
 <section class="encaje" aria-labelledby="titulo-encaje">
-  <h3 id="titulo-encaje" i18n="Titulo de la seccion de encaje@@encaje.titulo">Tu encaje</h3>
+  <h2 id="titulo-encaje" i18n="Titulo de la seccion de encaje@@encaje.titulo">Tu encaje</h2>
 
   <!-- Una sola region viva: el lector de pantalla anuncia el paso de
        "calculando" a su resultado sin que haya que buscarlo. -->
@@ -18,7 +18,7 @@
           Para calcular tu encaje necesitamos tu perfil.
         </p>
         <p>
-          <a routerLink="/alta" i18n="Enlace al alta desde el encaje@@encaje.sinPerfil.enlace">Completar mi perfil</a>
+          <a class="boton boton--secundario" routerLink="/alta" i18n="Enlace al alta desde el encaje@@encaje.sinPerfil.enlace">Completar mi perfil</a>
         </p>
       }
       @case ('listo') {
@@ -38,7 +38,7 @@
           }
 
           @if (e.cubiertos.length) {
-            <h4 i18n="Titulo de la lista de requisitos cubiertos@@encaje.cubiertos">Lo que ya demuestras</h4>
+            <h3 i18n="Titulo de la lista de requisitos cubiertos@@encaje.cubiertos">Lo que ya demuestras</h3>
             <ul>
               @for (c of e.cubiertos; track c.requisito) {
                 <li data-encaje-cubierto>
@@ -50,7 +50,7 @@
           }
 
           @if (e.huecos.length) {
-            <h4 i18n="Titulo de la lista de huecos@@encaje.huecos">Lo que te falta</h4>
+            <h3 i18n="Titulo de la lista de huecos@@encaje.huecos">Lo que te falta</h3>
             <ul>
               @for (h of e.huecos; track h.requisito) {
                 <li data-encaje-hueco>
@@ -64,7 +64,7 @@
           }
 
           @if (e.noEvaluables.length) {
-            <h4 i18n="Titulo de la lista de lo que no se puede evaluar@@encaje.noEvaluables">Lo que no podemos medir</h4>
+            <h3 i18n="Titulo de la lista de lo que no se puede evaluar@@encaje.noEvaluables">Lo que no podemos medir</h3>
             <ul>
               @for (n of e.noEvaluables; track n) {
                 <li data-encaje-no-evaluable>{{ n }}</li>

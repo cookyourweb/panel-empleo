@@ -1,21 +1,27 @@
+/* Vive en el pie, junto a los derechos: mismo aspecto que sus enlaces pequeños
+   (zinc-400, morado al pasar por encima). */
+:host {
+  display: block;
+  margin-top: 0.5rem;
+}
+
 ul {
   display: flex;
-  gap: 0.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 a {
-  display: inline-block;
-  padding: 0.35rem 0.6rem;
-  border-radius: var(--radius);
-  color: hsl(var(--foreground));
-  text-decoration: none;
+  color: var(--color-cyw-zinc-400);
+  text-decoration: underline;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--color-cyw-purpura-400);
 }
 
 a:focus-visible {
@@ -26,6 +32,13 @@ a:focus-visible {
 /* El actual no es un enlace a ningun sitio nuevo: se distingue por algo mas que
    el color (WCAG 1.4.1). */
 a[aria-current='true'] {
-  border: 1px solid hsl(var(--border));
+  color: var(--color-cyw-blanco);
   font-weight: 700;
+  text-decoration: none;
+}
+
+@media (min-width: 768px) {
+  ul {
+    justify-content: flex-end;
+  }
 }

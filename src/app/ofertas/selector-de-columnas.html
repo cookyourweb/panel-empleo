@@ -1,6 +1,6 @@
 <button
   type="button"
-  class="boton"
+  class="boton boton--neutro boton--compacto"
   data-columnas
   aria-haspopup="true"
   [attr.aria-expanded]="abierto()"
@@ -23,10 +23,10 @@
     (keydown.escape)="cerrarConTeclado($event)"
   >
     <div class="atajos">
-      <button type="button" class="boton pequeno" (click)="preferencias.todas()" i18n="Boton que muestra todas las columnas@@columnas.todas">
+      <button type="button" class="boton boton--neutro boton--compacto" (click)="preferencias.todas()" i18n="Boton que muestra todas las columnas@@columnas.todas">
         Todas
       </button>
-      <button type="button" class="boton pequeno" (click)="preferencias.porDefecto()" i18n="Boton que restablece las columnas de serie@@columnas.porDefecto">
+      <button type="button" class="boton boton--neutro boton--compacto" (click)="preferencias.porDefecto()" i18n="Boton que restablece las columnas de serie@@columnas.porDefecto">
         Por defecto
       </button>
     </div>

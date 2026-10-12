@@ -1,0 +1,50 @@
+:host {
+  display: block;
+}
+
+.cuota {
+  margin: 0 0 1rem;
+  color: hsl(var(--muted-foreground));
+  font-variant-numeric: tabular-nums;
+}
+
+.agotada {
+  color: hsl(var(--foreground));
+}
+
+.agotada p {
+  margin: 0 0 0.6rem;
+}
+
+fieldset {
+  margin: 0 0 0.75rem;
+  padding: 0;
+  border: 0;
+}
+
+legend {
+  padding: 0;
+  font-weight: 600;
+}
+
+fieldset label,
+.campo {
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.campo input {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  margin-top: 0.25rem;
+}
+
+.error {
+  color: hsl(var(--destructive));
+}
+
+input:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}

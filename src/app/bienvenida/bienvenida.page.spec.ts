@@ -1,15 +1,23 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+import { ApplicationRef, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
+import { ListaDeEspera, SolicitudDeEspera } from '../espera/lista-de-espera';
+import { URL_DE_PRIVACIDAD, UrlDePrivacidad } from '../marca/enlaces-de-marca';
 import { BienvenidaPage } from './bienvenida.page';
 
 describe('BienvenidaPage', () => {
-  async function abrir(): Promise<HTMLElement> {
+  let apuntar: ReturnType<typeof vi.fn<(solicitud: SolicitudDeEspera) => Promise<void>>>;
+  let pagina: HTMLElement;
+
+  async function abrir(privacidad: UrlDePrivacidad = ''): Promise<HTMLElement> {
+    apuntar = vi.fn<(solicitud: SolicitudDeEspera) => Promise<void>>().mockResolvedValue(undefined);
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
+        { provide: ListaDeEspera, useValue: { apuntar } },
+        { provide: URL_DE_PRIVACIDAD, useValue: privacidad },
         provideRouter([{ path: '', component: BienvenidaPage }]),
       ],
     });
@@ -22,7 +30,7 @@ describe('BienvenidaPage', () => {
     const pagina = await abrir();
 
     expect(pagina.querySelector('[data-etiqueta]')?.textContent?.trim()).toBe('Próximamente');
-    expect(pagina.querySelector('h2')?.textContent?.trim()).toBe(
+    expect(pagina.querySelector('h1')?.textContent?.trim()).toBe(
       'Tu próximo trabajo, buscado mientras programas.',
     );
     expect(pagina.querySelector('[data-explicacion]')?.textContent).toContain(
@@ -30,12 +38,12 @@ describe('BienvenidaPage', () => {
     );
   });
 
-  it('no repite el h1 del shell y los titulos de tarjeta son h3 bajo el h2', async () => {
+  it('tiene exactamente un h1, el titular, y los titulos de tarjeta son h2 sin saltar niveles', async () => {
     const pagina = await abrir();
 
-    expect(pagina.querySelector('h1')).toBeNull();
-    expect(pagina.querySelectorAll('h2')).toHaveLength(1);
-    const titulos = [...pagina.querySelectorAll('h3')].map((h) => h.textContent?.trim());
+    expect(pagina.querySelectorAll('h1')).toHaveLength(1);
+    expect(pagina.querySelector('h3')).toBeNull();
+    const titulos = [...pagina.querySelectorAll('h2')].map((h) => h.textContent?.trim());
     expect(titulos).toEqual([
       'Busca por ti cada mañana',
       'CV y carta, sin inventar',
@@ -79,20 +87,6 @@ describe('BienvenidaPage', () => {
     );
   });
 
-  it('Unirse a la lista de espera abre el formulario de Tally en una pestana nueva y lo dice', async () => {
-    const pagina = await abrir();
-
-    const unirse = pagina.querySelector<HTMLAnchorElement>('a[data-lista-espera]');
-
-    expect(unirse?.textContent).toContain('Únete a la lista de espera');
-    expect(unirse?.getAttribute('href')).toBe('https://tally.so/r/n0YDZ0');
-    expect(unirse?.getAttribute('target')).toBe('_blank');
-    expect(unirse?.getAttribute('rel')).toBe('noopener noreferrer');
-    expect(unirse?.querySelector('.solo-lectores')?.textContent?.trim()).toBe(
-      '(se abre en una pestaña nueva)',
-    );
-  });
-
   it('Ya tienes acceso lleva a la pantalla de entrada', async () => {
     const pagina = await abrir();
 
@@ -102,11 +96,231 @@ describe('BienvenidaPage', () => {
     expect(entrar?.getAttribute('href')).toBe('/entrar');
   });
 
-  it('ya no queda ningun mailto ni formulario', async () => {
+  describe('sistema de botones y tarjetas de CookYourWeb', () => {
+    const clasesDe = (el: Element | null) => [...(el?.classList ?? [])];
+
+    it('las tres tarjetas de beneficio son marcos de degradado con interior oscuro y degradados distintos', async () => {
+      const pagina = await abrir();
+
+      const tarjetas = [...pagina.querySelectorAll('[data-beneficio]')];
+      const variantes = tarjetas.map((t) => clasesDe(t).find((c) => c.startsWith('tarjeta--')));
+
+      expect(tarjetas.every((t) => t.classList.contains('tarjeta'))).toBe(true);
+      expect(tarjetas.every((t) => t.querySelector(':scope > .tarjeta__interior') !== null)).toBe(true);
+      expect(new Set(variantes).size).toBe(3);
+      expect(variantes).not.toContain(undefined);
+    });
+
+    it('los titulos de tarjeta usan la escala del titulo de tarjeta', async () => {
+      const pagina = await abrir();
+
+      const titulos = pagina.querySelectorAll('[data-beneficio] h2, [data-proximamente] h2');
+
+      expect(titulos).toHaveLength(5);
+      for (const titulo of titulos) expect(titulo.classList).toContain('tarjeta__titulo');
+    });
+
+    it('las tarjetas de proximamente usan otro degradado y una pildora, no un borde discontinuo', async () => {
+      const pagina = await abrir();
+
+      const proximas = [...pagina.querySelectorAll('[data-proximamente]')];
+      const beneficios = [...pagina.querySelectorAll('[data-beneficio]')].map((t) => clasesDe(t).find((c) => c.startsWith('tarjeta--')));
+
+      for (const tarjeta of proximas) {
+        expect(clasesDe(tarjeta).some((c) => c.startsWith('tarjeta--'))).toBe(true);
+        expect(clasesDe(tarjeta)).not.toContain('apagada');
+        expect(tarjeta.querySelector('[data-etiqueta-tarjeta]')?.classList).toContain('pildora');
+      }
+      expect(proximas.map((t) => clasesDe(t).find((c) => c.startsWith('tarjeta--')))).not.toEqual(expect.arrayContaining(beneficios));
+    });
+
+    it('la lista de espera sigue siendo la tarjeta destacada y su envio es un boton primario grande', async () => {
+      const pagina = await abrir();
+
+      const envio = pagina.querySelector<HTMLButtonElement>('form[data-lista-espera] button[type="submit"]')!;
+
+      expect(pagina.querySelector('.espera')?.classList).toContain('tarjeta-destacada');
+      expect(envio.tagName).toBe('BUTTON');
+      expect(clasesDe(envio)).toEqual(expect.arrayContaining(['boton', 'boton--primario', 'boton--grande']));
+    });
+
+    it('Ya tienes acceso es un enlace de navegacion vestido de boton secundario', async () => {
+      const pagina = await abrir();
+
+      const entrar = pagina.querySelector('a[data-entrar]')!;
+
+      expect(entrar.tagName).toBe('A');
+      expect(clasesDe(entrar)).toEqual(expect.arrayContaining(['boton', 'boton--secundario']));
+    });
+
+    it('el enlace de privacidad dentro de la frase sigue siendo un enlace, no un boton', async () => {
+      const pagina = await abrir('https://ejemplo.test/privacidad');
+
+      const privacidad = pagina.querySelector('label[for="espera-privacidad"] a')!;
+
+      expect(privacidad.classList).not.toContain('boton');
+    });
+  });
+
+  it('ya no queda ningun mailto ni rastro de tally.so', async () => {
     const pagina = await abrir();
 
     expect(pagina.querySelector('a[href^="mailto:"]')).toBeNull();
     expect(pagina.querySelector('[data-pedir-acceso]')).toBeNull();
-    expect(pagina.querySelector('form, input')).toBeNull();
+    expect(pagina.innerHTML).not.toContain('tally.so');
+    expect(pagina.querySelector('a[href*="tally"]')).toBeNull();
+  });
+
+  describe('lista de espera de Empleo Tech', () => {
+    const campo = (nombre: string) => pagina.querySelector<HTMLInputElement>(`input[name="${nombre}"]`)!;
+    const formulario = () => pagina.querySelector<HTMLFormElement>('form[data-lista-espera]');
+    const boton = () => pagina.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+
+    function escribir(entrada: HTMLInputElement, valor: string): void {
+      entrada.value = valor;
+      entrada.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
+    async function rellenar(aceptar = true): Promise<void> {
+      escribir(campo('nombre'), 'Ana');
+      escribir(campo('email'), 'ana@ejemplo.test');
+      if (aceptar) {
+        campo('privacidad').click();
+      }
+      await TestBed.inject(ApplicationRef).whenStable();
+    }
+
+    async function enviar(): Promise<void> {
+      formulario()!.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      await TestBed.inject(ApplicationRef).whenStable();
+    }
+
+    beforeEach(async () => {
+      pagina = await abrir();
+      document.body.appendChild(pagina);
+    });
+
+    afterEach(() => pagina.remove());
+
+    it('tiene etiquetas reales, campos obligatorios y la casilla sin marcar', () => {
+      for (const [nombre, tipo, autocompletar] of [
+        ['nombre', 'text', 'name'],
+        ['email', 'email', 'email'],
+      ]) {
+        const entrada = campo(nombre);
+        expect(entrada.type).toBe(tipo);
+        expect(entrada.autocomplete).toBe(autocompletar);
+        expect(entrada.required).toBe(true);
+        expect(entrada.labels?.[0]?.textContent?.trim()).toBe(nombre === 'nombre' ? 'Nombre' : 'Email');
+      }
+      expect(campo('privacidad').type).toBe('checkbox');
+      expect(campo('privacidad').required).toBe(true);
+      expect(campo('privacidad').checked).toBe(false);
+      expect(pagina.querySelector('input[type="tel"], input[name="telefono"]')).toBeNull();
+    });
+
+    it('lleva los textos del propietario tal cual', () => {
+      // Without the visually hidden "opens in a new tab" notice, which only screen readers get.
+      const visible = campo('privacidad').labels![0].cloneNode(true) as HTMLElement;
+      visible.querySelectorAll('.solo-lectores').forEach((oculto) => oculto.remove());
+      const etiqueta = visible.textContent?.replace(/\s+/g, ' ').trim();
+      expect(etiqueta).toContain('He leído y acepto la política de privacidad.');
+      expect(formulario()?.textContent).toContain(
+        'Al enviar este formulario aceptas recibir un email de aviso cuando haya una plaza disponible en Empleo Tech.',
+      );
+      expect(boton().textContent?.trim()).toBe('Unirme a la lista de espera');
+    });
+
+    it('sin URL propia de Empleo Tech, enlaza la politica base sin ancla', () => {
+      const enlace = campo('privacidad').labels?.[0]?.querySelector('a');
+
+      expect(enlace?.getAttribute('href')).toBe('https://www.cookyourwebai.es/politicadeprivacidad');
+      expect(enlace?.getAttribute('target')).toBe('_blank');
+      expect(enlace?.getAttribute('rel')).toBe('noopener noreferrer');
+    });
+
+    it('con URL propia de Empleo Tech, enlaza esa', async () => {
+      pagina.remove();
+      TestBed.resetTestingModule();
+      pagina = await abrir('https://www.cookyourwebai.es/politicadeprivacidad#empleo-tech');
+
+      expect(campo('privacidad').labels?.[0]?.querySelector('a')?.getAttribute('href')).toBe(
+        'https://www.cookyourwebai.es/politicadeprivacidad#empleo-tech',
+      );
+    });
+
+    it('envia el nombre y el email, sin telefono', async () => {
+      await rellenar();
+
+      await enviar();
+
+      expect(apuntar).toHaveBeenCalledTimes(1);
+      expect(apuntar).toHaveBeenCalledWith({ nombre: 'Ana', email: 'ana@ejemplo.test' });
+    });
+
+    it('con respuesta OK muestra el exito en una zona educada, lleva el foco y oculta el formulario', async () => {
+      await rellenar();
+
+      await enviar();
+
+      expect(formulario()).toBeNull();
+      const exito = pagina.querySelector<HTMLElement>('[data-exito]');
+      expect(exito?.textContent?.trim()).toBe('¡Listo! Te avisaremos por email en cuanto haya una plaza disponible.');
+      expect(pagina.querySelector('[aria-live="polite"]')?.contains(exito!)).toBe(true);
+      expect(document.activeElement).toBe(exito);
+      expect(pagina.querySelector('[role="alert"]')).toBeNull();
+    });
+
+    it('con respuesta fallida avisa con role alert, conserva los datos y no finge el exito', async () => {
+      apuntar.mockRejectedValue(new Error('no guardado'));
+      await rellenar();
+
+      await enviar();
+
+      expect(pagina.querySelector('[role="alert"]')?.textContent?.trim()).toBe(
+        'No hemos podido registrar tu solicitud. Inténtalo de nuevo en unos minutos o escribe a veronica@cookyourwebai.es.',
+      );
+      expect(pagina.querySelector('[data-exito]')).toBeNull();
+      expect(formulario()).not.toBeNull();
+      expect(campo('nombre').value).toBe('Ana');
+      expect(campo('email').value).toBe('ana@ejemplo.test');
+      expect(campo('privacidad').checked).toBe(true);
+      expect(boton().disabled).toBe(false);
+    });
+
+    it('sin marcar la casilla de privacidad no se puede enviar', async () => {
+      await rellenar(false);
+
+      await enviar();
+
+      expect(apuntar).not.toHaveBeenCalled();
+      expect(pagina.querySelector('[data-exito]')).toBeNull();
+    });
+
+    it('sin nombre o sin email tampoco se envia', async () => {
+      escribir(campo('email'), 'ana@ejemplo.test');
+      campo('privacidad').click();
+      await enviar();
+
+      expect(apuntar).not.toHaveBeenCalled();
+    });
+
+    it('mientras envia, el boton dice Enviando, esta desactivado y con aria-busy, y no envia dos veces', async () => {
+      let terminar!: () => void;
+      apuntar.mockReturnValue(new Promise<void>((resolver) => (terminar = resolver)));
+      await rellenar();
+
+      await enviar();
+      await enviar();
+
+      expect(boton().textContent?.trim()).toBe('Enviando…');
+      expect(boton().disabled).toBe(true);
+      expect(boton().getAttribute('aria-busy')).toBe('true');
+      expect(apuntar).toHaveBeenCalledTimes(1);
+      terminar();
+      await new Promise((resolver) => setTimeout(resolver));
+      await TestBed.inject(ApplicationRef).whenStable();
+      expect(pagina.querySelector('[data-exito]')).not.toBeNull();
+    });
   });
 });

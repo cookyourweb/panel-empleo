@@ -52,8 +52,24 @@ describe("vercel.json", () => {
       for (const regla of config.rewrites) expect(regla.destination).not.toBe("/index.html");
     });
 
-    it("no reescribe fuera de los prefijos de idioma: los ficheros estaticos se sirven tal cual", () => {
-      for (const regla of config.rewrites) expect(regla.source).toMatch(/^\/(es|en)\//);
+    // Los iconos se piden siempre en la raiz del dominio, pero la build los deja dentro de cada
+    // carpeta de idioma: sin estas reglas /favicon.ico no existe y el navegador no ve el icono.
+    const ICONOS = ["/favicon.ico", "/apple-touch-icon.png"];
+
+    it("no reescribe fuera de los prefijos de idioma, salvo los iconos: los ficheros estaticos se sirven tal cual", () => {
+      for (const regla of config.rewrites.filter((r) => !ICONOS.includes(r.source))) expect(regla.source).toMatch(/^\/(es|en)\//);
+    });
+
+    it.each(ICONOS)("%s se sirve desde el fichero de la build, no desde el index.html de la SPA", (icono) => {
+      const regla = config.rewrites.find((r) => r.source === icono);
+
+      expect(regla?.destination).toBe(`/${IDIOMAS[0]}${icono}`);
+    });
+
+    it("el favicon responde como imagen y no como HTML", () => {
+      const regla = config.headers.find((h) => h.source === "/favicon.ico");
+
+      expect(regla?.headers).toContainEqual({ key: "Content-Type", value: "image/vnd.microsoft.icon" });
     });
   });
 
@@ -110,6 +126,14 @@ describe("vercel.json", () => {
       expect(todas()).toContainEqual({ key: "X-Content-Type-Options", value: "nosniff" });
       expect(todas()).toContainEqual({ key: "Referrer-Policy", value: "strict-origin-when-cross-origin" });
       expect(todas()).toContainEqual({ key: "X-Frame-Options", value: "DENY" });
+    });
+
+    it("cada cabecera es un par clave y valor: Vercel rechaza el despliegue si no", () => {
+      for (const regla of config.headers) {
+        for (const cabecera of regla.headers) {
+          expect(Object.keys(cabecera).sort()).toEqual(["key", "value"]);
+        }
+      }
     });
   });
 });

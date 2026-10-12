@@ -7,6 +7,7 @@
       [acciones]="acciones()"
       [opciones]="store.opcionesDeEdicion()"
       [alGuardar]="guardar"
+      [nivel]="1"
     />
 
     @if (encajeActivo) {
@@ -15,7 +16,7 @@
   </article>
 } @else {
   <article>
-    <h2 i18n="Titulo cuando la candidatura no existe@@detalle.noEsta.titulo">Esa candidatura no está</h2>
+    <h1 i18n="Titulo cuando la candidatura no existe@@detalle.noEsta.titulo">Esa candidatura no está</h1>
     <p i18n="Explicacion cuando la candidatura no existe@@detalle.noEsta.explicacion">
       Puede que se haya borrado, o que el enlace no sea correcto.
     </p>
