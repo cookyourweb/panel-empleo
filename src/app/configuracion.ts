@@ -1,14 +1,14 @@
 import { InjectionToken } from '@angular/core';
 
 /**
- * Go-live switches. Both are off until the cv-server publishes the endpoints
- * each feature needs (see the "Go-live checklist" in the README). While off,
+ * Go-live switches. Each stays off until the cv-server publishes the endpoints
+ * its feature needs (see the "Go-live checklist" in the README). While off,
  * the matching routes and screens are not exposed at all: the in-memory demo
  * adapters must never present invented data as real in production.
  */
 
 /** Sign-up and account: /perfil, /consentimientos, /cv, /extraccion, /cuenta. */
-export const ALTA_CON_BACKEND = false;
+export const ALTA_CON_BACKEND = true;
 
 /** Fit analysis: /ofertas/{id}/encaje and /encajes. */
 export const ENCAJE_CON_BACKEND = false;
