@@ -1,8 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, ElementRef, inject, LOCALE_ID, signal, viewChild } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import { ALTA_ACTIVA } from '../configuracion';
+import { ProveedorDeIdentidad } from '../sesion/proveedor-de-identidad';
 import { Sesion } from '../sesion/sesion';
 
 import { EnlaceDelMenu, enlacesDeLaAgencia, raizDeLaPlataforma, URL_DE_LA_AGENCIA, URL_DE_WHATSAPP } from './enlaces-de-marca';
@@ -36,9 +37,14 @@ export class CabeceraDeMarca {
   protected readonly etiquetaDeCerrar = $localize`:Nombre accesible del boton que cierra el menu movil@@cabecera.menu.cerrar:Cerrar menú de navegación`;
 
   protected readonly etiquetaDeCuenta = $localize`:Enlace de la cabecera a la cuenta@@cabecera.cuenta:Tu cuenta`;
+  protected readonly etiquetaDeSalir = $localize`:Boton de la cabecera que cierra la sesion@@cabecera.salir:Cerrar sesión`;
   private readonly sesion = inject(Sesion);
+  private readonly proveedor = inject(ProveedorDeIdentidad);
+  private readonly router = inject(Router);
   private readonly altaActiva = inject(ALTA_ACTIVA);
   protected readonly conCuenta = computed(() => this.altaActiva && this.sesion.activa());
+  /** Salir no depende del alta: el panel pide sesion en todos los entornos. */
+  protected readonly conSesion = this.sesion.activa;
 
   protected readonly enlaces: readonly EnlaceDelMenu[] = [
     ...enlacesDeLaAgencia().map((enlace) => ({ ...enlace, actual: false })),
@@ -65,6 +71,14 @@ export class CabeceraDeMarca {
 
   protected cerrarMenu(): void {
     this.menuAbierto.set(false);
+  }
+
+  /** Olvida tambien la cuenta de Google: con auto_select, /entrar la volveria a meter sola. */
+  protected async salir(): Promise<void> {
+    this.cerrarMenu();
+    this.sesion.cerrar();
+    this.proveedor.olvidar();
+    await this.router.navigateByUrl('/');
   }
 
   protected alEscape(): void {

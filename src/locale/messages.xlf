@@ -91,6 +91,15 @@
         <source>Tu cuenta</source>
       </segment>
     </unit>
+    <unit id="cabecera.salir">
+      <notes>
+        <note category="location">src/app/marca/cabecera-de-marca.ts:39</note>
+        <note category="description">Boton de la cabecera que cierra la sesion</note>
+      </notes>
+      <segment>
+        <source>Cerrar sesión</source>
+      </segment>
+    </unit>
     <unit id="cabecera.agencia">
       <notes>
         <note category="location">src/app/marca/cabecera-de-marca.html:4</note>

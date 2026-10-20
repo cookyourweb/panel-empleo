@@ -41,6 +41,7 @@ const EXCEPCIONES = [
   { marca: 'class="alternar"', motivo: "icono de hamburguesa de la cabecera de marca" },
   { marca: '(click)="ordenarPor(', motivo: "cabecera de columna ordenable: es una cabecera de tabla, no una accion suelta" },
   { marca: 'role="menuitem"', motivo: "opcion de un menu desplegable, dibujada como el estado" },
+  { marca: '(click)="salir()"', motivo: "cerrar sesion en la cabecera de marca: se dibuja como Tu cuenta, que es un enlace" },
 ];
 
 describe("todo <button> de la aplicacion usa el sistema de botones", () => {
@@ -60,7 +61,9 @@ describe("todo <button> de la aplicacion usa el sistema de botones", () => {
 
   it("las excepciones son pocas y no crecen sin que se note", () => {
     const usadas = botones.filter((b) => EXCEPCIONES.some((x) => b.texto.includes(x.marca)));
-    expect(usadas.length).toBeLessThanOrEqual(4);
+    // 6 desde el 20-oct-2026: cerrar sesion en la cabecera (escritorio y menu movil). La marca
+    // tambien casa con el salir() de Tu cuenta, que ya es .boton pero cuenta igual.
+    expect(usadas.length).toBeLessThanOrEqual(6);
   });
 
   it("ningun boton conserva las clases sueltas anteriores", () => {

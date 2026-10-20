@@ -4,6 +4,7 @@ import { provideRouter, Router } from '@angular/router';
 
 import { App } from './app';
 import { ALTA_ACTIVA } from './configuracion';
+import { ProveedorDeIdentidad } from './sesion/proveedor-de-identidad';
 import { Sesion } from './sesion/sesion';
 
 @Component({ template: 'pagina' })
@@ -26,6 +27,7 @@ describe('App', () => {
       providers: [
         { provide: Sesion, useValue: { activa, consentimientos, perfil } },
         { provide: ALTA_ACTIVA, useValue: false },
+        { provide: ProveedorDeIdentidad, useValue: { olvidar: () => undefined } },
         provideRouter([
           { path: 'a', component: PaginaFalsa },
           { path: 'cuenta', component: PaginaFalsa },
@@ -137,7 +139,7 @@ describe('App', () => {
       expect(enCabecera(fixture.nativeElement as HTMLElement).querySelector('a[href="/cuenta"]')).toBeNull();
     });
 
-    it('con sesion y backend de alta la ofrece junto a WhatsApp y dentro del menu movil', async () => {
+    it('con sesion y backend de alta la ofrece antes de Cerrar sesion y WhatsApp, y dentro del menu movil', async () => {
       TestBed.overrideProvider(ALTA_ACTIVA, { useValue: true });
       activa.set(true);
       const fixture = TestBed.createComponent(App);
@@ -150,7 +152,8 @@ describe('App', () => {
       expect(enControles?.getAttribute('aria-label')).toBe('Tu cuenta');
       expect(enControles?.textContent).toContain('Tu cuenta');
       expect(enControles?.previousElementSibling).toBeNull();
-      expect(enControles?.nextElementSibling?.classList.contains('whatsapp')).toBe(true);
+      expect(enControles?.nextElementSibling?.classList.contains('salir')).toBe(true);
+      expect(enControles?.nextElementSibling?.nextElementSibling?.classList.contains('whatsapp')).toBe(true);
       expect(enMenu?.textContent?.trim()).toBe('Tu cuenta');
       expect(fixture.nativeElement.querySelector('main a[href="/cuenta"]')).toBeNull();
     });
