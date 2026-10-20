@@ -19,7 +19,7 @@ describe('AltaPage', () => {
         provideRouter([]),
         { provide: RepositorioDePerfil, useValue: repositorio },
         { provide: ExtractorDeCv, useValue: extractor },
-        { provide: Sesion, useValue: { perfilGuardado: vi.fn() } },
+        { provide: Sesion, useValue: { perfilGuardado: vi.fn(), consentimientosDados: vi.fn() } },
       ],
     });
     const fixture = TestBed.createComponent(AltaPage);

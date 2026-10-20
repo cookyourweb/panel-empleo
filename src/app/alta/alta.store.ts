@@ -90,6 +90,8 @@ export class AltaStore {
     } finally {
       this._consentiendo.set(false);
     }
+    // The cached /yo answer is from before the alta: without this, Tu cuenta asks for consent again.
+    this.sesion.consentimientosDados();
     this._consentido.set(true);
     this._paso.set(PASOS.subida);
   }
