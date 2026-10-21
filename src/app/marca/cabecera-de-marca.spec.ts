@@ -1,9 +1,10 @@
 import { LOCALE_ID, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 
 import { ALTA_ACTIVA } from '../configuracion';
+import { ProveedorDeIdentidad } from '../sesion/proveedor-de-identidad';
 import { Sesion } from '../sesion/sesion';
 import { CabeceraDeMarca } from './cabecera-de-marca';
 import { raizDeLaPlataforma } from './enlaces-de-marca';
@@ -30,13 +31,16 @@ describe('CabeceraDeMarca', () => {
   const panel = () => raiz.querySelector('#menu-movil') as HTMLElement;
 
   const sesionActiva = signal(false);
+  const cerrar = vi.fn();
+  const olvidar = vi.fn();
 
   async function crear(localeId = 'es', conAlta = true): Promise<void> {
     TestBed.configureTestingModule({
       imports: [CabeceraDeMarca],
       providers: [
         { provide: LOCALE_ID, useValue: localeId },
-        { provide: Sesion, useValue: { activa: sesionActiva } },
+        { provide: Sesion, useValue: { activa: sesionActiva, cerrar } },
+        { provide: ProveedorDeIdentidad, useValue: { olvidar } },
         { provide: ALTA_ACTIVA, useValue: conAlta },
         provideRouter([{ path: 'cuenta', children: [] }]),
       ],
@@ -49,6 +53,8 @@ describe('CabeceraDeMarca', () => {
 
   beforeEach(() => {
     sesionActiva.set(false);
+    cerrar.mockReset();
+    olvidar.mockReset();
     desplazarA(0);
   });
 
@@ -307,7 +313,7 @@ describe('CabeceraDeMarca', () => {
 
       const controles = [...raiz.querySelector('.controles')!.children].map((h) => h.className.split(' ')[0]);
 
-      expect(controles).toEqual(['cuenta', 'whatsapp', 'alternar']);
+      expect(controles).toEqual(['cuenta', 'salir', 'whatsapp', 'alternar']);
     });
 
     it('el menu movil la trae tras los seis enlaces y antes del Chatbot, y al pulsarla cierra el menu', async () => {
@@ -320,10 +326,68 @@ describe('CabeceraDeMarca', () => {
       const cuenta = hijos.findIndex((h) => h.getAttribute('href') === '/cuenta');
 
       expect(cuenta).toBe(6);
-      expect(hijos[7].classList.contains('menu-movil__cta')).toBe(true);
+      expect(hijos[8].classList.contains('menu-movil__cta')).toBe(true);
       (hijos[cuenta] as HTMLAnchorElement).addEventListener('click', (e) => e.preventDefault());
       (hijos[cuenta] as HTMLAnchorElement).click();
       await fixture.whenStable();
+      expect(panel().hidden).toBe(true);
+    });
+  });
+
+  describe('Cerrar sesion', () => {
+    const botones = () => [...raiz.querySelectorAll<HTMLButtonElement>('button.salir, button.enlace-movil--salir')];
+
+    it('sin sesion no hay boton para salir', async () => {
+      await crear();
+
+      expect(botones()).toHaveLength(0);
+    });
+
+    it('con sesion se puede salir aunque el alta este apagada: la sesion existe en todos los entornos', async () => {
+      sesionActiva.set(true);
+      await crear('es', false);
+
+      expect(raiz.querySelector('.controles button.salir')).not.toBeNull();
+    });
+
+    it('es un boton con nombre accesible, un icono decorativo y el texto visible', async () => {
+      sesionActiva.set(true);
+      await crear();
+
+      const boton = raiz.querySelector('.controles button.salir') as HTMLButtonElement;
+
+      expect(boton.type).toBe('button');
+      expect(boton.getAttribute('aria-label')).toBe('Cerrar sesión');
+      expect(boton.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
+      expect(boton.querySelector('.salir__texto')?.textContent?.trim()).toBe('Cerrar sesión');
+    });
+
+    it('al pulsarlo cierra la sesion, olvida la cuenta de Google y vuelve a la bienvenida', async () => {
+      sesionActiva.set(true);
+      await crear();
+      const navegar = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+
+      (raiz.querySelector('.controles button.salir') as HTMLButtonElement).click();
+      await fixture.whenStable();
+
+      expect(cerrar).toHaveBeenCalledTimes(1);
+      expect(olvidar).toHaveBeenCalledTimes(1);
+      expect(navegar).toHaveBeenCalledWith('/');
+    });
+
+    it('el menu movil lo trae tras Tu cuenta, y al pulsarlo sale y cierra el menu', async () => {
+      sesionActiva.set(true);
+      await crear();
+      vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+      alternar().click();
+      await fixture.whenStable();
+
+      const hijos = [...raiz.querySelector('.menu-movil__nav')!.children];
+
+      expect(hijos[7].classList.contains('enlace-movil--salir')).toBe(true);
+      (hijos[7] as HTMLButtonElement).click();
+      await fixture.whenStable();
+      expect(cerrar).toHaveBeenCalledTimes(1);
       expect(panel().hidden).toBe(true);
     });
   });

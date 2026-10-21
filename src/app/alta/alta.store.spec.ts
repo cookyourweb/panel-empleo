@@ -33,13 +33,13 @@ function aplazada<T>(): { promesa: Promise<T>; resolver: (valor: T) => void } {
 describe('AltaStore', () => {
   let repositorio: { obtener: ReturnType<typeof vi.fn>; guardar: ReturnType<typeof vi.fn>; consentir: ReturnType<typeof vi.fn> };
   let extractor: { subir: ReturnType<typeof vi.fn>; extraer: ReturnType<typeof vi.fn> };
-  let sesion: { perfilGuardado: ReturnType<typeof vi.fn> };
+  let sesion: { perfilGuardado: ReturnType<typeof vi.fn>; consentimientosDados: ReturnType<typeof vi.fn> };
   let store: AltaStore;
 
   beforeEach(() => {
     repositorio = { obtener: vi.fn(), guardar: vi.fn().mockResolvedValue(undefined), consentir: vi.fn().mockResolvedValue(undefined) };
     extractor = { subir: vi.fn().mockResolvedValue(undefined), extraer: vi.fn().mockResolvedValue(PROPUESTA) };
-    sesion = { perfilGuardado: vi.fn() };
+    sesion = { perfilGuardado: vi.fn(), consentimientosDados: vi.fn() };
     TestBed.configureTestingModule({
       providers: [
         AltaStore,
@@ -75,6 +75,20 @@ describe('AltaStore', () => {
 
       expect(store.paso()).toBe('consentimiento');
       expect(store.errorDeConsentimiento()).toBe(true);
+    });
+
+    it('avisa a la sesion de que ya hay consentimientos vigentes', async () => {
+      await store.consentir();
+
+      expect(sesion.consentimientosDados).toHaveBeenCalledTimes(1);
+    });
+
+    it('si el servidor falla no toca la sesion', async () => {
+      repositorio.consentir.mockRejectedValue(new Error('500'));
+
+      await store.consentir();
+
+      expect(sesion.consentimientosDados).not.toHaveBeenCalled();
     });
 
     it('un reintento limpia el error', async () => {

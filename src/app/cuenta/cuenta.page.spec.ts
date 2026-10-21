@@ -86,6 +86,13 @@ describe('CuentaPage', () => {
     expect(queda.querySelector('a')?.textContent).toBe('veronica@cookyourwebai.es');
   });
 
+  it('separa el "escríbenos a" del correo: sin espacio se lee "averonica@"', async () => {
+    const { raiz } = await pintar();
+
+    const texto = (raiz.querySelector('[data-queda]')!.textContent ?? '').replace(/\s+/g, ' ');
+    expect(texto).toContain('escríbenos a veronica@cookyourwebai.es');
+  });
+
   it('la pagina dice que para volver hace falta pedir una invitacion nueva', async () => {
     const { raiz } = await pintar();
 

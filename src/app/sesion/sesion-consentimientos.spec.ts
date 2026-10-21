@@ -102,6 +102,15 @@ describe('Sesion: consentimientos (lo que /yo dice)', () => {
     expect(sesion.consentimientos()).toEqual({ almacenarCv: false, enviarCvAIa: true });
   });
 
+  it('consentimientosDados corrige el /yo de antes del alta', async () => {
+    await entrar({ ...USUARIA, consentimientos: { almacenar_cv: false, enviar_cv_a_ia: false } });
+
+    sesion.consentimientosDados();
+
+    expect(sesion.consentimientos()).toEqual({ almacenarCv: true, enviarCvAIa: true });
+    expect(sesion.consentimientosRecientes()).toEqual({ almacenarCv: true, enviarCvAIa: true });
+  });
+
   it('cerrar la sesion los olvida', async () => {
     await entrar({ ...USUARIA, consentimientos: { almacenar_cv: true, enviar_cv_a_ia: true } });
 

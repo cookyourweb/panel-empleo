@@ -183,6 +183,11 @@ export class Sesion {
     this.recordarPerfil({ tienePerfil: true, origenMaster: null });
   }
 
+  /** Both consents were just recorded: the sign-in /yo still says "none" and must not be shown. */
+  consentimientosDados(): void {
+    this._consentimientos.set({ valores: { almacenarCv: true, enviarCvAIa: true }, conocidoEn: Date.now() });
+  }
+
   cerrar(): void {
     this._usuaria.set(null);
     this._perfil.set(null);

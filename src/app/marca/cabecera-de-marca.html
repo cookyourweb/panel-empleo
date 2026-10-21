@@ -30,6 +30,17 @@
         </a>
       }
 
+      @if (conSesion()) {
+        <button type="button" class="salir" [attr.aria-label]="etiquetaDeSalir" (click)="salir()">
+          <svg class="icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <path d="m16 17 5-5-5-5" />
+            <path d="M21 12H9" />
+          </svg>
+          <span class="salir__texto" aria-hidden="true">{{ etiquetaDeSalir }}</span>
+        </button>
+      }
+
       <a
         class="whatsapp"
         [href]="whatsapp"
@@ -82,6 +93,12 @@
           ><span class="enlace-movil__texto">{{ etiquetaDeCuenta }}</span
           ><span class="enlace-movil__punto" aria-hidden="true"></span
         ></a>
+      }
+      @if (conSesion()) {
+        <button type="button" class="enlace-movil enlace-movil--salir" (click)="salir()"
+          ><span class="enlace-movil__texto">{{ etiquetaDeSalir }}</span
+          ><span class="enlace-movil__punto" aria-hidden="true"></span
+        ></button>
       }
       <div class="menu-movil__cta">
         <a class="cta" [href]="whatsapp" target="_blank" rel="noopener noreferrer" (click)="cerrarMenu()">
