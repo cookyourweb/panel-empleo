@@ -9,7 +9,10 @@
        anuncia de forma fiable. Solo cambia el texto de dentro. -->
   <div class="aviso" role="status">
     @if (despertando()) {
-      <p i18n="Aviso de que el servidor esta arrancando@@entrada.despertando">Despertando el servidor, puede tardar un minuto</p>
+      <p class="entrada__despertando" i18n="Aviso de que el servidor esta arrancando@@entrada.despertando">Despertando el servidor, puede tardar un minuto</p>
+      <p class="entrada__beta" i18n="Explica por que el servidor estaba apagado en la beta@@entrada.despertandoBeta">Estamos en beta y, para no gastar mientras nadie lo usa, el servidor se apaga solo. Lo estamos encendiendo: suele tardar menos de un minuto. No cierres esta página.</p>
+      <!-- Decorative: the text above already tells screen readers what is happening. -->
+      <div class="entrada__carga" aria-hidden="true"></div>
     }
     @if (sinRespuesta()) {
       <p i18n="Aviso de que el servidor no respondio@@entrada.sinRespuesta">El servidor no ha respondido. Prueba de nuevo.</p>

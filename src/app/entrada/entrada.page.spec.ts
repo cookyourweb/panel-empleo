@@ -262,6 +262,26 @@ describe('EntradaPage con el servidor dormido', () => {
     expect(aviso()?.textContent).toContain(MENSAJE_DESPERTANDO);
   });
 
+  it('mientras despierta explica que es una beta y pide no cerrar la pagina', async () => {
+    await pasar(3000);
+
+    const texto = aviso()?.textContent ?? '';
+    expect(texto).toContain('beta');
+    expect(texto).toContain('No cierres esta página');
+  });
+
+  it('mientras despierta muestra una barra de carga decorativa que se va al responder', async () => {
+    const barra = () => pagina().querySelector('.entrada__carga');
+    await pasar(3000);
+
+    expect(barra()).not.toBeNull();
+    expect(barra()?.getAttribute('aria-hidden')).toBe('true');
+
+    await responder(true);
+
+    expect(barra()).toBeNull();
+  });
+
   it('si responde rapido el aviso no aparece nunca', async () => {
     await pasar(1000);
     await responder(true);
