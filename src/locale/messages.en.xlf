@@ -103,7 +103,7 @@
     </unit>
     <unit id="entrada.despertando">
       <notes>
-        <note category="location">src/app/entrada/entrada.page.html:11,14</note>
+        <note category="location">src/app/entrada/entrada.page.html:12,13</note>
         <note category="description">Aviso de que el servidor esta arrancando</note>
       </notes>
       <segment>
@@ -111,9 +111,19 @@
         <target>Waking up the server, this can take a minute</target>
       </segment>
     </unit>
+    <unit id="entrada.despertandoBeta">
+      <notes>
+        <note category="location">src/app/entrada/entrada.page.html:13,14</note>
+        <note category="description">Explica por que el servidor estaba apagado en la beta</note>
+      </notes>
+      <segment>
+        <source>Estamos en beta y, para no gastar mientras nadie lo usa, el servidor se apaga solo. Lo estamos encendiendo: suele tardar menos de un minuto. No cierres esta página.</source>
+        <target>We are in beta and, to save resources while nobody is using it, the server switches itself off. We are starting it up now: it usually takes less than a minute. Please keep this page open.</target>
+      </segment>
+    </unit>
     <unit id="entrada.sinRespuesta">
       <notes>
-        <note category="location">src/app/entrada/entrada.page.html:14,19</note>
+        <note category="location">src/app/entrada/entrada.page.html:18,23</note>
         <note category="description">Aviso de que el servidor no respondio</note>
       </notes>
       <segment>
@@ -123,7 +133,7 @@
     </unit>
     <unit id="entrada.reintentar">
       <notes>
-        <note category="location">src/app/entrada/entrada.page.html:20,25</note>
+        <note category="location">src/app/entrada/entrada.page.html:25,31</note>
         <note category="description">Boton que vuelve a comprobar el servidor</note>
       </notes>
       <segment>
