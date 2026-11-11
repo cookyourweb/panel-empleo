@@ -67,6 +67,14 @@ export class CuentaPage {
   /** The server deleted everything; the session stays open until the user continues. */
   protected readonly borrada = signal(false);
 
+  /** BYOK */
+  protected readonly claveConfigurada = signal(false);
+  protected readonly trialRestante = signal(0);
+  protected readonly guardandoClave = signal(false);
+  protected readonly errorDeClave = signal(false);
+  protected readonly exitoDeClave = signal(false);
+  protected readonly valorClave = signal('');
+
   protected readonly consentimientos = CONSENTIMIENTOS;
   private readonly injector = inject(Injector);
 
@@ -122,6 +130,7 @@ export class CuentaPage {
 
   constructor() {
     void this.cargarCvs();
+    void this.cargarClave();
     afterRenderEffect(() => {
       this.confirmando();
       this.borrada();
@@ -144,6 +153,48 @@ export class CuentaPage {
       this.errorDeCvs.set(true);
     } finally {
       this.cargandoCvs.set(false);
+    }
+  }
+
+  protected async cargarClave(): Promise<void> {
+    try {
+      const estado = await this.repositorio.estadoDeClave();
+      this.claveConfigurada.set(estado.configurada);
+      this.trialRestante.set(estado.trialRestante);
+    } catch {
+      this.claveConfigurada.set(false);
+      this.trialRestante.set(0);
+    }
+  }
+
+  protected async guardarClave(): Promise<void> {
+    if (this.guardandoClave()) return;
+    this.guardandoClave.set(true);
+    this.errorDeClave.set(false);
+    this.exitoDeClave.set(false);
+    try {
+      await this.repositorio.guardarClave('anthropic', this.valorClave());
+      this.claveConfigurada.set(true);
+      this.trialRestante.set(0);
+      this.valorClave.set('');
+      this.exitoDeClave.set(true);
+    } catch {
+      this.errorDeClave.set(true);
+    } finally {
+      this.guardandoClave.set(false);
+    }
+  }
+
+  protected async borrarClave(): Promise<void> {
+    this.errorDeClave.set(false);
+    this.exitoDeClave.set(false);
+    try {
+      await this.repositorio.borrarClave('anthropic');
+      this.claveConfigurada.set(false);
+      this.valorClave.set('');
+      this.exitoDeClave.set(true);
+    } catch {
+      this.errorDeClave.set(true);
     }
   }
 

@@ -48,4 +48,13 @@ export abstract class RepositorioDeCuenta {
    * Rechaza con SubidaRechazada si el servidor no lo acepta.
    */
   abstract subirCv(archivo: File): Promise<void>;
+
+  /** Estado BYOK: configurada / trial restante. Rechaza si el servidor falla. */
+  abstract estadoDeClave(): Promise<{ configurada: boolean; trialRestante: number }>;
+
+  /** Guarda una API key para un proveedor. Rechaza si el servidor no la acepta. */
+  abstract guardarClave(proveedor: 'anthropic' | 'groq', apiKey: string): Promise<void>;
+
+  /** Borra la API key de un proveedor. */
+  abstract borrarClave(proveedor: 'anthropic' | 'groq'): Promise<void>;
 }

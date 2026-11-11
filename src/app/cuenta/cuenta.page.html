@@ -349,4 +349,38 @@
       </button>
     </div>
   </section>
+  <section class="seccion" aria-labelledby="cuenta-ia-titulo" data-seccion-ia>
+    <h2 class="titulo-seccion" id="cuenta-ia-titulo" tabindex="-1" data-titulo-seccion="ia" i18n="Titulo de la seccion de API key@@cuenta.ia.titulo">
+      Tu clave de IA
+    </h2>
+    <p class="resultado" role="status" aria-live="polite" data-estado-ia>
+      @if (claveConfigurada()) {
+        Clave configurada. Te quedan {{ trialRestante() }} generaciones gratuitas.
+      } @else {
+        No has configurado tu clave. Trials restantes: {{ trialRestante() }}.
+      }
+    </p>
+    @if (errorDeClave()) {
+      <p class="error" role="alert" data-error-ia i18n="Error al configurar clave@@cuenta.ia.error">
+        No hemos podido guardar la clave. Prueba de nuevo.
+      </p>
+    }
+    @if (exitoDeClave()) {
+      <p class="ok" role="status" data-exito-ia i18n="Clave guardada correctamente@@cuenta.ia.exito">
+        Clave guardada correctamente.
+      </p>
+    }
+    <div class="casilla">
+      <label for="clave-ia" i18n="Etiqueta de la API key@@cuenta.ia.campo">API key</label>
+      <input id="clave-ia" type="password" [value]="valorClave()" (input)="valorClave.set($any($event.target).value)" data-campo-clave />
+    </div>
+    <div class="acciones">
+      <button type="button" class="boton boton--primario" [disabled]="guardandoClave()" (click)="guardarClave()" i18n="Boton que guarda la API key@@cuenta.ia.guardar">
+        @if (guardandoClave()) { Guardando… } @else { Guardar clave }
+      </button>
+      <button type="button" class="boton boton--neutro" [disabled]="guardandoClave()" (click)="borrarClave()" i18n="Boton que borra la API key@@cuenta.ia.borrar">
+        Borrar clave
+      </button>
+    </div>
+  </section>
 }

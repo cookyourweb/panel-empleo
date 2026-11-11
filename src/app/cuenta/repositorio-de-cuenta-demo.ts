@@ -29,4 +29,12 @@ export class RepositorioDeCuentaDemo implements RepositorioDeCuenta {
     const formato = archivo.name.toLowerCase().endsWith('.docx') ? 'docx' : 'pdf';
     this.cvs = [{ idioma: 'es', formato, subidoEn: new Date().toISOString() }];
   }
+
+  async estadoDeClave(): Promise<{ configurada: boolean; trialRestante: number }> {
+    return { configurada: false, trialRestante: 3 };
+  }
+
+  async guardarClave(_proveedor: 'anthropic' | 'groq', _apiKey: string): Promise<void> {}
+
+  async borrarClave(_proveedor: 'anthropic' | 'groq'): Promise<void> {}
 }

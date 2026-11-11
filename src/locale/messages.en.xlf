@@ -4222,5 +4222,48 @@
         <target>Notify me</target>
       </segment>
     </unit>
+
+    <unit id="cuenta.ia.titulo">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>Tu clave de IA</source>
+        <target>Your AI key</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.ia.campo">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>API key</source>
+        <target>Access token</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.ia.error">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>No hemos podido guardar la clave. Prueba de nuevo.</source>
+        <target>We could not save the key. Try again.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.ia.exito">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>Clave guardada correctamente.</source>
+        <target>Key saved successfully.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.ia.guardar">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>Guardar clave</source>
+        <target>Save key</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.ia.borrar">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>Borrar clave</source>
+        <target>Delete key</target>
+      </segment>
+    </unit>
   </file>
 </xliff>
