@@ -48,3 +48,7 @@ Thumbs.db
 
 # Registro local de skills para agentes
 .atl/
+
+# Agent tooling directories (local, not shared)
+.claude/
+.opencode/
