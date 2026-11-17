@@ -2,7 +2,7 @@ import { elegirConfiguracion } from './configuracion';
 
 describe('elegirConfiguracion', () => {
   it('en desarrollo apunta al servidor local', () => {
-    expect(elegirConfiguracion(true).urlApi).toBe('http://localhost:5000');
+    expect(elegirConfiguracion(true).urlApi).toBe('http://localhost:8000');
   });
 
   it('fuera de desarrollo apunta al servidor publicado', () => {

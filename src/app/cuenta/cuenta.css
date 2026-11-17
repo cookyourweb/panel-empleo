@@ -43,3 +43,21 @@
 .subir {
   margin-top: 1.5rem;
 }
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1.25rem 0;
+}
+
+.campo input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.6rem 0.8rem;
+  font-family: monospace;
+}
+
+.campo .acciones {
+  margin-top: 0.75rem;
+}

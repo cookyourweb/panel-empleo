@@ -3825,5 +3825,20 @@
       <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Boton que borra la API key</note></notes>
       <segment><source>Borrar clave</source></segment>
     </unit>
+
+    <unit id="cuenta.ia.ayuda">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Ayuda del bloque BYOK</note></notes>
+      <segment>
+        <source>Guarda tu propia clave de Anthropic para generar CV y cartas. Se guarda cifrada y nunca se muestra completa.
+      Si no tienes clave, puedes usar las 3 generaciones de prueba.</source>
+      </segment>
+    </unit>
+
+    <unit id="cuenta.ia.mostrar">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Boton que muestra u oculta la clave</note></notes>
+      <segment>
+        <source>Mostrar</source>
+      </segment>
+    </unit>
   </file>
 </xliff>

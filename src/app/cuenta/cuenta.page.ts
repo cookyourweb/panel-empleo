@@ -74,6 +74,7 @@ export class CuentaPage {
   protected readonly errorDeClave = signal(false);
   protected readonly exitoDeClave = signal(false);
   protected readonly valorClave = signal('');
+  protected readonly mostrarClave = signal(false);
 
   protected readonly consentimientos = CONSENTIMIENTOS;
   private readonly injector = inject(Injector);
@@ -196,6 +197,14 @@ export class CuentaPage {
     } catch {
       this.errorDeClave.set(true);
     }
+  }
+
+  protected onClaveInput(evento: Event): void {
+    this.valorClave.set((evento.target as HTMLInputElement).value);
+  }
+
+  protected alternarMostrarClave(): void {
+    this.mostrarClave.set(!this.mostrarClave());
   }
 
   protected alternar(marca: WritableSignal<boolean>, evento: Event): void {
