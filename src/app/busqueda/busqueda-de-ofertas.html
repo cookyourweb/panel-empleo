@@ -1,6 +1,6 @@
 <section class="busqueda" aria-live="polite">
-  <button type="button" (click)="iniciar()" [disabled]="enCurso()">Buscar ofertas</button>
-  <button type="button" (click)="cancelar()" [disabled]="!enCurso()">Cancelar</button>
+  <button type="button" class="boton boton--primario" (click)="iniciar()" [disabled]="enCurso()" i18n="Boton que lanza la busqueda de ofertas en segundo plano@@busqueda.iniciar">Buscar ofertas</button>
+  <button type="button" class="boton boton--neutro" (click)="cancelar()" [disabled]="!enCurso()" i18n="Boton que cancela la busqueda en curso@@busqueda.cancelar">Cancelar</button>
 
   @if (enCurso()) {
     <p role="status">Etapa: {{ etapa() }}</p>

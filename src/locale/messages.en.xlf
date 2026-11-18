@@ -4283,5 +4283,25 @@
         <target>Show</target>
       </segment>
     </unit>
+    <unit id="busqueda.iniciar">
+      <notes>
+        <note category="location">src/app/busqueda/busqueda-de-ofertas.html:2</note>
+        <note category="description">Boton que lanza la busqueda de ofertas en segundo plano</note>
+      </notes>
+      <segment>
+        <source>Buscar ofertas</source>
+        <target>Search offers</target>
+      </segment>
+    </unit>
+    <unit id="busqueda.cancelar">
+      <notes>
+        <note category="location">src/app/busqueda/busqueda-de-ofertas.html:3</note>
+        <note category="description">Boton que cancela la busqueda en curso</note>
+      </notes>
+      <segment>
+        <source>Cancelar</source>
+        <target>Cancel</target>
+      </segment>
+    </unit>
   </file>
 </xliff>
