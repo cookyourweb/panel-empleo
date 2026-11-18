@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subscription } from 'rxjs';
 import { BusquedaProgresoService } from './busqueda-progreso.service';
 import { EstadoDeBusqueda, EventoDeBusqueda } from './evento-de-busqueda';
 import { Sesion } from '../sesion/sesion';
@@ -15,6 +16,7 @@ export class BusquedaDeOfertas {
   private readonly servicio = inject(BusquedaProgresoService);
   private readonly sesion = inject(Sesion);
   private readonly destroyRef = inject(DestroyRef);
+  private suscripcion: Subscription | null = null;
 
   readonly etapa = signal<EstadoDeBusqueda>('idle');
   readonly detalle = signal<string | null>(null);
@@ -36,7 +38,8 @@ export class BusquedaDeOfertas {
     this.error.set(null);
     this.enCurso.set(true);
 
-    this.servicio
+    this.suscripcion?.unsubscribe();
+    this.suscripcion = this.servicio
       .buscar({ usuarioId: usuaria.sub, topN: 5 })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
@@ -58,6 +61,8 @@ export class BusquedaDeOfertas {
   }
 
   cancelar(): void {
+    this.suscripcion?.unsubscribe();
+    this.suscripcion = null;
     this.enCurso.set(false);
     this.etapa.set('idle');
   }
