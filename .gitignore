@@ -52,3 +52,7 @@ Thumbs.db
 # Agent tooling directories (local, not shared)
 .claude/
 .opencode/
+
+# Artefactos de Playwright (se regeneran en cada ejecución)
+playwright-report/
+test-results/
