@@ -1,0 +1,17 @@
+<section class="busqueda" aria-live="polite">
+  <button type="button" (click)="iniciar()" [disabled]="enCurso()">Buscar ofertas</button>
+  <button type="button" (click)="cancelar()" [disabled]="!enCurso()">Cancelar</button>
+
+  @if (enCurso()) {
+    <p role="status">Etapa: {{ etapa() }}</p>
+    @if (detalle()) { <p>{{ detalle() }}</p> }
+  }
+
+  @if (resumen()) {
+    <p>Completado: {{ resumen()!.creadas ?? 0 }} ofertas creadas.</p>
+  }
+
+  @if (error()) {
+    <p role="alert" class="error">{{ error() }}</p>
+  }
+</section>

@@ -7,6 +7,7 @@ import { EditorDeCandidaturas } from './editor-de-candidaturas';
 import { FuenteDeEncaje } from './encaje';
 import { FuenteDeAcciones, FuenteDeAccionesDemo } from './fuente-de-acciones';
 import { FuenteDeCuota } from '../cuota/fuente-de-cuota';
+import { CONFIGURACION_DE_SESION } from '../sesion/configuracion';
 import { FuenteDeCuotaDemo } from '../cuota/fuente-de-cuota-demo';
 import { FuenteDeEncajeDemo } from './fuente-de-encaje-demo';
 import { OfertasPage } from './ofertas.page';
@@ -44,6 +45,7 @@ describe('Seleccion y acciones en bloque', () => {
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
         { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
+        { provide: CONFIGURACION_DE_SESION, useValue: { urlApi: 'http://api.test' } },
         { provide: EditorDeCandidaturas, useValue: editor },
       ],
     });

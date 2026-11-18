@@ -7,3 +7,4 @@ SDD activo:
 - Tests: `npm test`
 - Verificación con Chrome DevTools, incluyendo móvil.
 - No mezclar lógica de cuota/auth sin pruebas.
+- SSE de búsqueda: `BusquedaProgresoService` (src/app/busqueda/) consume `GET /buscar-para-usuaria/progress?token=<jwt>`. Token en URL (EventSource no envía cabeceras). Cerrar conexión en done/error/ngOnDestroy.
