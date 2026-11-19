@@ -6,7 +6,7 @@ describe('elegirConfiguracion', () => {
   });
 
   it('fuera de desarrollo apunta al servidor publicado', () => {
-    expect(elegirConfiguracion(false).urlApi).toBe('https://cv-server-ggd8.onrender.com');
+    expect(elegirConfiguracion(false).urlApi).toBe('https://api.cookyourwebai.es');
   });
 
   it('usa el mismo id de cliente de Google en los dos modos', () => {
