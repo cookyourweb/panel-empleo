@@ -82,6 +82,32 @@ describe('BusquedaDeOfertas', () => {
     expect(componente.enCurso()).toBe(false);
   });
 
+  it('done muestra cada oferta con puesto, empresa y enlace que abre en otra pestaña', () => {
+    componente.iniciar();
+    servicio.emitir({
+      stage: 'done',
+      summary: {
+        ok: true,
+        creadas: 2,
+        ofertas: [
+          { puesto: 'AI Engineer', empresa: 'Acme', ubicacion: 'Europe', modalidad: 'Remoto', salario: '70k', link: 'https://remotive.com/1', score: 87, fuente: 'remotive' },
+          { puesto: 'Dev', empresa: 'Beta', ubicacion: '', modalidad: '', salario: '', link: '', score: null, fuente: 'tecnoempleo' },
+        ],
+      },
+    });
+    fixture.detectChanges();
+
+    const items = fixture.nativeElement.querySelectorAll('[data-test="oferta"]');
+    expect(items.length).toBe(2);
+    expect(items[0].textContent).toContain('AI Engineer');
+    expect(items[0].textContent).toContain('Acme');
+    const enlace = items[0].querySelector('a');
+    expect(enlace.getAttribute('href')).toBe('https://remotive.com/1');
+    expect(enlace.getAttribute('target')).toBe('_blank');
+    expect(enlace.getAttribute('rel')).toContain('noopener');
+    expect(items[1].querySelector('a')).toBeNull();
+  });
+
   it('error de negocio muestra aviso', () => {
     componente.iniciar();
     servicio.emitir({ stage: 'error', detail: 'boom' });

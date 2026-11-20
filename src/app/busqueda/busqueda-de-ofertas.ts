@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 import { BusquedaProgresoService } from './busqueda-progreso.service';
-import { EstadoDeBusqueda, EventoDeBusqueda } from './evento-de-busqueda';
+import { EstadoDeBusqueda, EventoDeBusqueda, ResumenDeBusqueda } from './evento-de-busqueda';
 import { Sesion } from '../sesion/sesion';
 
 @Component({
@@ -20,7 +20,7 @@ export class BusquedaDeOfertas {
 
   readonly etapa = signal<EstadoDeBusqueda>('idle');
   readonly detalle = signal<string | null>(null);
-  readonly resumen = signal<{ ok?: boolean; creadas?: number } | null>(null);
+  readonly resumen = signal<ResumenDeBusqueda | null>(null);
   readonly error = signal<string | null>(null);
   readonly enCurso = signal(false);
 

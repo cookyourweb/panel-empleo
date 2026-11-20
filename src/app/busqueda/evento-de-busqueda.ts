@@ -2,9 +2,23 @@
 
 export type EtapaDeBusqueda = 'searching' | 'filtering' | 'ranking' | 'done' | 'error';
 
+/** An offer as the server sends it in the done event: display fields only. */
+export interface OfertaEncontrada {
+  readonly puesto: string;
+  readonly empresa: string;
+  readonly ubicacion: string;
+  readonly modalidad: string;
+  readonly salario: string;
+  /** Empty when the source gave no http(s) link. */
+  readonly link: string;
+  readonly score: number | null;
+  readonly fuente: string;
+}
+
 export interface ResumenDeBusqueda {
   readonly ok?: boolean;
   readonly creadas?: number;
+  readonly ofertas?: readonly OfertaEncontrada[];
 }
 
 export interface EventoDeBusqueda {

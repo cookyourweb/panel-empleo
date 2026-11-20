@@ -7,8 +7,26 @@
     @if (detalle()) { <p>{{ detalle() }}</p> }
   }
 
-  @if (resumen()) {
-    <p>Completado: {{ resumen()!.creadas ?? 0 }} ofertas creadas.</p>
+  @if (resumen(); as r) {
+    <p>Completado: {{ r.creadas ?? 0 }} ofertas encontradas.</p>
+    @if (r.ofertas?.length) {
+      <ul class="ofertas">
+        @for (oferta of r.ofertas; track $index) {
+          <li data-test="oferta">
+            @if (oferta.link) {
+              <a [href]="oferta.link" target="_blank" rel="noopener noreferrer"><strong>{{ oferta.puesto }}</strong></a>
+            } @else {
+              <strong>{{ oferta.puesto }}</strong>
+            }
+            · {{ oferta.empresa }}
+            @if (oferta.ubicacion) { · {{ oferta.ubicacion }} }
+            @if (oferta.modalidad) { · {{ oferta.modalidad }} }
+            @if (oferta.salario) { · {{ oferta.salario }} }
+            @if (oferta.score !== null) { · {{ oferta.score }}/100 }
+          </li>
+        }
+      </ul>
+    }
   }
 
   @if (error()) {
