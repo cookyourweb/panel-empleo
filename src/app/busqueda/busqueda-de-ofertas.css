@@ -1,0 +1,2 @@
+.busqueda { display: flex; flex-direction: column; gap: 0.5rem; }
+.busqueda .error { color: #b00020; }

@@ -3809,5 +3809,63 @@
         <source>Avisarme</source>
       </segment>
     </unit>
+
+    <unit id="cuenta.ia.titulo">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Titulo de la seccion de API key</note></notes>
+      <segment><source>Tu clave de IA</source></segment>
+    </unit>
+    <unit id="cuenta.ia.campo">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Etiqueta de la API key</note></notes>
+      <segment><source>API key</source></segment>
+    </unit>
+    <unit id="cuenta.ia.error">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Error al configurar clave</note></notes>
+      <segment><source>No hemos podido guardar la clave. Prueba de nuevo.</source></segment>
+    </unit>
+    <unit id="cuenta.ia.exito">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Clave guardada correctamente</note></notes>
+      <segment><source>Clave guardada correctamente.</source></segment>
+    </unit>
+    <unit id="cuenta.ia.guardar">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Boton que guarda la API key</note></notes>
+      <segment><source>Guardar clave</source></segment>
+    </unit>
+    <unit id="cuenta.ia.borrar">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Boton que borra la API key</note></notes>
+      <segment><source>Borrar clave</source></segment>
+    </unit>
+
+    <unit id="cuenta.ia.ayuda">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Ayuda del bloque BYOK</note></notes>
+      <segment>
+        <source>Guarda tu propia clave de Anthropic para generar CV y cartas. Se guarda cifrada y nunca se muestra completa.
+      Si no tienes clave, puedes usar las 3 generaciones de prueba.</source>
+      </segment>
+    </unit>
+
+    <unit id="cuenta.ia.mostrar">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Boton que muestra u oculta la clave</note></notes>
+      <segment>
+        <source>Mostrar</source>
+      </segment>
+    </unit>
+    <unit id="busqueda.iniciar">
+      <notes>
+        <note category="location">src/app/busqueda/busqueda-de-ofertas.html:2</note>
+        <note category="description">Boton que lanza la busqueda de ofertas en segundo plano</note>
+      </notes>
+      <segment>
+        <source>Buscar ofertas</source>
+      </segment>
+    </unit>
+    <unit id="busqueda.cancelar">
+      <notes>
+        <note category="location">src/app/busqueda/busqueda-de-ofertas.html:3</note>
+        <note category="description">Boton que cancela la busqueda en curso</note>
+      </notes>
+      <segment>
+        <source>Cancelar</source>
+      </segment>
+    </unit>
   </file>
 </xliff>

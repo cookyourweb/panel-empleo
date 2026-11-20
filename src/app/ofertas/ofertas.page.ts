@@ -17,6 +17,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 
 import { ContenedorDeCuota } from '../cuota/cuota.contenedor';
+import { BusquedaDeOfertas } from '../busqueda/busqueda-de-ofertas';
 import { Accion, accionesPara, descripcionDeAccion, EnlacesDeAccion } from './acciones';
 import { Candidatura, EstadoDeCandidatura, ESTADOS } from './dominio';
 import { ENCAJE_ACTIVO } from '../configuracion';
@@ -72,6 +73,7 @@ interface Aviso {
     ConfirmarEliminar,
     ListaDeEliminadas,
     ContenedorDeCuota,
+    BusquedaDeOfertas,
   ],
   templateUrl: './ofertas.page.html',
   styleUrl: './ofertas.page.css',

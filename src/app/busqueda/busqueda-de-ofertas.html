@@ -1,0 +1,35 @@
+<section class="busqueda" aria-live="polite">
+  <button type="button" class="boton boton--primario" (click)="iniciar()" [disabled]="enCurso()" i18n="Boton que lanza la busqueda de ofertas en segundo plano@@busqueda.iniciar">Buscar ofertas</button>
+  <button type="button" class="boton boton--neutro" (click)="cancelar()" [disabled]="!enCurso()" i18n="Boton que cancela la busqueda en curso@@busqueda.cancelar">Cancelar</button>
+
+  @if (enCurso()) {
+    <p role="status">Etapa: {{ etapa() }}</p>
+    @if (detalle()) { <p>{{ detalle() }}</p> }
+  }
+
+  @if (resumen(); as r) {
+    <p>Completado: {{ r.creadas ?? 0 }} ofertas encontradas.</p>
+    @if (r.ofertas?.length) {
+      <ul class="ofertas">
+        @for (oferta of r.ofertas; track $index) {
+          <li data-test="oferta">
+            @if (oferta.link) {
+              <a [href]="oferta.link" target="_blank" rel="noopener noreferrer"><strong>{{ oferta.puesto }}</strong></a>
+            } @else {
+              <strong>{{ oferta.puesto }}</strong>
+            }
+            · {{ oferta.empresa }}
+            @if (oferta.ubicacion) { · {{ oferta.ubicacion }} }
+            @if (oferta.modalidad) { · {{ oferta.modalidad }} }
+            @if (oferta.salario) { · {{ oferta.salario }} }
+            @if (oferta.score !== null) { · {{ oferta.score }}/100 }
+          </li>
+        }
+      </ul>
+    }
+  }
+
+  @if (error()) {
+    <p role="alert" class="error">{{ error() }}</p>
+  }
+</section>

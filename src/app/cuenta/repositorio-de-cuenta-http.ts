@@ -54,4 +54,21 @@ export class RepositorioDeCuentaHttp implements RepositorioDeCuenta {
   async subirCv(archivo: File): Promise<void> {
     await enviarCv(this.http, this.configuracion.urlApi, archivo);
   }
+
+  async estadoDeClave(): Promise<{ configurada: boolean; trialRestante: number }> {
+    const r = await firstValueFrom(
+      this.http.get<{ configurada: boolean; trial_restante: number }>(`${this.configuracion.urlApi}/clave-api`),
+    );
+    return { configurada: !!r.configurada, trialRestante: r.trial_restante ?? 0 };
+  }
+
+  async guardarClave(proveedor: 'anthropic' | 'groq', apiKey: string): Promise<void> {
+    await firstValueFrom(
+      this.http.put(`${this.configuracion.urlApi}/clave-api`, { proveedor, api_key: apiKey }),
+    );
+  }
+
+  async borrarClave(proveedor: 'anthropic' | 'groq'): Promise<void> {
+    await firstValueFrom(this.http.delete(`${this.configuracion.urlApi}/clave-api/${proveedor}`));
+  }
 }

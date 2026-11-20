@@ -219,3 +219,83 @@ describe('elegirRepositorioDeCuenta', () => {
     await expect(new RepositorioDeCuentaDemo().borrar()).resolves.toBeUndefined();
   });
 });
+
+describe('RepositorioDeCuentaHttp, clave de IA (BYOK)', () => {
+  let repositorio: RepositorioDeCuentaHttp;
+  let http: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        RepositorioDeCuentaHttp,
+        { provide: CONFIGURACION_DE_SESION, useValue: { urlApi: URL_API, idCliente: 'cliente' } },
+      ],
+    });
+    repositorio = TestBed.inject(RepositorioDeCuentaHttp);
+    http = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => http.verify());
+
+  it('estadoDeClave: GET /clave-api con trial_restante en camelCase', async () => {
+    const estado = repositorio.estadoDeClave();
+
+    const peticion = http.expectOne(`${URL_API}/clave-api`);
+    expect(peticion.request.method).toBe('GET');
+    peticion.flush({ configurada: true, trial_restante: 0 });
+
+    await expect(estado).resolves.toEqual({ configurada: true, trialRestante: 0 });
+  });
+
+  it('estadoDeClave: sin clave y 3 trials restantes', async () => {
+    const estado = repositorio.estadoDeClave();
+
+    http.expectOne(`${URL_API}/clave-api`).flush({ configurada: false, trial_restante: 3 });
+
+    await expect(estado).resolves.toEqual({ configurada: false, trialRestante: 3 });
+  });
+
+  it('guardarClave: PUT /clave-api con proveedor y api_key', async () => {
+    const guardado = repositorio.guardarClave('anthropic', 'sk-ant-1234567890');
+
+    const peticion = http.expectOne(`${URL_API}/clave-api`);
+    expect(peticion.request.method).toBe('PUT');
+    expect(peticion.request.body).toEqual({ proveedor: 'anthropic', api_key: 'sk-ant-1234567890' });
+    peticion.flush({ configurada: true, proveedor: 'anthropic' });
+
+    await expect(guardado).resolves.toBeUndefined();
+  });
+
+  it('borrarClave: DELETE /clave-api/{proveedor}', async () => {
+    const borrado = repositorio.borrarClave('groq');
+
+    const peticion = http.expectOne(`${URL_API}/clave-api/groq`);
+    expect(peticion.request.method).toBe('DELETE');
+    peticion.flush({ ok: true });
+
+    await expect(borrado).resolves.toBeUndefined();
+  });
+
+  it('estadoDeClave propaga el error del servidor', async () => {
+    const estado = repositorio.estadoDeClave();
+
+    http.expectOne(`${URL_API}/clave-api`).flush({}, { status: 500, statusText: 'Server Error' });
+
+    await expect(estado).rejects.toBeDefined();
+  });
+});
+
+describe('RepositorioDeCuentaDemo, clave de IA (BYOK)', () => {
+  it('estadoDeClave devuelve 3 trials y no configurada', async () => {
+    const demo = new RepositorioDeCuentaDemo();
+    await expect(demo.estadoDeClave()).resolves.toEqual({ configurada: false, trialRestante: 3 });
+  });
+
+  it('guardarClave y borrarClave no fallan ni necesitan red', async () => {
+    const demo = new RepositorioDeCuentaDemo();
+    await expect(demo.guardarClave('anthropic', 'sk-ant-1234567890')).resolves.toBeUndefined();
+    await expect(demo.borrarClave('anthropic')).resolves.toBeUndefined();
+  });
+});

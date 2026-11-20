@@ -22,6 +22,6 @@ const ID_CLIENTE = '36051363838-1ofkd3vj09ti3jf42uptsl6nl3f75rrk.apps.googleuser
 export function elegirConfiguracion(esDesarrollo: boolean): ConfiguracionDeSesion {
   return {
     idCliente: ID_CLIENTE,
-    urlApi: esDesarrollo ? 'http://localhost:5000' : 'https://cv-server-ggd8.onrender.com',
+    urlApi: esDesarrollo ? 'http://localhost:8000' : 'https://api.cookyourwebai.es',
   };
 }

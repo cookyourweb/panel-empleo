@@ -4232,5 +4232,86 @@
         <target>Notify me</target>
       </segment>
     </unit>
+
+    <unit id="cuenta.ia.titulo">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>Tu clave de IA</source>
+        <target>Your AI key</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.ia.campo">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>API key</source>
+        <target>Access token</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.ia.error">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>No hemos podido guardar la clave. Prueba de nuevo.</source>
+        <target>We could not save the key. Try again.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.ia.exito">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>Clave guardada correctamente.</source>
+        <target>Key saved successfully.</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.ia.guardar">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>Guardar clave</source>
+        <target>Save key</target>
+      </segment>
+    </unit>
+    <unit id="cuenta.ia.borrar">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note></notes>
+      <segment>
+        <source>Borrar clave</source>
+        <target>Delete key</target>
+      </segment>
+    </unit>
+
+    <unit id="cuenta.ia.ayuda">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Ayuda del bloque BYOK</note></notes>
+      <segment>
+        <source>Guarda tu propia clave de Anthropic para generar CV y cartas. Se guarda cifrada y nunca se muestra completa.
+      Si no tienes clave, puedes usar las 3 generaciones de prueba.</source>
+        <target>Save your own Anthropic key to generate CVs and cover letters. It is stored encrypted and never shown in full.
+      If you do not have a key, you can use the 3 free trial generations.</target>
+      </segment>
+    </unit>
+
+    <unit id="cuenta.ia.mostrar">
+      <notes><note category="location">src/app/cuenta/cuenta.page.html:1</note><note category="description">Boton que muestra u oculta la clave</note></notes>
+      <segment>
+        <source>Mostrar</source>
+        <target>Show</target>
+      </segment>
+    </unit>
+    <unit id="busqueda.iniciar">
+      <notes>
+        <note category="location">src/app/busqueda/busqueda-de-ofertas.html:2</note>
+        <note category="description">Boton que lanza la busqueda de ofertas en segundo plano</note>
+      </notes>
+      <segment>
+        <source>Buscar ofertas</source>
+        <target>Search offers</target>
+      </segment>
+    </unit>
+    <unit id="busqueda.cancelar">
+      <notes>
+        <note category="location">src/app/busqueda/busqueda-de-ofertas.html:3</note>
+        <note category="description">Boton que cancela la busqueda en curso</note>
+      </notes>
+      <segment>
+        <source>Cancelar</source>
+        <target>Cancel</target>
+      </segment>
+    </unit>
   </file>
 </xliff>

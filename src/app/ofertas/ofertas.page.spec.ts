@@ -11,6 +11,7 @@ import { FuenteDeEncaje } from './encaje';
 import { FuenteDeAcciones, FuenteDeAccionesDemo } from './fuente-de-acciones';
 import { ENCAJE_ACTIVO } from '../configuracion';
 import { FuenteDeCuota } from '../cuota/fuente-de-cuota';
+import { CONFIGURACION_DE_SESION } from '../sesion/configuracion';
 import { FuenteDeCuotaDemo } from '../cuota/fuente-de-cuota-demo';
 import { FuenteDeEncajeDemo } from './fuente-de-encaje-demo';
 import { OfertasPage } from './ofertas.page';
@@ -31,6 +32,7 @@ describe('OfertasPage', () => {
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
         { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
+        { provide: CONFIGURACION_DE_SESION, useValue: { urlApi: 'http://api.test' } },
       ],
     }).compileComponents();
   });
@@ -308,6 +310,7 @@ describe('OfertasPage · números según el idioma activo', () => {
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useClass: FuenteDeEncajeDemo },
         { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
+        { provide: CONFIGURACION_DE_SESION, useValue: { urlApi: 'http://api.test' } },
       ],
     }).compileComponents();
     const fixture = TestBed.createComponent(OfertasPage);
@@ -335,6 +338,7 @@ describe('OfertasPage · con el encaje apagado', () => {
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useValue: { resumen } },
         { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
+        { provide: CONFIGURACION_DE_SESION, useValue: { urlApi: 'http://api.test' } },
         { provide: ENCAJE_ACTIVO, useValue: false },
       ],
     }).compileComponents();
@@ -364,6 +368,7 @@ describe('OfertasPage · filtro de alcanzables', () => {
         { provide: FuenteDeAcciones, useClass: FuenteDeAccionesDemo },
         { provide: FuenteDeEncaje, useValue: fuente ?? { resumen } },
         { provide: FuenteDeCuota, useClass: FuenteDeCuotaDemo },
+        { provide: CONFIGURACION_DE_SESION, useValue: { urlApi: 'http://api.test' } },
         { provide: ENCAJE_ACTIVO, useValue: true },
       ],
     }).compileComponents();
